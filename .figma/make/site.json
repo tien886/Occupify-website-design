@@ -1,0 +1,11 @@
+{
+  "title": "Occupify",
+  "description": "Connect professionals and employers in a streamlined digital space, fostering career growth and networking opportunities for users.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
