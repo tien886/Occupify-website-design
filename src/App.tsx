@@ -333,6 +333,42 @@ const NEWS = [
   },
 ]
 
+
+function HeaderBackButton({ onClick }: { onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        background: "rgba(255,255,255,0.15)",
+        border: "1px solid rgba(255,255,255,0.30)",
+        borderRadius: 9999,
+        padding: "4px 14px",
+        color: "#fff",
+        fontSize: 12,
+        fontWeight: 600,
+        cursor: "pointer",
+        fontFamily: "inherit",
+        display: "flex",
+        alignItems: "center",
+        gap: 6,
+        marginBottom: 16,
+        transition: "background 150ms ease",
+      }}
+      onMouseEnter={(e) =>
+        ((e.currentTarget as HTMLElement).style.background =
+          "rgba(255,255,255,0.25)")
+      }
+      onMouseLeave={(e) =>
+        ((e.currentTarget as HTMLElement).style.background =
+          "rgba(255,255,255,0.15)")
+      }
+    >
+      <ArrowRight size={13} style={{ transform: "rotate(180deg)" }} />
+      Quay lại
+    </button>
+  )
+}
+
 // ─── Avatar ───────────────────────────────────────────────────────────────────
 
 function Avatar({
@@ -1099,10 +1135,12 @@ function FeedPostCard({
   post,
   onLike,
   onOpenGroup,
+  onDelete,
 }: {
   post: Post
   onLike: (id: number) => void
   onOpenGroup?: (id: string) => void
+  onDelete?: (id: number) => void
 }) {
   const [expanded, setExpanded] = useState(false)
   const paragraphs = post.content.split("\n\n")
@@ -1274,6 +1312,7 @@ function FeedPostCard({
             {dotMenuOpen && (
               <div style={{position:"absolute",top:"100%",right:0,zIndex:10,background:"#fff",boxShadow:"0 4px 16px rgba(0,0,0,0.13)",borderRadius:8,minWidth:140,padding:"4px 0"}}>
                 <button onClick={()=>{setDotMenuOpen(false);setReportPost(true);}} style={{display:"block",width:"100%",textAlign:"left",padding:"10px 16px",background:"none",border:"none",cursor:"pointer",fontSize:14,color:"#333"}}>Báo cáo</button>
+                {onDelete && <button onClick={()=>{setDotMenuOpen(false);onDelete(post.id);}} style={{display:"block",width:"100%",textAlign:"left",padding:"10px 16px",background:"none",border:"none",cursor:"pointer",fontSize:14,color:"#C03A2B",fontWeight:600}}>Xóa bài viết</button>}
               </div>
             )}
           </div>
@@ -3222,590 +3261,6 @@ function NetworkConnectionsSection({
   )
 }
 
-// ─── Group detail with manager nav ───────────────────────────────────────────
-
-function NetworkGroupDetailPage({
-  group,
-  isManager,
-  onBack,
-}: {
-  group: Group
-  isManager: boolean
-  onBack: () => void
-}) {
-  const [managerTab, setManagerTab] = useState<string | null>(null)
-  const [joined, setJoined] = useState(true)
-  const [postText, setPostText] = useState("")
-  const [likes, setLikes] = useState<Record<number, boolean>>({})
-  const groupPosts = GROUP_POSTS.filter((p) => p.groupId === group.id)
-  const allMembers = [
-    ...group.members,
-    "Nguyễn Văn An",
-    "Trần Thị Bích",
-    "Lê Minh Đức",
-    "Phạm Hồng Linh",
-  ]
-  const admins = group.members.slice(0, 2)
-
-  const MGMT_TABS = ["Quản lý thành viên", "Quản lý bài viết", "Quản trị viên"]
-
-  return (
-    <div style={{ background: "#F4F2EE", minHeight: "100%" }}>
-      {/* Cover */}
-      <div
-        style={{
-          height: 180,
-          background: group.coverGradient,
-          position: "relative",
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: "rgba(0,0,0,0.22)",
-          }}
-        />
-      </div>
-
-      <div style={{ maxWidth: 1128, margin: "0 auto", padding: "0 16px" }}>
-        {/* Group header */}
-        <div
-          style={{
-            background: "#fff",
-            borderRadius: "0 0 8px 8px",
-            padding: "18px 24px",
-            boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-            marginBottom: 16,
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "flex-start",
-              justifyContent: "space-between",
-              flexWrap: "wrap",
-              gap: 12,
-            }}
-          >
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div
-                style={{
-                  fontSize: 11,
-                  fontWeight: 600,
-                  color: "rgba(0,0,0,0.50)",
-                  textTransform: "uppercase",
-                  letterSpacing: 1,
-                  marginBottom: 3,
-                }}
-              >
-                {group.category}
-              </div>
-              <h1
-                style={{
-                  fontSize: 22,
-                  fontWeight: 800,
-                  color: "rgba(0,0,0,0.90)",
-                  lineHeight: 1.2,
-                  marginBottom: 4,
-                }}
-              >
-                {group.name}
-              </h1>
-              <div
-                style={{
-                  fontSize: 13,
-                  color: "rgba(0,0,0,0.55)",
-                  marginBottom: 8,
-                }}
-              >
-                {(group.memberCount / 1000).toFixed(1)}K thành viên
-              </div>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                {group.topics.map((t) => (
-                  <span
-                    key={t}
-                    style={{
-                      background: "#EAF1FA",
-                      color: "#0A66C2",
-                      borderRadius: 4,
-                      padding: "3px 10px",
-                      fontSize: 12,
-                      fontWeight: 600,
-                    }}
-                  >
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div
-              style={{
-                display: "flex",
-                gap: 10,
-                flexShrink: 0,
-                alignItems: "center",
-              }}
-            >
-              <button
-                onClick={onBack}
-                style={{
-                  background: "none",
-                  border: "1px solid rgba(0,0,0,0.25)",
-                  borderRadius: 9999,
-                  padding: "7px 16px",
-                  fontSize: 13,
-                  fontWeight: 600,
-                  cursor: "pointer",
-                  color: "rgba(0,0,0,0.65)",
-                  fontFamily: "inherit",
-                }}
-              >
-                ← Quay lại
-              </button>
-              {!isManager && (
-                <button
-                  onClick={() => setJoined((v) => !v)}
-                  style={{
-                    borderRadius: 9999,
-                    border: "none",
-                    cursor: "pointer",
-                    padding: "8px 20px",
-                    fontSize: 14,
-                    fontWeight: 700,
-                    fontFamily: "inherit",
-                    background: joined ? "#E5F6E8" : "#0A66C2",
-                    color: joined ? "#057642" : "#fff",
-                    transition: "all 150ms",
-                  }}
-                >
-                  {joined ? "Đã tham gia" : "Tham gia nhóm"}
-                </button>
-              )}
-              {isManager && (
-                <span
-                  style={{
-                    background: "#EAF1FA",
-                    color: "#0A66C2",
-                    borderRadius: 9999,
-                    padding: "7px 16px",
-                    fontSize: 13,
-                    fontWeight: 700,
-                  }}
-                >
-                  Quản trị viên
-                </span>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* 2-col layout */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: isManager ? "220px 1fr" : "1fr",
-            gap: 16,
-            alignItems: "start",
-            paddingBottom: 48,
-          }}
-        >
-          {/* Manager sidebar (only for managers) */}
-          {isManager && (
-            <div
-              style={{
-                background: "#fff",
-                borderRadius: 8,
-                boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-                overflow: "hidden",
-              }}
-            >
-              <div
-                style={{
-                  padding: "14px 16px 8px",
-                  fontSize: 13,
-                  fontWeight: 700,
-                  color: "rgba(0,0,0,0.60)",
-                  borderBottom: "1px solid rgba(0,0,0,0.08)",
-                }}
-              >
-                Quản lý nhóm
-              </div>
-              {MGMT_TABS.map((tab) => {
-                const isActive = managerTab === tab
-                return (
-                  <button
-                    key={tab}
-                    onClick={() => setManagerTab(isActive ? null : tab)}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      width: "100%",
-                      padding: "10px 16px",
-                      background: isActive ? "#EAF1FA" : "none",
-                      border: "none",
-                      cursor: "pointer",
-                      fontFamily: "inherit",
-                      fontSize: 13,
-                      fontWeight: 600,
-                      color: isActive ? "#0A66C2" : "rgba(0,0,0,0.70)",
-                      textAlign: "left",
-                      borderBottom: "1px solid rgba(0,0,0,0.06)",
-                      transition: "background 150ms",
-                    }}
-                    onMouseEnter={(e) => {
-                      if (!isActive)
-                        (e.currentTarget as HTMLElement).style.background =
-                          "#F4F2EE"
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!isActive)
-                        (e.currentTarget as HTMLElement).style.background =
-                          "none"
-                    }}
-                  >
-                    {tab}
-                    {isActive && <CaretDown size={14} />}
-                  </button>
-                )
-              })}
-              {/* Panel content */}
-              {managerTab === "Quản lý thành viên" && (
-                <div
-                  style={{
-                    padding: "12px 16px",
-                    borderTop: "1px solid rgba(0,0,0,0.08)",
-                  }}
-                >
-                  {allMembers.map((m) => (
-                    <div
-                      key={m}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        padding: "6px 0",
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 8,
-                        }}
-                      >
-                        <Avatar name={m} size={28} />
-                        <span
-                          style={{
-                            fontSize: 12,
-                            fontWeight: 600,
-                            color: "rgba(0,0,0,0.80)",
-                          }}
-                        >
-                          {m}
-                        </span>
-                      </div>
-                      <button
-                        style={{
-                          background: "none",
-                          border: "none",
-                          cursor: "pointer",
-                          fontSize: 11,
-                          color: "#C03A2B",
-                          fontWeight: 700,
-                          fontFamily: "inherit",
-                          padding: "2px 6px",
-                        }}
-                      >
-                        Xóa
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
-              {managerTab === "Quản lý bài viết" && (
-                <div
-                  style={{
-                    padding: "12px 16px",
-                    borderTop: "1px solid rgba(0,0,0,0.08)",
-                  }}
-                >
-                  <div style={{ fontSize: 12, color: "rgba(0,0,0,0.55)" }}>
-                    {groupPosts.length} bài viết trong nhóm
-                  </div>
-                  {groupPosts.map((p) => (
-                    <div
-                      key={p.id}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        padding: "8px 0",
-                        borderBottom: "1px solid rgba(0,0,0,0.06)",
-                      }}
-                    >
-                      <span
-                        style={{
-                          fontSize: 12,
-                          color: "rgba(0,0,0,0.75)",
-                          flex: 1,
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          whiteSpace: "nowrap",
-                        }}
-                      >
-                        {p.content.slice(0, 40)}…
-                      </span>
-                      <button
-                        style={{
-                          background: "none",
-                          border: "none",
-                          cursor: "pointer",
-                          fontSize: 11,
-                          color: "#C03A2B",
-                          fontWeight: 700,
-                          fontFamily: "inherit",
-                          padding: "2px 6px",
-                          flexShrink: 0,
-                        }}
-                      >
-                        Xóa
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
-              {managerTab === "Quản trị viên" && (
-                <div
-                  style={{
-                    padding: "12px 16px",
-                    borderTop: "1px solid rgba(0,0,0,0.08)",
-                  }}
-                >
-                  {admins.map((m) => (
-                    <div
-                      key={m}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 8,
-                        padding: "6px 0",
-                      }}
-                    >
-                      <Avatar name={m} size={28} />
-                      <div>
-                        <div
-                          style={{
-                            fontSize: 12,
-                            fontWeight: 700,
-                            color: "rgba(0,0,0,0.85)",
-                          }}
-                        >
-                          {m}
-                        </div>
-                        <div
-                          style={{
-                            fontSize: 11,
-                            color: "#0A66C2",
-                            fontWeight: 600,
-                          }}
-                        >
-                          Quản trị viên
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Main posts feed */}
-          <div>
-            {/* Post composer */}
-            <div
-              style={{
-                background: "#fff",
-                borderRadius: 8,
-                boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-                padding: "16px 20px",
-                marginBottom: 12,
-              }}
-            >
-              <div style={{ display: "flex", gap: 10 }}>
-                <Avatar name={ME.name} size={40} />
-                <div
-                  style={{
-                    flex: 1,
-                    borderRadius: 4,
-                    border: "1px solid rgba(0,0,0,0.20)",
-                    padding: "10px 14px",
-                  }}
-                >
-                  <textarea
-                    value={postText}
-                    onChange={(e) => setPostText(e.target.value)}
-                    placeholder="Chia sẻ điều gì đó với nhóm..."
-                    style={{
-                      width: "100%",
-                      background: "none",
-                      border: "none",
-                      outline: "none",
-                      fontSize: 14,
-                      fontFamily: "inherit",
-                      color: "rgba(0,0,0,0.80)",
-                      resize: "none",
-                      minHeight: 60,
-                      lineHeight: 1.55,
-                    }}
-                  />
-                  {postText.trim() && (
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "flex-end",
-                        marginTop: 8,
-                      }}
-                    >
-                      <button
-                        onClick={() => setPostText("")}
-                        style={{
-                          padding: "7px 20px",
-                          borderRadius: 9999,
-                          border: "none",
-                          background: "#0A66C2",
-                          color: "#fff",
-                          fontSize: 13,
-                          fontWeight: 700,
-                          cursor: "pointer",
-                          fontFamily: "inherit",
-                        }}
-                      >
-                        Đăng
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-            {/* Posts */}
-            {groupPosts.length === 0 ? (
-              <div
-                style={{
-                  background: "#fff",
-                  borderRadius: 8,
-                  boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-                  padding: "32px 24px",
-                  textAlign: "center",
-                  color: "rgba(0,0,0,0.45)",
-                  fontSize: 14,
-                }}
-              >
-                Chưa có bài viết nào trong nhóm này.
-              </div>
-            ) : (
-              groupPosts.map((post) => (
-                <div
-                  key={post.id}
-                  style={{
-                    background: "#fff",
-                    borderRadius: 8,
-                    boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-                    padding: "16px 20px",
-                    marginBottom: 8,
-                  }}
-                >
-                  <div style={{ display: "flex", gap: 10, marginBottom: 10 }}>
-                    <Avatar name={post.author} size={42} />
-                    <div>
-                      <div
-                        style={{
-                          fontSize: 14,
-                          fontWeight: 700,
-                          color: "rgba(0,0,0,0.90)",
-                        }}
-                      >
-                        {post.author}
-                      </div>
-                      <div
-                        style={{
-                          fontSize: 12,
-                          color: "rgba(0,0,0,0.50)",
-                          marginTop: 1,
-                        }}
-                      >
-                        {post.timestamp}
-                      </div>
-                    </div>
-                  </div>
-                  <p
-                    style={{
-                      fontSize: 14,
-                      color: "rgba(0,0,0,0.80)",
-                      lineHeight: 1.6,
-                      marginBottom: 10,
-                    }}
-                  >
-                    {post.content}
-                  </p>
-                  <div
-                    style={{
-                      display: "flex",
-                      gap: 16,
-                      paddingTop: 8,
-                      borderTop: "1px solid rgba(0,0,0,0.08)",
-                    }}
-                  >
-                    <button
-                      onClick={() =>
-                        setLikes((l) => ({ ...l, [post.id]: !l[post.id] }))
-                      }
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 6,
-                        background: "none",
-                        border: "none",
-                        cursor: "pointer",
-                        fontSize: 13,
-                        fontWeight: 600,
-                        color: likes[post.id] ? "#0A66C2" : "rgba(0,0,0,0.55)",
-                        fontFamily: "inherit",
-                      }}
-                    >
-                      <ThumbsUp
-                        size={16}
-                        weight={likes[post.id] ? "fill" : "regular"}
-                      />
-                      {post.likes + (likes[post.id] ? 1 : 0)}
-                    </button>
-                    <button
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 6,
-                        background: "none",
-                        border: "none",
-                        cursor: "pointer",
-                        fontSize: 13,
-                        fontWeight: 600,
-                        color: "rgba(0,0,0,0.55)",
-                        fontFamily: "inherit",
-                      }}
-                    >
-                      <ChatCircle size={16} /> {post.comments}
-                    </button>
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
 
 // ─── Full Network Page ────────────────────────────────────────────────────────
 
@@ -3836,7 +3291,7 @@ function NetworkPage({ onViewProfile }: { onViewProfile?: () => void }) {
   if (openGroup) {
     const isManager = MY_MANAGED_GROUP_IDS.includes(openGroup.id)
     return (
-      <NetworkGroupDetailPage
+      <GroupDetailPage
         group={openGroup}
         isManager={isManager}
         onBack={() => setOpenGroup(null)}
@@ -9983,6 +9438,7 @@ function MyProjectDetailPage({
   const [closeRecruitConfirm, setCloseRecruitConfirm] = useState(false)
   const [recruitmentClosed, setRecruitmentClosed] = useState(false)
   const [contractDetailMember, setContractDetailMember] = useState<ProjectMember | null>(null)
+  const [isEditingContract, setIsEditingContract] = useState(false)
 
   const cancelMember =
     cancelTarget && cancelTarget !== "project"
@@ -10603,18 +10059,124 @@ function MyProjectDetailPage({
 
       {/* Contract detail modal */}
       {contractDetailMember && (
-        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.45)",zIndex:60,display:"flex",alignItems:"center",justifyContent:"center"}} onClick={()=>setContractDetailMember(null)}>
-          <div style={{background:"#fff",borderRadius:12,padding:32,maxWidth:480,width:"100%",boxShadow:"0 8px 32px rgba(0,0,0,0.18)"}} onClick={e=>e.stopPropagation()}>
-            <p style={{fontWeight:700,fontSize:18,marginBottom:16}}>Chi tiết hợp đồng</p>
-            <div style={{display:"flex",flexDirection:"column",gap:10,fontSize:14}}>
-              <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.55)"}}>Thành viên: </span>{contractDetailMember.name}</div>
-              <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.55)"}}>Email: </span>{contractDetailMember.email}</div>
-              <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.55)"}}>Giá trị HĐ: </span>{contractDetailMember.price}</div>
-              <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.55)"}}>Hạn: </span>{contractDetailMember.dueDate ?? project.dueDate ?? "—"}</div>
-              <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.55)"}}>Trạng thái: </span>{(contractDetailMember as any).contractStatus ?? "Đang làm"}</div>
-            </div>
-            <div style={{display:"flex",justifyContent:"flex-end",marginTop:24}}>
-              <button onClick={()=>setContractDetailMember(null)} style={{padding:"9px 22px",borderRadius:99,border:"none",background:"#0A66C2",color:"#fff",cursor:"pointer",fontWeight:600}}>Đóng</button>
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.45)",zIndex:60,display:"flex",alignItems:"center",justifyContent:"center"}} onClick={()=>{setContractDetailMember(null); setIsEditingContract(false)}}>
+          <div style={{background:"#fff",borderRadius:12,padding:32,maxWidth:520,width:"100%",boxShadow:"0 8px 32px rgba(0,0,0,0.18)", maxHeight: "90vh", overflowY: "auto"}} onClick={e=>e.stopPropagation()}>
+            <p style={{fontWeight:700,fontSize:20,marginBottom:20}}>Chi tiết hợp đồng</p>
+            {isEditingContract ? (
+              <div style={{display:"flex",flexDirection:"column",gap:16}}>
+                <div style={{ marginBottom: 4 }}>
+                  <label style={{fontSize: 13, fontWeight: 700, color: "rgba(0,0,0,0.70)", display: "block", marginBottom: 6}}>Tiêu đề hợp đồng *</label>
+                  <input
+                    defaultValue={`Hợp đồng thiết kế - ${project.name}`}
+                    style={{width: "100%", padding: "8px 12px", border: "1px solid rgba(0,0,0,0.15)", borderRadius: 4, fontSize: 14, fontFamily: "inherit", outline: "none", color: "rgba(0,0,0,0.90)", background: "#fff", transition: "border-color 150ms", boxSizing: "border-box"}}
+                    onFocus={(e) => ((e.currentTarget as HTMLElement).style.borderColor = "#0A66C2")}
+                    onBlur={(e) => ((e.currentTarget as HTMLElement).style.borderColor = "rgba(0,0,0,0.15)")}
+                  />
+                </div>
+
+                <div style={{ display: "flex", gap: 16, marginBottom: 4 }}>
+                  <div style={{ flex: 2 }}>
+                    <label style={{fontSize: 13, fontWeight: 700, color: "rgba(0,0,0,0.70)", display: "block", marginBottom: 6}}>Giá trị hợp đồng (VNĐ) *</label>
+                    <div style={{ position: "relative" }}>
+                      <span style={{position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", fontSize: 13, fontWeight: 700, color: "rgba(0,0,0,0.45)", pointerEvents: "none"}}>
+                        ₫
+                      </span>
+                      <input
+                        type="text"
+                        defaultValue={contractDetailMember.price.replace(/[^0-9]/g, '')}
+                        style={{width: "100%", padding: "8px 12px", border: "1px solid rgba(0,0,0,0.15)", borderRadius: 4, fontSize: 14, fontFamily: "inherit", outline: "none", color: "rgba(0,0,0,0.90)", background: "#fff", transition: "border-color 150ms", boxSizing: "border-box", paddingLeft: 28}}
+                        onFocus={(e) => ((e.currentTarget as HTMLElement).style.borderColor = "#0A66C2")}
+                        onBlur={(e) => ((e.currentTarget as HTMLElement).style.borderColor = "rgba(0,0,0,0.15)")}
+                      />
+                    </div>
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <label style={{fontSize: 13, fontWeight: 700, color: "rgba(0,0,0,0.70)", display: "block", marginBottom: 6}}>Chu kỳ</label>
+                    <select
+                      defaultValue="Dự án"
+                      style={{width: "100%", padding: "8px 12px", border: "1px solid rgba(0,0,0,0.15)", borderRadius: 4, fontSize: 14, fontFamily: "inherit", outline: "none", color: "rgba(0,0,0,0.90)", background: "#fff", transition: "border-color 150ms", boxSizing: "border-box", cursor: "pointer", appearance: "auto"}}
+                      onFocus={(e) => ((e.currentTarget as HTMLElement).style.borderColor = "#0A66C2")}
+                      onBlur={(e) => ((e.currentTarget as HTMLElement).style.borderColor = "rgba(0,0,0,0.15)")}
+                    >
+                      <option value="Giờ">Giờ</option>
+                      <option value="Ngày">Ngày</option>
+                      <option value="Tuần">Tuần</option>
+                      <option value="Tháng">Tháng</option>
+                      <option value="Dự án">Dự án</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div style={{ display: "flex", gap: 16, marginBottom: 4 }}>
+                  <div style={{ flex: 1 }}>
+                    <label style={{fontSize: 13, fontWeight: 700, color: "rgba(0,0,0,0.70)", display: "block", marginBottom: 6}}>Ngày bắt đầu</label>
+                    <input
+                      type="date"
+                      defaultValue="2026-10-01"
+                      style={{width: "100%", padding: "8px 12px", border: "1px solid rgba(0,0,0,0.15)", borderRadius: 4, fontSize: 14, fontFamily: "inherit", outline: "none", color: "rgba(0,0,0,0.90)", background: "#fff", transition: "border-color 150ms", boxSizing: "border-box"}}
+                      onFocus={(e) => ((e.currentTarget as HTMLElement).style.borderColor = "#0A66C2")}
+                      onBlur={(e) => ((e.currentTarget as HTMLElement).style.borderColor = "rgba(0,0,0,0.15)")}
+                    />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <label style={{fontSize: 13, fontWeight: 700, color: "rgba(0,0,0,0.70)", display: "block", marginBottom: 6}}>Ngày kết thúc</label>
+                    <input
+                      type="date"
+                      defaultValue={contractDetailMember.dueDate ? "2026-12-30" : ""}
+                      style={{width: "100%", padding: "8px 12px", border: "1px solid rgba(0,0,0,0.15)", borderRadius: 4, fontSize: 14, fontFamily: "inherit", outline: "none", color: "rgba(0,0,0,0.90)", background: "#fff", transition: "border-color 150ms", boxSizing: "border-box"}}
+                      onFocus={(e) => ((e.currentTarget as HTMLElement).style.borderColor = "#0A66C2")}
+                      onBlur={(e) => ((e.currentTarget as HTMLElement).style.borderColor = "rgba(0,0,0,0.15)")}
+                    />
+                  </div>
+                </div>
+
+                <div style={{ marginBottom: 4 }}>
+                  <label style={{fontSize: 13, fontWeight: 700, color: "rgba(0,0,0,0.70)", display: "block", marginBottom: 6}}>Chi tiết & Điều khoản đính kèm *</label>
+                  <label
+                    style={{
+                      border: "1.5px dashed rgba(0,0,0,0.18)",
+                      borderRadius: 6,
+                      padding: "20px 16px",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: 8,
+                      cursor: "pointer",
+                      background: "#FAFAF8",
+                      transition: "border-color 150ms, background 150ms",
+                      minHeight: 100,
+                    }}
+                    onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.borderColor = "#0A66C2")}
+                    onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.borderColor = "rgba(0,0,0,0.18)")}
+                  >
+                    <input type="file" style={{ display: "none" }} />
+                    <Paperclip size={22} color="rgba(0,0,0,0.40)" />
+                    <span style={{ fontSize: 14, fontWeight: 600, color: "rgba(0,0,0,0.60)" }}>Tải lên file tài liệu đính kèm</span>
+                    <span style={{ fontSize: 12, color: "rgba(0,0,0,0.40)" }}>PDF, DOC, DOCX, TXT (tối đa 10MB)</span>
+                  </label>
+                </div>
+              </div>
+            ) : (
+              <div style={{display:"flex",flexDirection:"column",gap:12,fontSize:15}}>
+                <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.65)",width:160,display:"inline-block"}}>Tiêu đề hợp đồng: </span>Hợp đồng thiết kế - {project.name}</div>
+                <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.65)",width:160,display:"inline-block"}}>Giá trị hợp đồng: </span>{contractDetailMember.price}</div>
+                <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.65)",width:160,display:"inline-block"}}>Chu kỳ: </span>Theo dự án (1 lần)</div>
+                <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.65)",width:160,display:"inline-block"}}>Ngày bắt đầu: </span>01/10/2026</div>
+                <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.65)",width:160,display:"inline-block"}}>Ngày kết thúc: </span>{contractDetailMember.dueDate ?? project.dueDate ?? "—"}</div>
+                <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.65)",width:160,display:"inline-block"}}>Chi tiết & Điều khoản: </span>Các bên tuân thủ đúng tiến độ đề ra...</div>
+                <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.65)",width:160,display:"inline-block"}}>Tài liệu điều khoản: </span><a href="#" style={{color:"#0A66C2",textDecoration:"none"}}>DieuKhoan_HopDong.pdf</a></div>
+                <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.65)",width:160,display:"inline-block"}}>Thông tin Freelancer: </span>{contractDetailMember.name} ({contractDetailMember.email})</div>
+                <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.65)",width:160,display:"inline-block"}}>Trạng thái hợp đồng: </span><span style={{padding:"2px 8px",borderRadius:4,background:"#F4F2EE",fontWeight:700,color:"#0A66C2"}}>{(contractDetailMember as any).contractStatus ?? "Đang làm"}</span></div>
+              </div>
+            )}
+            <div style={{display:"flex",gap:12,justifyContent:"flex-end",marginTop:24}}>
+              <button onClick={()=>{setContractDetailMember(null); setIsEditingContract(false);}} style={{padding:"9px 22px",borderRadius:99,border:"1px solid #ccc",background:"#fff",cursor:"pointer",fontWeight:600}}>Đóng</button>
+              {isEditingContract ? (
+                <button onClick={()=>{setIsEditingContract(false); setToast("Đã cập nhật hợp đồng");}} style={{padding:"9px 22px",borderRadius:99,border:"none",background:"#0A66C2",color:"#fff",cursor:"pointer",fontWeight:600}}>Lưu thay đổi</button>
+              ) : (
+                <button onClick={()=>setIsEditingContract(true)} style={{padding:"9px 22px",borderRadius:99,border:"none",background:"#0A66C2",color:"#fff",cursor:"pointer",fontWeight:600}}>Chỉnh sửa</button>
+              )}
             </div>
           </div>
         </div>
@@ -10799,6 +10361,21 @@ function EmployeeProjectDetailPage({
               >
                 Hủy hợp đồng
               </button>
+            </div>
+            
+            {/* Chi tiết hợp đồng chi tiết */}
+            <div style={{marginTop: 16, borderTop: "1px solid rgba(0,0,0,0.08)", paddingTop: 16}}>
+              <p style={{fontSize: 14, fontWeight: 700, color: "rgba(0,0,0,0.90)", marginBottom: 12}}>Chi tiết hợp đồng</p>
+              <div style={{display:"flex",flexDirection:"column",gap:10,fontSize:14}}>
+                <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.65)",width:160,display:"inline-block"}}>Tiêu đề hợp đồng: </span>Hợp đồng {project.name}</div>
+                <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.65)",width:160,display:"inline-block"}}>Giá trị hợp đồng: </span>{myContract?.price ?? "—"}</div>
+                <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.65)",width:160,display:"inline-block"}}>Chu kỳ: </span>{project.period}</div>
+                <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.65)",width:160,display:"inline-block"}}>Ngày bắt đầu: </span>01/10/2026</div>
+                <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.65)",width:160,display:"inline-block"}}>Ngày kết thúc: </span>{project.dueDate ?? "—"}</div>
+                <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.65)",width:160,display:"inline-block"}}>Chi tiết & Điều khoản: </span>Tuân thủ đúng yêu cầu chất lượng</div>
+                <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.65)",width:160,display:"inline-block"}}>Tài liệu điều khoản: </span><a href="#" style={{color:"#0A66C2",textDecoration:"none"}}>HopDong_{project.id}.pdf</a></div>
+                <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.65)",width:160,display:"inline-block"}}>Trạng thái hợp đồng: </span><span style={{padding:"2px 8px",borderRadius:4,background:"#F4F2EE",fontWeight:700,color:"#0A66C2"}}>{myContract?.status ?? "Đang làm"}</span></div>
+              </div>
             </div>
           </div>
         </div>
@@ -11155,6 +10732,7 @@ function CreateProjectPage({
     <div style={{background: "#F4F2EE", minHeight: "100%"}}>
       <div style={{background: "linear-gradient(135deg, #0A66C2 0%, #084FA0 100%)", padding: "32px 0"}}>
         <div style={{maxWidth: 1128, margin: "0 auto", padding: "0 24px"}}>
+          <HeaderBackButton onClick={onBack} />
           <h1 style={{color: "#fff", fontWeight: 700, fontSize: 28, margin: 0}}>Tạo dự án mới</h1>
           <p style={{color: "rgba(255,255,255,0.80)", marginTop: 8, fontSize: 15}}>Điền thông tin để tạo dự án và tìm kiếm freelancer phù hợp</p>
         </div>
@@ -11486,6 +11064,7 @@ function CreateContractPage({
     <div style={{background: "#F4F2EE", minHeight: "100%"}}>
       <div style={{background: "linear-gradient(135deg, #0A66C2 0%, #084FA0 100%)", padding: "32px 0"}}>
         <div style={{maxWidth: 1128, margin: "0 auto", padding: "0 24px"}}>
+          <HeaderBackButton onClick={onBack} />
           <h1 style={{color: "#fff", fontWeight: 700, fontSize: 28, margin: 0}}>Tạo hợp đồng mới</h1>
           <p style={{color: "rgba(255,255,255,0.80)", marginTop: 8, fontSize: 15}}>Điền thông tin để tạo hợp đồng với freelancer</p>
         </div>
@@ -12674,6 +12253,9 @@ function ContractDetailsPage({
 }) {
   const [applyOpen, setApplyOpen] = useState(false)
   const [toast, setToast] = useState<string | null>(null)
+  const [reportJob, setReportJob] = useState(false)
+  const [reportJobReason, setReportJobReason] = useState("")
+  const [reportJobImg, setReportJobImg] = useState("")
 
   const cardStyle: React.CSSProperties = {
     background: "#fff",
@@ -12992,6 +12574,7 @@ function ContractDetailsPage({
                     ((e.currentTarget as HTMLElement).style.color =
                       "rgba(0,0,0,0.50)")
                   }
+                  onClick={() => setReportJob(true)}
                 >
                   Báo cáo vi phạm
                 </button>
@@ -13329,6 +12912,26 @@ function ContractDetailsPage({
           </div>
         </div>
       </div>
+
+      {/* Report job modal */}
+      {reportJob && (
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.45)",zIndex:60,display:"flex",alignItems:"center",justifyContent:"center"}}>
+          <div style={{background:"#fff",borderRadius:16,padding:28,maxWidth:460,width:"100%",boxShadow:"0 8px 32px rgba(0,0,0,0.18)"}}>
+            <p style={{fontWeight:700,fontSize:18,marginBottom:16}}>Báo cáo việc làm</p>
+            <label style={{display:"block",fontWeight:600,fontSize:13,marginBottom:6}}>Lý do báo cáo <span style={{color:"#C00"}}>*</span></label>
+            <textarea value={reportJobReason} onChange={e=>setReportJobReason(e.target.value)} rows={4} style={{width:"100%",borderRadius:8,border:"1px solid #ccc",padding:"10px 12px",fontSize:14,resize:"vertical",boxSizing:"border-box"}} placeholder="Mô tả lý do..." />
+            <div style={{marginTop:14}}>
+              <label style={{display:"block",fontWeight:600,fontSize:13,marginBottom:6}}>Hình ảnh (tùy chọn)</label>
+              <input type="file" accept="image/*" onChange={e=>setReportJobImg(e.target.files?.[0]?.name??"")} />
+              {reportJobImg && <span style={{fontSize:12,color:"#555",marginLeft:8}}>{reportJobImg}</span>}
+            </div>
+            <div style={{display:"flex",gap:12,justifyContent:"flex-end",marginTop:20}}>
+              <button onClick={()=>setReportJob(false)} style={{padding:"9px 22px",borderRadius:99,border:"1px solid #ccc",background:"#fff",cursor:"pointer",fontWeight:600}}>Hủy</button>
+              <button disabled={!reportJobReason.trim()} onClick={()=>{setReportJobReason("");setReportJobImg("");setReportJob(false);setToast("Đã gửi báo cáo vi phạm.");}} style={{padding:"9px 22px",borderRadius:99,border:"none",background:reportJobReason.trim()?"#0A66C2":"#b0c4d8",color:"#fff",cursor:reportJobReason.trim()?"pointer":"not-allowed",fontWeight:600}}>Gửi báo cáo</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Apply modal */}
       {applyOpen && (
@@ -15566,11 +15169,10 @@ function GroupDetailPage({
   const [activeTab, setActiveTab] = useState("Thảo luận")
   const [joined, setJoined] = useState(false)
   const [postText, setPostText] = useState("")
-  const [showGroupMgmt, setShowGroupMgmt] = React.useState(false)
-  const [groupMgmtTab, setGroupMgmtTab] = React.useState<"members"|"posts"|"admins">("members")
+  const [adminTab, setAdminTab] = React.useState<"members"|"posts"|"admins"|null>(null)
   const [mgmtSearch, setMgmtSearch] = React.useState("")
   const [removeMemberTarget, setRemoveMemberTarget] = React.useState<string|null>(null)
-  const [removePostTarget, setRemovePostTarget] = React.useState<string|null>(null)
+  const [removePostTarget, setRemovePostTarget] = React.useState<number|null>(null)
 
   const groupPosts = GROUP_POSTS.filter((p) => p.groupId === group.id)
   const [likes, setLikes] = useState<Record<number, boolean>>({})
@@ -15585,84 +15187,6 @@ function GroupDetailPage({
   ]
 
   const admins = group.members.slice(0, 2)
-
-  if (showGroupMgmt) return (
-    <div style={{display:"flex",minHeight:"100vh",background:"#F3F2EF"}}>
-      <div style={{width:224,background:"#fff",borderRight:"1px solid #e0e0e0",padding:"24px 0",flexShrink:0}}>
-        <button onClick={()=>setShowGroupMgmt(false)} style={{display:"flex",alignItems:"center",gap:6,padding:"8px 20px",background:"none",border:"none",cursor:"pointer",color:"#0A66C2",fontWeight:600,fontSize:14,marginBottom:12}}>← Quay về nhóm</button>
-        <div style={{padding:"0 20px 16px",fontWeight:700,fontSize:15,color:"#111"}}>{group.name}</div>
-        {[{key:"members",label:"Quản lý thành viên"},{key:"posts",label:"Quản lý bài viết"},{key:"admins",label:"Quản trị viên"}].map(item=>(
-          <button key={item.key} onClick={()=>setGroupMgmtTab(item.key as any)} style={{display:"block",width:"100%",textAlign:"left",padding:"10px 20px",background:groupMgmtTab===item.key?"#EAF1FA":"none",color:groupMgmtTab===item.key?"#0A66C2":"#333",borderLeft:groupMgmtTab===item.key?"3px solid #0A66C2":"3px solid transparent",border:"none",cursor:"pointer",fontWeight:groupMgmtTab===item.key?700:400,fontSize:14}}>{item.label}</button>
-        ))}
-      </div>
-      <div style={{flex:1,padding:32}}>
-        {groupMgmtTab === "members" && (
-          <div>
-            <h2 style={{fontWeight:700,fontSize:20,marginBottom:16}}>Quản lý thành viên</h2>
-            <input value={mgmtSearch} onChange={e=>setMgmtSearch(e.target.value)} placeholder="Tìm thành viên..." style={{width:"100%",maxWidth:400,padding:"9px 14px",borderRadius:8,border:"1px solid #ccc",fontSize:14,marginBottom:16}} />
-            {(group.members||[]).filter((m:any)=>m.toLowerCase().includes(mgmtSearch.toLowerCase())).map((m:any)=>(
-              <div key={m} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"12px 0",borderBottom:"1px solid #f0f0f0"}}>
-                <span style={{fontWeight:600}}>{m}</span>
-                <button onClick={()=>setRemoveMemberTarget(m)} style={{padding:"6px 14px",borderRadius:99,border:"1px solid #C00",color:"#C00",background:"#fff",cursor:"pointer",fontSize:13}}>Xóa thành viên</button>
-              </div>
-            ))}
-          </div>
-        )}
-        {groupMgmtTab === "posts" && (
-          <div>
-            <h2 style={{fontWeight:700,fontSize:20,marginBottom:16}}>Quản lý bài viết</h2>
-            <input value={mgmtSearch} onChange={e=>setMgmtSearch(e.target.value)} placeholder="Tìm bài viết..." style={{width:"100%",maxWidth:400,padding:"9px 14px",borderRadius:8,border:"1px solid #ccc",fontSize:14,marginBottom:16}} />
-            {(GROUP_POSTS||[]).filter((p:any)=>p.groupId===group.id&&(p.content||"").toLowerCase().includes(mgmtSearch.toLowerCase())).map((p:any)=>(
-              <div key={p.id} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"12px 0",borderBottom:"1px solid #f0f0f0"}}>
-                <div>
-                  <span style={{fontWeight:600,marginRight:8}}>{p.author?.name}</span>
-                  <span style={{color:"#555",fontSize:13}}>{(p.content||"").substring(0,80)}</span>
-                  <span style={{color:"#aaa",fontSize:12,marginLeft:8}}>{p.timestamp}</span>
-                </div>
-                <button onClick={()=>setRemovePostTarget(p.id)} style={{padding:"6px 14px",borderRadius:99,border:"1px solid #C00",color:"#C00",background:"#fff",cursor:"pointer",fontSize:13}}>Xóa bài viết</button>
-              </div>
-            ))}
-          </div>
-        )}
-        {groupMgmtTab === "admins" && (
-          <div>
-            <h2 style={{fontWeight:700,fontSize:20,marginBottom:16}}>Quản trị viên</h2>
-            <input value={mgmtSearch} onChange={e=>setMgmtSearch(e.target.value)} placeholder="Tìm quản trị viên..." style={{width:"100%",maxWidth:400,padding:"9px 14px",borderRadius:8,border:"1px solid #ccc",fontSize:14,marginBottom:16}} />
-            {admins.map((m:any)=>(
-              <div key={m} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"12px 0",borderBottom:"1px solid #f0f0f0"}}>
-                <div><span style={{fontWeight:600}}>{m}</span><span style={{color:"#555",fontSize:13,marginLeft:8}}>Quản trị viên đầy đủ</span></div>
-              </div>
-            ))}
-            <p style={{color:"#888",fontSize:13,marginTop:16}}>Liên hệ Occupify để thay đổi quyền quản trị viên.</p>
-          </div>
-        )}
-      </div>
-      {removeMemberTarget && (
-        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.45)",zIndex:60,display:"flex",alignItems:"center",justifyContent:"center"}}>
-          <div style={{background:"#fff",borderRadius:12,padding:32,maxWidth:400,width:"100%",boxShadow:"0 8px 32px rgba(0,0,0,0.18)"}}>
-            <p style={{fontWeight:700,fontSize:18,marginBottom:12}}>Xác nhận xóa thành viên</p>
-            <p style={{color:"#555",marginBottom:24}}>Xác nhận xóa thành viên <b>{removeMemberTarget}</b>?</p>
-            <div style={{display:"flex",gap:12,justifyContent:"flex-end"}}>
-              <button onClick={()=>setRemoveMemberTarget(null)} style={{padding:"8px 20px",borderRadius:99,border:"1px solid #ccc",background:"#fff",cursor:"pointer"}}>Quay lại</button>
-              <button onClick={()=>setRemoveMemberTarget(null)} style={{padding:"8px 20px",borderRadius:99,border:"none",background:"#C00",color:"#fff",cursor:"pointer",fontWeight:600}}>Xóa thành viên</button>
-            </div>
-          </div>
-        </div>
-      )}
-      {removePostTarget && (
-        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.45)",zIndex:60,display:"flex",alignItems:"center",justifyContent:"center"}}>
-          <div style={{background:"#fff",borderRadius:12,padding:32,maxWidth:400,width:"100%",boxShadow:"0 8px 32px rgba(0,0,0,0.18)"}}>
-            <p style={{fontWeight:700,fontSize:18,marginBottom:12}}>Xác nhận xóa bài viết</p>
-            <p style={{color:"#555",marginBottom:24}}>Bạn có chắc muốn xóa bài viết này?</p>
-            <div style={{display:"flex",gap:12,justifyContent:"flex-end"}}>
-              <button onClick={()=>setRemovePostTarget(null)} style={{padding:"8px 20px",borderRadius:99,border:"1px solid #ccc",background:"#fff",cursor:"pointer"}}>Quay lại</button>
-              <button onClick={()=>setRemovePostTarget(null)} style={{padding:"8px 20px",borderRadius:99,border:"none",background:"#C00",color:"#fff",cursor:"pointer",fontWeight:600}}>Xóa bài viết</button>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
 
   return (
     <div style={{ background: "#F4F2EE", minHeight: "100%" }}>
@@ -15825,9 +15349,7 @@ function GroupDetailPage({
               >
                 {joined ? "Đã tham gia" : "Tham gia nhóm"}
               </button>
-              {isManager && (
-                <button onClick={()=>setShowGroupMgmt(true)} style={{padding:"7px 16px",borderRadius:9999,border:"1px solid rgba(0,0,0,0.30)",background:"none",color:"rgba(0,0,0,0.65)",cursor:"pointer",fontWeight:600,fontSize:14}}>Quản lý nhóm</button>
-              )}
+              
             </div>
           </div>
 
@@ -15848,7 +15370,7 @@ function GroupDetailPage({
             {GROUP_DETAIL_TABS.map((tab) => (
               <button
                 key={tab}
-                onClick={() => setActiveTab(tab)}
+                onClick={() => { setActiveTab(tab); setAdminTab(null); }}
                 style={{
                   padding: "10px 16px",
                   background: "none",
@@ -15884,18 +15406,63 @@ function GroupDetailPage({
           </div>
         </div>
 
-        {/* 2-col layout */}
+        {/* Dynamic Layout */}
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "1fr 300px",
+            gridTemplateColumns: isManager ? "224px 1fr 300px" : "1fr 300px",
             gap: 20,
             alignItems: "start",
             paddingBottom: 48,
           }}
         >
-          {/* Main feed */}
-          <div>
+          {isManager && (
+            <div style={{background:"#fff",borderRadius:8,boxShadow:"0 0 0 1px rgba(0,0,0,0.08)",padding:"16px 0",position:"sticky",top:20}}>
+              <h3 style={{padding:"0 16px 12px",fontSize:15,fontWeight:700,borderBottom:"1px solid rgba(0,0,0,0.08)",marginBottom:8,color:"rgba(0,0,0,0.90)",margin:0}}>Quản lý nhóm</h3>
+              {[{key:"members",label:"Quản lý thành viên"},{key:"posts",label:"Quản lý bài viết"},{key:"admins",label:"Quản trị viên"}].map(item=>(
+                <button key={item.key} onClick={() => {setAdminTab(item.key as any); setMgmtSearch("");}} style={{display:"block",width:"100%",textAlign:"left",padding:"10px 16px",background:adminTab===item.key?"#EAF1FA":"none",color:adminTab===item.key?"#0A66C2":"#555",borderLeft:adminTab===item.key?"3px solid #0A66C2":"3px solid transparent",borderTop:"none",borderRight:"none",borderBottom:"none",cursor:"pointer",fontWeight:adminTab===item.key?700:600,fontSize:14}}>{item.label}</button>
+              ))}
+            </div>
+          )}
+
+          {/* Middle Column */}
+          <div style={{minWidth: 0}}>
+            {adminTab === "members" ? (
+              <div style={{background:"#fff",borderRadius:8,boxShadow:"0 0 0 1px rgba(0,0,0,0.08)",padding:24}}>
+                <h2 style={{fontWeight:700,fontSize:20,marginBottom:16,marginTop:0}}>Quản lý thành viên</h2>
+                <input value={mgmtSearch} onChange={e=>setMgmtSearch(e.target.value)} placeholder="Tìm thành viên..." style={{width:"100%",padding:"10px 14px",borderRadius:8,border:"1px solid #ccc",fontSize:14,marginBottom:16,boxSizing:"border-box",outline:"none"}} onFocus={e=>e.currentTarget.style.borderColor="#0A66C2"} onBlur={e=>e.currentTarget.style.borderColor="#ccc"} />
+                {(group.members||[]).filter((m:any)=>m.toLowerCase().includes(mgmtSearch.toLowerCase())).map((m:any)=>(
+                  <div key={m} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"12px 0",borderBottom:"1px solid rgba(0,0,0,0.08)"}}>
+                    <span style={{fontWeight:600,fontSize:14}}>{m}</span>
+                    <button onClick={()=>setRemoveMemberTarget(m)} style={{padding:"6px 14px",borderRadius:99,border:"1px solid #C03A2B",color:"#C03A2B",background:"#fff",cursor:"pointer",fontSize:13,fontWeight:600}}>Xóa</button>
+                  </div>
+                ))}
+              </div>
+            ) : adminTab === "posts" ? (
+              <div>
+                <div style={{background:"#fff",borderRadius:8,boxShadow:"0 0 0 1px rgba(0,0,0,0.08)",padding:"16px 20px",marginBottom:16}}>
+                  <h2 style={{fontWeight:700,fontSize:18,marginBottom:12,marginTop:0}}>Quản lý bài viết</h2>
+                  <input value={mgmtSearch} onChange={e=>setMgmtSearch(e.target.value)} placeholder="Tìm kiếm bài viết..." style={{width:"100%",padding:"10px 14px",borderRadius:8,border:"1px solid rgba(0,0,0,0.15)",fontSize:14,boxSizing:"border-box",outline:"none"}} onFocus={e=>e.currentTarget.style.borderColor="#0A66C2"} onBlur={e=>e.currentTarget.style.borderColor="rgba(0,0,0,0.15)"} />
+                </div>
+                {(GROUP_POSTS||[]).filter((p:any)=>p.groupId===group.id&&(p.content||"").toLowerCase().includes(mgmtSearch.toLowerCase())).map((p:any)=>(
+                  <div key={p.id} style={{marginBottom:10}}>
+                    <FeedPostCard post={p} onLike={(id) => setLikes((prev) => ({ ...prev, [id]: !prev[id] }))} onDelete={(id) => setRemovePostTarget(id)} />
+                  </div>
+                ))}
+              </div>
+            ) : adminTab === "admins" ? (
+              <div style={{background:"#fff",borderRadius:8,boxShadow:"0 0 0 1px rgba(0,0,0,0.08)",padding:24}}>
+                <h2 style={{fontWeight:700,fontSize:20,marginBottom:16,marginTop:0}}>Quản trị viên</h2>
+                <input value={mgmtSearch} onChange={e=>setMgmtSearch(e.target.value)} placeholder="Tìm quản trị viên..." style={{width:"100%",padding:"10px 14px",borderRadius:8,border:"1px solid #ccc",fontSize:14,marginBottom:16,boxSizing:"border-box",outline:"none"}} onFocus={e=>e.currentTarget.style.borderColor="#0A66C2"} onBlur={e=>e.currentTarget.style.borderColor="#ccc"} />
+                {admins.map((m:any)=>(
+                  <div key={m} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"12px 0",borderBottom:"1px solid rgba(0,0,0,0.08)"}}>
+                    <div><span style={{fontWeight:600,fontSize:14}}>{m}</span><span style={{color:"rgba(0,0,0,0.60)",fontSize:13,marginLeft:12}}>Quản trị viên đầy đủ</span></div>
+                  </div>
+                ))}
+                <p style={{color:"rgba(0,0,0,0.55)",fontSize:13,marginTop:16}}>Liên hệ Occupify để thay đổi quyền quản trị viên.</p>
+              </div>
+            ) : (
+              <>
             {(activeTab === "Thảo luận" || activeTab === "Bài viết") && (
               <>
                 {/* Composer */}
@@ -16127,6 +15694,8 @@ function GroupDetailPage({
                 </div>
               </div>
             )}
+            </>
+            )}
 
           </div>
 
@@ -16248,6 +15817,33 @@ function GroupDetailPage({
           </div>
         </div>
       </div>
+
+      {removePostTarget !== null && (
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.45)",zIndex:60,display:"flex",alignItems:"center",justifyContent:"center"}}>
+          <div style={{background:"#fff",borderRadius:12,padding:32,maxWidth:400,width:"100%",boxShadow:"0 8px 32px rgba(0,0,0,0.18)"}}>
+            <p style={{fontWeight:700,fontSize:18,marginBottom:12}}>Xác nhận xóa bài viết</p>
+            <p style={{color:"#555",marginBottom:24,fontSize:14}}>Bạn có chắc chắn muốn xóa bài viết này không? Hành động này không thể hoàn tác.</p>
+            <div style={{display:"flex",gap:12,justifyContent:"flex-end"}}>
+              <button onClick={()=>setRemovePostTarget(null)} style={{padding:"8px 20px",borderRadius:99,border:"1px solid #ccc",background:"#fff",cursor:"pointer",fontWeight:600}}>Hủy</button>
+              <button onClick={()=>{setRemovePostTarget(null);}} style={{padding:"8px 20px",borderRadius:99,border:"none",background:"#C03A2B",color:"#fff",cursor:"pointer",fontWeight:600}}>Xóa bài viết</button>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {removeMemberTarget && (
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.45)",zIndex:60,display:"flex",alignItems:"center",justifyContent:"center"}}>
+          <div style={{background:"#fff",borderRadius:12,padding:32,maxWidth:400,width:"100%",boxShadow:"0 8px 32px rgba(0,0,0,0.18)"}}>
+            <p style={{fontWeight:700,fontSize:18,marginBottom:12}}>Xác nhận xóa thành viên</p>
+            <p style={{color:"#555",marginBottom:24,fontSize:14}}>Xác nhận xóa thành viên <b>{removeMemberTarget}</b>?</p>
+            <div style={{display:"flex",gap:12,justifyContent:"flex-end"}}>
+              <button onClick={()=>setRemoveMemberTarget(null)} style={{padding:"8px 20px",borderRadius:99,border:"1px solid #ccc",background:"#fff",cursor:"pointer",fontWeight:600}}>Hủy</button>
+              <button onClick={()=>setRemoveMemberTarget(null)} style={{padding:"8px 20px",borderRadius:99,border:"none",background:"#C03A2B",color:"#fff",cursor:"pointer",fontWeight:600}}>Xóa thành viên</button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   )
 }
@@ -16459,7 +16055,7 @@ function MyProfilePage({
         </div>
         <div style={{ padding: "0 28px 24px" }}>
           {/* Avatar */}
-          <div style={{ marginTop: -52, marginBottom: 12 }}>
+          <div style={{ marginTop: -56, marginBottom: 12 }}>
             <div
               style={{
                 width: 104,
@@ -16484,7 +16080,9 @@ function MyProfilePage({
                 .join("")}
             </div>
           </div>
-          {/* Name + gmail */}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+            <div>
+              {/* Name + gmail */}
           <div
             style={{
               fontSize: 26,
@@ -16521,6 +16119,49 @@ function MyProfilePage({
             }}
           >
             {p.connections} kết nối
+          </div>
+            </div>
+            
+            {!isOwnProfile && (
+              <div style={{display:"flex",gap:10,flexWrap:"wrap", alignItems: "center", marginTop: 4}}>
+                <button
+                  style={{
+                    background: connectedSet.has(p.name) ? "#E5F6E8" : "#0A66C2",
+                    border: connectedSet.has(p.name) ? "1px solid rgba(0,0,0,0.15)" : "none",
+                    borderRadius: 9999,
+                    color: connectedSet.has(p.name) ? "#057642" : "#fff",
+                    padding: "8px 18px",
+                    fontWeight: 600,
+                    fontSize: 14,
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                    transition: "all 150ms ease"
+                  }}
+                  onClick={() => setConnectedSet(prev => { const n = new Set(prev); if(n.has(p.name)) n.delete(p.name); else n.add(p.name); return n; })}
+                  onMouseEnter={(e) => {
+                    if (!connectedSet.has(p.name))
+                      (e.currentTarget as HTMLElement).style.background = "#084FA0"
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!connectedSet.has(p.name))
+                      (e.currentTarget as HTMLElement).style.background = "#0A66C2"
+                    else
+                      (e.currentTarget as HTMLElement).style.background = "#E5F6E8"
+                  }}
+                >
+                  {connectedSet.has(p.name) ? <CheckCircle size={16} weight="fill" /> : <UserPlus size={16} />}
+                  {connectedSet.has(p.name) ? "Đã kết nối" : "Kết nối"}
+                </button>
+                <button 
+                  onClick={()=>setReportProfile(true)} 
+                  style={{padding:"8px 18px",borderRadius:99,border:"1px solid rgba(0,0,0,0.30)",background:"#fff",color:"rgba(0,0,0,0.65)",cursor:"pointer",fontWeight:600,fontSize:14}}
+                >
+                  Báo cáo
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Stats row */}
@@ -16588,11 +16229,7 @@ function MyProfilePage({
               </div>
             ))}
           </div>
-          {!isOwnProfile && (
-            <div style={{display:"flex",gap:10,marginTop:16,flexWrap:"wrap"}}>
-              <button onClick={()=>setReportProfile(true)} style={{padding:"8px 18px",borderRadius:99,border:"1px solid rgba(0,0,0,0.30)",background:"#fff",color:"rgba(0,0,0,0.65)",cursor:"pointer",fontWeight:600,fontSize:14}}>Báo cáo</button>
-            </div>
-          )}
+
         </div>
       </div>
 
