@@ -360,12 +360,12 @@ function HeaderBackButton({ onClick }: { onClick: () => void }) {
         transition: "background 150ms ease",
       }}
       onMouseEnter={(e) =>
-        ((e.currentTarget as HTMLElement).style.background =
-          "rgba(255,255,255,0.25)")
+      ((e.currentTarget as HTMLElement).style.background =
+        "rgba(255,255,255,0.25)")
       }
       onMouseLeave={(e) =>
-        ((e.currentTarget as HTMLElement).style.background =
-          "rgba(255,255,255,0.15)")
+      ((e.currentTarget as HTMLElement).style.background =
+        "rgba(255,255,255,0.15)")
       }
     >
       <ArrowRight size={13} style={{ transform: "rotate(180deg)" }} />
@@ -550,7 +550,7 @@ function Navbar({
                       "#F4F2EE"
                 }}
                 onMouseLeave={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background = "none"
+                  ; (e.currentTarget as HTMLElement).style.background = "none"
                 }}
               >
                 {badge && (
@@ -626,7 +626,7 @@ function Navbar({
                 (e.currentTarget as HTMLElement).style.background = "#F4F2EE"
             }}
             onMouseLeave={(e) => {
-              ;(e.currentTarget as HTMLElement).style.background = "none"
+              ; (e.currentTarget as HTMLElement).style.background = "none"
             }}
           >
             <Avatar name={ME.name} size={22} />
@@ -748,8 +748,8 @@ function Navbar({
                     transition: "background 150ms",
                   }}
                   onMouseEnter={(e) =>
-                    ((e.currentTarget as HTMLElement).style.background =
-                      "#F4F2EE")
+                  ((e.currentTarget as HTMLElement).style.background =
+                    "#F4F2EE")
                   }
                   onMouseLeave={(e) =>
                     ((e.currentTarget as HTMLElement).style.background = "none")
@@ -939,7 +939,7 @@ function ProfileCard({
               transition: "color 150ms ease",
             }}
           >
-            Lịch sử thu chi / Dòng tiền
+            Lịch sử thu chi
           </span>
         </div>
       </div>
@@ -982,10 +982,10 @@ function CreatePostCard({
             transition: "border-color 150ms ease, background 150ms ease",
           }}
           onMouseEnter={(e) => {
-            ;(e.currentTarget as HTMLElement).style.background = "#F4F2EE"
+            ; (e.currentTarget as HTMLElement).style.background = "#F4F2EE"
           }}
           onMouseLeave={(e) => {
-            ;(e.currentTarget as HTMLElement).style.background = "#fff"
+            ; (e.currentTarget as HTMLElement).style.background = "#fff"
           }}
         >
           Bắt đầu đăng bài...
@@ -1009,7 +1009,7 @@ function CreatePostCard({
             Icon: UsersThree,
             label: "Tạo nhóm",
             color: "#0A66C2",
-            onClick: onCreateGroup ?? (() => {}),
+            onClick: onCreateGroup ?? (() => { }),
           },
         ].map(({ Icon, label, color, onClick }) => (
           <button
@@ -1031,12 +1031,12 @@ function CreatePostCard({
               transition: "background 150ms ease, color 150ms ease",
             }}
             onMouseEnter={(e) => {
-              ;(e.currentTarget as HTMLElement).style.background = "#F4F2EE"
-              ;(e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.90)"
+              ; (e.currentTarget as HTMLElement).style.background = "#F4F2EE"
+                ; (e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.90)"
             }}
             onMouseLeave={(e) => {
-              ;(e.currentTarget as HTMLElement).style.background = "none"
-              ;(e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.60)"
+              ; (e.currentTarget as HTMLElement).style.background = "none"
+                ; (e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.60)"
             }}
           >
             <Icon size={18} color={color} />
@@ -1205,6 +1205,7 @@ function FeedPostCard({
     ? TECH_GROUPS.find((g) => g.id === post.groupId)
     : null
   const [joined, setJoined] = useState(false)
+  const [connected, setConnected] = useState(false)
   const [dotMenuOpen, setDotMenuOpen] = React.useState(false)
   const [reportPost, setReportPost] = React.useState(false)
   const [reportReason, setReportReason] = React.useState("")
@@ -1243,7 +1244,7 @@ function FeedPostCard({
               >
                 <GroupBadge
                   groupId={group.id}
-                  onOpenGroup={onOpenGroup ?? (() => {})}
+                  onOpenGroup={onOpenGroup ?? (() => { })}
                 />
                 <span style={{ color: "rgba(0,0,0,0.40)", fontSize: 12 }}>
                   ·
@@ -1251,17 +1252,25 @@ function FeedPostCard({
                 <button
                   onClick={() => setJoined((v) => !v)}
                   style={{
-                    background: "none",
-                    border: "none",
+                    background: joined ? "#F4F2EE" : "#EAF1FA",
+                    border: joined ? "1px solid rgba(0,0,0,0.15)" : "1px solid #0A66C2",
+                    borderRadius: 9999,
                     cursor: "pointer",
                     fontSize: 12,
                     fontWeight: 700,
-                    color: joined ? "rgba(0,0,0,0.55)" : "#0A66C2",
+                    color: joined ? "rgba(0,0,0,0.60)" : "#0A66C2",
                     fontFamily: "inherit",
-                    padding: 0,
+                    padding: "2px 10px",
+                    transition: "all 150ms ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!joined) (e.currentTarget as HTMLElement).style.background = "#D2E4F8"
+                  }}
+                  onMouseLeave={(e) => {
+                    ; (e.currentTarget as HTMLElement).style.background = joined ? "#F4F2EE" : "#EAF1FA"
                   }}
                 >
-                  {joined ? "Đã tham gia" : "Tham gia"}
+                  {joined ? "Đã tham gia" : "Tham gia nhóm"}
                 </button>
               </div>
             )}
@@ -1284,8 +1293,8 @@ function FeedPostCard({
                   ((e.currentTarget as HTMLElement).style.color = "#0A66C2")
                 }
                 onMouseLeave={(e) =>
-                  ((e.currentTarget as HTMLElement).style.color =
-                    "rgba(0,0,0,0.90)")
+                ((e.currentTarget as HTMLElement).style.color =
+                  "rgba(0,0,0,0.90)")
                 }
               >
                 {post.author}
@@ -1325,32 +1334,45 @@ function FeedPostCard({
         >
           {!group && (
             <button
+              onClick={() => setConnected((v) => !v)}
               style={{
-                display: "flex",
+                display: "inline-flex",
                 alignItems: "center",
-                gap: 6,
-                border: "1px solid #0A66C2",
+                gap: 5,
+                border: `1px solid ${connected ? "#057642" : "#0A66C2"}`,
                 borderRadius: 9999,
                 padding: "5px 14px",
-                background: "none",
-                color: "#0A66C2",
+                background: connected ? "#E5F6E8" : "none",
+                color: connected ? "#057642" : "#0A66C2",
                 fontSize: 13,
                 fontWeight: 700,
                 cursor: "pointer",
                 fontFamily: "inherit",
+                transition: "all 150ms ease",
               }}
-              onMouseEnter={(e) =>
-                ((e.currentTarget as HTMLElement).style.background = "#EAF1FA")
-              }
-              onMouseLeave={(e) =>
-                ((e.currentTarget as HTMLElement).style.background = "none")
-              }
+              onMouseEnter={(e) => {
+                if (!connected)
+                  (e.currentTarget as HTMLElement).style.background = "#EAF1FA"
+              }}
+              onMouseLeave={(e) => {
+                if (!connected)
+                  (e.currentTarget as HTMLElement).style.background = "none"
+              }}
             >
-              <Plus size={14} weight="bold" />
-              Kết nối
+              {connected ? (
+                <>
+                  <CheckCircle size={14} weight="fill" />
+                  Đã kết nối
+                </>
+              ) : (
+                <>
+                  <UserPlus size={14} />
+                  Kết nối
+                </>
+              )}
             </button>
           )}
-          <div style={{position: "relative"}}>
+          <div style={{ position: "relative" }}>
             <button
               onClick={() => setDotMenuOpen(v => !v)}
               style={{
@@ -1366,23 +1388,23 @@ function FeedPostCard({
               <DotsThreeVertical size={20} />
             </button>
             {dotMenuOpen && (
-              <div style={{position:"absolute",top:"100%",right:0,zIndex:10,background:"#fff",boxShadow:"0 4px 16px rgba(0,0,0,0.13)",borderRadius:8,minWidth:140,padding:"4px 0"}}>
-                <button onClick={()=>{setDotMenuOpen(false);setReportPost(true);}} style={{display:"block",width:"100%",textAlign:"left",padding:"10px 16px",background:"none",border:"none",cursor:"pointer",fontSize:14,color:"#333"}}>Báo cáo</button>
-                {onDelete && <button onClick={()=>{setDotMenuOpen(false);onDelete(post.id);}} style={{display:"block",width:"100%",textAlign:"left",padding:"10px 16px",background:"none",border:"none",cursor:"pointer",fontSize:14,color:"#C03A2B",fontWeight:600}}>Xóa bài viết</button>}
+              <div style={{ position: "absolute", top: "100%", right: 0, zIndex: 10, background: "#fff", boxShadow: "0 4px 16px rgba(0,0,0,0.13)", borderRadius: 8, minWidth: 140, padding: "4px 0" }}>
+                <button onClick={() => { setDotMenuOpen(false); setReportPost(true); }} style={{ display: "block", width: "100%", textAlign: "left", padding: "10px 16px", background: "none", border: "none", cursor: "pointer", fontSize: 14, color: "#333" }}>Báo cáo</button>
+                {onDelete && <button onClick={() => { setDotMenuOpen(false); onDelete(post.id); }} style={{ display: "block", width: "100%", textAlign: "left", padding: "10px 16px", background: "none", border: "none", cursor: "pointer", fontSize: 14, color: "#C03A2B", fontWeight: 600 }}>Xóa bài viết</button>}
               </div>
             )}
           </div>
         </div>
       </div>
       {reportPost && (
-        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.45)",zIndex:50,display:"flex",alignItems:"center",justifyContent:"center"}} onClick={()=>setReportPost(false)}>
-          <div style={{background:"#fff",borderRadius:16,padding:28,maxWidth:460,width:"100%",boxShadow:"0 8px 32px rgba(0,0,0,0.18)"}} onClick={e=>e.stopPropagation()}>
-            <p style={{fontWeight:700,fontSize:18,marginBottom:16}}>Báo cáo bài viết</p>
-            <label style={{display:"block",fontWeight:600,fontSize:13,marginBottom:6}}>Lý do báo cáo <span style={{color:"#C00"}}>*</span></label>
-            <textarea value={reportReason} onChange={e=>setReportReason(e.target.value)} rows={4} style={{width:"100%",borderRadius:8,border:"1px solid #ccc",padding:"10px 12px",fontSize:14,resize:"vertical",boxSizing:"border-box"}} placeholder="Mô tả lý do..." />
-            <div style={{display:"flex",gap:12,justifyContent:"flex-end",marginTop:20}}>
-              <button onClick={()=>setReportPost(false)} style={{padding:"9px 22px",borderRadius:99,border:"1px solid #ccc",background:"#fff",cursor:"pointer",fontWeight:600}}>Hủy</button>
-              <button disabled={!reportReason.trim()} onClick={()=>{setReportReason("");setReportPost(false);}} style={{padding:"9px 22px",borderRadius:99,border:"none",background:reportReason.trim()?"#0A66C2":"#b0c4d8",color:"#fff",cursor:reportReason.trim()?"pointer":"not-allowed",fontWeight:600}}>Gửi báo cáo</button>
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.45)", zIndex: 50, display: "flex", alignItems: "center", justifyContent: "center" }} onClick={() => setReportPost(false)}>
+          <div style={{ background: "#fff", borderRadius: 16, padding: 28, maxWidth: 460, width: "100%", boxShadow: "0 8px 32px rgba(0,0,0,0.18)" }} onClick={e => e.stopPropagation()}>
+            <p style={{ fontWeight: 700, fontSize: 18, marginBottom: 16 }}>Báo cáo bài viết</p>
+            <label style={{ display: "block", fontWeight: 600, fontSize: 13, marginBottom: 6 }}>Lý do báo cáo <span style={{ color: "#C03A2B" }}>*</span></label>
+            <textarea value={reportReason} onChange={e => setReportReason(e.target.value)} rows={4} style={{ width: "100%", borderRadius: 8, border: "1px solid #ccc", padding: "10px 12px", fontSize: 14, resize: "vertical", boxSizing: "border-box" }} placeholder="Mô tả lý do..." />
+            <div style={{ display: "flex", gap: 12, justifyContent: "flex-end", marginTop: 20 }}>
+              <button onClick={() => setReportPost(false)} style={{ padding: "9px 22px", borderRadius: 9999, border: "1px solid rgba(0,0,0,0.20)", background: "#fff", color: "rgba(0,0,0,0.70)", cursor: "pointer", fontWeight: 600, fontFamily: "inherit" }}>Hủy</button>
+              <button disabled={!reportReason.trim()} onClick={() => { setReportReason(""); setReportPost(false); }} style={{ padding: "9px 22px", borderRadius: 9999, border: "none", background: reportReason.trim() ? "#0A66C2" : "#b0c4d8", color: "#fff", cursor: reportReason.trim() ? "pointer" : "not-allowed", fontWeight: 600, fontFamily: "inherit" }}>Gửi báo cáo</button>
             </div>
           </div>
         </div>
@@ -1487,13 +1509,13 @@ function FeedPostCard({
             label: "Bình luận",
             Icon: ChatCircle,
             active: false,
-            onClick: () => {},
+            onClick: () => { },
           },
           {
             label: "Đăng lại",
             Icon: ArrowsClockwise,
             active: false,
-            onClick: () => {},
+            onClick: () => { },
           },
         ].map(({ label, Icon, active, onClick }) => (
           <button
@@ -1517,10 +1539,10 @@ function FeedPostCard({
               transition: "background 150ms ease, color 150ms ease",
             }}
             onMouseEnter={(e) => {
-              ;(e.currentTarget as HTMLElement).style.background = "#EAF1FA"
+              ; (e.currentTarget as HTMLElement).style.background = "#EAF1FA"
             }}
             onMouseLeave={(e) => {
-              ;(e.currentTarget as HTMLElement).style.background = "none"
+              ; (e.currentTarget as HTMLElement).style.background = "none"
             }}
           >
             <Icon size={18} weight={active ? "fill" : "regular"} />
@@ -1746,8 +1768,8 @@ function FooterLinks() {
               ((e.currentTarget as HTMLElement).style.color = "#0A66C2")
             }
             onMouseLeave={(e) =>
-              ((e.currentTarget as HTMLElement).style.color =
-                "rgba(0,0,0,0.45)")
+            ((e.currentTarget as HTMLElement).style.color =
+              "rgba(0,0,0,0.45)")
             }
           >
             {l}
@@ -2037,10 +2059,10 @@ function HomePage({
       prev.map((p) =>
         p.id === id
           ? {
-              ...p,
-              liked: !p.liked,
-              likes: p.liked ? p.likes - 1 : p.likes + 1,
-            }
+            ...p,
+            liked: !p.liked,
+            likes: p.liked ? p.likes - 1 : p.likes + 1,
+          }
           : p,
       ),
     )
@@ -2268,8 +2290,8 @@ function MiniProfileCard({
         transition: "box-shadow 150ms ease",
       }}
       onMouseEnter={(e) =>
-        ((e.currentTarget as HTMLElement).style.boxShadow =
-          "0 4px 12px rgba(0,0,0,0.10)")
+      ((e.currentTarget as HTMLElement).style.boxShadow =
+        "0 4px 12px rgba(0,0,0,0.10)")
       }
       onMouseLeave={(e) =>
         ((e.currentTarget as HTMLElement).style.boxShadow = "none")
@@ -2371,9 +2393,9 @@ function MiniProfileCard({
           onClick={onConnect}
           style={{
             borderRadius: 9999,
-            border: connected ? "none" : "1px solid #0A66C2",
-            background: connected ? "#0A66C2" : "transparent",
-            color: connected ? "#fff" : "#0A66C2",
+            border: `1px solid ${connected ? "#057642" : "#0A66C2"}`,
+            background: connected ? "#E5F6E8" : "transparent",
+            color: connected ? "#057642" : "#0A66C2",
             padding: "6px 20px",
             fontSize: 13,
             fontWeight: 700,
@@ -2382,7 +2404,7 @@ function MiniProfileCard({
             display: "flex",
             alignItems: "center",
             gap: 5,
-            transition: "background 150ms ease",
+            transition: "all 150ms ease",
           }}
           onMouseEnter={(e) => {
             if (!connected)
@@ -2395,7 +2417,7 @@ function MiniProfileCard({
         >
           {connected ? (
             <>
-              <SealCheck size={14} weight="fill" /> Đã gửi
+              <CheckCircle size={14} weight="fill" /> Đã gửi
             </>
           ) : (
             <>
@@ -2497,12 +2519,12 @@ function RecommendSection({
           transition: "background 150ms ease, color 150ms ease",
         }}
         onMouseEnter={(e) => {
-          ;(e.currentTarget as HTMLElement).style.background = "#F4F2EE"
-          ;(e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.90)"
+          ; (e.currentTarget as HTMLElement).style.background = "#F4F2EE"
+            ; (e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.90)"
         }}
         onMouseLeave={(e) => {
-          ;(e.currentTarget as HTMLElement).style.background = "none"
-          ;(e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.60)"
+          ; (e.currentTarget as HTMLElement).style.background = "none"
+            ; (e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.60)"
         }}
       >
         {showAll ? "Ẩn bớt" : "Xem thêm gợi ý"}
@@ -2577,8 +2599,8 @@ function InvitationsCard({
             fontFamily: "inherit",
           }}
           onMouseEnter={(e) =>
-            ((e.currentTarget as HTMLElement).style.textDecoration =
-              "underline")
+          ((e.currentTarget as HTMLElement).style.textDecoration =
+            "underline")
           }
           onMouseLeave={(e) =>
             ((e.currentTarget as HTMLElement).style.textDecoration = "none")
@@ -2624,8 +2646,8 @@ function InvitationsCard({
                     ((e.currentTarget as HTMLElement).style.color = "#0A66C2")
                   }
                   onMouseLeave={(e) =>
-                    ((e.currentTarget as HTMLElement).style.color =
-                      "rgba(0,0,0,0.90)")
+                  ((e.currentTarget as HTMLElement).style.color =
+                    "rgba(0,0,0,0.90)")
                   }
                 >
                   {inv.name}
@@ -2676,16 +2698,16 @@ function InvitationsCard({
                     transition: "background 150ms ease, color 150ms ease",
                   }}
                   onMouseEnter={(e) => {
-                    ;(e.currentTarget as HTMLElement).style.background =
+                    ; (e.currentTarget as HTMLElement).style.background =
                       "#F4F2EE"
-                    ;(e.currentTarget as HTMLElement).style.color =
-                      "rgba(0,0,0,0.90)"
+                      ; (e.currentTarget as HTMLElement).style.color =
+                        "rgba(0,0,0,0.90)"
                   }}
                   onMouseLeave={(e) => {
-                    ;(e.currentTarget as HTMLElement).style.background =
+                    ; (e.currentTarget as HTMLElement).style.background =
                       "transparent"
-                    ;(e.currentTarget as HTMLElement).style.color =
-                      "rgba(0,0,0,0.60)"
+                      ; (e.currentTarget as HTMLElement).style.color =
+                        "rgba(0,0,0,0.60)"
                   }}
                 >
                   Bỏ qua
@@ -2705,12 +2727,12 @@ function InvitationsCard({
                     transition: "background 150ms ease",
                   }}
                   onMouseEnter={(e) =>
-                    ((e.currentTarget as HTMLElement).style.background =
-                      "#084FA0")
+                  ((e.currentTarget as HTMLElement).style.background =
+                    "#084FA0")
                   }
                   onMouseLeave={(e) =>
-                    ((e.currentTarget as HTMLElement).style.background =
-                      "#0A66C2")
+                  ((e.currentTarget as HTMLElement).style.background =
+                    "#0A66C2")
                   }
                 >
                   Chấp nhận
@@ -2743,12 +2765,12 @@ function InvitationsCard({
             transition: "background 150ms ease, color 150ms ease",
           }}
           onMouseEnter={(e) => {
-            ;(e.currentTarget as HTMLElement).style.background = "#F4F2EE"
-            ;(e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.90)"
+            ; (e.currentTarget as HTMLElement).style.background = "#F4F2EE"
+              ; (e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.90)"
           }}
           onMouseLeave={(e) => {
-            ;(e.currentTarget as HTMLElement).style.background = "none"
-            ;(e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.60)"
+            ; (e.currentTarget as HTMLElement).style.background = "none"
+              ; (e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.60)"
           }}
         >
           {expanded ? "Ẩn bớt" : `Xem thêm ${invitations.length - 2} lời mời`}
@@ -2931,8 +2953,8 @@ function NetworkSidebar({
               ((e.currentTarget as HTMLElement).style.color = "#0A66C2")
             }
             onMouseLeave={(e) =>
-              ((e.currentTarget as HTMLElement).style.color =
-                "rgba(0,0,0,0.45)")
+            ((e.currentTarget as HTMLElement).style.color =
+              "rgba(0,0,0,0.45)")
             }
           >
             {l}
@@ -3281,28 +3303,42 @@ function NetworkConnectionsSection({
                 style={{
                   padding: "6px 16px",
                   borderRadius: 9999,
-                  border: `1px solid ${
-                    isConn ? "rgba(0,0,0,0.25)" : "#0A66C2"
-                  }`,
-                  background: isConn ? "none" : "none",
-                  color: isConn ? "rgba(0,0,0,0.55)" : "#0A66C2",
+                  border: isConn
+                    ? "1px solid #057642"
+                    : "1px solid #0A66C2",
+                  background: isConn ? "#E5F6E8" : "none",
+                  color: isConn ? "#057642" : "#0A66C2",
                   fontSize: 13,
                   fontWeight: 700,
                   cursor: "pointer",
                   fontFamily: "inherit",
                   flexShrink: 0,
-                  transition: "all 150ms",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 5,
+                  transition: "all 150ms ease",
                 }}
                 onMouseEnter={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background = isConn
-                    ? "#F4F2EE"
-                    : "#EAF1FA"
+                  if (!isConn)
+                    (e.currentTarget as HTMLElement).style.background = "#EAF1FA"
                 }}
                 onMouseLeave={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background = "none"
+                  ; (e.currentTarget as HTMLElement).style.background = isConn
+                    ? "#E5F6E8"
+                    : "none"
                 }}
               >
-                {isConn ? "Đã kết nối" : "Nhắn tin"}
+                {isConn ? (
+                  <>
+                    <CheckCircle size={14} weight="fill" />
+                    Đã kết nối
+                  </>
+                ) : (
+                  <>
+                    <PaperPlaneTilt size={13} weight="bold" />
+                    Nhắn tin
+                  </>
+                )}
               </button>
             </div>
           </div>
@@ -3695,8 +3731,8 @@ function ContractListCard({
             fontFamily: "inherit",
           }}
           onMouseEnter={(e) =>
-            ((e.currentTarget as HTMLElement).style.textDecoration =
-              "underline")
+          ((e.currentTarget as HTMLElement).style.textDecoration =
+            "underline")
           }
           onMouseLeave={(e) =>
             ((e.currentTarget as HTMLElement).style.textDecoration = "none")
@@ -3749,14 +3785,14 @@ function ContractListCard({
                 transition: "background 150ms ease, color 150ms ease",
               }}
               onMouseEnter={(e) => {
-                ;(e.currentTarget as HTMLElement).style.background = "#F4F2EE"
-                ;(e.currentTarget as HTMLElement).style.color =
-                  "rgba(0,0,0,0.90)"
+                ; (e.currentTarget as HTMLElement).style.background = "#F4F2EE"
+                  ; (e.currentTarget as HTMLElement).style.color =
+                    "rgba(0,0,0,0.90)"
               }}
               onMouseLeave={(e) => {
-                ;(e.currentTarget as HTMLElement).style.background = "none"
-                ;(e.currentTarget as HTMLElement).style.color =
-                  "rgba(0,0,0,0.60)"
+                ; (e.currentTarget as HTMLElement).style.background = "none"
+                  ; (e.currentTarget as HTMLElement).style.color =
+                    "rgba(0,0,0,0.60)"
               }}
             >
               {showAll ? "Ẩn bớt" : `Xem thêm ${contracts.length - 3} hợp đồng`}
@@ -3813,13 +3849,13 @@ function ActionCard({
         transition: "background 150ms ease, box-shadow 150ms ease",
       }}
       onMouseEnter={(e) => {
-        ;(e.currentTarget as HTMLElement).style.background = "#EAF1FA"
-        ;(e.currentTarget as HTMLElement).style.boxShadow = "0 0 0 1px #0A66C2"
+        ; (e.currentTarget as HTMLElement).style.background = "#EAF1FA"
+          ; (e.currentTarget as HTMLElement).style.boxShadow = "0 0 0 1px #0A66C2"
       }}
       onMouseLeave={(e) => {
-        ;(e.currentTarget as HTMLElement).style.background = "#fff"
-        ;(e.currentTarget as HTMLElement).style.boxShadow =
-          "0 0 0 1px rgba(0,0,0,0.08)"
+        ; (e.currentTarget as HTMLElement).style.background = "#fff"
+          ; (e.currentTarget as HTMLElement).style.boxShadow =
+            "0 0 0 1px rgba(0,0,0,0.08)"
       }}
     >
       {/* Icon circle */}
@@ -4177,8 +4213,8 @@ function JobFilterSidebar({
             fontFamily: "inherit",
           }}
           onMouseEnter={(e) =>
-            ((e.currentTarget as HTMLElement).style.textDecoration =
-              "underline")
+          ((e.currentTarget as HTMLElement).style.textDecoration =
+            "underline")
           }
           onMouseLeave={(e) =>
             ((e.currentTarget as HTMLElement).style.textDecoration = "none")
@@ -4384,44 +4420,44 @@ function JobFilterSidebar({
         {/* Added skills pills */}
         {filters.skills.filter((s) => !SKILL_OPTIONS.includes(s)).length >
           0 && (
-          <div
-            style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 10 }}
-          >
-            {filters.skills
-              .filter((s) => !SKILL_OPTIONS.includes(s))
-              .map((s) => (
-                <span
-                  key={s}
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 4,
-                    background: "#EAF1FA",
-                    color: "#0A66C2",
-                    borderRadius: 9999,
-                    padding: "3px 10px",
-                    fontSize: 12,
-                    fontWeight: 600,
-                  }}
-                >
-                  {s}
-                  <button
-                    onClick={() => toggleSkill(s)}
+            <div
+              style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 10 }}
+            >
+              {filters.skills
+                .filter((s) => !SKILL_OPTIONS.includes(s))
+                .map((s) => (
+                  <span
+                    key={s}
                     style={{
-                      background: "none",
-                      border: "none",
-                      cursor: "pointer",
-                      padding: 0,
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 4,
+                      background: "#EAF1FA",
                       color: "#0A66C2",
-                      display: "flex",
+                      borderRadius: 9999,
+                      padding: "3px 10px",
+                      fontSize: 12,
+                      fontWeight: 600,
                     }}
                   >
-                    <X size={10} weight="bold" />
-                  </button>
-                </span>
-              ))}
-          </div>
-        )}
+                    {s}
+                    <button
+                      onClick={() => toggleSkill(s)}
+                      style={{
+                        background: "none",
+                        border: "none",
+                        cursor: "pointer",
+                        padding: 0,
+                        color: "#0A66C2",
+                        display: "flex",
+                      }}
+                    >
+                      <X size={10} weight="bold" />
+                    </button>
+                  </span>
+                ))}
+            </div>
+          )}
       </FilterSection>
     </div>
   )
@@ -4734,12 +4770,12 @@ function JobSearchPage({
                   transition: "background 150ms ease",
                 }}
                 onMouseEnter={(e) =>
-                  ((e.currentTarget as HTMLElement).style.background =
-                    "rgba(255,255,255,0.25)")
+                ((e.currentTarget as HTMLElement).style.background =
+                  "rgba(255,255,255,0.25)")
                 }
                 onMouseLeave={(e) =>
-                  ((e.currentTarget as HTMLElement).style.background =
-                    "rgba(255,255,255,0.15)")
+                ((e.currentTarget as HTMLElement).style.background =
+                  "rgba(255,255,255,0.15)")
                 }
               >
                 <ArrowRight size={13} style={{ transform: "rotate(180deg)" }} />
@@ -4851,12 +4887,12 @@ function JobSearchPage({
                   transition: "background 150ms ease",
                 }}
                 onMouseEnter={(e) =>
-                  ((e.currentTarget as HTMLElement).style.background =
-                    "#084FA0")
+                ((e.currentTarget as HTMLElement).style.background =
+                  "#084FA0")
                 }
                 onMouseLeave={(e) =>
-                  ((e.currentTarget as HTMLElement).style.background =
-                    "#0A66C2")
+                ((e.currentTarget as HTMLElement).style.background =
+                  "#0A66C2")
                 }
               >
                 <MagnifyingGlass size={15} weight="bold" />
@@ -4946,7 +4982,7 @@ function JobSearchPage({
                         "#EAF1FA"
                   }}
                   onMouseLeave={(e) => {
-                    ;(e.currentTarget as HTMLElement).style.background =
+                    ; (e.currentTarget as HTMLElement).style.background =
                       currentPage === 1 ? "#F4F2EE" : "#fff"
                   }}
                 >
@@ -4993,7 +5029,7 @@ function JobSearchPage({
                         "#EAF1FA"
                   }}
                   onMouseLeave={(e) => {
-                    ;(e.currentTarget as HTMLElement).style.background =
+                    ; (e.currentTarget as HTMLElement).style.background =
                       currentPage === TOTAL_PAGES ? "#F4F2EE" : "#fff"
                   }}
                 >
@@ -6095,8 +6131,8 @@ function FreelancerFilterSidebar({
             fontFamily: "inherit",
           }}
           onMouseEnter={(e) =>
-            ((e.currentTarget as HTMLElement).style.textDecoration =
-              "underline")
+          ((e.currentTarget as HTMLElement).style.textDecoration =
+            "underline")
           }
           onMouseLeave={(e) =>
             ((e.currentTarget as HTMLElement).style.textDecoration = "none")
@@ -6346,8 +6382,8 @@ function FreelancerFilterSidebar({
                 ((e.currentTarget as HTMLElement).style.color = "#0A66C2")
               }
               onMouseLeave={(e) =>
-                ((e.currentTarget as HTMLElement).style.color =
-                  "rgba(0,0,0,0.45)")
+              ((e.currentTarget as HTMLElement).style.color =
+                "rgba(0,0,0,0.45)")
               }
             >
               Xóa bộ lọc đánh giá
@@ -6443,12 +6479,12 @@ function FindFreelancersPage({
                 transition: "background 150ms ease",
               }}
               onMouseEnter={(e) =>
-                ((e.currentTarget as HTMLElement).style.background =
-                  "rgba(255,255,255,0.22)")
+              ((e.currentTarget as HTMLElement).style.background =
+                "rgba(255,255,255,0.22)")
               }
               onMouseLeave={(e) =>
-                ((e.currentTarget as HTMLElement).style.background =
-                  "rgba(255,255,255,0.12)")
+              ((e.currentTarget as HTMLElement).style.background =
+                "rgba(255,255,255,0.12)")
               }
             >
               <ArrowRight size={13} style={{ transform: "rotate(180deg)" }} />
@@ -6567,12 +6603,12 @@ function FindFreelancersPage({
                   transition: "background 150ms ease",
                 }}
                 onMouseEnter={(e) =>
-                  ((e.currentTarget as HTMLElement).style.background =
-                    "#084FA0")
+                ((e.currentTarget as HTMLElement).style.background =
+                  "#084FA0")
                 }
                 onMouseLeave={(e) =>
-                  ((e.currentTarget as HTMLElement).style.background =
-                    "#0A66C2")
+                ((e.currentTarget as HTMLElement).style.background =
+                  "#0A66C2")
                 }
               >
                 <MagnifyingGlass size={15} weight="bold" />
@@ -6920,8 +6956,8 @@ function IdeaCard({ idea, onClick }: { idea: Idea; onClick?: () => void }) {
             ((e.currentTarget as HTMLElement).style.background = "#fff")
           }
           onMouseLeave={(e) =>
-            ((e.currentTarget as HTMLElement).style.background =
-              "rgba(255,255,255,0.88)")
+          ((e.currentTarget as HTMLElement).style.background =
+            "rgba(255,255,255,0.88)")
           }
         >
           <Bookmark size={14} weight={saved ? "fill" : "regular"} />
@@ -7098,9 +7134,8 @@ function FilterDrawer({
                     borderRadius: 8,
                     cursor: "pointer",
                     background: isChecked ? col.bg : "none",
-                    border: `1px solid ${
-                      isChecked ? col.color + "40" : "rgba(0,0,0,0.06)"
-                    }`,
+                    border: `1px solid ${isChecked ? col.color + "40" : "rgba(0,0,0,0.06)"
+                      }`,
                     transition:
                       "background 150ms ease, border-color 150ms ease",
                   }}
@@ -7361,12 +7396,12 @@ Nội dung bao gồm các phân tích chuyên sâu, ví dụ minh hoạ cụ th�
                 transition: "background 150ms ease",
               }}
               onMouseEnter={(e) =>
-                ((e.currentTarget as HTMLElement).style.background =
-                  "rgba(255,255,255,0.22)")
+              ((e.currentTarget as HTMLElement).style.background =
+                "rgba(255,255,255,0.22)")
               }
               onMouseLeave={(e) =>
-                ((e.currentTarget as HTMLElement).style.background =
-                  "rgba(255,255,255,0.12)")
+              ((e.currentTarget as HTMLElement).style.background =
+                "rgba(255,255,255,0.12)")
               }
             >
               <CaretLeft size={13} weight="bold" /> Danh sách ý tưởng
@@ -7540,12 +7575,12 @@ Nội dung bao gồm các phân tích chuyên sâu, ví dụ minh hoạ cụ th�
                     gap: 6,
                   }}
                   onMouseEnter={(e) =>
-                    ((e.currentTarget as HTMLElement).style.background =
-                      "#084FA0")
+                  ((e.currentTarget as HTMLElement).style.background =
+                    "#084FA0")
                   }
                   onMouseLeave={(e) =>
-                    ((e.currentTarget as HTMLElement).style.background =
-                      "#0A66C2")
+                  ((e.currentTarget as HTMLElement).style.background =
+                    "#0A66C2")
                   }
                 >
                   <PaperPlaneTilt size={15} /> Liên hệ
@@ -7579,10 +7614,10 @@ Nội dung bao gồm các phân tích chuyên sâu, ví dụ minh hoạ cụ th�
                 onClick={prev}
                 style={{ ...arrowBtn, left: 16 }}
                 onMouseEnter={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background = "#fff"
+                  ; (e.currentTarget as HTMLElement).style.background = "#fff"
                 }}
                 onMouseLeave={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background =
+                  ; (e.currentTarget as HTMLElement).style.background =
                     "rgba(255,255,255,0.88)"
                 }}
               >
@@ -7592,10 +7627,10 @@ Nội dung bao gồm các phân tích chuyên sâu, ví dụ minh hoạ cụ th�
                 onClick={next}
                 style={{ ...arrowBtn, right: 16 }}
                 onMouseEnter={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background = "#fff"
+                  ; (e.currentTarget as HTMLElement).style.background = "#fff"
                 }}
                 onMouseLeave={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background =
+                  ; (e.currentTarget as HTMLElement).style.background =
                     "rgba(255,255,255,0.88)"
                 }}
               >
@@ -7635,9 +7670,8 @@ Nội dung bao gồm các phân tích chuyên sâu, ví dụ minh hoạ cụ th�
                     height: 64,
                     flexShrink: 0,
                     padding: 0,
-                    border: `2px solid ${
-                      i === activeImg ? "#0A66C2" : "transparent"
-                    }`,
+                    border: `2px solid ${i === activeImg ? "#0A66C2" : "transparent"
+                      }`,
                     borderRadius: 6,
                     overflow: "hidden",
                     cursor: "pointer",
@@ -7879,12 +7913,12 @@ function FindIdeasPage({ onBack }: { onBack: () => void }) {
                 transition: "background 150ms ease",
               }}
               onMouseEnter={(e) =>
-                ((e.currentTarget as HTMLElement).style.background =
-                  "rgba(255,255,255,0.22)")
+              ((e.currentTarget as HTMLElement).style.background =
+                "rgba(255,255,255,0.22)")
               }
               onMouseLeave={(e) =>
-                ((e.currentTarget as HTMLElement).style.background =
-                  "rgba(255,255,255,0.12)")
+              ((e.currentTarget as HTMLElement).style.background =
+                "rgba(255,255,255,0.12)")
               }
             >
               <ArrowRight size={13} style={{ transform: "rotate(180deg)" }} />
@@ -8006,10 +8040,10 @@ function FindIdeasPage({ onBack }: { onBack: () => void }) {
               ((e.currentTarget as HTMLElement).style.background = "#EAF1FA")
             }
             onMouseLeave={(e) =>
-              ((e.currentTarget as HTMLElement).style.background =
-                showCategoryTabs || activeCategory !== "Tất cả"
-                  ? "#EAF1FA"
-                  : "none")
+            ((e.currentTarget as HTMLElement).style.background =
+              showCategoryTabs || activeCategory !== "Tất cả"
+                ? "#EAF1FA"
+                : "none")
             }
           >
             <svg
@@ -8080,21 +8114,21 @@ function FindIdeasPage({ onBack }: { onBack: () => void }) {
                   }}
                   onMouseEnter={(e) => {
                     if (!isActive) {
-                      ;(e.currentTarget as HTMLElement).style.background =
+                      ; (e.currentTarget as HTMLElement).style.background =
                         "#EAF1FA"
-                      ;(e.currentTarget as HTMLElement).style.color = "#0A66C2"
-                      ;(e.currentTarget as HTMLElement).style.borderColor =
-                        "#0A66C2"
+                        ; (e.currentTarget as HTMLElement).style.color = "#0A66C2"
+                        ; (e.currentTarget as HTMLElement).style.borderColor =
+                          "#0A66C2"
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (!isActive) {
-                      ;(e.currentTarget as HTMLElement).style.background =
+                      ; (e.currentTarget as HTMLElement).style.background =
                         "#fff"
-                      ;(e.currentTarget as HTMLElement).style.color =
-                        "rgba(0,0,0,0.60)"
-                      ;(e.currentTarget as HTMLElement).style.borderColor =
-                        "rgba(0,0,0,0.15)"
+                        ; (e.currentTarget as HTMLElement).style.color =
+                          "rgba(0,0,0,0.60)"
+                        ; (e.currentTarget as HTMLElement).style.borderColor =
+                          "rgba(0,0,0,0.15)"
                     }
                   }}
                 >
@@ -8340,12 +8374,12 @@ function PostIdeaPage({
                 transition: "background 150ms ease",
               }}
               onMouseEnter={(e) =>
-                ((e.currentTarget as HTMLElement).style.background =
-                  "rgba(255,255,255,0.22)")
+              ((e.currentTarget as HTMLElement).style.background =
+                "rgba(255,255,255,0.22)")
               }
               onMouseLeave={(e) =>
-                ((e.currentTarget as HTMLElement).style.background =
-                  "rgba(255,255,255,0.12)")
+              ((e.currentTarget as HTMLElement).style.background =
+                "rgba(255,255,255,0.12)")
               }
             >
               <ArrowRight size={13} style={{ transform: "rotate(180deg)" }} />
@@ -8500,12 +8534,12 @@ function PostIdeaPage({
                     transition: "background 150ms ease",
                   }}
                   onMouseEnter={(e) =>
-                    ((e.currentTarget as HTMLElement).style.background =
-                      "rgba(0,0,0,0.80)")
+                  ((e.currentTarget as HTMLElement).style.background =
+                    "rgba(0,0,0,0.80)")
                   }
                   onMouseLeave={(e) =>
-                    ((e.currentTarget as HTMLElement).style.background =
-                      "rgba(0,0,0,0.60)")
+                  ((e.currentTarget as HTMLElement).style.background =
+                    "rgba(0,0,0,0.60)")
                   }
                 >
                   <X size={16} weight="bold" />
@@ -8521,9 +8555,8 @@ function PostIdeaPage({
                 onDragLeave={() => setIsDragOver(false)}
                 onDrop={handleDrop}
                 style={{
-                  border: `2px dashed ${
-                    isDragOver ? "#0A66C2" : "rgba(0,0,0,0.15)"
-                  }`,
+                  border: `2px dashed ${isDragOver ? "#0A66C2" : "rgba(0,0,0,0.15)"
+                    }`,
                   borderRadius: 8,
                   background: isDragOver ? "#EAF1FA" : "#FAFAF8",
                   padding: "64px 0",
@@ -8535,16 +8568,16 @@ function PostIdeaPage({
                   transition: "border-color 150ms ease, background 150ms ease",
                 }}
                 onMouseEnter={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.borderColor =
+                  ; (e.currentTarget as HTMLElement).style.borderColor =
                     "#0A66C2"
-                  ;(e.currentTarget as HTMLElement).style.background = "#EAF1FA"
+                    ; (e.currentTarget as HTMLElement).style.background = "#EAF1FA"
                 }}
                 onMouseLeave={(e) => {
                   if (!isDragOver) {
-                    ;(e.currentTarget as HTMLElement).style.borderColor =
+                    ; (e.currentTarget as HTMLElement).style.borderColor =
                       "rgba(0,0,0,0.15)"
-                    ;(e.currentTarget as HTMLElement).style.background =
-                      "#FAFAF8"
+                      ; (e.currentTarget as HTMLElement).style.background =
+                        "#FAFAF8"
                   }
                 }}
               >
@@ -8769,9 +8802,8 @@ function PostIdeaPage({
                             height: 16,
                             borderRadius: 4,
                             flexShrink: 0,
-                            border: `2px solid ${
-                              isSelected ? "#0A66C2" : "rgba(0,0,0,0.25)"
-                            }`,
+                            border: `2px solid ${isSelected ? "#0A66C2" : "rgba(0,0,0,0.25)"
+                              }`,
                             background: isSelected ? "#0A66C2" : "none",
                             display: "flex",
                             alignItems: "center",
@@ -9112,7 +9144,7 @@ function CancelModal({
             onClick={() => fileRef.current?.click()}
             style={{
               padding: "9px 16px",
-              borderRadius: 4,
+              borderRadius: 9999,
               border: "1px solid rgba(0,0,0,0.20)",
               background: "none",
               fontSize: 13,
@@ -9123,10 +9155,10 @@ function CancelModal({
               whiteSpace: "nowrap",
             }}
             onMouseEnter={(e) => {
-              ;(e.currentTarget as HTMLElement).style.background = "#F4F2EE"
+              ; (e.currentTarget as HTMLElement).style.background = "#F4F2EE"
             }}
             onMouseLeave={(e) => {
-              ;(e.currentTarget as HTMLElement).style.background = "none"
+              ; (e.currentTarget as HTMLElement).style.background = "none"
             }}
           >
             Chọn ảnh từ thiết bị
@@ -9325,8 +9357,8 @@ function FreelancerReviewBlock({
           ((e.currentTarget as HTMLElement).style.borderColor = "#0A66C2")
         }
         onBlur={(e) =>
-          ((e.currentTarget as HTMLElement).style.borderColor =
-            "rgba(0,0,0,0.15)")
+        ((e.currentTarget as HTMLElement).style.borderColor =
+          "rgba(0,0,0,0.15)")
         }
       />
     </div>
@@ -9430,21 +9462,22 @@ function RatingModal({
           <button
             onClick={onClose}
             style={{
-              padding: "8px 16px",
+              padding: "8px 20px",
+              borderRadius: 9999,
+              border: "1px solid rgba(0,0,0,0.20)",
               background: "none",
-              border: "none",
               cursor: "pointer",
               fontSize: 14,
-              color: "rgba(0,0,0,0.60)",
+              color: "rgba(0,0,0,0.65)",
               fontFamily: "inherit",
               fontWeight: 600,
+              transition: "background 150ms",
             }}
             onMouseEnter={(e) => {
-              ;(e.currentTarget as HTMLElement).style.textDecoration =
-                "underline"
+              ; (e.currentTarget as HTMLElement).style.background = "#F4F2EE"
             }}
             onMouseLeave={(e) => {
-              ;(e.currentTarget as HTMLElement).style.textDecoration = "none"
+              ; (e.currentTarget as HTMLElement).style.background = "none"
             }}
           >
             Hủy
@@ -9464,10 +9497,10 @@ function RatingModal({
               transition: "background 150ms",
             }}
             onMouseEnter={(e) => {
-              ;(e.currentTarget as HTMLElement).style.background = "#084FA0"
+              ; (e.currentTarget as HTMLElement).style.background = "#084FA0"
             }}
             onMouseLeave={(e) => {
-              ;(e.currentTarget as HTMLElement).style.background = "#0A66C2"
+              ; (e.currentTarget as HTMLElement).style.background = "#0A66C2"
             }}
           >
             Xác nhận đánh giá
@@ -9598,7 +9631,7 @@ function MyProjectDetailPage({
                 {members.length} thành viên · {project.period}
               </div>
             </div>
-            
+
             <div style={{ display: "flex", gap: 10, flexShrink: 0 }}>
 
               <button
@@ -9616,15 +9649,15 @@ function MyProjectDetailPage({
                   transition: "background 150ms",
                 }}
                 onMouseEnter={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background = "#FBE2E2"
+                  ; (e.currentTarget as HTMLElement).style.background = "#FBE2E2"
                 }}
                 onMouseLeave={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background = "none"
+                  ; (e.currentTarget as HTMLElement).style.background = "none"
                 }}
               >
                 {recruitmentClosed ? "Đã đóng tuyển dụng" : "Đóng tuyển dụng"}
               </button>
-              
+
               <button
                 onClick={() => setRatingModal("project-cancel")}
                 style={{
@@ -9640,10 +9673,10 @@ function MyProjectDetailPage({
                   transition: "background 150ms",
                 }}
                 onMouseEnter={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background = "#FBE2E2"
+                  ; (e.currentTarget as HTMLElement).style.background = "#FBE2E2"
                 }}
                 onMouseLeave={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background = "none"
+                  ; (e.currentTarget as HTMLElement).style.background = "none"
                 }}
               >
                 Hủy dự án
@@ -9693,10 +9726,10 @@ function MyProjectDetailPage({
                   transition: "background 150ms",
                 }}
                 onMouseEnter={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background = "#EAF1FA"
+                  ; (e.currentTarget as HTMLElement).style.background = "#EAF1FA"
                 }}
                 onMouseLeave={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background = "none"
+                  ; (e.currentTarget as HTMLElement).style.background = "none"
                 }}
               >
                 <UserPlusIcon size={15} /> Mời thành viên
@@ -9736,11 +9769,11 @@ function MyProjectDetailPage({
                       {(() => {
                         const cs = (m as any).contractStatus ?? "Đang làm";
                         const csStyle = cs === "Chờ phản hồi"
-                          ? {background: "#FEF7E0", color: "#B06000"}
+                          ? { background: "#FEF7E0", color: "#B06000" }
                           : cs === "Hoàn thành"
-                          ? {background: "#E6F4EA", color: "#137333"}
-                          : {background: "#EAF1FA", color: "#0A66C2"};
-                        return <span style={{...csStyle, borderRadius: 99, padding: "2px 10px", fontSize: 12, fontWeight: 600, marginLeft: 8}}>{cs}</span>;
+                            ? { background: "#E6F4EA", color: "#137333" }
+                            : { background: "#EAF1FA", color: "#0A66C2" };
+                        return <span style={{ ...csStyle, borderRadius: 99, padding: "2px 10px", fontSize: 12, fontWeight: 600, marginLeft: 8 }}>{cs}</span>;
                       })()}
                     </div>
                     {/* Info grid */}
@@ -9833,11 +9866,11 @@ function MyProjectDetailPage({
                           transition: "background 150ms",
                         }}
                         onMouseEnter={(e) => {
-                          ;(e.currentTarget as HTMLElement).style.background =
+                          ; (e.currentTarget as HTMLElement).style.background =
                             "#084FA0"
                         }}
                         onMouseLeave={(e) => {
-                          ;(e.currentTarget as HTMLElement).style.background =
+                          ; (e.currentTarget as HTMLElement).style.background =
                             "#0A66C2"
                         }}
                       >
@@ -9858,11 +9891,11 @@ function MyProjectDetailPage({
                           transition: "background 150ms",
                         }}
                         onMouseEnter={(e) => {
-                          ;(e.currentTarget as HTMLElement).style.background =
+                          ; (e.currentTarget as HTMLElement).style.background =
                             "#E5F6E8"
                         }}
                         onMouseLeave={(e) => {
-                          ;(e.currentTarget as HTMLElement).style.background =
+                          ; (e.currentTarget as HTMLElement).style.background =
                             "none"
                         }}
                       >
@@ -9902,11 +9935,11 @@ function MyProjectDetailPage({
                             transition: "background 150ms",
                           }}
                           onMouseEnter={(e) => {
-                            ;(e.currentTarget as HTMLElement).style.background =
+                            ; (e.currentTarget as HTMLElement).style.background =
                               "#FBE2E2"
                           }}
                           onMouseLeave={(e) => {
-                            ;(e.currentTarget as HTMLElement).style.background =
+                            ; (e.currentTarget as HTMLElement).style.background =
                               "none"
                           }}
                         >
@@ -10073,12 +10106,12 @@ function MyProjectDetailPage({
                         fontWeight: 600,
                       }}
                       onMouseEnter={(e) =>
-                        ((e.currentTarget as HTMLElement).style.textDecoration =
-                          "underline")
+                      ((e.currentTarget as HTMLElement).style.textDecoration =
+                        "underline")
                       }
                       onMouseLeave={(e) =>
-                        ((e.currentTarget as HTMLElement).style.textDecoration =
-                          "none")
+                      ((e.currentTarget as HTMLElement).style.textDecoration =
+                        "none")
                       }
                     >
                       Xem thêm →
@@ -10093,13 +10126,13 @@ function MyProjectDetailPage({
 
       {/* Cancel invite modal */}
       {cancelInviteTarget && (
-        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.45)",zIndex:60,display:"flex",alignItems:"center",justifyContent:"center"}}>
-          <div style={{background:"#fff",borderRadius:12,padding:32,maxWidth:400,width:"100%",boxShadow:"0 8px 32px rgba(0,0,0,0.18)"}}>
-            <p style={{fontWeight:700,fontSize:18,marginBottom:12}}>Hủy lời mời</p>
-            <p style={{color:"#555",marginBottom:24}}>Bạn có chắc muốn hủy lời mời với <b>{cancelInviteTarget}</b>?</p>
-            <div style={{display:"flex",gap:12,justifyContent:"flex-end"}}>
-              <button onClick={()=>setCancelInviteTarget(null)} style={{padding:"8px 20px",borderRadius:99,border:"1px solid #ccc",background:"#fff",cursor:"pointer"}}>Quay lại</button>
-              <button onClick={()=>setCancelInviteTarget(null)} style={{padding:"8px 20px",borderRadius:99,border:"none",background:"#C00",color:"#fff",cursor:"pointer",fontWeight:600}}>Hủy lời mời</button>
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.45)", zIndex: 60, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ background: "#fff", borderRadius: 12, padding: 32, maxWidth: 400, width: "100%", boxShadow: "0 8px 32px rgba(0,0,0,0.18)" }}>
+            <p style={{ fontWeight: 700, fontSize: 18, marginBottom: 12 }}>Hủy lời mời</p>
+            <p style={{ color: "#555", marginBottom: 24 }}>Bạn có chắc muốn hủy lời mời với <b>{cancelInviteTarget}</b>?</p>
+            <div style={{ display: "flex", gap: 12, justifyContent: "flex-end" }}>
+              <button onClick={() => setCancelInviteTarget(null)} style={{ padding: "8px 20px", borderRadius: 9999, border: "1px solid rgba(0,0,0,0.20)", background: "#fff", color: "rgba(0,0,0,0.70)", cursor: "pointer", fontWeight: 600, fontFamily: "inherit" }}>Quay lại</button>
+              <button onClick={() => setCancelInviteTarget(null)} style={{ padding: "8px 20px", borderRadius: 9999, border: "none", background: "#C03A2B", color: "#fff", cursor: "pointer", fontWeight: 600, fontFamily: "inherit" }}>Hủy lời mời</button>
             </div>
           </div>
         </div>
@@ -10107,13 +10140,13 @@ function MyProjectDetailPage({
 
       {/* Close recruitment confirm modal */}
       {closeRecruitConfirm && (
-        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.45)",zIndex:60,display:"flex",alignItems:"center",justifyContent:"center"}}>
-          <div style={{background:"#fff",borderRadius:12,padding:32,maxWidth:420,width:"100%",boxShadow:"0 8px 32px rgba(0,0,0,0.18)"}}>
-            <p style={{fontWeight:700,fontSize:18,marginBottom:12}}>Xác nhận đóng tuyển dụng</p>
-            <p style={{color:"#555",marginBottom:24}}>Sau khi đóng tuyển dụng, dự án sẽ không nhận thêm ứng viên mới.</p>
-            <div style={{display:"flex",gap:12,justifyContent:"flex-end"}}>
-              <button onClick={()=>setCloseRecruitConfirm(false)} style={{padding:"8px 20px",borderRadius:99,border:"1px solid #ccc",background:"#fff",cursor:"pointer"}}>Quay lại</button>
-              <button onClick={()=>{setCloseRecruitConfirm(false);setRecruitmentClosed(true);}} style={{padding:"8px 20px",borderRadius:99,border:"none",background:"#0A66C2",color:"#fff",cursor:"pointer",fontWeight:600}}>Xác nhận đóng</button>
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.45)", zIndex: 60, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ background: "#fff", borderRadius: 12, padding: 32, maxWidth: 420, width: "100%", boxShadow: "0 8px 32px rgba(0,0,0,0.18)" }}>
+            <p style={{ fontWeight: 700, fontSize: 18, marginBottom: 12 }}>Xác nhận đóng tuyển dụng</p>
+            <p style={{ color: "#555", marginBottom: 24 }}>Sau khi đóng tuyển dụng, dự án sẽ không nhận thêm ứng viên mới.</p>
+            <div style={{ display: "flex", gap: 12, justifyContent: "flex-end" }}>
+              <button onClick={() => setCloseRecruitConfirm(false)} style={{ padding: "8px 20px", borderRadius: 9999, border: "1px solid rgba(0,0,0,0.20)", background: "#fff", color: "rgba(0,0,0,0.70)", cursor: "pointer", fontWeight: 600, fontFamily: "inherit" }}>Quay lại</button>
+              <button onClick={() => { setCloseRecruitConfirm(false); setRecruitmentClosed(true); }} style={{ padding: "8px 20px", borderRadius: 9999, border: "none", background: "#0A66C2", color: "#fff", cursor: "pointer", fontWeight: 600, fontFamily: "inherit" }}>Xác nhận đóng</button>
             </div>
           </div>
         </div>
@@ -10121,16 +10154,16 @@ function MyProjectDetailPage({
 
       {/* Contract detail modal */}
       {contractDetailMember && (
-        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.45)",zIndex:60,display:"flex",alignItems:"center",justifyContent:"center"}} onClick={()=>{setContractDetailMember(null); setIsEditingContract(false)}}>
-          <div style={{background:"#fff",borderRadius:12,padding:32,maxWidth:520,width:"100%",boxShadow:"0 8px 32px rgba(0,0,0,0.18)", maxHeight: "90vh", overflowY: "auto"}} onClick={e=>e.stopPropagation()}>
-            <p style={{fontWeight:700,fontSize:20,marginBottom:20}}>Chi tiết hợp đồng</p>
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.45)", zIndex: 60, display: "flex", alignItems: "center", justifyContent: "center" }} onClick={() => { setContractDetailMember(null); setIsEditingContract(false) }}>
+          <div style={{ background: "#fff", borderRadius: 12, padding: 32, maxWidth: 520, width: "100%", boxShadow: "0 8px 32px rgba(0,0,0,0.18)", maxHeight: "90vh", overflowY: "auto" }} onClick={e => e.stopPropagation()}>
+            <p style={{ fontWeight: 700, fontSize: 20, marginBottom: 20 }}>Chi tiết hợp đồng</p>
             {isEditingContract ? (
-              <div style={{display:"flex",flexDirection:"column",gap:16}}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
                 <div style={{ marginBottom: 4 }}>
-                  <label style={{fontSize: 13, fontWeight: 700, color: "rgba(0,0,0,0.70)", display: "block", marginBottom: 6}}>Tiêu đề hợp đồng *</label>
+                  <label style={{ fontSize: 13, fontWeight: 700, color: "rgba(0,0,0,0.70)", display: "block", marginBottom: 6 }}>Tiêu đề hợp đồng *</label>
                   <input
                     defaultValue={`Hợp đồng thiết kế - ${project.name}`}
-                    style={{width: "100%", padding: "8px 12px", border: "1px solid rgba(0,0,0,0.15)", borderRadius: 4, fontSize: 14, fontFamily: "inherit", outline: "none", color: "rgba(0,0,0,0.90)", background: "#fff", transition: "border-color 150ms", boxSizing: "border-box"}}
+                    style={{ width: "100%", padding: "8px 12px", border: "1px solid rgba(0,0,0,0.15)", borderRadius: 4, fontSize: 14, fontFamily: "inherit", outline: "none", color: "rgba(0,0,0,0.90)", background: "#fff", transition: "border-color 150ms", boxSizing: "border-box" }}
                     onFocus={(e) => ((e.currentTarget as HTMLElement).style.borderColor = "#0A66C2")}
                     onBlur={(e) => ((e.currentTarget as HTMLElement).style.borderColor = "rgba(0,0,0,0.15)")}
                   />
@@ -10138,25 +10171,25 @@ function MyProjectDetailPage({
 
                 <div style={{ display: "flex", gap: 16, marginBottom: 4 }}>
                   <div style={{ flex: 2 }}>
-                    <label style={{fontSize: 13, fontWeight: 700, color: "rgba(0,0,0,0.70)", display: "block", marginBottom: 6}}>Giá trị hợp đồng (VNĐ) *</label>
+                    <label style={{ fontSize: 13, fontWeight: 700, color: "rgba(0,0,0,0.70)", display: "block", marginBottom: 6 }}>Giá trị hợp đồng (VNĐ) *</label>
                     <div style={{ position: "relative" }}>
-                      <span style={{position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", fontSize: 13, fontWeight: 700, color: "rgba(0,0,0,0.45)", pointerEvents: "none"}}>
+                      <span style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", fontSize: 13, fontWeight: 700, color: "rgba(0,0,0,0.45)", pointerEvents: "none" }}>
                         ₫
                       </span>
                       <input
                         type="text"
                         defaultValue={contractDetailMember.price.replace(/[^0-9]/g, '')}
-                        style={{width: "100%", padding: "8px 12px", border: "1px solid rgba(0,0,0,0.15)", borderRadius: 4, fontSize: 14, fontFamily: "inherit", outline: "none", color: "rgba(0,0,0,0.90)", background: "#fff", transition: "border-color 150ms", boxSizing: "border-box", paddingLeft: 28}}
+                        style={{ width: "100%", padding: "8px 12px", border: "1px solid rgba(0,0,0,0.15)", borderRadius: 4, fontSize: 14, fontFamily: "inherit", outline: "none", color: "rgba(0,0,0,0.90)", background: "#fff", transition: "border-color 150ms", boxSizing: "border-box", paddingLeft: 28 }}
                         onFocus={(e) => ((e.currentTarget as HTMLElement).style.borderColor = "#0A66C2")}
                         onBlur={(e) => ((e.currentTarget as HTMLElement).style.borderColor = "rgba(0,0,0,0.15)")}
                       />
                     </div>
                   </div>
                   <div style={{ flex: 1 }}>
-                    <label style={{fontSize: 13, fontWeight: 700, color: "rgba(0,0,0,0.70)", display: "block", marginBottom: 6}}>Chu kỳ</label>
+                    <label style={{ fontSize: 13, fontWeight: 700, color: "rgba(0,0,0,0.70)", display: "block", marginBottom: 6 }}>Chu kỳ</label>
                     <select
                       defaultValue="Dự án"
-                      style={{width: "100%", padding: "8px 12px", border: "1px solid rgba(0,0,0,0.15)", borderRadius: 4, fontSize: 14, fontFamily: "inherit", outline: "none", color: "rgba(0,0,0,0.90)", background: "#fff", transition: "border-color 150ms", boxSizing: "border-box", cursor: "pointer", appearance: "auto"}}
+                      style={{ width: "100%", padding: "8px 12px", border: "1px solid rgba(0,0,0,0.15)", borderRadius: 4, fontSize: 14, fontFamily: "inherit", outline: "none", color: "rgba(0,0,0,0.90)", background: "#fff", transition: "border-color 150ms", boxSizing: "border-box", cursor: "pointer", appearance: "auto" }}
                       onFocus={(e) => ((e.currentTarget as HTMLElement).style.borderColor = "#0A66C2")}
                       onBlur={(e) => ((e.currentTarget as HTMLElement).style.borderColor = "rgba(0,0,0,0.15)")}
                     >
@@ -10171,21 +10204,21 @@ function MyProjectDetailPage({
 
                 <div style={{ display: "flex", gap: 16, marginBottom: 4 }}>
                   <div style={{ flex: 1 }}>
-                    <label style={{fontSize: 13, fontWeight: 700, color: "rgba(0,0,0,0.70)", display: "block", marginBottom: 6}}>Ngày bắt đầu</label>
+                    <label style={{ fontSize: 13, fontWeight: 700, color: "rgba(0,0,0,0.70)", display: "block", marginBottom: 6 }}>Ngày bắt đầu</label>
                     <input
                       type="date"
                       defaultValue="2026-10-01"
-                      style={{width: "100%", padding: "8px 12px", border: "1px solid rgba(0,0,0,0.15)", borderRadius: 4, fontSize: 14, fontFamily: "inherit", outline: "none", color: "rgba(0,0,0,0.90)", background: "#fff", transition: "border-color 150ms", boxSizing: "border-box"}}
+                      style={{ width: "100%", padding: "8px 12px", border: "1px solid rgba(0,0,0,0.15)", borderRadius: 4, fontSize: 14, fontFamily: "inherit", outline: "none", color: "rgba(0,0,0,0.90)", background: "#fff", transition: "border-color 150ms", boxSizing: "border-box" }}
                       onFocus={(e) => ((e.currentTarget as HTMLElement).style.borderColor = "#0A66C2")}
                       onBlur={(e) => ((e.currentTarget as HTMLElement).style.borderColor = "rgba(0,0,0,0.15)")}
                     />
                   </div>
                   <div style={{ flex: 1 }}>
-                    <label style={{fontSize: 13, fontWeight: 700, color: "rgba(0,0,0,0.70)", display: "block", marginBottom: 6}}>Ngày kết thúc</label>
+                    <label style={{ fontSize: 13, fontWeight: 700, color: "rgba(0,0,0,0.70)", display: "block", marginBottom: 6 }}>Ngày kết thúc</label>
                     <input
                       type="date"
                       defaultValue={contractDetailMember.dueDate ? "2026-12-30" : ""}
-                      style={{width: "100%", padding: "8px 12px", border: "1px solid rgba(0,0,0,0.15)", borderRadius: 4, fontSize: 14, fontFamily: "inherit", outline: "none", color: "rgba(0,0,0,0.90)", background: "#fff", transition: "border-color 150ms", boxSizing: "border-box"}}
+                      style={{ width: "100%", padding: "8px 12px", border: "1px solid rgba(0,0,0,0.15)", borderRadius: 4, fontSize: 14, fontFamily: "inherit", outline: "none", color: "rgba(0,0,0,0.90)", background: "#fff", transition: "border-color 150ms", boxSizing: "border-box" }}
                       onFocus={(e) => ((e.currentTarget as HTMLElement).style.borderColor = "#0A66C2")}
                       onBlur={(e) => ((e.currentTarget as HTMLElement).style.borderColor = "rgba(0,0,0,0.15)")}
                     />
@@ -10193,7 +10226,7 @@ function MyProjectDetailPage({
                 </div>
 
                 <div style={{ marginBottom: 4 }}>
-                  <label style={{fontSize: 13, fontWeight: 700, color: "rgba(0,0,0,0.70)", display: "block", marginBottom: 6}}>Chi tiết & Điều khoản đính kèm *</label>
+                  <label style={{ fontSize: 13, fontWeight: 700, color: "rgba(0,0,0,0.70)", display: "block", marginBottom: 6 }}>Chi tiết & Điều khoản đính kèm *</label>
                   <label
                     style={{
                       border: "1.5px dashed rgba(0,0,0,0.18)",
@@ -10220,24 +10253,24 @@ function MyProjectDetailPage({
                 </div>
               </div>
             ) : (
-              <div style={{display:"flex",flexDirection:"column",gap:12,fontSize:15}}>
-                <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.65)",width:160,display:"inline-block"}}>Tiêu đề hợp đồng: </span>Hợp đồng thiết kế - {project.name}</div>
-                <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.65)",width:160,display:"inline-block"}}>Giá trị hợp đồng: </span>{contractDetailMember.price}</div>
-                <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.65)",width:160,display:"inline-block"}}>Chu kỳ: </span>Theo dự án (1 lần)</div>
-                <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.65)",width:160,display:"inline-block"}}>Ngày bắt đầu: </span>01/10/2026</div>
-                <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.65)",width:160,display:"inline-block"}}>Ngày kết thúc: </span>{contractDetailMember.dueDate ?? project.dueDate ?? "—"}</div>
-                <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.65)",width:160,display:"inline-block"}}>Chi tiết & Điều khoản: </span>Các bên tuân thủ đúng tiến độ đề ra...</div>
-                <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.65)",width:160,display:"inline-block"}}>Tài liệu điều khoản: </span><a href="#" style={{color:"#0A66C2",textDecoration:"none"}}>DieuKhoan_HopDong.pdf</a></div>
-                <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.65)",width:160,display:"inline-block"}}>Thông tin Freelancer: </span>{contractDetailMember.name} ({contractDetailMember.email})</div>
-                <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.65)",width:160,display:"inline-block"}}>Trạng thái hợp đồng: </span><span style={{padding:"2px 8px",borderRadius:4,background:"#F4F2EE",fontWeight:700,color:"#0A66C2"}}>{(contractDetailMember as any).contractStatus ?? "Đang làm"}</span></div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12, fontSize: 15 }}>
+                <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Tiêu đề hợp đồng: </span>Hợp đồng thiết kế - {project.name}</div>
+                <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Giá trị hợp đồng: </span>{contractDetailMember.price}</div>
+                <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Chu kỳ: </span>Theo dự án (1 lần)</div>
+                <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Ngày bắt đầu: </span>01/10/2026</div>
+                <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Ngày kết thúc: </span>{contractDetailMember.dueDate ?? project.dueDate ?? "—"}</div>
+                <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Chi tiết & Điều khoản: </span>Các bên tuân thủ đúng tiến độ đề ra...</div>
+                <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Tài liệu điều khoản: </span><a href="#" style={{ color: "#0A66C2", textDecoration: "none" }}>DieuKhoan_HopDong.pdf</a></div>
+                <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Thông tin Freelancer: </span>{contractDetailMember.name} ({contractDetailMember.email})</div>
+                <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Trạng thái hợp đồng: </span><span style={{ padding: "2px 8px", borderRadius: 4, background: "#F4F2EE", fontWeight: 700, color: "#0A66C2" }}>{(contractDetailMember as any).contractStatus ?? "Đang làm"}</span></div>
               </div>
             )}
-            <div style={{display:"flex",gap:12,justifyContent:"flex-end",marginTop:24}}>
-              <button onClick={()=>{setContractDetailMember(null); setIsEditingContract(false);}} style={{padding:"9px 22px",borderRadius:99,border:"1px solid #ccc",background:"#fff",cursor:"pointer",fontWeight:600}}>Đóng</button>
+            <div style={{ display: "flex", gap: 12, justifyContent: "flex-end", marginTop: 24 }}>
+              <button onClick={() => { setContractDetailMember(null); setIsEditingContract(false); }} style={{ padding: "9px 22px", borderRadius: 9999, border: "1px solid rgba(0,0,0,0.20)", background: "#fff", color: "rgba(0,0,0,0.70)", cursor: "pointer", fontWeight: 600, fontFamily: "inherit" }}>Đóng</button>
               {isEditingContract ? (
-                <button onClick={()=>{setIsEditingContract(false); setToast("Đã cập nhật hợp đồng");}} style={{padding:"9px 22px",borderRadius:99,border:"none",background:"#0A66C2",color:"#fff",cursor:"pointer",fontWeight:600}}>Lưu thay đổi</button>
+                <button onClick={() => { setIsEditingContract(false); setToast("Đã cập nhật hợp đồng"); }} style={{ padding: "9px 22px", borderRadius: 9999, border: "none", background: "#0A66C2", color: "#fff", cursor: "pointer", fontWeight: 600, fontFamily: "inherit" }}>Lưu thay đổi</button>
               ) : (
-                <button onClick={()=>setIsEditingContract(true)} style={{padding:"9px 22px",borderRadius:99,border:"none",background:"#0A66C2",color:"#fff",cursor:"pointer",fontWeight:600}}>Chỉnh sửa</button>
+                <button onClick={() => setIsEditingContract(true)} style={{ padding: "9px 22px", borderRadius: 9999, border: "none", background: "#0A66C2", color: "#fff", cursor: "pointer", fontWeight: 600, fontFamily: "inherit" }}>Chỉnh sửa</button>
               )}
             </div>
           </div>
@@ -10415,28 +10448,28 @@ function EmployeeProjectDetailPage({
                   fontFamily: "inherit",
                 }}
                 onMouseEnter={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background = "#FBE2E2"
+                  ; (e.currentTarget as HTMLElement).style.background = "#FBE2E2"
                 }}
                 onMouseLeave={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background = "none"
+                  ; (e.currentTarget as HTMLElement).style.background = "none"
                 }}
               >
                 Hủy hợp đồng
               </button>
             </div>
-            
+
             {/* Chi tiết hợp đồng chi tiết */}
-            <div style={{marginTop: 16, borderTop: "1px solid rgba(0,0,0,0.08)", paddingTop: 16}}>
-              <p style={{fontSize: 14, fontWeight: 700, color: "rgba(0,0,0,0.90)", marginBottom: 12}}>Chi tiết hợp đồng</p>
-              <div style={{display:"flex",flexDirection:"column",gap:10,fontSize:14}}>
-                <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.65)",width:160,display:"inline-block"}}>Tiêu đề hợp đồng: </span>Hợp đồng {project.name}</div>
-                <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.65)",width:160,display:"inline-block"}}>Giá trị hợp đồng: </span>{myContract?.price ?? "—"}</div>
-                <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.65)",width:160,display:"inline-block"}}>Chu kỳ: </span>{project.period}</div>
-                <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.65)",width:160,display:"inline-block"}}>Ngày bắt đầu: </span>01/10/2026</div>
-                <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.65)",width:160,display:"inline-block"}}>Ngày kết thúc: </span>{project.dueDate ?? "—"}</div>
-                <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.65)",width:160,display:"inline-block"}}>Chi tiết & Điều khoản: </span>Tuân thủ đúng yêu cầu chất lượng</div>
-                <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.65)",width:160,display:"inline-block"}}>Tài liệu điều khoản: </span><a href="#" style={{color:"#0A66C2",textDecoration:"none"}}>HopDong_{project.id}.pdf</a></div>
-                <div><span style={{fontWeight:600,color:"rgba(0,0,0,0.65)",width:160,display:"inline-block"}}>Trạng thái hợp đồng: </span><span style={{padding:"2px 8px",borderRadius:4,background:"#F4F2EE",fontWeight:700,color:"#0A66C2"}}>{myContract?.status ?? "Đang làm"}</span></div>
+            <div style={{ marginTop: 16, borderTop: "1px solid rgba(0,0,0,0.08)", paddingTop: 16 }}>
+              <p style={{ fontSize: 14, fontWeight: 700, color: "rgba(0,0,0,0.90)", marginBottom: 12 }}>Chi tiết hợp đồng</p>
+              <div style={{ display: "flex", flexDirection: "column", gap: 10, fontSize: 14 }}>
+                <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Tiêu đề hợp đồng: </span>Hợp đồng {project.name}</div>
+                <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Giá trị hợp đồng: </span>{myContract?.price ?? "—"}</div>
+                <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Chu kỳ: </span>{project.period}</div>
+                <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Ngày bắt đầu: </span>01/10/2026</div>
+                <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Ngày kết thúc: </span>{project.dueDate ?? "—"}</div>
+                <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Chi tiết & Điều khoản: </span>Tuân thủ đúng yêu cầu chất lượng</div>
+                <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Tài liệu điều khoản: </span><a href="#" style={{ color: "#0A66C2", textDecoration: "none" }}>HopDong_{project.id}.pdf</a></div>
+                <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Trạng thái hợp đồng: </span><span style={{ padding: "2px 8px", borderRadius: 4, background: "#F4F2EE", fontWeight: 700, color: "#0A66C2" }}>{myContract?.status ?? "Đang làm"}</span></div>
               </div>
             </div>
           </div>
@@ -10696,11 +10729,11 @@ function PendingProjectCard({
                     fontFamily: "inherit",
                   }}
                   onMouseEnter={(e) => {
-                    ;(e.currentTarget as HTMLElement).style.background =
+                    ; (e.currentTarget as HTMLElement).style.background =
                       "#F4F2EE"
                   }}
                   onMouseLeave={(e) => {
-                    ;(e.currentTarget as HTMLElement).style.background = "none"
+                    ; (e.currentTarget as HTMLElement).style.background = "none"
                   }}
                 >
                   Từ chối
@@ -10721,11 +10754,11 @@ function PendingProjectCard({
                     fontFamily: "inherit",
                   }}
                   onMouseEnter={(e) => {
-                    ;(e.currentTarget as HTMLElement).style.background =
+                    ; (e.currentTarget as HTMLElement).style.background =
                       "#084FA0"
                   }}
                   onMouseLeave={(e) => {
-                    ;(e.currentTarget as HTMLElement).style.background =
+                    ; (e.currentTarget as HTMLElement).style.background =
                       "#0A66C2"
                   }}
                 >
@@ -10791,279 +10824,278 @@ function CreateProjectPage({
   ) => ((e.currentTarget as HTMLElement).style.borderColor = "rgba(0,0,0,0.15)")
 
   return (
-    <div style={{background: "#F4F2EE", minHeight: "100%"}}>
-      <div style={{background: "linear-gradient(135deg, #0A66C2 0%, #084FA0 100%)", padding: "32px 0"}}>
-        <div style={{maxWidth: 1128, margin: "0 auto", padding: "0 24px"}}>
+    <div style={{ background: "#F4F2EE", minHeight: "100%" }}>
+      <div style={{ background: "linear-gradient(135deg, #0A66C2 0%, #084FA0 100%)", padding: "32px 0" }}>
+        <div style={{ maxWidth: 1128, margin: "0 auto", padding: "0 24px" }}>
           <HeaderBackButton onClick={onBack} />
-          <h1 style={{color: "#fff", fontWeight: 700, fontSize: 28, margin: 0}}>Tạo dự án mới</h1>
-          <p style={{color: "rgba(255,255,255,0.80)", marginTop: 8, fontSize: 15}}>Điền thông tin để tạo dự án và tìm kiếm freelancer phù hợp</p>
+          <h1 style={{ color: "#fff", fontWeight: 700, fontSize: 28, margin: 0 }}>Tạo dự án mới</h1>
+          <p style={{ color: "rgba(255,255,255,0.80)", marginTop: 8, fontSize: 15 }}>Điền thông tin để tạo dự án và tìm kiếm freelancer phù hợp</p>
         </div>
       </div>
-    <div
-      style={{
-        padding: "32px 16px 48px",
-      }}
-    >
-      <div style={{ maxWidth: 768, margin: "0 auto" }}>
-        <button
-          onClick={onBack}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 6,
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            fontSize: 13,
-            fontWeight: 600,
-            color: "rgba(0,0,0,0.60)",
-            fontFamily: "inherit",
-            marginBottom: 20,
-            padding: "4px 0",
-          }}
-          onMouseEnter={(e) =>
-            ((e.currentTarget as HTMLElement).style.color = "#0A66C2")
-          }
-          onMouseLeave={(e) =>
-            ((e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.60)")
-          }
-        >
-          <ArrowRight size={14} style={{ transform: "rotate(180deg)" }} /> Quay
-          lại
-        </button>
-
-        <div
-          style={{
-            background: "#fff",
-            borderRadius: 8,
-            boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-            overflow: "hidden",
-          }}
-        >
-          {/* Header */}
-          <div
+      <div
+        style={{
+          padding: "32px 16px 48px",
+        }}
+      >
+        <div style={{ maxWidth: 768, margin: "0 auto" }}>
+          <button
+            onClick={onBack}
             style={{
-              padding: "20px 24px",
-              borderBottom: "1px solid rgba(0,0,0,0.08)",
               display: "flex",
               alignItems: "center",
-              gap: 12,
+              gap: 6,
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              fontSize: 13,
+              fontWeight: 600,
+              color: "rgba(0,0,0,0.60)",
+              fontFamily: "inherit",
+              marginBottom: 20,
+              padding: "4px 0",
+            }}
+            onMouseEnter={(e) =>
+              ((e.currentTarget as HTMLElement).style.color = "#0A66C2")
+            }
+            onMouseLeave={(e) =>
+              ((e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.60)")
+            }
+          >
+            <ArrowRight size={14} style={{ transform: "rotate(180deg)" }} /> Quay
+            lại
+          </button>
+
+          <div
+            style={{
+              background: "#fff",
+              borderRadius: 8,
+              boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+              overflow: "hidden",
             }}
           >
+            {/* Header */}
             <div
               style={{
-                width: 44,
-                height: 44,
-                borderRadius: 8,
-                background: "#EAF1FA",
+                padding: "20px 24px",
+                borderBottom: "1px solid rgba(0,0,0,0.08)",
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "center",
-                flexShrink: 0,
+                gap: 12,
               }}
             >
-              <FolderPlus size={22} color="#0A66C2" />
-            </div>
-            <div>
-              <h1
+              <div
                 style={{
-                  fontSize: 20,
-                  fontWeight: 700,
-                  color: "rgba(0,0,0,0.90)",
-                  lineHeight: 1.2,
+                  width: 44,
+                  height: 44,
+                  borderRadius: 8,
+                  background: "#EAF1FA",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexShrink: 0,
                 }}
               >
-                Tạo dự án mới
-              </h1>
+                <FolderPlus size={22} color="#0A66C2" />
+              </div>
+              <div>
+                <h1
+                  style={{
+                    fontSize: 20,
+                    fontWeight: 700,
+                    color: "rgba(0,0,0,0.90)",
+                    lineHeight: 1.2,
+                  }}
+                >
+                  Tạo dự án mới
+                </h1>
+                <p
+                  style={{
+                    fontSize: 13,
+                    color: "rgba(0,0,0,0.55)",
+                    marginTop: 2,
+                  }}
+                >
+                  Đăng dự án để tìm freelancer phù hợp
+                </p>
+              </div>
+            </div>
+
+            {/* Fields */}
+            <div style={sec}>
+              <label style={labelStyle}>Tên dự án *</label>
+              <input
+                value={rTitle}
+                onChange={(e) => setRTitle(e.target.value)}
+                placeholder="VD: Xây dựng hệ thống quản lý kho hàng"
+                style={inputStyle}
+                onFocus={focus}
+                onBlur={blur}
+              />
+            </div>
+
+            <div style={sec}>
+              <label style={labelStyle}>Mô tả *</label>
+              <textarea
+                value={rDesc}
+                onChange={(e) => setRDesc(e.target.value)}
+                placeholder="Mô tả chi tiết dự án, kỹ năng yêu cầu và kết quả kỳ vọng..."
+                style={{
+                  ...inputStyle,
+                  minHeight: 120,
+                  resize: "vertical",
+                  lineHeight: 1.65,
+                }}
+                onFocus={focus}
+                onBlur={blur}
+              />
+            </div>
+
+            <div style={{ ...sec, display: "flex", gap: 16 }}>
+              <div style={{ flex: 1 }}>
+                <label style={labelStyle}>Giá khởi điểm (VNĐ)</label>
+                <input
+                  type="number"
+                  value={rStartPrice}
+                  onChange={(e) => setRStartPrice(e.target.value)}
+                  placeholder="VD: 10000000"
+                  style={inputStyle}
+                  onFocus={focus}
+                  onBlur={blur}
+                />
+              </div>
+              <div style={{ flex: 1 }}>
+                <label style={labelStyle}>Chu kỳ</label>
+                <select
+                  value={rPeriod}
+                  onChange={(e) => setRPeriod(e.target.value)}
+                  style={inputStyle}
+                  onFocus={focus}
+                  onBlur={blur}
+                >
+                  {CY_PERIODS.map((p) => (
+                    <option key={p} value={p}>
+                      {p}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div style={{ ...sec, display: "flex", gap: 16 }}>
+              <div style={{ flex: 1 }}>
+                <label style={labelStyle}>Due date</label>
+                <input
+                  type="date"
+                  value={rDueDate}
+                  onChange={(e) => setRDueDate(e.target.value)}
+                  style={inputStyle}
+                  onFocus={focus}
+                  onBlur={blur}
+                />
+              </div>
+              <div style={{ flex: 1 }}>
+                <label style={labelStyle}>Hạn đóng chào mời</label>
+                <input
+                  type="date"
+                  value={rBidClose}
+                  onChange={(e) => setRBidClose(e.target.value)}
+                  style={inputStyle}
+                  onFocus={focus}
+                  onBlur={blur}
+                />
+              </div>
+            </div>
+
+            <div style={sec}>
+              <label style={labelStyle}>Đăng tải tuyển dụng</label>
               <p
                 style={{
                   fontSize: 13,
-                  color: "rgba(0,0,0,0.55)",
-                  marginTop: 2,
+                  color: "rgba(0,0,0,0.50)",
+                  marginBottom: 10,
                 }}
               >
-                Đăng dự án để tìm freelancer phù hợp
+                Dự án sẽ được hiển thị công khai để freelancer có thể đề xuất hợp
+                tác.
               </p>
+              <div style={{ display: "flex", gap: 10 }}>
+                {(["co", "khong"] as const).map((v) => {
+                  const active = rPublish === v
+                  return (
+                    <button
+                      key={v}
+                      onClick={() => setRPublish(v)}
+                      style={{
+                        padding: "8px 28px",
+                        borderRadius: 9999,
+                        border: `1.5px solid ${active ? "#0A66C2" : "rgba(0,0,0,0.18)"
+                          }`,
+                        background: active ? "#EAF1FA" : "#fff",
+                        color: active ? "#0A66C2" : "rgba(0,0,0,0.65)",
+                        fontSize: 14,
+                        fontWeight: active ? 700 : 500,
+                        cursor: "pointer",
+                        fontFamily: "inherit",
+                        transition: "all 150ms",
+                      }}
+                    >
+                      {v === "co" ? "Có" : "Không"}
+                    </button>
+                  )
+                })}
+              </div>
             </div>
-          </div>
 
-          {/* Fields */}
-          <div style={sec}>
-            <label style={labelStyle}>Tên dự án *</label>
-            <input
-              value={rTitle}
-              onChange={(e) => setRTitle(e.target.value)}
-              placeholder="VD: Xây dựng hệ thống quản lý kho hàng"
-              style={inputStyle}
-              onFocus={focus}
-              onBlur={blur}
-            />
-          </div>
-
-          <div style={sec}>
-            <label style={labelStyle}>Mô tả *</label>
-            <textarea
-              value={rDesc}
-              onChange={(e) => setRDesc(e.target.value)}
-              placeholder="Mô tả chi tiết dự án, kỹ năng yêu cầu và kết quả kỳ vọng..."
+            <div
               style={{
-                ...inputStyle,
-                minHeight: 120,
-                resize: "vertical",
-                lineHeight: 1.65,
-              }}
-              onFocus={focus}
-              onBlur={blur}
-            />
-          </div>
-
-          <div style={{ ...sec, display: "flex", gap: 16 }}>
-            <div style={{ flex: 1 }}>
-              <label style={labelStyle}>Giá khởi điểm (VNĐ)</label>
-              <input
-                type="number"
-                value={rStartPrice}
-                onChange={(e) => setRStartPrice(e.target.value)}
-                placeholder="VD: 10000000"
-                style={inputStyle}
-                onFocus={focus}
-                onBlur={blur}
-              />
-            </div>
-            <div style={{ flex: 1 }}>
-              <label style={labelStyle}>Chu kỳ</label>
-              <select
-                value={rPeriod}
-                onChange={(e) => setRPeriod(e.target.value)}
-                style={inputStyle}
-                onFocus={focus}
-                onBlur={blur}
-              >
-                {CY_PERIODS.map((p) => (
-                  <option key={p} value={p}>
-                    {p}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <div style={{ ...sec, display: "flex", gap: 16 }}>
-            <div style={{ flex: 1 }}>
-              <label style={labelStyle}>Due date</label>
-              <input
-                type="date"
-                value={rDueDate}
-                onChange={(e) => setRDueDate(e.target.value)}
-                style={inputStyle}
-                onFocus={focus}
-                onBlur={blur}
-              />
-            </div>
-            <div style={{ flex: 1 }}>
-              <label style={labelStyle}>Hạn đóng chào mời</label>
-              <input
-                type="date"
-                value={rBidClose}
-                onChange={(e) => setRBidClose(e.target.value)}
-                style={inputStyle}
-                onFocus={focus}
-                onBlur={blur}
-              />
-            </div>
-          </div>
-
-          <div style={sec}>
-            <label style={labelStyle}>Đăng tải tuyển dụng</label>
-            <p
-              style={{
-                fontSize: 13,
-                color: "rgba(0,0,0,0.50)",
-                marginBottom: 10,
-              }}
-            >
-              Dự án sẽ được hiển thị công khai để freelancer có thể đề xuất hợp
-              tác.
-            </p>
-            <div style={{ display: "flex", gap: 10 }}>
-              {(["co", "khong"] as const).map((v) => {
-                const active = rPublish === v
-                return (
-                  <button
-                    key={v}
-                    onClick={() => setRPublish(v)}
-                    style={{
-                      padding: "8px 28px",
-                      borderRadius: 9999,
-                      border: `1.5px solid ${
-                        active ? "#0A66C2" : "rgba(0,0,0,0.18)"
-                      }`,
-                      background: active ? "#EAF1FA" : "#fff",
-                      color: active ? "#0A66C2" : "rgba(0,0,0,0.65)",
-                      fontSize: 14,
-                      fontWeight: active ? 700 : 500,
-                      cursor: "pointer",
-                      fontFamily: "inherit",
-                      transition: "all 150ms",
-                    }}
-                  >
-                    {v === "co" ? "Có" : "Không"}
-                  </button>
-                )
-              })}
-            </div>
-          </div>
-
-          <div
-            style={{
-              padding: "16px 24px",
-              display: "flex",
-              justifyContent: "flex-end",
-              gap: 10,
-            }}
-          >
-            <button
-              onClick={onBack}
-              style={{
-                padding: "9px 20px",
-                borderRadius: 9999,
-                border: "1px solid rgba(0,0,0,0.25)",
-                background: "none",
-                fontSize: 14,
-                fontWeight: 600,
-                cursor: "pointer",
-                color: "rgba(0,0,0,0.65)",
-                fontFamily: "inherit",
-              }}
-            >
-              Hủy
-            </button>
-            <button
-              onClick={() => {
-                if (canSubmit) onSubmit()
-              }}
-              disabled={!canSubmit}
-              style={{
-                padding: "9px 28px",
-                borderRadius: 9999,
-                border: "none",
-                background: canSubmit ? "#0A66C2" : "rgba(0,0,0,0.12)",
-                color: canSubmit ? "#fff" : "rgba(0,0,0,0.35)",
-                fontSize: 14,
-                fontWeight: 700,
-                cursor: canSubmit ? "pointer" : "default",
-                fontFamily: "inherit",
+                padding: "16px 24px",
                 display: "flex",
-                alignItems: "center",
-                gap: 8,
+                justifyContent: "flex-end",
+                gap: 10,
               }}
             >
-              <ClipboardText size={15} weight="fill" /> Đăng dự án
-            </button>
+              <button
+                onClick={onBack}
+                style={{
+                  padding: "9px 20px",
+                  borderRadius: 9999,
+                  border: "1px solid rgba(0,0,0,0.25)",
+                  background: "none",
+                  fontSize: 14,
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  color: "rgba(0,0,0,0.65)",
+                  fontFamily: "inherit",
+                }}
+              >
+                Hủy
+              </button>
+              <button
+                onClick={() => {
+                  if (canSubmit) onSubmit()
+                }}
+                disabled={!canSubmit}
+                style={{
+                  padding: "9px 28px",
+                  borderRadius: 9999,
+                  border: "none",
+                  background: canSubmit ? "#0A66C2" : "rgba(0,0,0,0.12)",
+                  color: canSubmit ? "#fff" : "rgba(0,0,0,0.35)",
+                  fontSize: 14,
+                  fontWeight: 700,
+                  cursor: canSubmit ? "pointer" : "default",
+                  fontFamily: "inherit",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                }}
+              >
+                <ClipboardText size={15} weight="fill" /> Đăng dự án
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </div>
   )
 }
@@ -11123,659 +11155,659 @@ function CreateContractPage({
   const projectNames = MY_PROJECTS_DATA.map((p) => p.name)
 
   return (
-    <div style={{background: "#F4F2EE", minHeight: "100%"}}>
-      <div style={{background: "linear-gradient(135deg, #0A66C2 0%, #084FA0 100%)", padding: "32px 0"}}>
-        <div style={{maxWidth: 1128, margin: "0 auto", padding: "0 24px"}}>
+    <div style={{ background: "#F4F2EE", minHeight: "100%" }}>
+      <div style={{ background: "linear-gradient(135deg, #0A66C2 0%, #084FA0 100%)", padding: "32px 0" }}>
+        <div style={{ maxWidth: 1128, margin: "0 auto", padding: "0 24px" }}>
           <HeaderBackButton onClick={onBack} />
-          <h1 style={{color: "#fff", fontWeight: 700, fontSize: 28, margin: 0}}>Tạo hợp đồng mới</h1>
-          <p style={{color: "rgba(255,255,255,0.80)", marginTop: 8, fontSize: 15}}>Điền thông tin để tạo hợp đồng với freelancer</p>
+          <h1 style={{ color: "#fff", fontWeight: 700, fontSize: 28, margin: 0 }}>Tạo hợp đồng mới</h1>
+          <p style={{ color: "rgba(255,255,255,0.80)", marginTop: 8, fontSize: 15 }}>Điền thông tin để tạo hợp đồng với freelancer</p>
         </div>
       </div>
-    <div
-      style={{
-        padding: "32px 16px 48px",
-      }}
-    >
-      <div style={{ maxWidth: 768, margin: "0 auto" }}>
-        {/* Back */}
-        <button
-          onClick={onBack}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 6,
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            fontSize: 13,
-            fontWeight: 600,
-            color: "rgba(0,0,0,0.60)",
-            fontFamily: "inherit",
-            marginBottom: 20,
-            padding: "4px 0",
-          }}
-          onMouseEnter={(e) =>
-            ((e.currentTarget as HTMLElement).style.color = "#0A66C2")
-          }
-          onMouseLeave={(e) =>
-            ((e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.60)")
-          }
-        >
-          <ArrowRight size={14} style={{ transform: "rotate(180deg)" }} /> Quay
-          lại
-        </button>
-
-        <div
-          style={{
-            background: "#fff",
-            borderRadius: 8,
-            boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-            overflow: "hidden",
-          }}
-        >
-          {/* Header */}
-          <div
+      <div
+        style={{
+          padding: "32px 16px 48px",
+        }}
+      >
+        <div style={{ maxWidth: 768, margin: "0 auto" }}>
+          {/* Back */}
+          <button
+            onClick={onBack}
             style={{
-              ...sec,
-              borderBottom: "1px solid rgba(0,0,0,0.08)",
               display: "flex",
               alignItems: "center",
-              gap: 14,
+              gap: 6,
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              fontSize: 13,
+              fontWeight: 600,
+              color: "rgba(0,0,0,0.60)",
+              fontFamily: "inherit",
+              marginBottom: 20,
+              padding: "4px 0",
+            }}
+            onMouseEnter={(e) =>
+              ((e.currentTarget as HTMLElement).style.color = "#0A66C2")
+            }
+            onMouseLeave={(e) =>
+              ((e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.60)")
+            }
+          >
+            <ArrowRight size={14} style={{ transform: "rotate(180deg)" }} /> Quay
+            lại
+          </button>
+
+          <div
+            style={{
+              background: "#fff",
+              borderRadius: 8,
+              boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+              overflow: "hidden",
             }}
           >
+            {/* Header */}
             <div
               style={{
-                width: 44,
-                height: 44,
-                borderRadius: 8,
-                background: "#EAF1FA",
+                ...sec,
+                borderBottom: "1px solid rgba(0,0,0,0.08)",
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "center",
-                flexShrink: 0,
+                gap: 14,
               }}
             >
-              <FileText size={22} color="#0A66C2" />
-            </div>
-            <div>
-              <h1
-                style={{
-                  fontSize: 22,
-                  fontWeight: 700,
-                  color: "rgba(0,0,0,0.90)",
-                  lineHeight: 1.2,
-                }}
-              >
-                Tạo hợp đồng mới
-              </h1>
-              <p
-                style={{
-                  fontSize: 13,
-                  color: "rgba(0,0,0,0.55)",
-                  marginTop: 2,
-                }}
-              >
-                Điền thông tin và mời freelancer tham gia hợp đồng
-              </p>
-            </div>
-          </div>
-
-          {/* Section 1 — Project selection */}
-          <div style={sec}>
-            <div
-              style={{
-                fontSize: 15,
-                fontWeight: 700,
-                color: "rgba(0,0,0,0.90)",
-                marginBottom: 16,
-              }}
-            >
-              Hợp đồng này dành cho dự án nào?
-            </div>
-            {selectedProject && (
               <div
                 style={{
+                  width: 44,
+                  height: 44,
+                  borderRadius: 8,
+                  background: "#EAF1FA",
                   display: "flex",
                   alignItems: "center",
-                  gap: 10,
-                  marginBottom: 14,
-                  padding: "10px 14px",
-                  background: "#EAF1FA",
-                  borderRadius: 6,
+                  justifyContent: "center",
+                  flexShrink: 0,
                 }}
               >
-                <FolderPlus size={16} color="#0A66C2" />
-                <span
-                  style={{
-                    fontSize: 14,
-                    fontWeight: 700,
-                    color: "#0A66C2",
-                    flex: 1,
-                  }}
-                >
-                  {selectedProject}
-                </span>
-                <button
-                  onClick={() => setSelectedProject(null)}
-                  style={{
-                    background: "none",
-                    border: "none",
-                    cursor: "pointer",
-                    color: "rgba(0,0,0,0.40)",
-                    display: "flex",
-                    padding: 2,
-                  }}
-                  onMouseEnter={(e) =>
-                    ((e.currentTarget as HTMLElement).style.color = "#C03A2B")
-                  }
-                  onMouseLeave={(e) =>
-                    ((e.currentTarget as HTMLElement).style.color =
-                      "rgba(0,0,0,0.40)")
-                  }
-                >
-                  <X size={14} weight="bold" />
-                </button>
+                <FileText size={22} color="#0A66C2" />
               </div>
-            )}
-            <div style={{ display: "flex", gap: 12 }}>
-              <button
-                onClick={() => setShowProjectModal(true)}
+              <div>
+                <h1
+                  style={{
+                    fontSize: 22,
+                    fontWeight: 700,
+                    color: "rgba(0,0,0,0.90)",
+                    lineHeight: 1.2,
+                  }}
+                >
+                  Tạo hợp đồng mới
+                </h1>
+                <p
+                  style={{
+                    fontSize: 13,
+                    color: "rgba(0,0,0,0.55)",
+                    marginTop: 2,
+                  }}
+                >
+                  Điền thông tin và mời freelancer tham gia hợp đồng
+                </p>
+              </div>
+            </div>
+
+            {/* Section 1 — Project selection */}
+            <div style={sec}>
+              <div
                 style={{
-                  borderRadius: 9999,
-                  border: "1px solid #0A66C2",
-                  background: "none",
-                  color: "#0A66C2",
-                  padding: "8px 24px",
-                  fontSize: 14,
-                  fontWeight: 600,
-                  cursor: "pointer",
-                  fontFamily: "inherit",
-                  transition: "background 150ms",
-                }}
-                onMouseEnter={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background = "#EAF1FA"
-                }}
-                onMouseLeave={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background = "none"
+                  fontSize: 15,
+                  fontWeight: 700,
+                  color: "rgba(0,0,0,0.90)",
+                  marginBottom: 16,
                 }}
               >
-                Chọn dự án
-              </button>
-            </div>
-          </div>
-
-          {/* Section 2 — Contract details */}
-          <div style={sec}>
-            <div
-              style={{
-                fontSize: 15,
-                fontWeight: 700,
-                color: "rgba(0,0,0,0.90)",
-                marginBottom: 18,
-              }}
-            >
-              Chi tiết hợp đồng
-            </div>
-
-            <div style={{ marginBottom: 16 }}>
-              <label style={labelStyle}>Tiêu đề hợp đồng *</label>
-              <input
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="VD: Thiết kế UI/UX cho ứng dụng mobile Fintech"
-                style={inputStyle}
-                onFocus={(e) =>
-                  ((e.currentTarget as HTMLElement).style.borderColor =
-                    "#0A66C2")
-                }
-                onBlur={(e) =>
-                  ((e.currentTarget as HTMLElement).style.borderColor =
-                    "rgba(0,0,0,0.15)")
-                }
-              />
-            </div>
-
-            <div style={{ display: "flex", gap: 16, marginBottom: 16 }}>
-              <div style={{ flex: 2 }}>
-                <label style={labelStyle}>Giá trị hợp đồng (VNĐ) *</label>
-                <div style={{ position: "relative" }}>
+                Hợp đồng này dành cho dự án nào?
+              </div>
+              {selectedProject && (
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 10,
+                    marginBottom: 14,
+                    padding: "10px 14px",
+                    background: "#EAF1FA",
+                    borderRadius: 6,
+                  }}
+                >
+                  <FolderPlus size={16} color="#0A66C2" />
                   <span
                     style={{
-                      position: "absolute",
-                      left: 12,
-                      top: "50%",
-                      transform: "translateY(-50%)",
-                      fontSize: 13,
+                      fontSize: 14,
                       fontWeight: 700,
-                      color: "rgba(0,0,0,0.45)",
-                      pointerEvents: "none",
+                      color: "#0A66C2",
+                      flex: 1,
                     }}
                   >
-                    ₫
+                    {selectedProject}
                   </span>
-                  <input
-                    type="number"
-                    value={value}
-                    onChange={(e) => setValue(e.target.value)}
-                    placeholder="VD: 45000000"
-                    style={{ ...inputStyle, paddingLeft: 28 }}
-                    onFocus={(e) =>
+                  <button
+                    onClick={() => setSelectedProject(null)}
+                    style={{
+                      background: "none",
+                      border: "none",
+                      cursor: "pointer",
+                      color: "rgba(0,0,0,0.40)",
+                      display: "flex",
+                      padding: 2,
+                    }}
+                    onMouseEnter={(e) =>
+                      ((e.currentTarget as HTMLElement).style.color = "#C03A2B")
+                    }
+                    onMouseLeave={(e) =>
+                    ((e.currentTarget as HTMLElement).style.color =
+                      "rgba(0,0,0,0.40)")
+                    }
+                  >
+                    <X size={14} weight="bold" />
+                  </button>
+                </div>
+              )}
+              <div style={{ display: "flex", gap: 12 }}>
+                <button
+                  onClick={() => setShowProjectModal(true)}
+                  style={{
+                    borderRadius: 9999,
+                    border: "1px solid #0A66C2",
+                    background: "none",
+                    color: "#0A66C2",
+                    padding: "8px 24px",
+                    fontSize: 14,
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    fontFamily: "inherit",
+                    transition: "background 150ms",
+                  }}
+                  onMouseEnter={(e) => {
+                    ; (e.currentTarget as HTMLElement).style.background = "#EAF1FA"
+                  }}
+                  onMouseLeave={(e) => {
+                    ; (e.currentTarget as HTMLElement).style.background = "none"
+                  }}
+                >
+                  Chọn dự án
+                </button>
+              </div>
+            </div>
+
+            {/* Section 2 — Contract details */}
+            <div style={sec}>
+              <div
+                style={{
+                  fontSize: 15,
+                  fontWeight: 700,
+                  color: "rgba(0,0,0,0.90)",
+                  marginBottom: 18,
+                }}
+              >
+                Chi tiết hợp đồng
+              </div>
+
+              <div style={{ marginBottom: 16 }}>
+                <label style={labelStyle}>Tiêu đề hợp đồng *</label>
+                <input
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="VD: Thiết kế UI/UX cho ứng dụng mobile Fintech"
+                  style={inputStyle}
+                  onFocus={(e) =>
+                  ((e.currentTarget as HTMLElement).style.borderColor =
+                    "#0A66C2")
+                  }
+                  onBlur={(e) =>
+                  ((e.currentTarget as HTMLElement).style.borderColor =
+                    "rgba(0,0,0,0.15)")
+                  }
+                />
+              </div>
+
+              <div style={{ display: "flex", gap: 16, marginBottom: 16 }}>
+                <div style={{ flex: 2 }}>
+                  <label style={labelStyle}>Giá trị hợp đồng (VNĐ) *</label>
+                  <div style={{ position: "relative" }}>
+                    <span
+                      style={{
+                        position: "absolute",
+                        left: 12,
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                        fontSize: 13,
+                        fontWeight: 700,
+                        color: "rgba(0,0,0,0.45)",
+                        pointerEvents: "none",
+                      }}
+                    >
+                      ₫
+                    </span>
+                    <input
+                      type="number"
+                      value={value}
+                      onChange={(e) => setValue(e.target.value)}
+                      placeholder="VD: 45000000"
+                      style={{ ...inputStyle, paddingLeft: 28 }}
+                      onFocus={(e) =>
                       ((e.currentTarget as HTMLElement).style.borderColor =
                         "#0A66C2")
-                    }
-                    onBlur={(e) =>
+                      }
+                      onBlur={(e) =>
                       ((e.currentTarget as HTMLElement).style.borderColor =
                         "rgba(0,0,0,0.15)")
+                      }
+                    />
+                  </div>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <label style={labelStyle}>Chu kỳ</label>
+                  <select
+                    value={period}
+                    onChange={(e) => setPeriod(e.target.value)}
+                    style={{
+                      ...inputStyle,
+                      cursor: "pointer",
+                      appearance: "auto",
+                    }}
+                    onFocus={(e) =>
+                    ((e.currentTarget as HTMLElement).style.borderColor =
+                      "#0A66C2")
+                    }
+                    onBlur={(e) =>
+                    ((e.currentTarget as HTMLElement).style.borderColor =
+                      "rgba(0,0,0,0.15)")
+                    }
+                  >
+                    {CY_PERIODS.map((p) => (
+                      <option key={p} value={p}>
+                        {p}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div style={{ display: "flex", gap: 16, marginBottom: 16 }}>
+                <div style={{ flex: 1 }}>
+                  <label style={labelStyle}>Ngày bắt đầu</label>
+                  <input
+                    type="date"
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                    style={inputStyle}
+                    onFocus={(e) =>
+                    ((e.currentTarget as HTMLElement).style.borderColor =
+                      "#0A66C2")
+                    }
+                    onBlur={(e) =>
+                    ((e.currentTarget as HTMLElement).style.borderColor =
+                      "rgba(0,0,0,0.15)")
+                    }
+                  />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <label style={labelStyle}>Ngày kết thúc</label>
+                  <input
+                    type="date"
+                    value={endDate}
+                    onChange={(e) => setEndDate(e.target.value)}
+                    style={inputStyle}
+                    onFocus={(e) =>
+                    ((e.currentTarget as HTMLElement).style.borderColor =
+                      "#0A66C2")
+                    }
+                    onBlur={(e) =>
+                    ((e.currentTarget as HTMLElement).style.borderColor =
+                      "rgba(0,0,0,0.15)")
                     }
                   />
                 </div>
               </div>
-              <div style={{ flex: 1 }}>
-                <label style={labelStyle}>Chu kỳ</label>
-                <select
-                  value={period}
-                  onChange={(e) => setPeriod(e.target.value)}
-                  style={{
-                    ...inputStyle,
-                    cursor: "pointer",
-                    appearance: "auto",
+
+              <div>
+                <label style={labelStyle}>Chi tiết & Điều khoản *</label>
+                <input
+                  ref={termsFileRef}
+                  type="file"
+                  accept=".pdf,.doc,.docx,.txt"
+                  style={{ display: "none" }}
+                  onChange={(e) => {
+                    const f = e.target.files?.[0]
+                    if (f) setTermsFileName(f.name)
                   }}
-                  onFocus={(e) =>
-                    ((e.currentTarget as HTMLElement).style.borderColor =
-                      "#0A66C2")
-                  }
-                  onBlur={(e) =>
-                    ((e.currentTarget as HTMLElement).style.borderColor =
-                      "rgba(0,0,0,0.15)")
-                  }
+                />
+                <div
+                  onClick={() => termsFileRef.current?.click()}
+                  style={{
+                    border: "1.5px dashed rgba(0,0,0,0.18)",
+                    borderRadius: 6,
+                    padding: "20px 16px",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 8,
+                    cursor: "pointer",
+                    background: termsFileName ? "#EAF1FA" : "#FAFAF8",
+                    transition: "border-color 150ms, background 150ms",
+                    minHeight: 100,
+                  }}
+                  onMouseEnter={(e) => {
+                    ; (e.currentTarget as HTMLElement).style.borderColor =
+                      "#0A66C2"
+                  }}
+                  onMouseLeave={(e) => {
+                    ; (e.currentTarget as HTMLElement).style.borderColor =
+                      "rgba(0,0,0,0.18)"
+                  }}
                 >
-                  {CY_PERIODS.map((p) => (
-                    <option key={p} value={p}>
-                      {p}
-                    </option>
-                  ))}
-                </select>
+                  {termsFileName ? (
+                    <>
+                      <FileText size={22} color="#0A66C2" />
+                      <span
+                        style={{
+                          fontSize: 14,
+                          fontWeight: 600,
+                          color: "#0A66C2",
+                        }}
+                      >
+                        {termsFileName}
+                      </span>
+                      <span style={{ fontSize: 12, color: "rgba(0,0,0,0.45)" }}>
+                        Nhấn để thay thế tài liệu
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <Paperclip size={22} color="rgba(0,0,0,0.40)" />
+                      <span
+                        style={{
+                          fontSize: 14,
+                          fontWeight: 600,
+                          color: "rgba(0,0,0,0.65)",
+                        }}
+                      >
+                        Tải lên tài liệu điều khoản
+                      </span>
+                      <span style={{ fontSize: 12, color: "rgba(0,0,0,0.40)" }}>
+                        PDF, DOC, DOCX, TXT
+                      </span>
+                    </>
+                  )}
+                </div>
               </div>
             </div>
 
-            <div style={{ display: "flex", gap: 16, marginBottom: 16 }}>
-              <div style={{ flex: 1 }}>
-                <label style={labelStyle}>Ngày bắt đầu</label>
-                <input
-                  type="date"
-                  value={startDate}
-                  onChange={(e) => setStartDate(e.target.value)}
-                  style={inputStyle}
-                  onFocus={(e) =>
-                    ((e.currentTarget as HTMLElement).style.borderColor =
-                      "#0A66C2")
-                  }
-                  onBlur={(e) =>
-                    ((e.currentTarget as HTMLElement).style.borderColor =
-                      "rgba(0,0,0,0.15)")
-                  }
-                />
-              </div>
-              <div style={{ flex: 1 }}>
-                <label style={labelStyle}>Ngày kết thúc</label>
-                <input
-                  type="date"
-                  value={endDate}
-                  onChange={(e) => setEndDate(e.target.value)}
-                  style={inputStyle}
-                  onFocus={(e) =>
-                    ((e.currentTarget as HTMLElement).style.borderColor =
-                      "#0A66C2")
-                  }
-                  onBlur={(e) =>
-                    ((e.currentTarget as HTMLElement).style.borderColor =
-                      "rgba(0,0,0,0.15)")
-                  }
-                />
-              </div>
-            </div>
-
-            <div>
-              <label style={labelStyle}>Chi tiết & Điều khoản *</label>
-              <input
-                ref={termsFileRef}
-                type="file"
-                accept=".pdf,.doc,.docx,.txt"
-                style={{ display: "none" }}
-                onChange={(e) => {
-                  const f = e.target.files?.[0]
-                  if (f) setTermsFileName(f.name)
-                }}
-              />
+            {/* Section 3 — Invite freelancer */}
+            <div style={sec}>
               <div
-                onClick={() => termsFileRef.current?.click()}
                 style={{
-                  border: "1.5px dashed rgba(0,0,0,0.18)",
-                  borderRadius: 6,
-                  padding: "20px 16px",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: 8,
-                  cursor: "pointer",
-                  background: termsFileName ? "#EAF1FA" : "#FAFAF8",
-                  transition: "border-color 150ms, background 150ms",
-                  minHeight: 100,
-                }}
-                onMouseEnter={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.borderColor =
-                    "#0A66C2"
-                }}
-                onMouseLeave={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.borderColor =
-                    "rgba(0,0,0,0.18)"
+                  fontSize: 15,
+                  fontWeight: 700,
+                  color: "rgba(0,0,0,0.90)",
+                  marginBottom: 4,
                 }}
               >
-                {termsFileName ? (
-                  <>
-                    <FileText size={22} color="#0A66C2" />
+                Mời Freelancer
+              </div>
+              <p
+                style={{
+                  fontSize: 14,
+                  color: "rgba(0,0,0,0.60)",
+                  marginBottom: 16,
+                }}
+              >
+                Nhập email của freelancer để gửi lời mời tham gia hợp đồng này
+              </p>
+
+              <div style={{ marginBottom: 16 }}>
+                <label style={labelStyle}>Email Freelancer *</label>
+                <input
+                  type="email"
+                  value={freelancerEmail}
+                  onChange={(e) => setFreelancerEmail(e.target.value)}
+                  placeholder="freelancer@example.com"
+                  style={inputStyle}
+                  onFocus={(e) =>
+                  ((e.currentTarget as HTMLElement).style.borderColor =
+                    "#0A66C2")
+                  }
+                  onBlur={(e) =>
+                  ((e.currentTarget as HTMLElement).style.borderColor =
+                    "rgba(0,0,0,0.15)")
+                  }
+                />
+              </div>
+
+              <div>
+                <label style={{ ...labelStyle }}>
+                  Tin nhắn mời{" "}
+                  <span style={{ fontWeight: 400, color: "rgba(0,0,0,0.40)" }}>
+                    (tuỳ chọn)
+                  </span>
+                </label>
+                <textarea
+                  value={inviteMsg}
+                  onChange={(e) => setInviteMsg(e.target.value)}
+                  placeholder="Viết tin nhắn giới thiệu về dự án và lý do bạn muốn hợp tác..."
+                  style={{
+                    ...inputStyle,
+                    minHeight: 88,
+                    resize: "vertical",
+                    lineHeight: 1.65,
+                  }}
+                  onFocus={(e) =>
+                  ((e.currentTarget as HTMLElement).style.borderColor =
+                    "#0A66C2")
+                  }
+                  onBlur={(e) =>
+                  ((e.currentTarget as HTMLElement).style.borderColor =
+                    "rgba(0,0,0,0.15)")
+                  }
+                />
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div
+              style={{
+                padding: "20px 28px",
+                background: "#FAFAF8",
+                display: "flex",
+                justifyContent: "flex-end",
+                gap: 12,
+                borderBottomLeftRadius: 8,
+                borderBottomRightRadius: 8,
+              }}
+            >
+              <button
+                onClick={onBack}
+                style={{
+                  padding: "9px 20px",
+                  borderRadius: 9999,
+                  border: "1px solid rgba(0,0,0,0.25)",
+                  background: "none",
+                  fontSize: 14,
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  color: "rgba(0,0,0,0.65)",
+                  fontFamily: "inherit",
+                  transition: "background 150ms",
+                }}
+                onMouseEnter={(e) => {
+                  ; (e.currentTarget as HTMLElement).style.background = "#F4F2EE"
+                }}
+                onMouseLeave={(e) => {
+                  ; (e.currentTarget as HTMLElement).style.background = "none"
+                }}
+              >
+                Hủy
+              </button>
+              <button
+                onClick={() => {
+                  if (canSubmit) onSubmit()
+                }}
+                disabled={!canSubmit}
+                style={{
+                  padding: "8px 32px",
+                  borderRadius: 9999,
+                  border: "none",
+                  background: canSubmit ? "#0A66C2" : "rgba(0,0,0,0.12)",
+                  color: canSubmit ? "#fff" : "rgba(0,0,0,0.35)",
+                  fontSize: 14,
+                  fontWeight: 600,
+                  cursor: canSubmit ? "pointer" : "default",
+                  fontFamily: "inherit",
+                  transition: "background 150ms",
+                }}
+                onMouseEnter={(e) => {
+                  if (canSubmit)
+                    (e.currentTarget as HTMLElement).style.background = "#084FA0"
+                }}
+                onMouseLeave={(e) => {
+                  if (canSubmit)
+                    (e.currentTarget as HTMLElement).style.background = "#0A66C2"
+                }}
+              >
+                Tạo & Gửi lời mời
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Project selection modal */}
+        {showProjectModal && (
+          <div
+            style={{
+              position: "fixed",
+              inset: 0,
+              background: "rgba(0,0,0,0.55)",
+              zIndex: 9999,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            onClick={(e) => {
+              if (e.target === e.currentTarget) setShowProjectModal(false)
+            }}
+          >
+            <div
+              style={{
+                background: "#fff",
+                borderRadius: 12,
+                width: 480,
+                boxShadow: "0 8px 40px rgba(0,0,0,0.22)",
+                overflow: "hidden",
+              }}
+            >
+              <div
+                style={{
+                  padding: "20px 24px",
+                  borderBottom: "1px solid rgba(0,0,0,0.08)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: 16,
+                    fontWeight: 700,
+                    color: "rgba(0,0,0,0.90)",
+                  }}
+                >
+                  Chọn dự án
+                </div>
+                <button
+                  onClick={() => setShowProjectModal(false)}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    display: "flex",
+                    color: "rgba(0,0,0,0.50)",
+                    padding: 4,
+                  }}
+                >
+                  <X size={18} weight="bold" />
+                </button>
+              </div>
+              <div style={{ padding: "8px 0 16px" }}>
+                {projectNames.map((name) => (
+                  <div
+                    key={name}
+                    onClick={() => {
+                      setSelectedProject(name)
+                      setShowProjectModal(false)
+                    }}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 12,
+                      padding: "12px 24px",
+                      cursor: "pointer",
+                      transition: "background 150ms",
+                    }}
+                    onMouseEnter={(e) =>
+                    ((e.currentTarget as HTMLElement).style.background =
+                      "#EAF1FA")
+                    }
+                    onMouseLeave={(e) =>
+                      ((e.currentTarget as HTMLElement).style.background = "none")
+                    }
+                  >
+                    <div
+                      style={{
+                        width: 36,
+                        height: 36,
+                        borderRadius: 6,
+                        background: "#EAF1FA",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexShrink: 0,
+                      }}
+                    >
+                      <FolderPlus size={18} color="#0A66C2" />
+                    </div>
                     <span
                       style={{
                         fontSize: 14,
                         fontWeight: 600,
-                        color: "#0A66C2",
+                        color: "rgba(0,0,0,0.90)",
                       }}
                     >
-                      {termsFileName}
+                      {name}
                     </span>
-                    <span style={{ fontSize: 12, color: "rgba(0,0,0,0.45)" }}>
-                      Nhấn để thay thế tài liệu
-                    </span>
-                  </>
-                ) : (
-                  <>
-                    <Paperclip size={22} color="rgba(0,0,0,0.40)" />
-                    <span
-                      style={{
-                        fontSize: 14,
-                        fontWeight: 600,
-                        color: "rgba(0,0,0,0.65)",
-                      }}
-                    >
-                      Tải lên tài liệu điều khoản
-                    </span>
-                    <span style={{ fontSize: 12, color: "rgba(0,0,0,0.40)" }}>
-                      PDF, DOC, DOCX, TXT
-                    </span>
-                  </>
+                    {selectedProject === name && (
+                      <CheckCircle
+                        size={18}
+                        color="#057642"
+                        weight="fill"
+                        style={{ marginLeft: "auto" }}
+                      />
+                    )}
+                  </div>
+                ))}
+                {projectNames.length === 0 && (
+                  <div
+                    style={{
+                      padding: "16px 24px",
+                      fontSize: 13,
+                      color: "rgba(0,0,0,0.45)",
+                    }}
+                  >
+                    Bạn chưa có dự án nào.
+                  </div>
                 )}
               </div>
             </div>
           </div>
-
-          {/* Section 3 — Invite freelancer */}
-          <div style={sec}>
-            <div
-              style={{
-                fontSize: 15,
-                fontWeight: 700,
-                color: "rgba(0,0,0,0.90)",
-                marginBottom: 4,
-              }}
-            >
-              Mời Freelancer
-            </div>
-            <p
-              style={{
-                fontSize: 14,
-                color: "rgba(0,0,0,0.60)",
-                marginBottom: 16,
-              }}
-            >
-              Nhập email của freelancer để gửi lời mời tham gia hợp đồng này
-            </p>
-
-            <div style={{ marginBottom: 16 }}>
-              <label style={labelStyle}>Email Freelancer *</label>
-              <input
-                type="email"
-                value={freelancerEmail}
-                onChange={(e) => setFreelancerEmail(e.target.value)}
-                placeholder="freelancer@example.com"
-                style={inputStyle}
-                onFocus={(e) =>
-                  ((e.currentTarget as HTMLElement).style.borderColor =
-                    "#0A66C2")
-                }
-                onBlur={(e) =>
-                  ((e.currentTarget as HTMLElement).style.borderColor =
-                    "rgba(0,0,0,0.15)")
-                }
-              />
-            </div>
-
-            <div>
-              <label style={{ ...labelStyle }}>
-                Tin nhắn mời{" "}
-                <span style={{ fontWeight: 400, color: "rgba(0,0,0,0.40)" }}>
-                  (tuỳ chọn)
-                </span>
-              </label>
-              <textarea
-                value={inviteMsg}
-                onChange={(e) => setInviteMsg(e.target.value)}
-                placeholder="Viết tin nhắn giới thiệu về dự án và lý do bạn muốn hợp tác..."
-                style={{
-                  ...inputStyle,
-                  minHeight: 88,
-                  resize: "vertical",
-                  lineHeight: 1.65,
-                }}
-                onFocus={(e) =>
-                  ((e.currentTarget as HTMLElement).style.borderColor =
-                    "#0A66C2")
-                }
-                onBlur={(e) =>
-                  ((e.currentTarget as HTMLElement).style.borderColor =
-                    "rgba(0,0,0,0.15)")
-                }
-              />
-            </div>
-          </div>
-
-          {/* Footer */}
-          <div
-            style={{
-              padding: "20px 28px",
-              background: "#FAFAF8",
-              display: "flex",
-              justifyContent: "flex-end",
-              gap: 12,
-              borderBottomLeftRadius: 8,
-              borderBottomRightRadius: 8,
-            }}
-          >
-            <button
-              onClick={onBack}
-              style={{
-                padding: "8px 20px",
-                borderRadius: 4,
-                border: "none",
-                background: "none",
-                fontSize: 14,
-                fontWeight: 600,
-                cursor: "pointer",
-                color: "rgba(0,0,0,0.60)",
-                fontFamily: "inherit",
-                transition: "background 150ms",
-              }}
-              onMouseEnter={(e) => {
-                ;(e.currentTarget as HTMLElement).style.background = "#F4F2EE"
-              }}
-              onMouseLeave={(e) => {
-                ;(e.currentTarget as HTMLElement).style.background = "none"
-              }}
-            >
-              Hủy
-            </button>
-            <button
-              onClick={() => {
-                if (canSubmit) onSubmit()
-              }}
-              disabled={!canSubmit}
-              style={{
-                padding: "8px 32px",
-                borderRadius: 9999,
-                border: "none",
-                background: canSubmit ? "#0A66C2" : "rgba(0,0,0,0.12)",
-                color: canSubmit ? "#fff" : "rgba(0,0,0,0.35)",
-                fontSize: 14,
-                fontWeight: 600,
-                cursor: canSubmit ? "pointer" : "default",
-                fontFamily: "inherit",
-                transition: "background 150ms",
-              }}
-              onMouseEnter={(e) => {
-                if (canSubmit)
-                  (e.currentTarget as HTMLElement).style.background = "#084FA0"
-              }}
-              onMouseLeave={(e) => {
-                if (canSubmit)
-                  (e.currentTarget as HTMLElement).style.background = "#0A66C2"
-              }}
-            >
-              Tạo & Gửi lời mời
-            </button>
-          </div>
-        </div>
+        )}
       </div>
-
-      {/* Project selection modal */}
-      {showProjectModal && (
-        <div
-          style={{
-            position: "fixed",
-            inset: 0,
-            background: "rgba(0,0,0,0.55)",
-            zIndex: 9999,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-          onClick={(e) => {
-            if (e.target === e.currentTarget) setShowProjectModal(false)
-          }}
-        >
-          <div
-            style={{
-              background: "#fff",
-              borderRadius: 12,
-              width: 480,
-              boxShadow: "0 8px 40px rgba(0,0,0,0.22)",
-              overflow: "hidden",
-            }}
-          >
-            <div
-              style={{
-                padding: "20px 24px",
-                borderBottom: "1px solid rgba(0,0,0,0.08)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <div
-                style={{
-                  fontSize: 16,
-                  fontWeight: 700,
-                  color: "rgba(0,0,0,0.90)",
-                }}
-              >
-                Chọn dự án
-              </div>
-              <button
-                onClick={() => setShowProjectModal(false)}
-                style={{
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  display: "flex",
-                  color: "rgba(0,0,0,0.50)",
-                  padding: 4,
-                }}
-              >
-                <X size={18} weight="bold" />
-              </button>
-            </div>
-            <div style={{ padding: "8px 0 16px" }}>
-              {projectNames.map((name) => (
-                <div
-                  key={name}
-                  onClick={() => {
-                    setSelectedProject(name)
-                    setShowProjectModal(false)
-                  }}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 12,
-                    padding: "12px 24px",
-                    cursor: "pointer",
-                    transition: "background 150ms",
-                  }}
-                  onMouseEnter={(e) =>
-                    ((e.currentTarget as HTMLElement).style.background =
-                      "#EAF1FA")
-                  }
-                  onMouseLeave={(e) =>
-                    ((e.currentTarget as HTMLElement).style.background = "none")
-                  }
-                >
-                  <div
-                    style={{
-                      width: 36,
-                      height: 36,
-                      borderRadius: 6,
-                      background: "#EAF1FA",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0,
-                    }}
-                  >
-                    <FolderPlus size={18} color="#0A66C2" />
-                  </div>
-                  <span
-                    style={{
-                      fontSize: 14,
-                      fontWeight: 600,
-                      color: "rgba(0,0,0,0.90)",
-                    }}
-                  >
-                    {name}
-                  </span>
-                  {selectedProject === name && (
-                    <CheckCircle
-                      size={18}
-                      color="#057642"
-                      weight="fill"
-                      style={{ marginLeft: "auto" }}
-                    />
-                  )}
-                </div>
-              ))}
-              {projectNames.length === 0 && (
-                <div
-                  style={{
-                    padding: "16px 24px",
-                    fontSize: 13,
-                    color: "rgba(0,0,0,0.45)",
-                  }}
-                >
-                  Bạn chưa có dự án nào.
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
     </div>
   )
 }
@@ -12252,14 +12284,15 @@ function ApplyModal({
           <button
             onClick={onClose}
             style={{
+              padding: "8px 20px",
+              borderRadius: 9999,
+              border: "1px solid rgba(0,0,0,0.20)",
               background: "none",
-              border: "none",
               cursor: "pointer",
               fontFamily: "inherit",
               fontSize: 14,
-              color: "rgba(0,0,0,0.60)",
-              padding: "8px 16px",
-              borderRadius: 9999,
+              fontWeight: 600,
+              color: "rgba(0,0,0,0.65)",
               transition: "background 150ms ease",
             }}
             onMouseEnter={(e) =>
@@ -12633,8 +12666,8 @@ function ContractDetailsPage({
                     ((e.currentTarget as HTMLElement).style.color = "#C03A2B")
                   }
                   onMouseLeave={(e) =>
-                    ((e.currentTarget as HTMLElement).style.color =
-                      "rgba(0,0,0,0.50)")
+                  ((e.currentTarget as HTMLElement).style.color =
+                    "rgba(0,0,0,0.50)")
                   }
                   onClick={() => setReportJob(true)}
                 >
@@ -12658,15 +12691,15 @@ function ContractDetailsPage({
                     gap: 8,
                   }}
                   onMouseEnter={(e) =>
-                    ((e.currentTarget as HTMLElement).style.background =
-                      "#084FA0")
+                  ((e.currentTarget as HTMLElement).style.background =
+                    "#084FA0")
                   }
                   onMouseLeave={(e) =>
-                    ((e.currentTarget as HTMLElement).style.background =
-                      "#0A66C2")
+                  ((e.currentTarget as HTMLElement).style.background =
+                    "#0A66C2")
                   }
                 >
-                  <UserPlus size={16} />
+                  <PaperPlaneTilt size={16} weight="bold" />
                   Ứng tuyển
                 </button>
               </div>
@@ -12808,12 +12841,12 @@ function ContractDetailsPage({
                         fontWeight: 600,
                       }}
                       onMouseEnter={(e) =>
-                        ((e.currentTarget as HTMLElement).style.textDecoration =
-                          "underline")
+                      ((e.currentTarget as HTMLElement).style.textDecoration =
+                        "underline")
                       }
                       onMouseLeave={(e) =>
-                        ((e.currentTarget as HTMLElement).style.textDecoration =
-                          "none")
+                      ((e.currentTarget as HTMLElement).style.textDecoration =
+                        "none")
                       }
                     >
                       Xem thêm →
@@ -12960,8 +12993,8 @@ function ContractDetailsPage({
                   transition: "background 150ms ease",
                 }}
                 onMouseEnter={(e) =>
-                  ((e.currentTarget as HTMLElement).style.background =
-                    "#EAF1FA")
+                ((e.currentTarget as HTMLElement).style.background =
+                  "#EAF1FA")
                 }
                 onMouseLeave={(e) =>
                   ((e.currentTarget as HTMLElement).style.background = "none")
@@ -12977,19 +13010,19 @@ function ContractDetailsPage({
 
       {/* Report job modal */}
       {reportJob && (
-        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.45)",zIndex:60,display:"flex",alignItems:"center",justifyContent:"center"}}>
-          <div style={{background:"#fff",borderRadius:16,padding:28,maxWidth:460,width:"100%",boxShadow:"0 8px 32px rgba(0,0,0,0.18)"}}>
-            <p style={{fontWeight:700,fontSize:18,marginBottom:16}}>Báo cáo việc làm</p>
-            <label style={{display:"block",fontWeight:600,fontSize:13,marginBottom:6}}>Lý do báo cáo <span style={{color:"#C00"}}>*</span></label>
-            <textarea value={reportJobReason} onChange={e=>setReportJobReason(e.target.value)} rows={4} style={{width:"100%",borderRadius:8,border:"1px solid #ccc",padding:"10px 12px",fontSize:14,resize:"vertical",boxSizing:"border-box"}} placeholder="Mô tả lý do..." />
-            <div style={{marginTop:14}}>
-              <label style={{display:"block",fontWeight:600,fontSize:13,marginBottom:6}}>Hình ảnh (tùy chọn)</label>
-              <input type="file" accept="image/*" onChange={e=>setReportJobImg(e.target.files?.[0]?.name??"")} />
-              {reportJobImg && <span style={{fontSize:12,color:"#555",marginLeft:8}}>{reportJobImg}</span>}
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.45)", zIndex: 60, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ background: "#fff", borderRadius: 16, padding: 28, maxWidth: 460, width: "100%", boxShadow: "0 8px 32px rgba(0,0,0,0.18)" }}>
+            <p style={{ fontWeight: 700, fontSize: 18, marginBottom: 16 }}>Báo cáo việc làm</p>
+            <label style={{ display: "block", fontWeight: 600, fontSize: 13, marginBottom: 6 }}>Lý do báo cáo <span style={{ color: "#C03A2B" }}>*</span></label>
+            <textarea value={reportJobReason} onChange={e => setReportJobReason(e.target.value)} rows={4} style={{ width: "100%", borderRadius: 8, border: "1px solid #ccc", padding: "10px 12px", fontSize: 14, resize: "vertical", boxSizing: "border-box" }} placeholder="Mô tả lý do..." />
+            <div style={{ marginTop: 14 }}>
+              <label style={{ display: "block", fontWeight: 600, fontSize: 13, marginBottom: 6 }}>Hình ảnh (tùy chọn)</label>
+              <input type="file" accept="image/*" onChange={e => setReportJobImg(e.target.files?.[0]?.name ?? "")} />
+              {reportJobImg && <span style={{ fontSize: 12, color: "#555", marginLeft: 8 }}>{reportJobImg}</span>}
             </div>
-            <div style={{display:"flex",gap:12,justifyContent:"flex-end",marginTop:20}}>
-              <button onClick={()=>setReportJob(false)} style={{padding:"9px 22px",borderRadius:99,border:"1px solid #ccc",background:"#fff",cursor:"pointer",fontWeight:600}}>Hủy</button>
-              <button disabled={!reportJobReason.trim()} onClick={()=>{setReportJobReason("");setReportJobImg("");setReportJob(false);setToast("Đã gửi báo cáo vi phạm.");}} style={{padding:"9px 22px",borderRadius:99,border:"none",background:reportJobReason.trim()?"#0A66C2":"#b0c4d8",color:"#fff",cursor:reportJobReason.trim()?"pointer":"not-allowed",fontWeight:600}}>Gửi báo cáo</button>
+            <div style={{ display: "flex", gap: 12, justifyContent: "flex-end", marginTop: 20 }}>
+              <button onClick={() => setReportJob(false)} style={{ padding: "9px 22px", borderRadius: 9999, border: "1px solid rgba(0,0,0,0.20)", background: "#fff", color: "rgba(0,0,0,0.70)", cursor: "pointer", fontWeight: 600, fontFamily: "inherit" }}>Hủy</button>
+              <button disabled={!reportJobReason.trim()} onClick={() => { setReportJobReason(""); setReportJobImg(""); setReportJob(false); setToast("Đã gửi báo cáo vi phạm."); }} style={{ padding: "9px 22px", borderRadius: 9999, border: "none", background: reportJobReason.trim() ? "#0A66C2" : "#b0c4d8", color: "#fff", cursor: reportJobReason.trim() ? "pointer" : "not-allowed", fontWeight: 600, fontFamily: "inherit" }}>Gửi báo cáo</button>
             </div>
           </div>
         </div>
@@ -13290,8 +13323,8 @@ function MessagingPage() {
 
   const filtered = search
     ? tabThreads.filter((t) =>
-        t.name.toLowerCase().includes(search.toLowerCase()),
-      )
+      t.name.toLowerCase().includes(search.toLowerCase()),
+    )
     : tabThreads
 
   const handleSend = () => {
@@ -13303,14 +13336,14 @@ function MessagingPage() {
       prev.map((t) =>
         t.id === activeId
           ? {
-              ...t,
-              preview: text,
-              time: "Vừa xong",
-              messages: [
-                ...t.messages,
-                { id: Date.now(), from: "me" as const, text, time: timeStr },
-              ],
-            }
+            ...t,
+            preview: text,
+            time: "Vừa xong",
+            messages: [
+              ...t.messages,
+              { id: Date.now(), from: "me" as const, text, time: timeStr },
+            ],
+          }
           : t,
       ),
     )
@@ -13383,10 +13416,10 @@ function MessagingPage() {
                   transition: "background 150ms",
                 }}
                 onMouseEnter={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background = "#EAF1FA"
+                  ; (e.currentTarget as HTMLElement).style.background = "#EAF1FA"
                 }}
                 onMouseLeave={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background = "none"
+                  ; (e.currentTarget as HTMLElement).style.background = "none"
                 }}
               >
                 <Plus size={13} weight="bold" /> Tạo nhóm
@@ -13416,8 +13449,8 @@ function MessagingPage() {
                   flexShrink: 0,
                 }}
                 onMouseEnter={(e) =>
-                  ((e.currentTarget as HTMLElement).style.background =
-                    "#EAF1FA")
+                ((e.currentTarget as HTMLElement).style.background =
+                  "#EAF1FA")
                 }
                 onMouseLeave={(e) =>
                   ((e.currentTarget as HTMLElement).style.background = "none")
@@ -13702,8 +13735,8 @@ function MessagingPage() {
                   color: "rgba(0,0,0,0.55)",
                 }}
                 onMouseEnter={(e) =>
-                  ((e.currentTarget as HTMLElement).style.background =
-                    "#EAF1FA")
+                ((e.currentTarget as HTMLElement).style.background =
+                  "#EAF1FA")
                 }
                 onMouseLeave={(e) =>
                   ((e.currentTarget as HTMLElement).style.background = "none")
@@ -13804,12 +13837,12 @@ function MessagingPage() {
                   transition: "border-color 150ms",
                 }}
                 onFocus={(e) =>
-                  ((e.currentTarget as HTMLElement).style.borderColor =
-                    "#0A66C2")
+                ((e.currentTarget as HTMLElement).style.borderColor =
+                  "#0A66C2")
                 }
                 onBlur={(e) =>
-                  ((e.currentTarget as HTMLElement).style.borderColor =
-                    "rgba(0,0,0,0.15)")
+                ((e.currentTarget as HTMLElement).style.borderColor =
+                  "rgba(0,0,0,0.15)")
                 }
               />
               <div
@@ -13836,12 +13869,12 @@ function MessagingPage() {
                         transition: "background 150ms",
                       }}
                       onMouseEnter={(e) =>
-                        ((e.currentTarget as HTMLElement).style.background =
-                          "#EAF1FA")
+                      ((e.currentTarget as HTMLElement).style.background =
+                        "#EAF1FA")
                       }
                       onMouseLeave={(e) =>
-                        ((e.currentTarget as HTMLElement).style.background =
-                          "none")
+                      ((e.currentTarget as HTMLElement).style.background =
+                        "none")
                       }
                     >
                       <Icon size={20} />
@@ -14040,8 +14073,8 @@ function MsgCreateGroupModal({
                 ((e.currentTarget as HTMLElement).style.borderColor = "#0A66C2")
               }
               onBlur={(e) =>
-                ((e.currentTarget as HTMLElement).style.borderColor =
-                  "rgba(0,0,0,0.18)")
+              ((e.currentTarget as HTMLElement).style.borderColor =
+                "rgba(0,0,0,0.18)")
               }
             />
           </div>
@@ -14060,9 +14093,8 @@ function MsgCreateGroupModal({
                       flex: 1,
                       padding: "9px 0",
                       borderRadius: 8,
-                      border: `1.5px solid ${
-                        active ? "#0A66C2" : "rgba(0,0,0,0.15)"
-                      }`,
+                      border: `1.5px solid ${active ? "#0A66C2" : "rgba(0,0,0,0.15)"
+                        }`,
                       background: active ? "#EAF1FA" : "#FAFAF8",
                       color: active ? "#0A66C2" : "rgba(0,0,0,0.65)",
                       fontSize: 14,
@@ -14095,22 +14127,22 @@ function MsgCreateGroupModal({
                 placeholder="Tìm theo tên hoặc Gmail..."
                 style={{ ...inputSt, flex: 1 }}
                 onFocus={(e) =>
-                  ((e.currentTarget as HTMLElement).style.borderColor =
-                    "#0A66C2")
+                ((e.currentTarget as HTMLElement).style.borderColor =
+                  "#0A66C2")
                 }
                 onBlur={(e) =>
-                  ((e.currentTarget as HTMLElement).style.borderColor =
-                    "rgba(0,0,0,0.18)")
+                ((e.currentTarget as HTMLElement).style.borderColor =
+                  "rgba(0,0,0,0.18)")
                 }
               />
               <button
                 onClick={addMember}
                 style={{
-                  padding: "9px 16px",
+                  padding: "9px 18px",
                   background: "#0A66C2",
                   color: "#fff",
                   border: "none",
-                  borderRadius: 6,
+                  borderRadius: 9999,
                   fontSize: 13,
                   fontWeight: 600,
                   cursor: "pointer",
@@ -14157,11 +14189,11 @@ function MsgCreateGroupModal({
                         padding: 4,
                       }}
                       onMouseEnter={(e) => {
-                        ;(e.currentTarget as HTMLElement).style.color =
+                        ; (e.currentTarget as HTMLElement).style.color =
                           "#C03A2B"
                       }}
                       onMouseLeave={(e) => {
-                        ;(e.currentTarget as HTMLElement).style.color =
+                        ; (e.currentTarget as HTMLElement).style.color =
                           "rgba(0,0,0,0.35)"
                       }}
                     >
@@ -14204,10 +14236,10 @@ function MsgCreateGroupModal({
                 transition: "border-color 150ms",
               }}
               onMouseEnter={(e) => {
-                ;(e.currentTarget as HTMLElement).style.borderColor = "#0A66C2"
+                ; (e.currentTarget as HTMLElement).style.borderColor = "#0A66C2"
               }}
               onMouseLeave={(e) => {
-                ;(e.currentTarget as HTMLElement).style.borderColor =
+                ; (e.currentTarget as HTMLElement).style.borderColor =
                   "rgba(0,0,0,0.18)"
               }}
             >
@@ -14449,28 +14481,28 @@ const NOTIF_TABS: { id: NotifCategory; label: string }[] = [
 
 function NotifBadge({ type }: { type: Notif["badgeIcon"] }) {
   const map: Record<Notif["badgeIcon"], { icon: React.ReactNode; bg: string }> =
-    {
-      thumb: {
-        icon: <ThumbsUp size={10} weight="fill" color="#fff" />,
-        bg: "#0A66C2",
-      },
-      briefcase: {
-        icon: <BriefcaseMetal size={10} weight="fill" color="#fff" />,
-        bg: "#057642",
-      },
-      bell: {
-        icon: <Bell size={10} weight="fill" color="#fff" />,
-        bg: "#915907",
-      },
-      comment: {
-        icon: <ChatCircle size={10} weight="fill" color="#fff" />,
-        bg: "#0A66C2",
-      },
-      star: {
-        icon: <ArrowsClockwise size={10} weight="fill" color="#fff" />,
-        bg: "#C03A2B",
-      },
-    }
+  {
+    thumb: {
+      icon: <ThumbsUp size={10} weight="fill" color="#fff" />,
+      bg: "#0A66C2",
+    },
+    briefcase: {
+      icon: <BriefcaseMetal size={10} weight="fill" color="#fff" />,
+      bg: "#057642",
+    },
+    bell: {
+      icon: <Bell size={10} weight="fill" color="#fff" />,
+      bg: "#915907",
+    },
+    comment: {
+      icon: <ChatCircle size={10} weight="fill" color="#fff" />,
+      bg: "#0A66C2",
+    },
+    star: {
+      icon: <ArrowsClockwise size={10} weight="fill" color="#fff" />,
+      bg: "#C03A2B",
+    },
+  }
   const { icon, bg } = map[type]
   return (
     <div
@@ -14684,12 +14716,12 @@ function NotificationsPage() {
                   transition: "background 150ms",
                 }}
                 onMouseEnter={(e) =>
-                  ((e.currentTarget as HTMLElement).style.background =
-                    notif.read ? "#FAFAF8" : "#dceeff")
+                ((e.currentTarget as HTMLElement).style.background =
+                  notif.read ? "#FAFAF8" : "#dceeff")
                 }
                 onMouseLeave={(e) =>
-                  ((e.currentTarget as HTMLElement).style.background =
-                    notif.read ? "#fff" : "#EAF1FA")
+                ((e.currentTarget as HTMLElement).style.background =
+                  notif.read ? "#fff" : "#EAF1FA")
                 }
               >
                 {/* Avatar with badge */}
@@ -14793,12 +14825,12 @@ function NotificationsPage() {
                     }}
                     onClick={(e) => e.stopPropagation()}
                     onMouseEnter={(e) =>
-                      ((e.currentTarget as HTMLElement).style.background =
-                        "#EAF1FA")
+                    ((e.currentTarget as HTMLElement).style.background =
+                      "#EAF1FA")
                     }
                     onMouseLeave={(e) =>
-                      ((e.currentTarget as HTMLElement).style.background =
-                        "none")
+                    ((e.currentTarget as HTMLElement).style.background =
+                      "none")
                     }
                   >
                     <DotsThreeVertical size={16} />
@@ -14978,8 +15010,8 @@ function CreateGroupModal({
                 ((e.currentTarget as HTMLElement).style.borderColor = "#0A66C2")
               }
               onBlur={(e) =>
-                ((e.currentTarget as HTMLElement).style.borderColor =
-                  "rgba(0,0,0,0.20)")
+              ((e.currentTarget as HTMLElement).style.borderColor =
+                "rgba(0,0,0,0.20)")
               }
             />
           </div>
@@ -15011,10 +15043,10 @@ function CreateGroupModal({
                 transition: "border-color 150ms",
               }}
               onMouseEnter={(e) => {
-                ;(e.currentTarget as HTMLElement).style.borderColor = "#0A66C2"
+                ; (e.currentTarget as HTMLElement).style.borderColor = "#0A66C2"
               }}
               onMouseLeave={(e) => {
-                ;(e.currentTarget as HTMLElement).style.borderColor =
+                ; (e.currentTarget as HTMLElement).style.borderColor =
                   "rgba(0,0,0,0.18)"
               }}
             >
@@ -15075,22 +15107,22 @@ function CreateGroupModal({
                 placeholder="Nhập tên hoặc email thành viên..."
                 style={{ ...inputSt, flex: 1 }}
                 onFocus={(e) =>
-                  ((e.currentTarget as HTMLElement).style.borderColor =
-                    "#0A66C2")
+                ((e.currentTarget as HTMLElement).style.borderColor =
+                  "#0A66C2")
                 }
                 onBlur={(e) =>
-                  ((e.currentTarget as HTMLElement).style.borderColor =
-                    "rgba(0,0,0,0.20)")
+                ((e.currentTarget as HTMLElement).style.borderColor =
+                  "rgba(0,0,0,0.20)")
                 }
               />
               <button
                 onClick={addMember}
                 style={{
-                  padding: "9px 16px",
+                  padding: "9px 18px",
                   background: "#0A66C2",
                   color: "#fff",
                   border: "none",
-                  borderRadius: 4,
+                  borderRadius: 9999,
                   fontSize: 13,
                   fontWeight: 600,
                   cursor: "pointer",
@@ -15137,11 +15169,11 @@ function CreateGroupModal({
                         padding: 4,
                       }}
                       onMouseEnter={(e) => {
-                        ;(e.currentTarget as HTMLElement).style.color =
+                        ; (e.currentTarget as HTMLElement).style.color =
                           "#C03A2B"
                       }}
                       onMouseLeave={(e) => {
-                        ;(e.currentTarget as HTMLElement).style.color =
+                        ; (e.currentTarget as HTMLElement).style.color =
                           "rgba(0,0,0,0.40)"
                       }}
                     >
@@ -15231,10 +15263,10 @@ function GroupDetailPage({
   const [activeTab, setActiveTab] = useState("Thảo luận")
   const [joined, setJoined] = useState(false)
   const [postText, setPostText] = useState("")
-  const [adminTab, setAdminTab] = React.useState<"members"|"posts"|"admins"|null>(null)
+  const [adminTab, setAdminTab] = React.useState<"members" | "posts" | "admins" | null>(null)
   const [mgmtSearch, setMgmtSearch] = React.useState("")
-  const [removeMemberTarget, setRemoveMemberTarget] = React.useState<string|null>(null)
-  const [removePostTarget, setRemovePostTarget] = React.useState<number|null>(null)
+  const [removeMemberTarget, setRemoveMemberTarget] = React.useState<string | null>(null)
+  const [removePostTarget, setRemovePostTarget] = React.useState<number | null>(null)
 
   const groupPosts = GROUP_POSTS.filter((p) => p.groupId === group.id)
   const [likes, setLikes] = useState<Record<number, boolean>>({})
@@ -15382,7 +15414,7 @@ function GroupDetailPage({
                 onClick={onBack}
                 style={{
                   background: "none",
-                  border: "1px solid rgba(0,0,0,0.30)",
+                  border: "1px solid rgba(0,0,0,0.20)",
                   borderRadius: 9999,
                   padding: "7px 16px",
                   fontSize: 13,
@@ -15390,9 +15422,19 @@ function GroupDetailPage({
                   cursor: "pointer",
                   color: "rgba(0,0,0,0.65)",
                   fontFamily: "inherit",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 5,
+                  transition: "background 150ms",
+                }}
+                onMouseEnter={(e) => {
+                  ; (e.currentTarget as HTMLElement).style.background = "#F4F2EE"
+                }}
+                onMouseLeave={(e) => {
+                  ; (e.currentTarget as HTMLElement).style.background = "none"
                 }}
               >
-                ← Quay lại
+                <CaretLeft size={14} weight="bold" /> Quay lại
               </button>
               <button
                 onClick={() => setJoined((v) => !v)}
@@ -15411,7 +15453,7 @@ function GroupDetailPage({
               >
                 {joined ? "Đã tham gia" : "Tham gia nhóm"}
               </button>
-              
+
             </div>
           </div>
 
@@ -15459,7 +15501,7 @@ function GroupDetailPage({
                       "#F4F2EE"
                 }}
                 onMouseLeave={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background = "none"
+                  ; (e.currentTarget as HTMLElement).style.background = "none"
                 }}
               >
                 {tab}
@@ -15479,284 +15521,284 @@ function GroupDetailPage({
           }}
         >
           {isManager && (
-            <div style={{background:"#fff",borderRadius:8,boxShadow:"0 0 0 1px rgba(0,0,0,0.08)",padding:"16px 0",position:"sticky",top:20}}>
-              <h3 style={{padding:"0 16px 12px",fontSize:15,fontWeight:700,borderBottom:"1px solid rgba(0,0,0,0.08)",marginBottom:8,color:"rgba(0,0,0,0.90)",margin:0}}>Quản lý nhóm</h3>
-              {[{key:"members",label:"Quản lý thành viên"},{key:"posts",label:"Quản lý bài viết"},{key:"admins",label:"Quản trị viên"}].map(item=>(
-                <button key={item.key} onClick={() => {setAdminTab(item.key as any); setMgmtSearch("");}} style={{display:"block",width:"100%",textAlign:"left",padding:"10px 16px",background:adminTab===item.key?"#EAF1FA":"none",color:adminTab===item.key?"#0A66C2":"#555",borderLeft:adminTab===item.key?"3px solid #0A66C2":"3px solid transparent",borderTop:"none",borderRight:"none",borderBottom:"none",cursor:"pointer",fontWeight:adminTab===item.key?700:600,fontSize:14}}>{item.label}</button>
+            <div style={{ background: "#fff", borderRadius: 8, boxShadow: "0 0 0 1px rgba(0,0,0,0.08)", padding: "16px 0", position: "sticky", top: 20 }}>
+              <h3 style={{ padding: "0 16px 12px", fontSize: 15, fontWeight: 700, borderBottom: "1px solid rgba(0,0,0,0.08)", marginBottom: 8, color: "rgba(0,0,0,0.90)", margin: 0 }}>Quản lý nhóm</h3>
+              {[{ key: "members", label: "Quản lý thành viên" }, { key: "posts", label: "Quản lý bài viết" }, { key: "admins", label: "Quản trị viên" }].map(item => (
+                <button key={item.key} onClick={() => { setAdminTab(item.key as any); setMgmtSearch(""); }} style={{ display: "block", width: "100%", textAlign: "left", padding: "10px 16px", background: adminTab === item.key ? "#EAF1FA" : "none", color: adminTab === item.key ? "#0A66C2" : "#555", borderLeft: adminTab === item.key ? "3px solid #0A66C2" : "3px solid transparent", borderTop: "none", borderRight: "none", borderBottom: "none", cursor: "pointer", fontWeight: adminTab === item.key ? 700 : 600, fontSize: 14 }}>{item.label}</button>
               ))}
             </div>
           )}
 
           {/* Middle Column */}
-          <div style={{minWidth: 0}}>
+          <div style={{ minWidth: 0 }}>
             {adminTab === "members" ? (
-              <div style={{background:"#fff",borderRadius:8,boxShadow:"0 0 0 1px rgba(0,0,0,0.08)",padding:24}}>
-                <h2 style={{fontWeight:700,fontSize:20,marginBottom:16,marginTop:0}}>Quản lý thành viên</h2>
-                <input value={mgmtSearch} onChange={e=>setMgmtSearch(e.target.value)} placeholder="Tìm thành viên..." style={{width:"100%",padding:"10px 14px",borderRadius:8,border:"1px solid #ccc",fontSize:14,marginBottom:16,boxSizing:"border-box",outline:"none"}} onFocus={e=>e.currentTarget.style.borderColor="#0A66C2"} onBlur={e=>e.currentTarget.style.borderColor="#ccc"} />
-                {(group.members||[]).filter((m:any)=>m.toLowerCase().includes(mgmtSearch.toLowerCase())).map((m:any)=>(
-                  <div key={m} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"12px 0",borderBottom:"1px solid rgba(0,0,0,0.08)"}}>
-                    <span style={{fontWeight:600,fontSize:14}}>{m}</span>
-                    <button onClick={()=>setRemoveMemberTarget(m)} style={{padding:"6px 14px",borderRadius:99,border:"1px solid #C03A2B",color:"#C03A2B",background:"#fff",cursor:"pointer",fontSize:13,fontWeight:600}}>Xóa</button>
+              <div style={{ background: "#fff", borderRadius: 8, boxShadow: "0 0 0 1px rgba(0,0,0,0.08)", padding: 24 }}>
+                <h2 style={{ fontWeight: 700, fontSize: 20, marginBottom: 16, marginTop: 0 }}>Quản lý thành viên</h2>
+                <input value={mgmtSearch} onChange={e => setMgmtSearch(e.target.value)} placeholder="Tìm thành viên..." style={{ width: "100%", padding: "10px 14px", borderRadius: 8, border: "1px solid #ccc", fontSize: 14, marginBottom: 16, boxSizing: "border-box", outline: "none" }} onFocus={e => e.currentTarget.style.borderColor = "#0A66C2"} onBlur={e => e.currentTarget.style.borderColor = "#ccc"} />
+                {(group.members || []).filter((m: any) => m.toLowerCase().includes(mgmtSearch.toLowerCase())).map((m: any) => (
+                  <div key={m} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 0", borderBottom: "1px solid rgba(0,0,0,0.08)" }}>
+                    <span style={{ fontWeight: 600, fontSize: 14 }}>{m}</span>
+                    <button onClick={() => setRemoveMemberTarget(m)} style={{ padding: "6px 14px", borderRadius: 99, border: "1px solid #C03A2B", color: "#C03A2B", background: "#fff", cursor: "pointer", fontSize: 13, fontWeight: 600 }}>Xóa</button>
                   </div>
                 ))}
               </div>
             ) : adminTab === "posts" ? (
               <div>
-                <div style={{background:"#fff",borderRadius:8,boxShadow:"0 0 0 1px rgba(0,0,0,0.08)",padding:"16px 20px",marginBottom:16}}>
-                  <h2 style={{fontWeight:700,fontSize:18,marginBottom:12,marginTop:0}}>Quản lý bài viết</h2>
-                  <input value={mgmtSearch} onChange={e=>setMgmtSearch(e.target.value)} placeholder="Tìm kiếm bài viết..." style={{width:"100%",padding:"10px 14px",borderRadius:8,border:"1px solid rgba(0,0,0,0.15)",fontSize:14,boxSizing:"border-box",outline:"none"}} onFocus={e=>e.currentTarget.style.borderColor="#0A66C2"} onBlur={e=>e.currentTarget.style.borderColor="rgba(0,0,0,0.15)"} />
+                <div style={{ background: "#fff", borderRadius: 8, boxShadow: "0 0 0 1px rgba(0,0,0,0.08)", padding: "16px 20px", marginBottom: 16 }}>
+                  <h2 style={{ fontWeight: 700, fontSize: 18, marginBottom: 12, marginTop: 0 }}>Quản lý bài viết</h2>
+                  <input value={mgmtSearch} onChange={e => setMgmtSearch(e.target.value)} placeholder="Tìm kiếm bài viết..." style={{ width: "100%", padding: "10px 14px", borderRadius: 8, border: "1px solid rgba(0,0,0,0.15)", fontSize: 14, boxSizing: "border-box", outline: "none" }} onFocus={e => e.currentTarget.style.borderColor = "#0A66C2"} onBlur={e => e.currentTarget.style.borderColor = "rgba(0,0,0,0.15)"} />
                 </div>
-                {(GROUP_POSTS||[]).filter((p:any)=>p.groupId===group.id&&(p.content||"").toLowerCase().includes(mgmtSearch.toLowerCase())).map((p:any)=>(
-                  <div key={p.id} style={{marginBottom:10}}>
+                {(GROUP_POSTS || []).filter((p: any) => p.groupId === group.id && (p.content || "").toLowerCase().includes(mgmtSearch.toLowerCase())).map((p: any) => (
+                  <div key={p.id} style={{ marginBottom: 10 }}>
                     <FeedPostCard post={p} onLike={(id) => setLikes((prev) => ({ ...prev, [id]: !prev[id] }))} onDelete={(id) => setRemovePostTarget(id)} />
                   </div>
                 ))}
               </div>
             ) : adminTab === "admins" ? (
-              <div style={{background:"#fff",borderRadius:8,boxShadow:"0 0 0 1px rgba(0,0,0,0.08)",padding:24}}>
-                <h2 style={{fontWeight:700,fontSize:20,marginBottom:16,marginTop:0}}>Quản trị viên</h2>
-                <input value={mgmtSearch} onChange={e=>setMgmtSearch(e.target.value)} placeholder="Tìm quản trị viên..." style={{width:"100%",padding:"10px 14px",borderRadius:8,border:"1px solid #ccc",fontSize:14,marginBottom:16,boxSizing:"border-box",outline:"none"}} onFocus={e=>e.currentTarget.style.borderColor="#0A66C2"} onBlur={e=>e.currentTarget.style.borderColor="#ccc"} />
-                {admins.map((m:any)=>(
-                  <div key={m} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"12px 0",borderBottom:"1px solid rgba(0,0,0,0.08)"}}>
-                    <div><span style={{fontWeight:600,fontSize:14}}>{m}</span><span style={{color:"rgba(0,0,0,0.60)",fontSize:13,marginLeft:12}}>Quản trị viên đầy đủ</span></div>
+              <div style={{ background: "#fff", borderRadius: 8, boxShadow: "0 0 0 1px rgba(0,0,0,0.08)", padding: 24 }}>
+                <h2 style={{ fontWeight: 700, fontSize: 20, marginBottom: 16, marginTop: 0 }}>Quản trị viên</h2>
+                <input value={mgmtSearch} onChange={e => setMgmtSearch(e.target.value)} placeholder="Tìm quản trị viên..." style={{ width: "100%", padding: "10px 14px", borderRadius: 8, border: "1px solid #ccc", fontSize: 14, marginBottom: 16, boxSizing: "border-box", outline: "none" }} onFocus={e => e.currentTarget.style.borderColor = "#0A66C2"} onBlur={e => e.currentTarget.style.borderColor = "#ccc"} />
+                {admins.map((m: any) => (
+                  <div key={m} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 0", borderBottom: "1px solid rgba(0,0,0,0.08)" }}>
+                    <div><span style={{ fontWeight: 600, fontSize: 14 }}>{m}</span><span style={{ color: "rgba(0,0,0,0.60)", fontSize: 13, marginLeft: 12 }}>Quản trị viên đầy đủ</span></div>
                   </div>
                 ))}
-                <p style={{color:"rgba(0,0,0,0.55)",fontSize:13,marginTop:16}}>Liên hệ Occupify để thay đổi quyền quản trị viên.</p>
+                <p style={{ color: "rgba(0,0,0,0.55)", fontSize: 13, marginTop: 16 }}>Liên hệ Occupify để thay đổi quyền quản trị viên.</p>
               </div>
             ) : (
               <>
-            {(activeTab === "Thảo luận" || activeTab === "Bài viết") && (
-              <>
-                {/* Composer */}
-                <div
-                  style={{
-                    background: "#fff",
-                    borderRadius: 8,
-                    boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-                    padding: "14px 16px",
-                    marginBottom: 10,
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      gap: 10,
-                      alignItems: "flex-start",
-                    }}
-                  >
-                    <Avatar name={ME.name} size={44} />
-                    <textarea
-                      value={postText}
-                      onChange={(e) => setPostText(e.target.value)}
-                      placeholder={`Chia sẻ với nhóm ${group.name}...`}
-                      rows={2}
+                {(activeTab === "Thảo luận" || activeTab === "Bài viết") && (
+                  <>
+                    {/* Composer */}
+                    <div
                       style={{
-                        flex: 1,
-                        padding: "9px 12px",
-                        border: "1px solid rgba(0,0,0,0.20)",
+                        background: "#fff",
                         borderRadius: 8,
-                        fontSize: 14,
-                        fontFamily: "inherit",
-                        outline: "none",
-                        resize: "none",
-                        color: "rgba(0,0,0,0.80)",
-                      }}
-                      onFocus={(e) =>
-                        ((e.currentTarget as HTMLElement).style.borderColor =
-                          "#0A66C2")
-                      }
-                      onBlur={(e) =>
-                        ((e.currentTarget as HTMLElement).style.borderColor =
-                          "rgba(0,0,0,0.20)")
-                      }
-                    />
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      marginTop: 10,
-                    }}
-                  >
-                    <button
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 6,
-                        background: "none",
-                        border: "none",
-                        cursor: "pointer",
-                        fontSize: 13,
-                        color: "rgba(0,0,0,0.60)",
-                        fontFamily: "inherit",
-                        borderRadius: 6,
-                        padding: "6px 10px",
-                      }}
-                      onMouseEnter={(e) =>
-                        ((e.currentTarget as HTMLElement).style.background =
-                          "#F4F2EE")
-                      }
-                      onMouseLeave={(e) =>
-                        ((e.currentTarget as HTMLElement).style.background =
-                          "none")
-                      }
-                    >
-                      <ImageIcon size={18} color="#44712E" /> Ảnh/Video
-                    </button>
-                    <button
-                      style={{
-                        borderRadius: 9999,
-                        border: "none",
-                        background: postText.trim()
-                          ? "#0A66C2"
-                          : "rgba(0,0,0,0.12)",
-                        color: postText.trim() ? "#fff" : "rgba(0,0,0,0.35)",
-                        padding: "7px 20px",
-                        fontSize: 13,
-                        fontWeight: 700,
-                        cursor: postText.trim() ? "pointer" : "default",
-                        fontFamily: "inherit",
+                        boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+                        padding: "14px 16px",
+                        marginBottom: 10,
                       }}
                     >
-                      Đăng bài
-                    </button>
-                  </div>
-                </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          gap: 10,
+                          alignItems: "flex-start",
+                        }}
+                      >
+                        <Avatar name={ME.name} size={44} />
+                        <textarea
+                          value={postText}
+                          onChange={(e) => setPostText(e.target.value)}
+                          placeholder={`Chia sẻ với nhóm ${group.name}...`}
+                          rows={2}
+                          style={{
+                            flex: 1,
+                            padding: "9px 12px",
+                            border: "1px solid rgba(0,0,0,0.20)",
+                            borderRadius: 8,
+                            fontSize: 14,
+                            fontFamily: "inherit",
+                            outline: "none",
+                            resize: "none",
+                            color: "rgba(0,0,0,0.80)",
+                          }}
+                          onFocus={(e) =>
+                          ((e.currentTarget as HTMLElement).style.borderColor =
+                            "#0A66C2")
+                          }
+                          onBlur={(e) =>
+                          ((e.currentTarget as HTMLElement).style.borderColor =
+                            "rgba(0,0,0,0.20)")
+                          }
+                        />
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          marginTop: 10,
+                        }}
+                      >
+                        <button
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 6,
+                            background: "none",
+                            border: "none",
+                            cursor: "pointer",
+                            fontSize: 13,
+                            color: "rgba(0,0,0,0.60)",
+                            fontFamily: "inherit",
+                            borderRadius: 6,
+                            padding: "6px 10px",
+                          }}
+                          onMouseEnter={(e) =>
+                          ((e.currentTarget as HTMLElement).style.background =
+                            "#F4F2EE")
+                          }
+                          onMouseLeave={(e) =>
+                          ((e.currentTarget as HTMLElement).style.background =
+                            "none")
+                          }
+                        >
+                          <ImageIcon size={18} color="#44712E" /> Ảnh/Video
+                        </button>
+                        <button
+                          style={{
+                            borderRadius: 9999,
+                            border: "none",
+                            background: postText.trim()
+                              ? "#0A66C2"
+                              : "rgba(0,0,0,0.12)",
+                            color: postText.trim() ? "#fff" : "rgba(0,0,0,0.35)",
+                            padding: "7px 20px",
+                            fontSize: 13,
+                            fontWeight: 700,
+                            cursor: postText.trim() ? "pointer" : "default",
+                            fontFamily: "inherit",
+                          }}
+                        >
+                          Đăng bài
+                        </button>
+                      </div>
+                    </div>
 
-                {/* Group posts */}
-                {groupPosts.length > 0 ? (
-                  groupPosts.map((p) => (
-                    <FeedPostCard
-                      key={p.id}
-                      post={p}
-                      onLike={(id) =>
-                        setLikes((prev) => ({ ...prev, [id]: !prev[id] }))
-                      }
-                    />
-                  ))
-                ) : (
+                    {/* Group posts */}
+                    {groupPosts.length > 0 ? (
+                      groupPosts.map((p) => (
+                        <FeedPostCard
+                          key={p.id}
+                          post={p}
+                          onLike={(id) =>
+                            setLikes((prev) => ({ ...prev, [id]: !prev[id] }))
+                          }
+                        />
+                      ))
+                    ) : (
+                      <div
+                        style={{
+                          background: "#fff",
+                          borderRadius: 8,
+                          boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+                          padding: 32,
+                          textAlign: "center",
+                          color: "rgba(0,0,0,0.45)",
+                          fontSize: 14,
+                        }}
+                      >
+                        Chưa có bài viết nào trong nhóm. Hãy là người đầu tiên!
+                      </div>
+                    )}
+                  </>
+                )}
+
+                {activeTab === "Giới thiệu" && (
                   <div
                     style={{
                       background: "#fff",
                       borderRadius: 8,
                       boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-                      padding: 32,
-                      textAlign: "center",
-                      color: "rgba(0,0,0,0.45)",
-                      fontSize: 14,
+                      padding: 24,
                     }}
                   >
-                    Chưa có bài viết nào trong nhóm. Hãy là người đầu tiên!
+                    <div
+                      style={{ fontSize: 18, fontWeight: 700, marginBottom: 12 }}
+                    >
+                      Về nhóm
+                    </div>
+                    <p
+                      style={{
+                        fontSize: 14,
+                        color: "rgba(0,0,0,0.80)",
+                        lineHeight: 1.75,
+                      }}
+                    >
+                      {group.description}
+                    </p>
+                    <div
+                      style={{
+                        marginTop: 20,
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 12,
+                      }}
+                    >
+                      {[
+                        { label: "Danh mục", value: group.category },
+                        {
+                          label: "Thành viên",
+                          value: `${group.memberCount.toLocaleString("vi-VN")} thành viên`,
+                        },
+                        { label: "Chủ đề", value: group.topics.join(", ") },
+                      ].map(({ label, value }) => (
+                        <div key={label} style={{ display: "flex", gap: 10 }}>
+                          <span
+                            style={{
+                              fontSize: 13,
+                              fontWeight: 600,
+                              color: "rgba(0,0,0,0.55)",
+                              minWidth: 100,
+                            }}
+                          >
+                            {label}
+                          </span>
+                          <span style={{ fontSize: 13, color: "rgba(0,0,0,0.80)" }}>
+                            {value}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === "Thành viên" && (
+                  <div
+                    style={{
+                      background: "#fff",
+                      borderRadius: 8,
+                      boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+                      padding: 24,
+                    }}
+                  >
+                    <div
+                      style={{ fontSize: 18, fontWeight: 700, marginBottom: 16 }}
+                    >
+                      Thành viên ({allMembers.length})
+                    </div>
+                    <div
+                      style={{ display: "flex", flexDirection: "column", gap: 14 }}
+                    >
+                      {allMembers.map((m, i) => (
+                        <div
+                          key={i}
+                          style={{ display: "flex", alignItems: "center", gap: 12 }}
+                        >
+                          <Avatar name={m} size={44} />
+                          <div style={{ flex: 1 }}>
+                            <div
+                              style={{
+                                fontWeight: 700,
+                                fontSize: 14,
+                                color: "rgba(0,0,0,0.90)",
+                              }}
+                            >
+                              {m}
+                            </div>
+                            <div
+                              style={{ fontSize: 12, color: "rgba(0,0,0,0.55)" }}
+                            >
+                              Thành viên{i < 2 ? " · Quản trị viên" : ""}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 )}
               </>
-            )}
-
-            {activeTab === "Giới thiệu" && (
-              <div
-                style={{
-                  background: "#fff",
-                  borderRadius: 8,
-                  boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-                  padding: 24,
-                }}
-              >
-                <div
-                  style={{ fontSize: 18, fontWeight: 700, marginBottom: 12 }}
-                >
-                  Về nhóm
-                </div>
-                <p
-                  style={{
-                    fontSize: 14,
-                    color: "rgba(0,0,0,0.80)",
-                    lineHeight: 1.75,
-                  }}
-                >
-                  {group.description}
-                </p>
-                <div
-                  style={{
-                    marginTop: 20,
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 12,
-                  }}
-                >
-                  {[
-                    { label: "Danh mục", value: group.category },
-                    {
-                      label: "Thành viên",
-                      value: `${group.memberCount.toLocaleString("vi-VN")} thành viên`,
-                    },
-                    { label: "Chủ đề", value: group.topics.join(", ") },
-                  ].map(({ label, value }) => (
-                    <div key={label} style={{ display: "flex", gap: 10 }}>
-                      <span
-                        style={{
-                          fontSize: 13,
-                          fontWeight: 600,
-                          color: "rgba(0,0,0,0.55)",
-                          minWidth: 100,
-                        }}
-                      >
-                        {label}
-                      </span>
-                      <span style={{ fontSize: 13, color: "rgba(0,0,0,0.80)" }}>
-                        {value}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {activeTab === "Thành viên" && (
-              <div
-                style={{
-                  background: "#fff",
-                  borderRadius: 8,
-                  boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-                  padding: 24,
-                }}
-              >
-                <div
-                  style={{ fontSize: 18, fontWeight: 700, marginBottom: 16 }}
-                >
-                  Thành viên ({allMembers.length})
-                </div>
-                <div
-                  style={{ display: "flex", flexDirection: "column", gap: 14 }}
-                >
-                  {allMembers.map((m, i) => (
-                    <div
-                      key={i}
-                      style={{ display: "flex", alignItems: "center", gap: 12 }}
-                    >
-                      <Avatar name={m} size={44} />
-                      <div style={{ flex: 1 }}>
-                        <div
-                          style={{
-                            fontWeight: 700,
-                            fontSize: 14,
-                            color: "rgba(0,0,0,0.90)",
-                          }}
-                        >
-                          {m}
-                        </div>
-                        <div
-                          style={{ fontSize: 12, color: "rgba(0,0,0,0.55)" }}
-                        >
-                          Thành viên{i < 2 ? " · Quản trị viên" : ""}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-            </>
             )}
 
           </div>
@@ -15881,26 +15923,26 @@ function GroupDetailPage({
       </div>
 
       {removePostTarget !== null && (
-        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.45)",zIndex:60,display:"flex",alignItems:"center",justifyContent:"center"}}>
-          <div style={{background:"#fff",borderRadius:12,padding:32,maxWidth:400,width:"100%",boxShadow:"0 8px 32px rgba(0,0,0,0.18)"}}>
-            <p style={{fontWeight:700,fontSize:18,marginBottom:12}}>Xác nhận xóa bài viết</p>
-            <p style={{color:"#555",marginBottom:24,fontSize:14}}>Bạn có chắc chắn muốn xóa bài viết này không? Hành động này không thể hoàn tác.</p>
-            <div style={{display:"flex",gap:12,justifyContent:"flex-end"}}>
-              <button onClick={()=>setRemovePostTarget(null)} style={{padding:"8px 20px",borderRadius:99,border:"1px solid #ccc",background:"#fff",cursor:"pointer",fontWeight:600}}>Hủy</button>
-              <button onClick={()=>{setRemovePostTarget(null);}} style={{padding:"8px 20px",borderRadius:99,border:"none",background:"#C03A2B",color:"#fff",cursor:"pointer",fontWeight:600}}>Xóa bài viết</button>
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.45)", zIndex: 60, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ background: "#fff", borderRadius: 12, padding: 32, maxWidth: 400, width: "100%", boxShadow: "0 8px 32px rgba(0,0,0,0.18)" }}>
+            <p style={{ fontWeight: 700, fontSize: 18, marginBottom: 12 }}>Xác nhận xóa bài viết</p>
+            <p style={{ color: "#555", marginBottom: 24, fontSize: 14 }}>Bạn có chắc chắn muốn xóa bài viết này không? Hành động này không thể hoàn tác.</p>
+            <div style={{ display: "flex", gap: 12, justifyContent: "flex-end" }}>
+              <button onClick={() => setRemovePostTarget(null)} style={{ padding: "8px 20px", borderRadius: 9999, border: "1px solid rgba(0,0,0,0.20)", background: "#fff", color: "rgba(0,0,0,0.70)", cursor: "pointer", fontWeight: 600, fontFamily: "inherit" }}>Hủy</button>
+              <button onClick={() => { setRemovePostTarget(null); }} style={{ padding: "8px 20px", borderRadius: 9999, border: "none", background: "#C03A2B", color: "#fff", cursor: "pointer", fontWeight: 600, fontFamily: "inherit" }}>Xóa bài viết</button>
             </div>
           </div>
         </div>
       )}
-      
+
       {removeMemberTarget && (
-        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.45)",zIndex:60,display:"flex",alignItems:"center",justifyContent:"center"}}>
-          <div style={{background:"#fff",borderRadius:12,padding:32,maxWidth:400,width:"100%",boxShadow:"0 8px 32px rgba(0,0,0,0.18)"}}>
-            <p style={{fontWeight:700,fontSize:18,marginBottom:12}}>Xác nhận xóa thành viên</p>
-            <p style={{color:"#555",marginBottom:24,fontSize:14}}>Xác nhận xóa thành viên <b>{removeMemberTarget}</b>?</p>
-            <div style={{display:"flex",gap:12,justifyContent:"flex-end"}}>
-              <button onClick={()=>setRemoveMemberTarget(null)} style={{padding:"8px 20px",borderRadius:99,border:"1px solid #ccc",background:"#fff",cursor:"pointer",fontWeight:600}}>Hủy</button>
-              <button onClick={()=>setRemoveMemberTarget(null)} style={{padding:"8px 20px",borderRadius:99,border:"none",background:"#C03A2B",color:"#fff",cursor:"pointer",fontWeight:600}}>Xóa thành viên</button>
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.45)", zIndex: 60, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ background: "#fff", borderRadius: 12, padding: 32, maxWidth: 400, width: "100%", boxShadow: "0 8px 32px rgba(0,0,0,0.18)" }}>
+            <p style={{ fontWeight: 700, fontSize: 18, marginBottom: 12 }}>Xác nhận xóa thành viên</p>
+            <p style={{ color: "#555", marginBottom: 24, fontSize: 14 }}>Xác nhận xóa thành viên <b>{removeMemberTarget}</b>?</p>
+            <div style={{ display: "flex", gap: 12, justifyContent: "flex-end" }}>
+              <button onClick={() => setRemoveMemberTarget(null)} style={{ padding: "8px 20px", borderRadius: 9999, border: "1px solid rgba(0,0,0,0.20)", background: "#fff", color: "rgba(0,0,0,0.70)", cursor: "pointer", fontWeight: 600, fontFamily: "inherit" }}>Hủy</button>
+              <button onClick={() => setRemoveMemberTarget(null)} style={{ padding: "8px 20px", borderRadius: 9999, border: "none", background: "#C03A2B", color: "#fff", cursor: "pointer", fontWeight: 600, fontFamily: "inherit" }}>Xóa thành viên</button>
             </div>
           </div>
         </div>
@@ -16145,47 +16187,47 @@ function MyProfilePage({
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
             <div>
               {/* Name + gmail */}
-          <div
-            style={{
-              fontSize: 26,
-              fontWeight: 800,
-              color: "rgba(0,0,0,0.90)",
-              lineHeight: 1.2,
-            }}
-          >
-            {p.name}
-          </div>
-          <div
-            style={{ fontSize: 14, color: "rgba(0,0,0,0.55)", marginTop: 4 }}
-          >
-            {gmail}
-          </div>
-          <div
-            style={{
-              fontSize: 13,
-              color: "rgba(0,0,0,0.50)",
-              marginTop: 4,
-              display: "flex",
-              alignItems: "center",
-              gap: 4,
-            }}
-          >
-            <MapPin size={13} color="rgba(0,0,0,0.35)" /> {p.location}
-          </div>
-          <div
-            style={{
-              fontSize: 13,
-              color: "#0A66C2",
-              fontWeight: 600,
-              marginTop: 4,
-            }}
-          >
-            {p.connections} kết nối
-          </div>
+              <div
+                style={{
+                  fontSize: 26,
+                  fontWeight: 800,
+                  color: "rgba(0,0,0,0.90)",
+                  lineHeight: 1.2,
+                }}
+              >
+                {p.name}
+              </div>
+              <div
+                style={{ fontSize: 14, color: "rgba(0,0,0,0.55)", marginTop: 4 }}
+              >
+                {gmail}
+              </div>
+              <div
+                style={{
+                  fontSize: 13,
+                  color: "rgba(0,0,0,0.50)",
+                  marginTop: 4,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 4,
+                }}
+              >
+                <MapPin size={13} color="rgba(0,0,0,0.35)" /> {p.location}
+              </div>
+              <div
+                style={{
+                  fontSize: 13,
+                  color: "#0A66C2",
+                  fontWeight: 600,
+                  marginTop: 4,
+                }}
+              >
+                {p.connections} kết nối
+              </div>
             </div>
-            
+
             {!isOwnProfile && (
-              <div style={{display:"flex",gap:10,flexWrap:"wrap", alignItems: "center", marginTop: 4}}>
+              <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center", marginTop: 4 }}>
                 <button
                   style={{
                     background: connectedSet.has(p.name) ? "#E5F6E8" : "#0A66C2",
@@ -16201,7 +16243,7 @@ function MyProfilePage({
                     gap: 6,
                     transition: "all 150ms ease"
                   }}
-                  onClick={() => setConnectedSet(prev => { const n = new Set(prev); if(n.has(p.name)) n.delete(p.name); else n.add(p.name); return n; })}
+                  onClick={() => setConnectedSet(prev => { const n = new Set(prev); if (n.has(p.name)) n.delete(p.name); else n.add(p.name); return n; })}
                   onMouseEnter={(e) => {
                     if (!connectedSet.has(p.name))
                       (e.currentTarget as HTMLElement).style.background = "#084FA0"
@@ -16216,9 +16258,26 @@ function MyProfilePage({
                   {connectedSet.has(p.name) ? <CheckCircle size={16} weight="fill" /> : <UserPlus size={16} />}
                   {connectedSet.has(p.name) ? "Đã kết nối" : "Kết nối"}
                 </button>
-                <button 
-                  onClick={()=>setReportProfile(true)} 
-                  style={{padding:"8px 18px",borderRadius:99,border:"1px solid rgba(0,0,0,0.30)",background:"#fff",color:"rgba(0,0,0,0.65)",cursor:"pointer",fontWeight:600,fontSize:14}}
+                <button
+                  onClick={() => setReportProfile(true)}
+                  style={{
+                    padding: "8px 18px",
+                    borderRadius: 9999,
+                    border: "1px solid rgba(0,0,0,0.20)",
+                    background: "#fff",
+                    color: "rgba(0,0,0,0.65)",
+                    cursor: "pointer",
+                    fontWeight: 600,
+                    fontSize: 14,
+                    fontFamily: "inherit",
+                    transition: "background 150ms ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    ; (e.currentTarget as HTMLElement).style.background = "#F4F2EE"
+                  }}
+                  onMouseLeave={(e) => {
+                    ; (e.currentTarget as HTMLElement).style.background = "#fff"
+                  }}
                 >
                   Báo cáo
                 </button>
@@ -16296,19 +16355,19 @@ function MyProfilePage({
       </div>
 
       {reportProfile && (
-        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.45)",zIndex:50,display:"flex",alignItems:"center",justifyContent:"center"}}>
-          <div style={{background:"#fff",borderRadius:16,padding:28,maxWidth:460,width:"100%",boxShadow:"0 8px 32px rgba(0,0,0,0.18)"}}>
-            <p style={{fontWeight:700,fontSize:18,marginBottom:16}}>Báo cáo người dùng</p>
-            <label style={{display:"block",fontWeight:600,fontSize:13,marginBottom:6}}>Lý do báo cáo <span style={{color:"#C00"}}>*</span></label>
-            <textarea value={reportProfileReason} onChange={e=>setReportProfileReason(e.target.value)} rows={4} style={{width:"100%",borderRadius:8,border:"1px solid #ccc",padding:"10px 12px",fontSize:14,resize:"vertical",boxSizing:"border-box"}} placeholder="Mô tả lý do..." />
-            <div style={{marginTop:14}}>
-              <label style={{display:"block",fontWeight:600,fontSize:13,marginBottom:6}}>Hình ảnh (tùy chọn)</label>
-              <input type="file" accept="image/*" onChange={e=>setReportProfileImg(e.target.files?.[0]?.name??"")} />
-              {reportProfileImg && <span style={{fontSize:12,color:"#555",marginLeft:8}}>{reportProfileImg}</span>}
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.45)", zIndex: 50, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ background: "#fff", borderRadius: 16, padding: 28, maxWidth: 460, width: "100%", boxShadow: "0 8px 32px rgba(0,0,0,0.18)" }}>
+            <p style={{ fontWeight: 700, fontSize: 18, marginBottom: 16 }}>Báo cáo người dùng</p>
+            <label style={{ display: "block", fontWeight: 600, fontSize: 13, marginBottom: 6 }}>Lý do báo cáo <span style={{ color: "#C03A2B" }}>*</span></label>
+            <textarea value={reportProfileReason} onChange={e => setReportProfileReason(e.target.value)} rows={4} style={{ width: "100%", borderRadius: 8, border: "1px solid #ccc", padding: "10px 12px", fontSize: 14, resize: "vertical", boxSizing: "border-box" }} placeholder="Mô tả lý do..." />
+            <div style={{ marginTop: 14 }}>
+              <label style={{ display: "block", fontWeight: 600, fontSize: 13, marginBottom: 6 }}>Hình ảnh (tùy chọn)</label>
+              <input type="file" accept="image/*" onChange={e => setReportProfileImg(e.target.files?.[0]?.name ?? "")} />
+              {reportProfileImg && <span style={{ fontSize: 12, color: "#555", marginLeft: 8 }}>{reportProfileImg}</span>}
             </div>
-            <div style={{display:"flex",gap:12,justifyContent:"flex-end",marginTop:20}}>
-              <button onClick={()=>setReportProfile(false)} style={{padding:"9px 22px",borderRadius:99,border:"1px solid #ccc",background:"#fff",cursor:"pointer",fontWeight:600}}>Hủy</button>
-              <button disabled={!reportProfileReason.trim()} onClick={()=>{setReportProfileReason("");setReportProfileImg("");setReportProfile(false);}} style={{padding:"9px 22px",borderRadius:99,border:"none",background:reportProfileReason.trim()?"#0A66C2":"#b0c4d8",color:"#fff",cursor:reportProfileReason.trim()?"pointer":"not-allowed",fontWeight:600}}>Gửi báo cáo</button>
+            <div style={{ display: "flex", gap: 12, justifyContent: "flex-end", marginTop: 20 }}>
+              <button onClick={() => setReportProfile(false)} style={{ padding: "9px 22px", borderRadius: 9999, border: "1px solid rgba(0,0,0,0.20)", background: "#fff", color: "rgba(0,0,0,0.70)", cursor: "pointer", fontWeight: 600, fontFamily: "inherit" }}>Hủy</button>
+              <button disabled={!reportProfileReason.trim()} onClick={() => { setReportProfileReason(""); setReportProfileImg(""); setReportProfile(false); }} style={{ padding: "9px 22px", borderRadius: 9999, border: "none", background: reportProfileReason.trim() ? "#0A66C2" : "#b0c4d8", color: "#fff", cursor: reportProfileReason.trim() ? "pointer" : "not-allowed", fontWeight: 600, fontFamily: "inherit" }}>Gửi báo cáo</button>
             </div>
           </div>
         </div>
@@ -16410,11 +16469,11 @@ function MyProfilePage({
                   transition: "border-color 150ms",
                 }}
                 onMouseEnter={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.borderColor =
+                  ; (e.currentTarget as HTMLElement).style.borderColor =
                     "#0A66C2"
                 }}
                 onMouseLeave={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.borderColor =
+                  ; (e.currentTarget as HTMLElement).style.borderColor =
                     "rgba(0,0,0,0.18)"
                 }}
               >
@@ -17018,22 +17077,41 @@ function MyProfilePage({
                         style={{
                           borderRadius: 9999,
                           flexShrink: 0,
-                          border: connectedSet.has(s.name)
-                            ? "1.5px solid #057642"
-                            : "1.5px solid rgba(0,0,0,0.45)",
-                          background: "none",
+                          border: `1px solid ${connectedSet.has(s.name) ? "#057642" : "#0A66C2"}`,
+                          background: connectedSet.has(s.name) ? "#E5F6E8" : "none",
                           color: connectedSet.has(s.name)
                             ? "#057642"
-                            : "rgba(0,0,0,0.60)",
+                            : "#0A66C2",
                           padding: "4px 12px",
                           fontSize: 12,
-                          fontWeight: 600,
+                          fontWeight: 700,
                           cursor: "pointer",
                           fontFamily: "inherit",
-                          transition: "all 150ms",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: 4,
+                          transition: "all 150ms ease",
+                        }}
+                        onMouseEnter={(e) => {
+                          if (!connectedSet.has(s.name))
+                            (e.currentTarget as HTMLElement).style.background = "#EAF1FA"
+                        }}
+                        onMouseLeave={(e) => {
+                          if (!connectedSet.has(s.name))
+                            (e.currentTarget as HTMLElement).style.background = "none"
                         }}
                       >
-                        {connectedSet.has(s.name) ? "Đã kết nối" : "Kết nối"}
+                        {connectedSet.has(s.name) ? (
+                          <>
+                            <CheckCircle size={13} weight="fill" />
+                            Đã kết nối
+                          </>
+                        ) : (
+                          <>
+                            <UserPlus size={13} />
+                            Kết nối
+                          </>
+                        )}
                       </button>
                     </div>
                   ))}
@@ -17480,10 +17558,10 @@ function LandingPage({
               transition: "background 150ms",
             }}
             onMouseEnter={(e) => {
-              ;(e.currentTarget as HTMLElement).style.background = "#084FA0"
+              ; (e.currentTarget as HTMLElement).style.background = "#084FA0"
             }}
             onMouseLeave={(e) => {
-              ;(e.currentTarget as HTMLElement).style.background = "#0A66C2"
+              ; (e.currentTarget as HTMLElement).style.background = "#0A66C2"
             }}
           >
             Đăng nhập
@@ -17506,10 +17584,10 @@ function LandingPage({
               transition: "background 150ms",
             }}
             onMouseEnter={(e) => {
-              ;(e.currentTarget as HTMLElement).style.background = "#EAF1FA"
+              ; (e.currentTarget as HTMLElement).style.background = "#EAF1FA"
             }}
             onMouseLeave={(e) => {
-              ;(e.currentTarget as HTMLElement).style.background = "none"
+              ; (e.currentTarget as HTMLElement).style.background = "none"
             }}
           >
             Đăng ký
@@ -17548,10 +17626,10 @@ function LandingPage({
                 padding: 0,
               }}
               onMouseEnter={(e) => {
-                ;(e.currentTarget as HTMLElement).style.color = "#0A66C2"
+                ; (e.currentTarget as HTMLElement).style.color = "#0A66C2"
               }}
               onMouseLeave={(e) => {
-                ;(e.currentTarget as HTMLElement).style.color =
+                ; (e.currentTarget as HTMLElement).style.color =
                   "rgba(0,0,0,0.35)"
               }}
             >
@@ -17618,10 +17696,10 @@ function LoginPage({
           padding: "4px 0",
         }}
         onMouseEnter={(e) => {
-          ;(e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.90)"
+          ; (e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.90)"
         }}
         onMouseLeave={(e) => {
-          ;(e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.60)"
+          ; (e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.60)"
         }}
       >
         <ArrowLeft size={14} weight="bold" /> Quay lại
@@ -17712,7 +17790,7 @@ function LoginPage({
             </label>
             <button
               type="button"
-              onClick={() => {}}
+              onClick={() => { }}
               style={{
                 background: "none",
                 border: "none",
@@ -17724,11 +17802,11 @@ function LoginPage({
                 padding: 0,
               }}
               onMouseEnter={(e) => {
-                ;(e.currentTarget as HTMLElement).style.textDecoration =
+                ; (e.currentTarget as HTMLElement).style.textDecoration =
                   "underline"
               }}
               onMouseLeave={(e) => {
-                ;(e.currentTarget as HTMLElement).style.textDecoration = "none"
+                ; (e.currentTarget as HTMLElement).style.textDecoration = "none"
               }}
             >
               Quên mật khẩu?
@@ -17753,10 +17831,10 @@ function LoginPage({
               transition: "background 150ms",
             }}
             onMouseEnter={(e) => {
-              ;(e.currentTarget as HTMLElement).style.background = "#084FA0"
+              ; (e.currentTarget as HTMLElement).style.background = "#084FA0"
             }}
             onMouseLeave={(e) => {
-              ;(e.currentTarget as HTMLElement).style.background = "#0A66C2"
+              ; (e.currentTarget as HTMLElement).style.background = "#0A66C2"
             }}
           >
             Đăng nhập
@@ -17801,11 +17879,11 @@ function LoginPage({
               padding: 0,
             }}
             onMouseEnter={(e) => {
-              ;(e.currentTarget as HTMLElement).style.textDecoration =
+              ; (e.currentTarget as HTMLElement).style.textDecoration =
                 "underline"
             }}
             onMouseLeave={(e) => {
-              ;(e.currentTarget as HTMLElement).style.textDecoration = "none"
+              ; (e.currentTarget as HTMLElement).style.textDecoration = "none"
             }}
           >
             Đăng ký ngay
@@ -18010,10 +18088,10 @@ function SignUpFlow({
           padding: "4px 0",
         }}
         onMouseEnter={(e) => {
-          ;(e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.90)"
+          ; (e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.90)"
         }}
         onMouseLeave={(e) => {
-          ;(e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.60)"
+          ; (e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.60)"
         }}
       >
         <ArrowLeft size={14} weight="bold" />{" "}
@@ -18202,9 +18280,8 @@ function SignUpFlow({
                     textAlign: "center",
                     fontSize: 22,
                     fontWeight: 700,
-                    border: `2px solid ${
-                      digit ? "#0A66C2" : "rgba(0,0,0,0.18)"
-                    }`,
+                    border: `2px solid ${digit ? "#0A66C2" : "rgba(0,0,0,0.18)"
+                      }`,
                     borderRadius: 8,
                     outline: "none",
                     fontFamily: "inherit",
@@ -18212,7 +18289,7 @@ function SignUpFlow({
                     transition: "border-color 150ms",
                   }}
                   onFocus={(e) => {
-                    ;(e.currentTarget as HTMLElement).style.borderColor =
+                    ; (e.currentTarget as HTMLElement).style.borderColor =
                       "#0A66C2"
                   }}
                   onBlur={(e) => {
@@ -18297,11 +18374,11 @@ function SignUpFlow({
                 placeholder="Tìm kiếm trường..."
                 style={{ ...inputStyle, marginBottom: 8 }}
                 onFocus={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.borderColor =
+                  ; (e.currentTarget as HTMLElement).style.borderColor =
                     "#0A66C2"
                 }}
                 onBlur={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.borderColor =
+                  ; (e.currentTarget as HTMLElement).style.borderColor =
                     "rgba(0,0,0,0.18)"
                 }}
               />
@@ -18324,9 +18401,8 @@ function SignUpFlow({
                     style={{
                       padding: "10px 14px",
                       borderRadius: 8,
-                      border: `1.5px solid ${
-                        school === s ? "#0A66C2" : "rgba(0,0,0,0.10)"
-                      }`,
+                      border: `1.5px solid ${school === s ? "#0A66C2" : "rgba(0,0,0,0.10)"
+                        }`,
                       background: school === s ? "#EAF1FA" : "#FAFAF8",
                       textAlign: "left",
                       cursor: "pointer",
@@ -18370,11 +18446,11 @@ function SignUpFlow({
                   padding: "10px 0",
                 }}
                 onMouseEnter={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.color =
+                  ; (e.currentTarget as HTMLElement).style.color =
                     "rgba(0,0,0,0.90)"
                 }}
                 onMouseLeave={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.color =
+                  ; (e.currentTarget as HTMLElement).style.color =
                     "rgba(0,0,0,0.55)"
                 }}
               >
@@ -18433,9 +18509,8 @@ function SignUpFlow({
                       gap: 6,
                       padding: "7px 14px",
                       borderRadius: 9999,
-                      border: `1.5px solid ${
-                        active ? "#0A66C2" : "rgba(0,0,0,0.15)"
-                      }`,
+                      border: `1.5px solid ${active ? "#0A66C2" : "rgba(0,0,0,0.15)"
+                        }`,
                       background: active ? "#EAF1FA" : "#fff",
                       cursor: "pointer",
                       fontFamily: "inherit",
@@ -18482,11 +18557,11 @@ function SignUpFlow({
                   padding: "10px 0",
                 }}
                 onMouseEnter={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.color =
+                  ; (e.currentTarget as HTMLElement).style.color =
                     "rgba(0,0,0,0.90)"
                 }}
                 onMouseLeave={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.color =
+                  ; (e.currentTarget as HTMLElement).style.color =
                     "rgba(0,0,0,0.55)"
                 }}
               >
@@ -18542,9 +18617,8 @@ function SignUpFlow({
                   style={{
                     padding: "11px 14px",
                     borderRadius: 8,
-                    border: `1.5px solid ${
-                      profession === p ? "#0A66C2" : "rgba(0,0,0,0.10)"
-                    }`,
+                    border: `1.5px solid ${profession === p ? "#0A66C2" : "rgba(0,0,0,0.10)"
+                      }`,
                     background: profession === p ? "#EAF1FA" : "#FAFAF8",
                     textAlign: "left",
                     cursor: "pointer",
@@ -20019,7 +20093,7 @@ function MainApp({ onLogout }: { onLogout?: () => void }) {
               <FeedPostCard
                 key={post.id}
                 post={post}
-                onLike={() => {}}
+                onLike={() => { }}
                 onOpenGroup={(id) => {
                   const g = userGroups.find((g) => g.id === id)
                   if (g) setSelectedGroup(g)
@@ -20052,29 +20126,29 @@ function MainApp({ onLogout }: { onLogout?: () => void }) {
       {!["home", "network", "jobs", "messaging", "notifications"].includes(
         activeNav,
       ) && (
-        <div
-          style={{
-            maxWidth: 1128,
-            margin: "80px auto",
-            textAlign: "center",
-            color: "rgba(0,0,0,0.45)",
-            padding: "0 16px",
-          }}
-        >
-          <div style={{ fontSize: 48, marginBottom: 12 }}>🚧</div>
           <div
             style={{
-              fontWeight: 700,
-              fontSize: 20,
-              marginBottom: 6,
-              color: "rgba(0,0,0,0.90)",
+              maxWidth: 1128,
+              margin: "80px auto",
+              textAlign: "center",
+              color: "rgba(0,0,0,0.45)",
+              padding: "0 16px",
             }}
           >
-            Đang phát triển
+            <div style={{ fontSize: 48, marginBottom: 12 }}>🚧</div>
+            <div
+              style={{
+                fontWeight: 700,
+                fontSize: 20,
+                marginBottom: 6,
+                color: "rgba(0,0,0,0.90)",
+              }}
+            >
+              Đang phát triển
+            </div>
+            <div style={{ fontSize: 14 }}>Tính năng này sẽ sớm ra mắt.</div>
           </div>
-          <div style={{ fontSize: 14 }}>Tính năng này sẽ sớm ra mắt.</div>
-        </div>
-      )}
+        )}
 
       {createGroupOpen && (
         <CreateGroupModal
@@ -21047,11 +21121,11 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                     boxSizing: "border-box",
                   }}
                   onFocus={(e) => {
-                    ;(e.currentTarget as HTMLElement).style.borderColor =
+                    ; (e.currentTarget as HTMLElement).style.borderColor =
                       "#0A66C2"
                   }}
                   onBlur={(e) => {
-                    ;(e.currentTarget as HTMLElement).style.borderColor =
+                    ; (e.currentTarget as HTMLElement).style.borderColor =
                       "transparent"
                   }}
                 />
@@ -21173,11 +21247,11 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                           transition: "background 120ms",
                         }}
                         onMouseEnter={(e) => {
-                          ;(e.currentTarget as HTMLElement).style.background =
+                          ; (e.currentTarget as HTMLElement).style.background =
                             "#FAFAF8"
                         }}
                         onMouseLeave={(e) => {
-                          ;(e.currentTarget as HTMLElement).style.background =
+                          ; (e.currentTarget as HTMLElement).style.background =
                             "transparent"
                         }}
                       >
@@ -21285,11 +21359,11 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                                 fontFamily: "inherit",
                               }}
                               onMouseEnter={(e) => {
-                                ;(e.currentTarget as HTMLElement).style.textDecoration =
+                                ; (e.currentTarget as HTMLElement).style.textDecoration =
                                   "underline"
                               }}
                               onMouseLeave={(e) => {
-                                ;(e.currentTarget as HTMLElement).style.textDecoration =
+                                ; (e.currentTarget as HTMLElement).style.textDecoration =
                                   "none"
                               }}
                             >
@@ -21321,11 +21395,11 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                                 transition: "background 120ms",
                               }}
                               onMouseEnter={(e) => {
-                                ;(e.currentTarget as HTMLElement).style.background =
+                                ; (e.currentTarget as HTMLElement).style.background =
                                   "#FCE8E6"
                               }}
                               onMouseLeave={(e) => {
-                                ;(e.currentTarget as HTMLElement).style.background =
+                                ; (e.currentTarget as HTMLElement).style.background =
                                   "none"
                               }}
                             >
@@ -21355,8 +21429,8 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                     onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                     disabled={currentPage === 1}
                     style={{
-                      padding: "5px 14px",
-                      borderRadius: 4,
+                      padding: "6px 14px",
+                      borderRadius: 9999,
                       border: "1px solid rgba(0,0,0,0.15)",
                       background: currentPage === 1 ? "#F4F2EE" : "#fff",
                       color:
@@ -21367,10 +21441,13 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                       fontSize: 13,
                       fontWeight: 600,
                       fontFamily: "inherit",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 4,
                       transition: "background 120ms",
                     }}
                   >
-                    ← Trước
+                    <CaretLeft size={12} weight="bold" /> Trước
                   </button>
                   {Array.from({ length: totalPages }, (_, i) => i + 1).map(
                     (p) => (
@@ -21380,7 +21457,7 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                         style={{
                           width: 30,
                           height: 30,
-                          borderRadius: 4,
+                          borderRadius: "50%",
                           border: "none",
                           background:
                             p === currentPage ? "#0A66C2" : "transparent",
@@ -21403,8 +21480,8 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                     }
                     disabled={currentPage === totalPages}
                     style={{
-                      padding: "5px 14px",
-                      borderRadius: 4,
+                      padding: "6px 14px",
+                      borderRadius: 9999,
                       border: "1px solid rgba(0,0,0,0.15)",
                       background:
                         currentPage === totalPages ? "#F4F2EE" : "#fff",
@@ -21417,10 +21494,13 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                       fontSize: 13,
                       fontWeight: 600,
                       fontFamily: "inherit",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 4,
                       transition: "background 120ms",
                     }}
                   >
-                    Tiếp →
+                    Tiếp <CaretRight size={12} weight="bold" />
                   </button>
                 </div>
               )}
@@ -21533,11 +21613,11 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                         boxSizing: "border-box",
                       }}
                       onFocus={(e) => {
-                        ;(e.currentTarget as HTMLElement).style.borderColor =
+                        ; (e.currentTarget as HTMLElement).style.borderColor =
                           "#0A66C2"
                       }}
                       onBlur={(e) => {
-                        ;(e.currentTarget as HTMLElement).style.borderColor =
+                        ; (e.currentTarget as HTMLElement).style.borderColor =
                           "transparent"
                       }}
                     />
@@ -21630,11 +21710,11 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                               transition: "background 120ms",
                             }}
                             onMouseEnter={(e) => {
-                              ;(e.currentTarget as HTMLElement).style.background =
+                              ; (e.currentTarget as HTMLElement).style.background =
                                 "#FAFAF8"
                             }}
                             onMouseLeave={(e) => {
-                              ;(e.currentTarget as HTMLElement).style.background =
+                              ; (e.currentTarget as HTMLElement).style.background =
                                 "transparent"
                             }}
                           >
@@ -21752,11 +21832,11 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                                     fontFamily: "inherit",
                                   }}
                                   onMouseEnter={(e) => {
-                                    ;(e.currentTarget as HTMLElement).style.textDecoration =
+                                    ; (e.currentTarget as HTMLElement).style.textDecoration =
                                       "underline"
                                   }}
                                   onMouseLeave={(e) => {
-                                    ;(e.currentTarget as HTMLElement).style.textDecoration =
+                                    ; (e.currentTarget as HTMLElement).style.textDecoration =
                                       "none"
                                   }}
                                 >
@@ -21788,11 +21868,11 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                                     transition: "background 120ms",
                                   }}
                                   onMouseEnter={(e) => {
-                                    ;(e.currentTarget as HTMLElement).style.background =
+                                    ; (e.currentTarget as HTMLElement).style.background =
                                       "#FCE8E6"
                                   }}
                                   onMouseLeave={(e) => {
-                                    ;(e.currentTarget as HTMLElement).style.background =
+                                    ; (e.currentTarget as HTMLElement).style.background =
                                       "none"
                                   }}
                                 >
@@ -21918,11 +21998,11 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                         boxSizing: "border-box",
                       }}
                       onFocus={(e) => {
-                        ;(e.currentTarget as HTMLElement).style.borderColor =
+                        ; (e.currentTarget as HTMLElement).style.borderColor =
                           "#0A66C2"
                       }}
                       onBlur={(e) => {
-                        ;(e.currentTarget as HTMLElement).style.borderColor =
+                        ; (e.currentTarget as HTMLElement).style.borderColor =
                           "transparent"
                       }}
                     />
@@ -22066,11 +22146,11 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                                 transition: "background 120ms",
                               }}
                               onMouseEnter={(e) => {
-                                ;(e.currentTarget as HTMLElement).style.background =
+                                ; (e.currentTarget as HTMLElement).style.background =
                                   "#FAFAF8"
                               }}
                               onMouseLeave={(e) => {
-                                ;(e.currentTarget as HTMLElement).style.background =
+                                ; (e.currentTarget as HTMLElement).style.background =
                                   "transparent"
                               }}
                             >
@@ -22151,11 +22231,11 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                                     fontFamily: "inherit",
                                   }}
                                   onMouseEnter={(e) => {
-                                    ;(e.currentTarget as HTMLElement).style.textDecoration =
+                                    ; (e.currentTarget as HTMLElement).style.textDecoration =
                                       "underline"
                                   }}
                                   onMouseLeave={(e) => {
-                                    ;(e.currentTarget as HTMLElement).style.textDecoration =
+                                    ; (e.currentTarget as HTMLElement).style.textDecoration =
                                       "none"
                                   }}
                                 >
@@ -22186,10 +22266,10 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
               const matchT =
                 violationType === "Tất cả loại vi phạm" ||
                 v.category ===
-                  violationType
-                    .replace(" (Post)", "")
-                    .replace(" (User)", "")
-                    .replace(" / Hợp đồng", "")
+                violationType
+                  .replace(" (Post)", "")
+                  .replace(" (User)", "")
+                  .replace(" / Hợp đồng", "")
               const matchS =
                 violationStatus === "Tất cả" ||
                 (violationStatus === "Chờ xử lý" && v.status === "Chờ xử lý") ||
@@ -22290,11 +22370,11 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                         boxSizing: "border-box",
                       }}
                       onFocus={(e) => {
-                        ;(e.currentTarget as HTMLElement).style.borderColor =
+                        ; (e.currentTarget as HTMLElement).style.borderColor =
                           "#0A66C2"
                       }}
                       onBlur={(e) => {
-                        ;(e.currentTarget as HTMLElement).style.borderColor =
+                        ; (e.currentTarget as HTMLElement).style.borderColor =
                           "transparent"
                       }}
                     />
@@ -22412,11 +22492,11 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                               transition: "background 120ms",
                             }}
                             onMouseEnter={(e) => {
-                              ;(e.currentTarget as HTMLElement).style.background =
+                              ; (e.currentTarget as HTMLElement).style.background =
                                 "#FAFAF8"
                             }}
                             onMouseLeave={(e) => {
-                              ;(e.currentTarget as HTMLElement).style.background =
+                              ; (e.currentTarget as HTMLElement).style.background =
                                 "transparent"
                             }}
                           >
@@ -22537,11 +22617,11 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                                   fontFamily: "inherit",
                                 }}
                                 onMouseEnter={(e) => {
-                                  ;(e.currentTarget as HTMLElement).style.textDecoration =
+                                  ; (e.currentTarget as HTMLElement).style.textDecoration =
                                     "underline"
                                 }}
                                 onMouseLeave={(e) => {
-                                  ;(e.currentTarget as HTMLElement).style.textDecoration =
+                                  ; (e.currentTarget as HTMLElement).style.textDecoration =
                                     "none"
                                 }}
                               >
@@ -22670,11 +22750,11 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                         boxSizing: "border-box",
                       }}
                       onFocus={(e) => {
-                        ;(e.currentTarget as HTMLElement).style.borderColor =
+                        ; (e.currentTarget as HTMLElement).style.borderColor =
                           "#0A66C2"
                       }}
                       onBlur={(e) => {
-                        ;(e.currentTarget as HTMLElement).style.borderColor =
+                        ; (e.currentTarget as HTMLElement).style.borderColor =
                           "transparent"
                       }}
                     />
@@ -22770,11 +22850,11 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                               transition: "background 120ms",
                             }}
                             onMouseEnter={(e) => {
-                              ;(e.currentTarget as HTMLElement).style.background =
+                              ; (e.currentTarget as HTMLElement).style.background =
                                 "#FAFAF8"
                             }}
                             onMouseLeave={(e) => {
-                              ;(e.currentTarget as HTMLElement).style.background =
+                              ; (e.currentTarget as HTMLElement).style.background =
                                 "transparent"
                             }}
                           >
@@ -22878,11 +22958,11 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                                   fontFamily: "inherit",
                                 }}
                                 onMouseEnter={(e) => {
-                                  ;(e.currentTarget as HTMLElement).style.textDecoration =
+                                  ; (e.currentTarget as HTMLElement).style.textDecoration =
                                     "underline"
                                 }}
                                 onMouseLeave={(e) => {
-                                  ;(e.currentTarget as HTMLElement).style.textDecoration =
+                                  ; (e.currentTarget as HTMLElement).style.textDecoration =
                                     "none"
                                 }}
                               >
@@ -23016,11 +23096,11 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                   borderRadius: 4,
                 }}
                 onMouseEnter={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.color =
+                  ; (e.currentTarget as HTMLElement).style.color =
                     "rgba(0,0,0,0.90)"
                 }}
                 onMouseLeave={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.color =
+                  ; (e.currentTarget as HTMLElement).style.color =
                     "rgba(0,0,0,0.55)"
                 }}
               >
@@ -23243,10 +23323,10 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                   fontFamily: "inherit",
                 }}
                 onMouseEnter={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background = "#fff"
+                  ; (e.currentTarget as HTMLElement).style.background = "#fff"
                 }}
                 onMouseLeave={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background = "none"
+                  ; (e.currentTarget as HTMLElement).style.background = "none"
                 }}
               >
                 Đóng
@@ -23363,10 +23443,10 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                 lineHeight: 1.5,
               }}
               onFocus={(e) => {
-                ;(e.currentTarget as HTMLElement).style.borderColor = "#C03A2B"
+                ; (e.currentTarget as HTMLElement).style.borderColor = "#C03A2B"
               }}
               onBlur={(e) => {
-                ;(e.currentTarget as HTMLElement).style.borderColor =
+                ; (e.currentTarget as HTMLElement).style.borderColor =
                   "rgba(0,0,0,0.15)"
               }}
             />
@@ -23392,10 +23472,10 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                   fontFamily: "inherit",
                 }}
                 onMouseEnter={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background = "#FAFAF8"
+                  ; (e.currentTarget as HTMLElement).style.background = "#FAFAF8"
                 }}
                 onMouseLeave={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background = "none"
+                  ; (e.currentTarget as HTMLElement).style.background = "none"
                 }}
               >
                 Hủy bỏ
@@ -23500,11 +23580,11 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                   borderRadius: 4,
                 }}
                 onMouseEnter={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.color =
+                  ; (e.currentTarget as HTMLElement).style.color =
                     "rgba(0,0,0,0.90)"
                 }}
                 onMouseLeave={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.color =
+                  ; (e.currentTarget as HTMLElement).style.color =
                     "rgba(0,0,0,0.55)"
                 }}
               >
@@ -23655,10 +23735,10 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                   fontFamily: "inherit",
                 }}
                 onMouseEnter={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background = "#fff"
+                  ; (e.currentTarget as HTMLElement).style.background = "#fff"
                 }}
                 onMouseLeave={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background = "none"
+                  ; (e.currentTarget as HTMLElement).style.background = "none"
                 }}
               >
                 Bác bỏ báo cáo
@@ -23686,10 +23766,10 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                   fontFamily: "inherit",
                 }}
                 onMouseEnter={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background = "#A93226"
+                  ; (e.currentTarget as HTMLElement).style.background = "#A93226"
                 }}
                 onMouseLeave={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background = "#C03A2B"
+                  ; (e.currentTarget as HTMLElement).style.background = "#C03A2B"
                 }}
               >
                 Xử lý vi phạm
@@ -23759,11 +23839,11 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                   borderRadius: 4,
                 }}
                 onMouseEnter={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.color =
+                  ; (e.currentTarget as HTMLElement).style.color =
                     "rgba(0,0,0,0.90)"
                 }}
                 onMouseLeave={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.color =
+                  ; (e.currentTarget as HTMLElement).style.color =
                     "rgba(0,0,0,0.55)"
                 }}
               >
@@ -23945,10 +24025,10 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                   fontFamily: "inherit",
                 }}
                 onMouseEnter={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background = "#fff"
+                  ; (e.currentTarget as HTMLElement).style.background = "#fff"
                 }}
                 onMouseLeave={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background = "none"
+                  ; (e.currentTarget as HTMLElement).style.background = "none"
                 }}
               >
                 Từ chối khiếu nại
@@ -23976,10 +24056,10 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                   fontFamily: "inherit",
                 }}
                 onMouseEnter={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background = "#084FA0"
+                  ; (e.currentTarget as HTMLElement).style.background = "#084FA0"
                 }}
                 onMouseLeave={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background = "#0A66C2"
+                  ; (e.currentTarget as HTMLElement).style.background = "#0A66C2"
                 }}
               >
                 Chấp nhận khiếu nại & Gỡ đánh giá
@@ -24101,10 +24181,10 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                 lineHeight: 1.5,
               }}
               onFocus={(e) => {
-                ;(e.currentTarget as HTMLElement).style.borderColor = "#C03A2B"
+                ; (e.currentTarget as HTMLElement).style.borderColor = "#C03A2B"
               }}
               onBlur={(e) => {
-                ;(e.currentTarget as HTMLElement).style.borderColor =
+                ; (e.currentTarget as HTMLElement).style.borderColor =
                   "rgba(0,0,0,0.15)"
               }}
             />
@@ -24133,10 +24213,10 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                   transition: "background 150ms",
                 }}
                 onMouseEnter={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background = "#FAFAF8"
+                  ; (e.currentTarget as HTMLElement).style.background = "#FAFAF8"
                 }}
                 onMouseLeave={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background = "none"
+                  ; (e.currentTarget as HTMLElement).style.background = "none"
                 }}
               >
                 Hủy bỏ
