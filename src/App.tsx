@@ -69,6 +69,11 @@ import {
   Robot,
   ShieldCheck,
   Globe as GlobeIcon,
+  TrendUp,
+  TrendDown,
+  ArrowUpRight,
+  ArrowDownRight,
+  Funnel,
 } from "@phosphor-icons/react"
 
 function nameToGmail(name: string): string {
@@ -436,11 +441,13 @@ function Navbar({
   setActive,
   onOpenMyProfile,
   onLogout,
+  onOpenFinancialHistory,
 }: {
   active: string
   setActive: (v: string) => void
   onOpenMyProfile?: () => void
   onLogout?: () => void
+  onOpenFinancialHistory?: () => void
 }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
@@ -709,6 +716,13 @@ function Navbar({
                   },
                 },
                 {
+                  label: "Lịch sử giao dịch",
+                  action: () => {
+                    setMenuOpen(false)
+                    onOpenFinancialHistory?.()
+                  },
+                },
+                {
                   label: "Đăng xuất",
                   action: () => {
                     setMenuOpen(false)
@@ -775,7 +789,11 @@ function DegreeBadge({ degree }: { degree: Post["degree"] }) {
   )
 }
 
-function ProfileCard() {
+function ProfileCard({
+  onOpenFinancialHistory,
+}: {
+  onOpenFinancialHistory?: () => void
+}) {
   return (
     <div
       style={{
@@ -892,6 +910,36 @@ function ProfileCard() {
             style={{ fontSize: 13, fontWeight: 600, color: "rgba(0,0,0,0.60)" }}
           >
             Mục đã lưu
+          </span>
+        </div>
+        <div
+          onClick={onOpenFinancialHistory}
+          style={{
+            paddingTop: 10,
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            cursor: "pointer",
+          }}
+          onMouseEnter={(e) => {
+            const span = e.currentTarget.querySelector("span")
+            if (span) span.style.color = "#0A66C2"
+          }}
+          onMouseLeave={(e) => {
+            const span = e.currentTarget.querySelector("span")
+            if (span) span.style.color = "rgba(0,0,0,0.60)"
+          }}
+        >
+          <Wallet size={16} color="#0A66C2" weight="bold" />
+          <span
+            style={{
+              fontSize: 13,
+              fontWeight: 600,
+              color: "rgba(0,0,0,0.60)",
+              transition: "color 150ms ease",
+            }}
+          >
+            Lịch sử thu chi / Dòng tiền
           </span>
         </div>
       </div>
@@ -1976,7 +2024,13 @@ function Toast({ message, onDone }: { message: string; onDone: () => void }) {
   )
 }
 
-function HomePage({ onOpenModal }: { onOpenModal: () => void }) {
+function HomePage({
+  onOpenModal,
+  onOpenFinancialHistory,
+}: {
+  onOpenModal: () => void
+  onOpenFinancialHistory?: () => void
+}) {
   const [posts, setPosts] = useState<Post[]>(INITIAL_POSTS)
   const handleLike = (id: number) =>
     setPosts((prev) =>
@@ -2003,7 +2057,7 @@ function HomePage({ onOpenModal }: { onOpenModal: () => void }) {
       }}
     >
       <div>
-        <ProfileCard />
+        <ProfileCard onOpenFinancialHistory={onOpenFinancialHistory} />
       </div>
       <div>
         <CreatePostCard onOpenModal={onOpenModal} />
@@ -18629,6 +18683,1186 @@ function SignUpFlow({
   )
 }
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// FINANCIAL HISTORY & CASHFLOW PAGE
+// ═══════════════════════════════════════════════════════════════════════════════
+
+interface FinancialTransaction {
+  id: string
+  contractCode: string
+  contractName: string
+  category: string
+  type: "in" | "out"
+  amount: number
+  date: string
+  timestamp: string
+}
+
+const INITIAL_FINANCIAL_TRANSACTIONS: FinancialTransaction[] = [
+  {
+    id: "tx-1",
+    contractCode: "#HD-9821",
+    contractName: "Thiết kế UI App FinTech cho Ngân hàng Số",
+    category: "Product Design",
+    type: "in",
+    amount: 12000000,
+    date: "2026-09-18",
+    timestamp: "14:30 - 18/09/2026",
+  },
+  {
+    id: "tx-2",
+    contractCode: "#HD-9815",
+    contractName: "Thuê Senior Backend Golang (Module Thanh toán)",
+    category: "Software Development",
+    type: "out",
+    amount: 8500000,
+    date: "2026-09-17",
+    timestamp: "09:15 - 17/09/2026",
+  },
+  {
+    id: "tx-3",
+    contractCode: "#HD-9784",
+    contractName: "Phát triển Landing Page Marketing Sự kiện Tech Summit",
+    category: "Frontend Web",
+    type: "in",
+    amount: 6800000,
+    date: "2026-09-15",
+    timestamp: "16:45 - 15/09/2026",
+  },
+  {
+    id: "tx-4",
+    contractCode: "#HD-9762",
+    contractName: "Phí dịch vụ Escrow & Bảo lãnh hợp đồng Quý 3",
+    category: "Hạ tầng & Nền tảng",
+    type: "out",
+    amount: 2000000,
+    date: "2026-09-12",
+    timestamp: "11:00 - 12/09/2026",
+  },
+  {
+    id: "tx-5",
+    contractCode: "#HD-9740",
+    contractName: "Audit An ninh mạng & Smart Contract NFT Platform",
+    category: "Blockchain & Security",
+    type: "in",
+    amount: 15500000,
+    date: "2026-09-08",
+    timestamp: "10:20 - 08/09/2026",
+  },
+  {
+    id: "tx-6",
+    contractCode: "#HD-9711",
+    contractName: "Tối ưu hóa Database PostgreSQL & DevOps Pipeline",
+    category: "Cloud & DevOps",
+    type: "in",
+    amount: 10900000,
+    date: "2026-09-05",
+    timestamp: "15:30 - 05/09/2026",
+  },
+  {
+    id: "tx-7",
+    contractCode: "#HD-9689",
+    contractName: "Mua License Figma Enterprise & Asset 3D Team",
+    category: "Chi phí công cụ",
+    type: "out",
+    amount: 4200000,
+    date: "2026-09-01",
+    timestamp: "08:45 - 01/09/2026",
+  },
+  {
+    id: "tx-8",
+    contractCode: "#HD-9650",
+    contractName: "Thiết kế Design System Đa nền tảng cho SaaS",
+    category: "Product Design",
+    type: "in",
+    amount: 8200000,
+    date: "2026-08-28",
+    timestamp: "17:10 - 28/08/2026",
+  },
+  {
+    id: "tx-9",
+    contractCode: "#HD-9622",
+    contractName: "Thuê Freelance QA / Manual Tester Kiểm thử UAT",
+    category: "Kiểm thử phần mềm",
+    type: "out",
+    amount: 3800000,
+    date: "2026-08-25",
+    timestamp: "13:00 - 25/08/2026",
+  },
+  {
+    id: "tx-10",
+    contractCode: "#HD-9590",
+    contractName: "Tư vấn Kiến trúc Microservices & High-load Cache",
+    category: "System Design",
+    type: "in",
+    amount: 9500000,
+    date: "2026-08-20",
+    timestamp: "10:00 - 20/08/2026",
+  },
+]
+
+const CASHFLOW_CHART_MONTHS = [
+  { month: "Tháng 4", inVal: 24.5, outVal: 12.0, formattedIn: "+24.500.000 ₫", formattedOut: "-12.000.000 ₫", net: "+12.500.000 ₫" },
+  { month: "Tháng 5", inVal: 29.0, outVal: 15.4, formattedIn: "+29.000.000 ₫", formattedOut: "-15.400.000 ₫", net: "+13.600.000 ₫" },
+  { month: "Tháng 6", inVal: 34.2, outVal: 11.8, formattedIn: "+34.200.000 ₫", formattedOut: "-11.800.000 ₫", net: "+22.400.000 ₫" },
+  { month: "Tháng 7", inVal: 31.0, outVal: 16.5, formattedIn: "+31.000.000 ₫", formattedOut: "-16.500.000 ₫", net: "+14.500.000 ₫" },
+  { month: "Tháng 8", inVal: 39.8, outVal: 14.2, formattedIn: "+39.800.000 ₫", formattedOut: "-14.200.000 ₫", net: "+25.600.000 ₫" },
+  { month: "Tháng 9", inVal: 45.2, outVal: 18.5, formattedIn: "+45.200.000 ₫", formattedOut: "-18.500.000 ₫", net: "+26.700.000 ₫" },
+]
+
+function CashflowLineChart() {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(5)
+  const chartW = 760
+  const chartH = 220
+  const padLeft = 60
+  const padRight = 40
+  const padTop = 20
+  const padBottom = 35
+  const plotW = chartW - padLeft - padRight
+  const plotH = chartH - padTop - padBottom
+  const maxY = 50
+
+  const pointsIn = CASHFLOW_CHART_MONTHS.map((d, i) => {
+    const x = padLeft + (i / (CASHFLOW_CHART_MONTHS.length - 1)) * plotW
+    const y = padTop + plotH - (d.inVal / maxY) * plotH
+    return { x, y }
+  })
+
+  const pointsOut = CASHFLOW_CHART_MONTHS.map((d, i) => {
+    const x = padLeft + (i / (CASHFLOW_CHART_MONTHS.length - 1)) * plotW
+    const y = padTop + plotH - (d.outVal / maxY) * plotH
+    return { x, y }
+  })
+
+  const createSmoothPath = (pts: { x: number; y: number }[]) => {
+    if (!pts.length) return ""
+    let path = `M ${pts[0].x},${pts[0].y}`
+    for (let i = 0; i < pts.length - 1; i++) {
+      const p0 = pts[i]
+      const p1 = pts[i + 1]
+      const cp1x = p0.x + (p1.x - p0.x) / 2
+      const cp1y = p0.y
+      const cp2x = p0.x + (p1.x - p0.x) / 2
+      const cp2y = p1.y
+      path += ` C ${cp1x},${cp1y} ${cp2x},${cp2y} ${p1.x},${p1.y}`
+    }
+    return path
+  }
+
+  const pathIn = createSmoothPath(pointsIn)
+  const pathOut = createSmoothPath(pointsOut)
+  const areaIn = `${pathIn} L ${pointsIn[pointsIn.length - 1].x},${padTop + plotH} L ${pointsIn[0].x},${padTop + plotH} Z`
+  const areaOut = `${pathOut} L ${pointsOut[pointsOut.length - 1].x},${padTop + plotH} L ${pointsOut[0].x},${padTop + plotH} Z`
+
+  const activeData = hoveredIndex !== null ? CASHFLOW_CHART_MONTHS[hoveredIndex] : null
+  const activePtIn = hoveredIndex !== null ? pointsIn[hoveredIndex] : null
+  const activePtOut = hoveredIndex !== null ? pointsOut[hoveredIndex] : null
+
+  return (
+    <div
+      style={{
+        background: "#fff",
+        borderRadius: 8,
+        padding: 24,
+        boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+        marginBottom: 24,
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginBottom: 16,
+          flexWrap: "wrap",
+          gap: 12,
+        }}
+      >
+        <div>
+          <h3
+            style={{
+              fontSize: 18,
+              fontWeight: 600,
+              color: "rgba(0,0,0,0.90)",
+              marginBottom: 4,
+            }}
+          >
+            Biến động thu chi
+          </h3>
+          <p style={{ fontSize: 13, color: "rgba(0,0,0,0.60)" }}>
+            Biểu đồ trực quan so sánh dòng tiền vào và ra trong 6 tháng gần nhất
+          </p>
+        </div>
+
+        {/* Legend */}
+        <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <span
+              style={{
+                width: 10,
+                height: 10,
+                borderRadius: "50%",
+                background: "#137333",
+                display: "inline-block",
+              }}
+            />
+            <span style={{ fontSize: 13, fontWeight: 600, color: "rgba(0,0,0,0.80)" }}>
+              Tiền vào
+            </span>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <span
+              style={{
+                width: 10,
+                height: 10,
+                borderRadius: "50%",
+                background: "#C03A2B",
+                display: "inline-block",
+              }}
+            />
+            <span style={{ fontSize: 13, fontWeight: 600, color: "rgba(0,0,0,0.80)" }}>
+              Tiền ra
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* SVG chart container */}
+      <div style={{ position: "relative", width: "100%", overflowX: "auto" }}>
+        <svg
+          viewBox={`0 0 ${chartW} ${chartH}`}
+          style={{ width: "100%", height: "auto", display: "block", minWidth: 600 }}
+        >
+          <defs>
+            <linearGradient id="cfInGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#137333" stopOpacity="0.16" />
+              <stop offset="100%" stopColor="#137333" stopOpacity="0.0" />
+            </linearGradient>
+            <linearGradient id="cfOutGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#C03A2B" stopOpacity="0.12" />
+              <stop offset="100%" stopColor="#C03A2B" stopOpacity="0.0" />
+            </linearGradient>
+          </defs>
+
+          {/* Grid lines & Y-axis labels */}
+          {[0, 10, 20, 30, 40, 50].map((val) => {
+            const y = padTop + plotH - (val / maxY) * plotH
+            return (
+              <g key={val}>
+                <line
+                  x1={padLeft}
+                  y1={y}
+                  x2={chartW - padRight}
+                  y2={y}
+                  stroke="rgba(0,0,0,0.06)"
+                  strokeWidth="1"
+                />
+                <text
+                  x={padLeft - 10}
+                  y={y + 4}
+                  textAnchor="end"
+                  fill="rgba(0,0,0,0.45)"
+                  fontSize="11"
+                  fontFamily="'Source Sans 3', sans-serif"
+                >
+                  {val === 0 ? "0 ₫" : `${val} tr`}
+                </text>
+              </g>
+            )
+          })}
+
+          {/* Area fills */}
+          <path d={areaIn} fill="url(#cfInGrad)" />
+          <path d={areaOut} fill="url(#cfOutGrad)" />
+
+          {/* Lines */}
+          <path
+            d={pathIn}
+            fill="none"
+            stroke="#137333"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d={pathOut}
+            fill="none"
+            stroke="#C03A2B"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+
+          {/* Vertical guideline & dots for hovered point */}
+          {activePtIn && activePtOut && hoveredIndex !== null && (
+            <g>
+              <line
+                x1={activePtIn.x}
+                y1={padTop}
+                x2={activePtIn.x}
+                y2={padTop + plotH}
+                stroke="rgba(0,0,0,0.18)"
+                strokeDasharray="4 4"
+                strokeWidth="1.5"
+              />
+              <circle
+                cx={activePtIn.x}
+                cy={activePtIn.y}
+                r="6"
+                fill="#137333"
+                stroke="#fff"
+                strokeWidth="2.5"
+              />
+              <circle
+                cx={activePtOut.x}
+                cy={activePtOut.y}
+                r="6"
+                fill="#C03A2B"
+                stroke="#fff"
+                strokeWidth="2.5"
+              />
+            </g>
+          )}
+
+          {/* X-axis labels and hover hit areas */}
+          {CASHFLOW_CHART_MONTHS.map((d, i) => {
+            const x = padLeft + (i / (CASHFLOW_CHART_MONTHS.length - 1)) * plotW
+            const isHovered = hoveredIndex === i
+            return (
+              <g
+                key={d.month}
+                style={{ cursor: "pointer" }}
+                onMouseEnter={() => setHoveredIndex(i)}
+              >
+                {/* Transparent hit area */}
+                <rect
+                  x={x - (plotW / (CASHFLOW_CHART_MONTHS.length - 1)) / 2}
+                  y={padTop}
+                  width={plotW / (CASHFLOW_CHART_MONTHS.length - 1)}
+                  height={plotH + padBottom}
+                  fill="transparent"
+                />
+                <circle
+                  cx={pointsIn[i].x}
+                  cy={pointsIn[i].y}
+                  r="3.5"
+                  fill="#137333"
+                  opacity={isHovered ? 1 : 0.6}
+                />
+                <circle
+                  cx={pointsOut[i].x}
+                  cy={pointsOut[i].y}
+                  r="3.5"
+                  fill="#C03A2B"
+                  opacity={isHovered ? 1 : 0.6}
+                />
+                <text
+                  x={x}
+                  y={chartH - 8}
+                  textAnchor="middle"
+                  fill={isHovered ? "#0A66C2" : "rgba(0,0,0,0.60)"}
+                  fontWeight={isHovered ? "700" : "500"}
+                  fontSize="12"
+                  fontFamily="'Source Sans 3', sans-serif"
+                >
+                  {d.month}
+                </text>
+              </g>
+            )
+          })}
+        </svg>
+
+        {/* Floating Tooltip Card */}
+        {activeData && activePtIn && hoveredIndex !== null && (
+          <div
+            style={{
+              position: "absolute",
+              left: `${(activePtIn.x / chartW) * 100}%`,
+              top: 10,
+              transform: "translate(-50%, 0)",
+              background: "#fff",
+              borderRadius: 8,
+              boxShadow: "0 4px 16px rgba(0,0,0,0.12)",
+              border: "1px solid rgba(0,0,0,0.08)",
+              padding: "10px 14px",
+              pointerEvents: "none",
+              zIndex: 10,
+              minWidth: 170,
+              whiteSpace: "nowrap",
+            }}
+          >
+            <div
+              style={{
+                fontSize: 12,
+                fontWeight: 700,
+                color: "rgba(0,0,0,0.90)",
+                borderBottom: "1px solid rgba(0,0,0,0.06)",
+                paddingBottom: 4,
+                marginBottom: 6,
+              }}
+            >
+              {activeData.month} / 2026
+            </div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: 12,
+                fontSize: 12,
+                marginBottom: 3,
+              }}
+            >
+              <span style={{ color: "rgba(0,0,0,0.60)", display: "flex", alignItems: "center", gap: 5 }}>
+                <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#137333" }} />
+                Tiền vào:
+              </span>
+              <span style={{ fontWeight: 700, color: "#137333" }}>{activeData.formattedIn}</span>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: 12,
+                fontSize: 12,
+                marginBottom: 4,
+              }}
+            >
+              <span style={{ color: "rgba(0,0,0,0.60)", display: "flex", alignItems: "center", gap: 5 }}>
+                <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#C03A2B" }} />
+                Tiền ra:
+              </span>
+              <span style={{ fontWeight: 700, color: "#C03A2B" }}>{activeData.formattedOut}</span>
+            </div>
+            <div
+              style={{
+                borderTop: "1px dashed rgba(0,0,0,0.08)",
+                paddingTop: 4,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                fontSize: 12,
+                fontWeight: 700,
+              }}
+            >
+              <span style={{ color: "rgba(0,0,0,0.60)" }}>Thặng dư ròng:</span>
+              <span style={{ color: "#0A66C2" }}>{activeData.net}</span>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function FinancialHistoryPage({ onBack }: { onBack: () => void }) {
+  const [filterType, setFilterType] = useState<"all" | "in" | "out">("all")
+  const [startDate, setStartDate] = useState("")
+  const [endDate, setEndDate] = useState("")
+  const [appliedFilterType, setAppliedFilterType] = useState<"all" | "in" | "out">("all")
+  const [appliedStartDate, setAppliedStartDate] = useState("")
+  const [appliedEndDate, setAppliedEndDate] = useState("")
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 5
+
+  const handleApplyFilter = () => {
+    setAppliedFilterType(filterType)
+    setAppliedStartDate(startDate)
+    setAppliedEndDate(endDate)
+    setCurrentPage(1)
+  }
+
+  const handleResetFilter = () => {
+    setFilterType("all")
+    setStartDate("")
+    setEndDate("")
+    setAppliedFilterType("all")
+    setAppliedStartDate("")
+    setAppliedEndDate("")
+    setCurrentPage(1)
+  }
+
+  const filteredTransactions = INITIAL_FINANCIAL_TRANSACTIONS.filter((item) => {
+    if (appliedFilterType !== "all" && item.type !== appliedFilterType) {
+      return false
+    }
+    if (appliedStartDate && item.date < appliedStartDate) {
+      return false
+    }
+    if (appliedEndDate && item.date > appliedEndDate) {
+      return false
+    }
+    return true
+  })
+
+  const totalPages = Math.max(1, Math.ceil(filteredTransactions.length / itemsPerPage))
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const paginatedItems = filteredTransactions.slice(startIndex, startIndex + itemsPerPage)
+
+  return (
+    <div style={{ minHeight: "100%", background: "#F4F2EE", paddingBottom: 48 }}>
+      <div style={{ maxWidth: 1128, margin: "0 auto", padding: "24px 16px" }}>
+        {/* Navigation & Header */}
+        <div style={{ marginBottom: 20 }}>
+          <button
+            onClick={onBack}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              fontSize: 14,
+              fontWeight: 600,
+              color: "rgba(0,0,0,0.60)",
+              fontFamily: "inherit",
+              padding: "4px 0",
+              marginBottom: 12,
+              transition: "color 150ms ease",
+            }}
+            onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.90)")}
+            onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.60)")}
+          >
+            <ArrowLeft size={16} weight="bold" /> Quay lại
+          </button>
+          <h1
+            style={{
+              fontSize: 24,
+              fontWeight: 600,
+              color: "rgba(0,0,0,0.90)",
+              marginBottom: 4,
+              letterSpacing: "-0.015em",
+            }}
+          >
+            Quản lý dòng tiền
+          </h1>
+          <p style={{ fontSize: 14, color: "rgba(0,0,0,0.60)" }}>
+            Theo dõi lịch sử thu nhập và chi phí phát sinh từ các dự án, hợp đồng
+          </p>
+        </div>
+
+        {/* Page Banner */}
+        <div
+          style={{
+            background: "linear-gradient(135deg, #0A66C2 0%, #06407F 100%)",
+            borderRadius: 8,
+            padding: "24px 28px",
+            marginBottom: 24,
+            color: "#fff",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            boxShadow: "0 4px 12px rgba(10,102,194,0.18)",
+            position: "relative",
+            overflow: "hidden",
+            flexWrap: "wrap",
+            gap: 16,
+          }}
+        >
+          <div style={{ maxWidth: 640, position: "relative", zIndex: 1 }}>
+            <div
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 6,
+                background: "rgba(255,255,255,0.18)",
+                padding: "4px 10px",
+                borderRadius: 9999,
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: "0.04em",
+                textTransform: "uppercase",
+                marginBottom: 10,
+              }}
+            >
+              <Sparkle size={13} weight="fill" color="#FFD700" />
+              Occupify Cashflow Management
+            </div>
+            <h2
+              style={{
+                fontSize: 20,
+                fontWeight: 700,
+                lineHeight: 1.35,
+                marginBottom: 6,
+                letterSpacing: "-0.01em",
+              }}
+            >
+              Nắm bắt dòng tiền thông minh — Tối ưu hóa thu nhập từ hợp đồng freelance
+            </h2>
+            <p
+              style={{
+                fontSize: 13.5,
+                color: "rgba(255,255,255,0.85)",
+                lineHeight: 1.5,
+              }}
+            >
+              Mọi khoản tiền vào và tiền ra đều được ghi nhận minh bạch theo thời gian thực. Giúp bạn kiểm soát chi phí dự án và xây dựng kế hoạch tài chính vững vàng.
+            </p>
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 12,
+              flexShrink: 0,
+              position: "relative",
+              zIndex: 1,
+            }}
+          >
+            <div
+              style={{
+                background: "rgba(255,255,255,0.12)",
+                backdropFilter: "blur(8px)",
+                border: "1px solid rgba(255,255,255,0.20)",
+                borderRadius: 8,
+                padding: "12px 18px",
+                textAlign: "center",
+              }}
+            >
+              <div style={{ fontSize: 11, color: "rgba(255,255,255,0.80)", fontWeight: 600 }}>
+                Thặng dư ròng tháng 9
+              </div>
+              <div style={{ fontSize: 20, fontWeight: 800, color: "#fff", marginTop: 2 }}>
+                +26.700.000 ₫
+              </div>
+            </div>
+          </div>
+
+          {/* Decorative background circle */}
+          <div
+            style={{
+              position: "absolute",
+              top: -50,
+              right: -50,
+              width: 220,
+              height: 220,
+              borderRadius: "50%",
+              background: "rgba(255,255,255,0.06)",
+              pointerEvents: "none",
+            }}
+          />
+        </div>
+
+        {/* 2. Summary Metric Cards */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+            gap: 20,
+            marginBottom: 24,
+          }}
+        >
+          {/* Card 1: Tổng tiền vào */}
+          <div
+            style={{
+              background: "#fff",
+              borderRadius: 8,
+              padding: 24,
+              boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <div>
+              <div
+                style={{
+                  fontSize: 14,
+                  fontWeight: 600,
+                  color: "rgba(0,0,0,0.60)",
+                  marginBottom: 6,
+                }}
+              >
+                Tổng tiền vào
+              </div>
+              <div
+                style={{
+                  fontSize: 26,
+                  fontWeight: 700,
+                  color: "#137333",
+                  letterSpacing: "-0.01em",
+                }}
+              >
+                +45.200.000 ₫
+              </div>
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 4,
+                  marginTop: 8,
+                  fontSize: 12,
+                  fontWeight: 600,
+                  color: "#137333",
+                  background: "#E6F4EA",
+                  padding: "2px 8px",
+                  borderRadius: 4,
+                }}
+              >
+                <TrendUp size={14} weight="bold" />
+                +18.5% so với tháng trước
+              </div>
+            </div>
+            <div
+              style={{
+                width: 52,
+                height: 52,
+                borderRadius: "50%",
+                background: "#E6F4EA",
+                color: "#137333",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexShrink: 0,
+              }}
+            >
+              <TrendUp size={26} weight="bold" />
+            </div>
+          </div>
+
+          {/* Card 2: Tổng tiền ra */}
+          <div
+            style={{
+              background: "#fff",
+              borderRadius: 8,
+              padding: 24,
+              boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <div>
+              <div
+                style={{
+                  fontSize: 14,
+                  fontWeight: 600,
+                  color: "rgba(0,0,0,0.60)",
+                  marginBottom: 6,
+                }}
+              >
+                Tổng tiền ra
+              </div>
+              <div
+                style={{
+                  fontSize: 26,
+                  fontWeight: 700,
+                  color: "#C03A2B",
+                  letterSpacing: "-0.01em",
+                }}
+              >
+                -18.500.000 ₫
+              </div>
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 4,
+                  marginTop: 8,
+                  fontSize: 12,
+                  fontWeight: 600,
+                  color: "#C03A2B",
+                  background: "#FCE8E6",
+                  padding: "2px 8px",
+                  borderRadius: 4,
+                }}
+              >
+                <TrendDown size={14} weight="bold" />
+                -6.2% so với tháng trước
+              </div>
+            </div>
+            <div
+              style={{
+                width: 52,
+                height: 52,
+                borderRadius: "50%",
+                background: "#FCE8E6",
+                color: "#C03A2B",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexShrink: 0,
+              }}
+            >
+              <TrendDown size={26} weight="bold" />
+            </div>
+          </div>
+        </div>
+
+        {/* 3. Interactive Line Chart Section */}
+        <CashflowLineChart />
+
+        {/* 4. Filter & Search Toolbar */}
+        <div
+          style={{
+            background: "#fff",
+            borderRadius: 8,
+            padding: "16px 20px",
+            boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+            marginBottom: 20,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            gap: 16,
+          }}
+        >
+          {/* Controls */}
+          <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
+            {/* Transaction Type Select */}
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ fontSize: 13, fontWeight: 600, color: "rgba(0,0,0,0.70)" }}>
+                Loại giao dịch:
+              </span>
+              <select
+                value={filterType}
+                onChange={(e) => setFilterType(e.target.value as "all" | "in" | "out")}
+                style={{
+                  background: "#FAFAF8",
+                  border: "1px solid rgba(0,0,0,0.15)",
+                  borderRadius: 4,
+                  padding: "8px 12px",
+                  fontSize: 14,
+                  fontFamily: "inherit",
+                  color: "rgba(0,0,0,0.90)",
+                  outline: "none",
+                  cursor: "pointer",
+                }}
+              >
+                <option value="all">Tất cả giao dịch</option>
+                <option value="in">Tiền vào (+)</option>
+                <option value="out">Tiền ra (-)</option>
+              </select>
+            </div>
+
+            {/* Date Pickers */}
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ fontSize: 13, fontWeight: 600, color: "rgba(0,0,0,0.70)" }}>
+                Từ ngày:
+              </span>
+              <input
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                style={{
+                  background: "#FAFAF8",
+                  border: "1px solid rgba(0,0,0,0.15)",
+                  borderRadius: 4,
+                  padding: "7px 10px",
+                  fontSize: 13,
+                  fontFamily: "inherit",
+                  color: "rgba(0,0,0,0.85)",
+                  outline: "none",
+                }}
+              />
+            </div>
+
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ fontSize: 13, fontWeight: 600, color: "rgba(0,0,0,0.70)" }}>
+                Đến ngày:
+              </span>
+              <input
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                style={{
+                  background: "#FAFAF8",
+                  border: "1px solid rgba(0,0,0,0.15)",
+                  borderRadius: 4,
+                  padding: "7px 10px",
+                  fontSize: 13,
+                  fontFamily: "inherit",
+                  color: "rgba(0,0,0,0.85)",
+                  outline: "none",
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Action buttons */}
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            {(appliedFilterType !== "all" || appliedStartDate || appliedEndDate) && (
+              <button
+                onClick={handleResetFilter}
+                style={{
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  fontSize: 13,
+                  fontWeight: 600,
+                  color: "rgba(0,0,0,0.60)",
+                  fontFamily: "inherit",
+                  padding: "6px 12px",
+                }}
+                onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.textDecoration = "underline")}
+                onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.textDecoration = "none")}
+              >
+                Đặt lại
+              </button>
+            )}
+            <button
+              onClick={handleApplyFilter}
+              style={{
+                borderRadius: 9999,
+                background: "#0A66C2",
+                color: "#fff",
+                padding: "8px 20px",
+                fontSize: 13,
+                fontWeight: 600,
+                border: "none",
+                cursor: "pointer",
+                fontFamily: "inherit",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 6,
+                transition: "background 150ms ease",
+              }}
+              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.background = "#084FA0")}
+              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = "#0A66C2")}
+            >
+              <Funnel size={14} weight="bold" />
+              Lọc dữ liệu
+            </button>
+          </div>
+        </div>
+
+        {/* 5. Transactions Data Table */}
+        <div
+          style={{
+            background: "#fff",
+            borderRadius: 8,
+            boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+            overflow: "hidden",
+          }}
+        >
+          <div style={{ overflowX: "auto" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left" }}>
+              <thead>
+                <tr
+                  style={{
+                    background: "#FAFAF8",
+                    borderBottom: "1px solid rgba(0,0,0,0.08)",
+                    fontSize: 12,
+                    fontWeight: 600,
+                    textTransform: "uppercase",
+                    color: "rgba(0,0,0,0.60)",
+                    letterSpacing: "0.03em",
+                  }}
+                >
+                  <th style={{ padding: "14px 20px" }}>Mã hợp đồng</th>
+                  <th style={{ padding: "14px 20px" }}>Tên hợp đồng</th>
+                  <th style={{ padding: "14px 20px" }}>Loại giao dịch</th>
+                  <th style={{ padding: "14px 20px" }}>Số tiền</th>
+                  <th style={{ padding: "14px 20px" }}>Thời gian</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedItems.length === 0 ? (
+                  <tr>
+                    <td
+                      colSpan={5}
+                      style={{
+                        padding: "36px 20px",
+                        textAlign: "center",
+                        color: "rgba(0,0,0,0.50)",
+                        fontSize: 14,
+                      }}
+                    >
+                      Không tìm thấy giao dịch nào phù hợp với bộ lọc.
+                    </td>
+                  </tr>
+                ) : (
+                  paginatedItems.map((item) => (
+                    <tr
+                      key={item.id}
+                      style={{
+                        borderBottom: "1px solid rgba(0,0,0,0.04)",
+                        fontSize: 14,
+                        transition: "background 150ms ease",
+                      }}
+                      onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.background = "#FAFAF8")}
+                      onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = "transparent")}
+                    >
+                      <td style={{ padding: "14px 20px" }}>
+                        <span
+                          style={{
+                            fontFamily: "monospace",
+                            color: "#0A66C2",
+                            background: "#EAF1FA",
+                            padding: "3px 8px",
+                            borderRadius: 4,
+                            fontWeight: 600,
+                            fontSize: 13,
+                          }}
+                        >
+                          {item.contractCode}
+                        </span>
+                      </td>
+                      <td style={{ padding: "14px 20px" }}>
+                        <div style={{ fontWeight: 600, color: "rgba(0,0,0,0.90)" }}>
+                          {item.contractName}
+                        </div>
+                        <div style={{ fontSize: 12, color: "rgba(0,0,0,0.45)", marginTop: 2 }}>
+                          {item.category}
+                        </div>
+                      </td>
+                      <td style={{ padding: "14px 20px" }}>
+                        <span
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: 4,
+                            fontSize: 12,
+                            fontWeight: 600,
+                            color: item.type === "in" ? "#137333" : "#C03A2B",
+                            background: item.type === "in" ? "#E6F4EA" : "#FCE8E6",
+                            padding: "2px 8px",
+                            borderRadius: 9999,
+                          }}
+                        >
+                          {item.type === "in" ? (
+                            <>
+                              <ArrowUpRight size={12} weight="bold" /> Tiền vào (+)
+                            </>
+                          ) : (
+                            <>
+                              <ArrowDownRight size={12} weight="bold" /> Tiền ra (-)
+                            </>
+                          )}
+                        </span>
+                      </td>
+                      <td style={{ padding: "14px 20px" }}>
+                        <span
+                          style={{
+                            fontWeight: 700,
+                            fontSize: 15,
+                            color: item.type === "in" ? "#137333" : "#C03A2B",
+                          }}
+                        >
+                          {item.type === "in"
+                            ? `+${item.amount.toLocaleString("vi-VN")} ₫`
+                            : `-${item.amount.toLocaleString("vi-VN")} ₫`}
+                        </span>
+                      </td>
+                      <td style={{ padding: "14px 20px", color: "rgba(0,0,0,0.60)", fontSize: 13 }}>
+                        {item.timestamp}
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Pagination */}
+          <div
+            style={{
+              padding: "14px 20px",
+              borderTop: "1px solid rgba(0,0,0,0.08)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              flexWrap: "wrap",
+              gap: 12,
+              background: "#FAFAF8",
+            }}
+          >
+            <div style={{ fontSize: 13, color: "rgba(0,0,0,0.60)" }}>
+              {filteredTransactions.length === 0 ? (
+                "0 giao dịch"
+              ) : (
+                <>
+                  Hiển thị{" "}
+                  <strong style={{ color: "rgba(0,0,0,0.85)" }}>
+                    {startIndex + 1} - {Math.min(startIndex + itemsPerPage, filteredTransactions.length)}
+                  </strong>{" "}
+                  trên tổng số{" "}
+                  <strong style={{ color: "rgba(0,0,0,0.85)" }}>
+                    {filteredTransactions.length}
+                  </strong>{" "}
+                  giao dịch
+                </>
+              )}
+            </div>
+
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <button
+                disabled={currentPage <= 1}
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                style={{
+                  padding: "6px 12px",
+                  borderRadius: 9999,
+                  border: "1px solid rgba(0,0,0,0.15)",
+                  background: "#fff",
+                  fontSize: 12,
+                  fontWeight: 600,
+                  color: currentPage <= 1 ? "rgba(0,0,0,0.30)" : "rgba(0,0,0,0.70)",
+                  cursor: currentPage <= 1 ? "default" : "pointer",
+                  fontFamily: "inherit",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 4,
+                }}
+              >
+                <CaretLeft size={12} weight="bold" /> Trước
+              </button>
+
+              {Array.from({ length: totalPages }).map((_, idx) => {
+                const pageNum = idx + 1
+                const isActive = pageNum === currentPage
+                return (
+                  <button
+                    key={pageNum}
+                    onClick={() => setCurrentPage(pageNum)}
+                    style={{
+                      width: 28,
+                      height: 28,
+                      borderRadius: "50%",
+                      border: "none",
+                      background: isActive ? "#0A66C2" : "transparent",
+                      color: isActive ? "#fff" : "rgba(0,0,0,0.70)",
+                      fontSize: 12,
+                      fontWeight: 600,
+                      cursor: "pointer",
+                      fontFamily: "inherit",
+                    }}
+                  >
+                    {pageNum}
+                  </button>
+                )
+              })}
+
+              <button
+                disabled={currentPage >= totalPages}
+                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                style={{
+                  padding: "6px 12px",
+                  borderRadius: 9999,
+                  border: "1px solid rgba(0,0,0,0.15)",
+                  background: "#fff",
+                  fontSize: 12,
+                  fontWeight: 600,
+                  color: currentPage >= totalPages ? "rgba(0,0,0,0.30)" : "rgba(0,0,0,0.70)",
+                  cursor: currentPage >= totalPages ? "default" : "pointer",
+                  fontFamily: "inherit",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 4,
+                }}
+              >
+                Sau <CaretRight size={12} weight="bold" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function MainApp({ onLogout }: { onLogout?: () => void }) {
   const [activeNav, setActiveNav] = useState("home")
   const [modalOpen, setModalOpen] = useState(false)
@@ -18640,6 +19874,7 @@ function MainApp({ onLogout }: { onLogout?: () => void }) {
   const [selectedGroup, setSelectedGroup] = useState<Group | null>(null)
   const [userGroups, setUserGroups] = useState<Group[]>(TECH_GROUPS)
   const [myProfileOpen, setMyProfileOpen] = useState(false)
+  const [financialHistoryOpen, setFinancialHistoryOpen] = useState(false)
   const [viewingUser, setViewingUser] = useState<string | null>(null)
   const openMyProfile = () => {
     setViewingUser(null)
@@ -18654,6 +19889,24 @@ function MainApp({ onLogout }: { onLogout?: () => void }) {
     setViewingUser(null)
   }
 
+  if (financialHistoryOpen) {
+    return (
+      <>
+        <Navbar
+          active={activeNav}
+          setActive={(v) => {
+            setFinancialHistoryOpen(false)
+            setActiveNav(v)
+          }}
+          onOpenMyProfile={openMyProfile}
+          onOpenFinancialHistory={() => setFinancialHistoryOpen(true)}
+          onLogout={onLogout}
+        />
+        <FinancialHistoryPage onBack={() => setFinancialHistoryOpen(false)} />
+      </>
+    )
+  }
+
   if (myProfileOpen) {
     return (
       <>
@@ -18664,6 +19917,7 @@ function MainApp({ onLogout }: { onLogout?: () => void }) {
             setActiveNav(v)
           }}
           onOpenMyProfile={openMyProfile}
+          onOpenFinancialHistory={() => setFinancialHistoryOpen(true)}
           onLogout={onLogout}
         />
         <MyProfilePage onBack={closeMyProfile} isOwnProfile={!viewingUser} />
@@ -18681,6 +19935,7 @@ function MainApp({ onLogout }: { onLogout?: () => void }) {
             setActiveNav(v)
           }}
           onOpenMyProfile={openMyProfile}
+          onOpenFinancialHistory={() => setFinancialHistoryOpen(true)}
           onLogout={onLogout}
         />
         <GroupDetailPage
@@ -18702,6 +19957,7 @@ function MainApp({ onLogout }: { onLogout?: () => void }) {
             setActiveNav(v)
           }}
           onOpenMyProfile={openMyProfile}
+          onOpenFinancialHistory={() => setFinancialHistoryOpen(true)}
           onLogout={onLogout}
         />
         <ContractDetailsPage
@@ -18734,6 +19990,7 @@ function MainApp({ onLogout }: { onLogout?: () => void }) {
         active={activeNav}
         setActive={setActiveNav}
         onOpenMyProfile={openMyProfile}
+        onOpenFinancialHistory={() => setFinancialHistoryOpen(true)}
         onLogout={onLogout}
       />
 
@@ -18751,7 +20008,7 @@ function MainApp({ onLogout }: { onLogout?: () => void }) {
           }}
         >
           <div>
-            <ProfileCard />
+            <ProfileCard onOpenFinancialHistory={() => setFinancialHistoryOpen(true)} />
           </div>
           <div>
             <CreatePostCard
