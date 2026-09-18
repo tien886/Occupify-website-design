@@ -435,10 +435,12 @@ function Navbar({
   active,
   setActive,
   onOpenMyProfile,
+  onLogout,
 }: {
   active: string
   setActive: (v: string) => void
   onOpenMyProfile?: () => void
+  onLogout?: () => void
 }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
@@ -706,7 +708,13 @@ function Navbar({
                     onOpenMyProfile?.()
                   },
                 },
-                { label: "Đăng xuất", action: () => setMenuOpen(false) },
+                {
+                  label: "Đăng xuất",
+                  action: () => {
+                    setMenuOpen(false)
+                    onLogout?.()
+                  },
+                },
               ].map(({ label, action }) => (
                 <button
                   key={label}
@@ -17514,10 +17522,14 @@ function LoginPage({
   onGoogle: () => void
   onSignUp?: () => void
 }) {
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
+  const [username, setUsername] = useState("nguyeminhkhoa@gmail.com")
+  const [password, setPassword] = useState("123456")
   const [rememberMe, setRememberMe] = useState(false)
-  const canSubmit = username.trim() && password.trim()
+
+  const handleSubmit = (e?: React.FormEvent) => {
+    if (e) e.preventDefault()
+    onSuccess()
+  }
 
   return (
     <div
@@ -17593,110 +17605,109 @@ function LoginPage({
           Chào mừng bạn trở lại Occupify!
         </p>
 
-        <AuthInput
-          label="Tên đăng nhập"
-          value={username}
-          onChange={setUsername}
-          placeholder="Nhập tên đăng nhập"
-          required
-        />
-        <AuthInput
-          label="Mật khẩu"
-          type="password"
-          value={password}
-          onChange={setPassword}
-          placeholder="Nhập mật khẩu"
-          required
-        />
+        <form onSubmit={handleSubmit}>
+          <AuthInput
+            label="Tên đăng nhập"
+            value={username}
+            onChange={setUsername}
+            placeholder="Nhập tên đăng nhập"
+            required
+          />
+          <AuthInput
+            label="Mật khẩu"
+            type="password"
+            value={password}
+            onChange={setPassword}
+            placeholder="Nhập mật khẩu"
+            required
+          />
 
-        {/* Remember me + Forgot password row */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            marginTop: 12,
-            marginBottom: 24,
-          }}
-        >
-          <label
+          {/* Remember me + Forgot password row */}
+          <div
             style={{
               display: "flex",
               alignItems: "center",
-              gap: 6,
-              cursor: "pointer",
-              fontSize: 13,
-              color: "rgba(0,0,0,0.90)",
-              userSelect: "none",
+              justifyContent: "space-between",
+              marginTop: 12,
+              marginBottom: 24,
             }}
           >
-            <input
-              type="checkbox"
-              checked={rememberMe}
-              onChange={(e) => setRememberMe(e.target.checked)}
+            <label
               style={{
-                accentColor: "#0A66C2",
-                width: 14,
-                height: 14,
+                display: "flex",
+                alignItems: "center",
+                gap: 6,
                 cursor: "pointer",
+                fontSize: 13,
+                color: "rgba(0,0,0,0.90)",
+                userSelect: "none",
               }}
-            />
-            Ghi nhớ đăng nhập
-          </label>
+            >
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                style={{
+                  accentColor: "#0A66C2",
+                  width: 14,
+                  height: 14,
+                  cursor: "pointer",
+                }}
+              />
+              Ghi nhớ đăng nhập
+            </label>
+            <button
+              type="button"
+              onClick={() => {}}
+              style={{
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                fontSize: 13,
+                fontWeight: 600,
+                color: "#0A66C2",
+                fontFamily: "inherit",
+                padding: 0,
+              }}
+              onMouseEnter={(e) => {
+                ;(e.currentTarget as HTMLElement).style.textDecoration =
+                  "underline"
+              }}
+              onMouseLeave={(e) => {
+                ;(e.currentTarget as HTMLElement).style.textDecoration = "none"
+              }}
+            >
+              Quên mật khẩu?
+            </button>
+          </div>
+
           <button
-            onClick={() => {}}
+            type="submit"
+            onClick={handleSubmit}
             style={{
-              background: "none",
+              width: "100%",
+              padding: "10px 20px",
+              borderRadius: 9999,
               border: "none",
-              cursor: "pointer",
-              fontSize: 13,
+              background: "#0A66C2",
+              color: "#fff",
+              fontSize: 14,
               fontWeight: 600,
-              color: "#0A66C2",
+              cursor: "pointer",
               fontFamily: "inherit",
-              padding: 0,
+              marginBottom: 24,
+              transition: "background 150ms",
             }}
             onMouseEnter={(e) => {
-              ;(e.currentTarget as HTMLElement).style.textDecoration =
-                "underline"
+              ;(e.currentTarget as HTMLElement).style.background = "#084FA0"
             }}
             onMouseLeave={(e) => {
-              ;(e.currentTarget as HTMLElement).style.textDecoration = "none"
+              ;(e.currentTarget as HTMLElement).style.background = "#0A66C2"
             }}
           >
-            Quên mật khẩu?
+            Đăng nhập
           </button>
-        </div>
-
-        <button
-          onClick={() => {
-            if (canSubmit) onSuccess()
-          }}
-          disabled={!canSubmit}
-          style={{
-            width: "100%",
-            padding: "10px 20px",
-            borderRadius: 9999,
-            border: "none",
-            background: canSubmit ? "#0A66C2" : "rgba(10,102,194,0.40)",
-            color: "#fff",
-            fontSize: 14,
-            fontWeight: 600,
-            cursor: canSubmit ? "pointer" : "default",
-            fontFamily: "inherit",
-            marginBottom: 24,
-            transition: "background 150ms",
-          }}
-          onMouseEnter={(e) => {
-            if (canSubmit)
-              (e.currentTarget as HTMLElement).style.background = "#084FA0"
-          }}
-          onMouseLeave={(e) => {
-            if (canSubmit)
-              (e.currentTarget as HTMLElement).style.background = "#0A66C2"
-          }}
-        >
-          Đăng nhập
-        </button>
+        </form>
 
         <div
           style={{
@@ -18618,7 +18629,7 @@ function SignUpFlow({
   )
 }
 
-function MainApp() {
+function MainApp({ onLogout }: { onLogout?: () => void }) {
   const [activeNav, setActiveNav] = useState("home")
   const [modalOpen, setModalOpen] = useState(false)
   const [toast, setToast] = useState<string | null>(null)
@@ -18653,6 +18664,7 @@ function MainApp() {
             setActiveNav(v)
           }}
           onOpenMyProfile={openMyProfile}
+          onLogout={onLogout}
         />
         <MyProfilePage onBack={closeMyProfile} isOwnProfile={!viewingUser} />
       </>
@@ -18669,6 +18681,7 @@ function MainApp() {
             setActiveNav(v)
           }}
           onOpenMyProfile={openMyProfile}
+          onLogout={onLogout}
         />
         <GroupDetailPage
           group={selectedGroup}
@@ -18689,6 +18702,7 @@ function MainApp() {
             setActiveNav(v)
           }}
           onOpenMyProfile={openMyProfile}
+          onLogout={onLogout}
         />
         <ContractDetailsPage
           contract={selectedContract}
@@ -18720,6 +18734,7 @@ function MainApp() {
         active={activeNav}
         setActive={setActiveNav}
         onOpenMyProfile={openMyProfile}
+        onLogout={onLogout}
       />
 
       {activeNav === "home" && (
@@ -22945,5 +22960,5 @@ export default function App() {
     )
   if (authState === "admin")
     return <AdminPortal onBack={() => setAuthState("landing")} />
-  return <MainApp />
+  return <MainApp onLogout={() => setAuthState("landing")} />
 }
