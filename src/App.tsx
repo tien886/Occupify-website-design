@@ -3820,6 +3820,7 @@ function ActionCard({
   iconColor = "#0A66C2",
   iconBg = "#EAF1FA",
   onClick,
+  descriptionMaxWidth = 220,
 }: {
   Icon: React.ElementType
   label: string
@@ -3827,6 +3828,7 @@ function ActionCard({
   iconColor?: string
   iconBg?: string
   onClick?: () => void
+  descriptionMaxWidth?: number | string
 }) {
   return (
     <button
@@ -3891,7 +3893,7 @@ function ActionCard({
             fontSize: 13,
             color: "rgba(0,0,0,0.60)",
             lineHeight: 1.45,
-            maxWidth: 180,
+            maxWidth: descriptionMaxWidth,
           }}
         >
           {description}
@@ -11887,26 +11889,6 @@ function JobsPage({
     )
   void setMyProjects
 
-  const actions = [
-    {
-      Icon: MagnifyingGlass,
-      label: "Tìm việc",
-      description:
-        "Khám phá hàng ngàn cơ hội việc làm phù hợp với kỹ năng của bạn",
-      iconColor: "#0A66C2",
-      iconBg: "#EAF1FA",
-      route: "search",
-    },
-    {
-      Icon: Handshake,
-      label: "Thuê freelancer",
-      description: "Kết nối với chuyên gia tài năng cho dự án của bạn",
-      iconColor: "#44712E",
-      iconBg: "#E5F6E8",
-      route: "freelancer" as string | null,
-    },
-  ]
-
   return (
     <div style={{ maxWidth: 1128, margin: "0 auto", padding: "28px 16px" }}>
       {/* Page heading */}
@@ -11935,31 +11917,19 @@ function JobsPage({
           alignItems: "start",
         }}
       >
-        {/* Left — 2×2 action grid + full-width Tạo dự án card */}
+        {/* Left — Actions + Projects cards */}
         <div>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: 12,
-              marginBottom: 12,
-            }}
-          >
-            {actions.map(
-              ({ Icon, label, description, iconColor, iconBg, route }) => (
-                <ActionCard
-                  key={label}
-                  Icon={Icon}
-                  label={label}
-                  description={description}
-                  iconColor={iconColor}
-                  iconBg={iconBg}
-                  onClick={() =>
-                    route ? setSubPage(route) : setToast(`Đã chọn: ${label}`)
-                  }
-                />
-              ),
-            )}
+          {/* Tìm việc card — full width across the grid */}
+          <div style={{ marginBottom: 12 }}>
+            <ActionCard
+              Icon={MagnifyingGlass}
+              label="Tìm việc"
+              description="Khám phá hàng ngàn cơ hội việc làm phù hợp với kỹ năng của bạn"
+              iconColor="#0A66C2"
+              iconBg="#EAF1FA"
+              onClick={() => setSubPage("search")}
+              descriptionMaxWidth={480}
+            />
           </div>
           {/* Tạo dự án + Tạo hợp đồng — side-by-side */}
           <div
