@@ -3157,12 +3157,7 @@ function NetworkConnectionsSection({
 }: {
   onViewProfile?: () => void
 }) {
-  const [search, setSearch] = useState("")
   const [connectedSet, setConnectedSet] = useState<Set<number>>(new Set())
-
-  const filtered = MY_CONNECTIONS.filter((p) =>
-    p.name.toLowerCase().includes(search.toLowerCase()),
-  )
 
   const toggleConnect = (id: number) =>
     setConnectedSet((prev) => {
@@ -3180,76 +3175,29 @@ function NetworkConnectionsSection({
         overflow: "hidden",
       }}
     >
-      {/* Search */}
-      <div
-        style={{
-          padding: "16px 20px",
-          borderBottom: "1px solid rgba(0,0,0,0.08)",
-        }}
-      >
-        <div
-          style={{
-            fontSize: 15,
-            fontWeight: 700,
-            color: "rgba(0,0,0,0.90)",
-            marginBottom: 10,
-          }}
-        >
-          Tìm kiếm kết nối
-        </div>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            background: "#EAF1FA",
-            borderRadius: 4,
-            padding: "0 12px",
-            height: 36,
-            border: search ? "1px solid #0A66C2" : "1px solid transparent",
-            transition: "border-color 150ms",
-          }}
-        >
-          <MagnifyingGlass size={16} color="rgba(0,0,0,0.45)" />
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Tìm theo tên..."
-            style={{
-              background: "none",
-              border: "none",
-              outline: "none",
-              fontSize: 13,
-              color: "rgba(0,0,0,0.90)",
-              width: "100%",
-              fontFamily: "inherit",
-            }}
-          />
-        </div>
-      </div>
       {/* Header */}
       <div
         style={{
-          padding: "14px 20px 6px",
+          padding: "16px 20px 12px",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
+          borderBottom: "1px solid rgba(0,0,0,0.08)",
         }}
       >
         <span
-          style={{ fontWeight: 700, fontSize: 15, color: "rgba(0,0,0,0.90)" }}
+          style={{ fontWeight: 700, fontSize: 16, color: "rgba(0,0,0,0.90)" }}
         >
           Danh sách kết nối
         </span>
         <span
-          style={{ fontSize: 12, color: "rgba(0,0,0,0.45)", fontWeight: 600 }}
+          style={{ fontSize: 13, color: "rgba(0,0,0,0.50)", fontWeight: 600 }}
         >
-          {filtered.length}
+          {MY_CONNECTIONS.length} kết nối
         </span>
       </div>
       {/* List */}
-      {filtered.map((person, idx) => {
+      {MY_CONNECTIONS.map((person, idx) => {
         const isConn = connectedSet.has(person.id)
         return (
           <div key={person.id}>
@@ -3344,15 +3292,16 @@ function NetworkConnectionsSection({
           </div>
         )
       })}
-      {filtered.length === 0 && (
+      {MY_CONNECTIONS.length === 0 && (
         <div
           style={{
-            padding: "16px 20px",
-            fontSize: 13,
+            padding: "24px 20px",
+            fontSize: 14,
             color: "rgba(0,0,0,0.45)",
+            textAlign: "center",
           }}
         >
-          Không tìm thấy kết nối nào.
+          Bạn chưa có kết nối nào.
         </div>
       )}
     </div>
@@ -3368,6 +3317,52 @@ function NetworkPage({ onViewProfile }: { onViewProfile?: () => void }) {
   const [connected, setConnected] = useState<Set<number>>(new Set())
   const [toast, setToast] = useState<string | null>(null)
   const [openGroup, setOpenGroup] = useState<Group | null>(null)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [searchFilterTab, setSearchFilterTab] = useState<
+    "all" | "people" | "groups"
+  >("all")
+
+  const allSearchPeople = React.useMemo(() => {
+    const map = new Map<string, Person & { isMyConnection?: boolean }>()
+    MY_CONNECTIONS.forEach((p) =>
+      map.set(p.name, { ...p, isMyConnection: true }),
+    )
+    SCHOOL_RECOMMENDATIONS.forEach((p) => {
+      if (!map.has(p.name)) map.set(p.name, p)
+    })
+    INDUSTRY_RECOMMENDATIONS.forEach((p) => {
+      if (!map.has(p.name)) map.set(p.name, p)
+    })
+    VIEWER_RECOMMENDATIONS.forEach((p) => {
+      if (!map.has(p.name)) map.set(p.name, p)
+    })
+    return Array.from(map.values())
+  }, [])
+
+  const filteredPeople = React.useMemo(() => {
+    const q = searchQuery.toLowerCase().trim()
+    if (!q) return []
+    return allSearchPeople.filter(
+      (p) =>
+        p.name.toLowerCase().includes(q) ||
+        p.headline.toLowerCase().includes(q) ||
+        (p.company && p.company.toLowerCase().includes(q)) ||
+        (p.school && p.school.toLowerCase().includes(q)),
+    )
+  }, [searchQuery, allSearchPeople])
+
+  const filteredGroups = React.useMemo(() => {
+    const q = searchQuery.toLowerCase().trim()
+    if (!q) return []
+    return TECH_GROUPS.filter(
+      (g) =>
+        g.name.toLowerCase().includes(q) ||
+        g.description.toLowerCase().includes(q) ||
+        g.category.toLowerCase().includes(q),
+    )
+  }, [searchQuery])
+
+  const totalResults = filteredPeople.length + filteredGroups.length
 
   const handleAccept = (id: number) => {
     const inv = invitations.find((i) => i.id === id)
@@ -3415,34 +3410,575 @@ function NetworkPage({ onViewProfile }: { onViewProfile?: () => void }) {
         {/* Gợi ý */}
         {section === "goi-y" && (
           <>
-            <InvitationsCard
-              invitations={invitations}
-              onAccept={handleAccept}
-              onIgnore={handleIgnore}
-            />
-            <RecommendSection
-              title="Gợi ý dựa trên trường học của bạn"
-              subtitle="Cựu sinh viên ĐHBK Hà Nội · Ngành Kỹ thuật Phần mềm"
-              people={SCHOOL_RECOMMENDATIONS}
-              connected={connected}
-              onConnect={handleConnect}
-              onViewProfile={onViewProfile}
-            />
-            <RecommendSection
-              title="Gợi ý dựa trên ngành nghề"
-              subtitle="Chuyên gia trong lĩnh vực Thiết kế Sản phẩm & Công nghệ"
-              people={INDUSTRY_RECOMMENDATIONS}
-              connected={connected}
-              onConnect={handleConnect}
-              onViewProfile={onViewProfile}
-            />
-            <RecommendSection
-              title="Người đã xem hồ sơ của bạn cũng biết"
-              people={VIEWER_RECOMMENDATIONS}
-              connected={connected}
-              onConnect={handleConnect}
-              onViewProfile={onViewProfile}
-            />
+            {/* Search bar card */}
+            <div
+              style={{
+                background: "#fff",
+                borderRadius: 8,
+                boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+                padding: "16px 20px",
+                marginBottom: 12,
+              }}
+            >
+              <div
+                style={{
+                  fontSize: 15,
+                  fontWeight: 700,
+                  color: "rgba(0,0,0,0.90)",
+                  marginBottom: 10,
+                }}
+              >
+                Tìm kiếm gợi ý kết nối & nhóm
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 10,
+                  background: "#F4F2EE",
+                  borderRadius: 9999,
+                  padding: "0 16px",
+                  height: 40,
+                  border: searchQuery
+                    ? "1px solid #0A66C2"
+                    : "1px solid transparent",
+                  transition: "all 150ms ease",
+                }}
+              >
+                <MagnifyingGlass
+                  size={18}
+                  color={searchQuery ? "#0A66C2" : "rgba(0,0,0,0.50)"}
+                  weight="bold"
+                />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Tìm kiếm kết nối, chuyên gia, nhóm cộng đồng..."
+                  style={{
+                    background: "none",
+                    border: "none",
+                    outline: "none",
+                    fontSize: 14,
+                    color: "rgba(0,0,0,0.90)",
+                    width: "100%",
+                    fontFamily: "inherit",
+                  }}
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery("")}
+                    style={{
+                      background: "none",
+                      border: "none",
+                      cursor: "pointer",
+                      color: "rgba(0,0,0,0.45)",
+                      padding: 4,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      borderRadius: 9999,
+                    }}
+                    onMouseEnter={(e) =>
+                      ((e.currentTarget as HTMLElement).style.color =
+                        "rgba(0,0,0,0.85)")
+                    }
+                    onMouseLeave={(e) =>
+                      ((e.currentTarget as HTMLElement).style.color =
+                        "rgba(0,0,0,0.45)")
+                    }
+                    title="Xóa tìm kiếm"
+                  >
+                    <X size={16} weight="bold" />
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {searchQuery.trim() ? (
+              /* Search results view */
+              <div>
+                {/* Filter tabs */}
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                    marginBottom: 14,
+                    flexWrap: "wrap",
+                  }}
+                >
+                  {[
+                    {
+                      id: "all" as const,
+                      label: "Tất cả",
+                      count: totalResults,
+                    },
+                    {
+                      id: "people" as const,
+                      label: "Kết nối & Chuyên gia",
+                      count: filteredPeople.length,
+                    },
+                    {
+                      id: "groups" as const,
+                      label: "Nhóm",
+                      count: filteredGroups.length,
+                    },
+                  ].map((tab) => {
+                    const active = searchFilterTab === tab.id
+                    return (
+                      <button
+                        key={tab.id}
+                        onClick={() => setSearchFilterTab(tab.id)}
+                        style={{
+                          borderRadius: 9999,
+                          border: active
+                            ? "none"
+                            : "1px solid rgba(0,0,0,0.18)",
+                          background: active ? "#0A66C2" : "#fff",
+                          color: active ? "#fff" : "rgba(0,0,0,0.70)",
+                          padding: "6px 16px",
+                          fontSize: 13,
+                          fontWeight: 700,
+                          cursor: "pointer",
+                          fontFamily: "inherit",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: 6,
+                          transition: "all 150ms ease",
+                        }}
+                        onMouseEnter={(e) => {
+                          if (!active)
+                            (e.currentTarget as HTMLElement).style.background =
+                              "#F4F2EE"
+                        }}
+                        onMouseLeave={(e) => {
+                          if (!active)
+                            (e.currentTarget as HTMLElement).style.background =
+                              "#fff"
+                        }}
+                      >
+                        {tab.label}
+                        <span
+                          style={{
+                            fontSize: 11,
+                            padding: "1px 6px",
+                            borderRadius: 9999,
+                            background: active
+                              ? "rgba(255,255,255,0.25)"
+                              : "rgba(0,0,0,0.08)",
+                            color: active ? "#fff" : "rgba(0,0,0,0.60)",
+                          }}
+                        >
+                          {tab.count}
+                        </span>
+                      </button>
+                    )
+                  })}
+                </div>
+
+                {/* Empty state */}
+                {totalResults === 0 ? (
+                  <div
+                    style={{
+                      background: "#fff",
+                      borderRadius: 8,
+                      boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+                      padding: "48px 24px",
+                      textAlign: "center",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: 64,
+                        height: 64,
+                        borderRadius: "50%",
+                        background: "#F4F2EE",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        margin: "0 auto 16px",
+                      }}
+                    >
+                      <MagnifyingGlass
+                        size={28}
+                        color="rgba(0,0,0,0.35)"
+                        weight="bold"
+                      />
+                    </div>
+                    <div
+                      style={{
+                        fontWeight: 700,
+                        fontSize: 16,
+                        color: "rgba(0,0,0,0.85)",
+                        marginBottom: 6,
+                      }}
+                    >
+                      Không tìm thấy kết quả nào cho "{searchQuery}"
+                    </div>
+                    <div
+                      style={{
+                        fontSize: 13,
+                        color: "rgba(0,0,0,0.50)",
+                        maxWidth: 400,
+                        margin: "0 auto",
+                        lineHeight: 1.5,
+                      }}
+                    >
+                      Hãy thử kiểm tra chính tả hoặc tìm với từ khóa khác như tên
+                      chuyên gia, chức danh công việc hoặc chủ đề nhóm.
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    {/* People section */}
+                    {(searchFilterTab === "all" ||
+                      searchFilterTab === "people") &&
+                      filteredPeople.length > 0 && (
+                        <div
+                          style={{
+                            background: "#fff",
+                            borderRadius: 8,
+                            boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+                            overflow: "hidden",
+                            marginBottom: 12,
+                          }}
+                        >
+                          <div
+                            style={{
+                              padding: "16px 20px 10px",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "space-between",
+                              borderBottom: "1px solid rgba(0,0,0,0.08)",
+                            }}
+                          >
+                            <span
+                              style={{
+                                fontWeight: 700,
+                                fontSize: 15,
+                                color: "rgba(0,0,0,0.90)",
+                              }}
+                            >
+                              Kết nối & Chuyên gia
+                            </span>
+                            <span
+                              style={{
+                                fontSize: 12,
+                                color: "rgba(0,0,0,0.45)",
+                                fontWeight: 600,
+                              }}
+                            >
+                              {filteredPeople.length} kết quả
+                            </span>
+                          </div>
+                          {filteredPeople.map((person, idx) => {
+                            const isConn = connected.has(person.id)
+                            return (
+                              <div key={person.name}>
+                                {idx > 0 && (
+                                  <div
+                                    style={{
+                                      borderTop: "1px solid rgba(0,0,0,0.06)",
+                                    }}
+                                  />
+                                )}
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: 12,
+                                    padding: "14px 20px",
+                                  }}
+                                >
+                                  <div
+                                    style={{ cursor: "pointer" }}
+                                    onClick={onViewProfile}
+                                  >
+                                    <Avatar name={person.name} size={46} />
+                                  </div>
+                                  <div style={{ flex: 1, minWidth: 0 }}>
+                                    <div
+                                      style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: 8,
+                                        flexWrap: "wrap",
+                                      }}
+                                    >
+                                      <span
+                                        style={{
+                                          fontSize: 14,
+                                          fontWeight: 700,
+                                          color: "rgba(0,0,0,0.90)",
+                                          cursor: "pointer",
+                                        }}
+                                        onClick={onViewProfile}
+                                        onMouseEnter={(e) =>
+                                          ((
+                                            e.currentTarget as HTMLElement
+                                          ).style.color = "#0A66C2")
+                                        }
+                                        onMouseLeave={(e) =>
+                                          ((
+                                            e.currentTarget as HTMLElement
+                                          ).style.color = "rgba(0,0,0,0.90)")
+                                        }
+                                      >
+                                        {person.name}
+                                      </span>
+                                      {person.isMyConnection && (
+                                        <span
+                                          style={{
+                                            fontSize: 11,
+                                            fontWeight: 600,
+                                            color: "#057642",
+                                            background: "#E5F6E8",
+                                            padding: "1px 7px",
+                                            borderRadius: 9999,
+                                          }}
+                                        >
+                                          Bạn bè
+                                        </span>
+                                      )}
+                                    </div>
+                                    <div
+                                      style={{
+                                        fontSize: 12,
+                                        color: "rgba(0,0,0,0.55)",
+                                        marginTop: 2,
+                                      }}
+                                    >
+                                      {person.headline}
+                                    </div>
+                                    <div
+                                      style={{
+                                        fontSize: 11,
+                                        color: "rgba(0,0,0,0.40)",
+                                        marginTop: 2,
+                                      }}
+                                    >
+                                      {person.school
+                                        ? `Cựu sinh viên · ${person.school}`
+                                        : person.company
+                                          ? `Lĩnh vực · ${person.company}`
+                                          : `${person.mutual} kết nối chung`}
+                                    </div>
+                                  </div>
+                                  {person.isMyConnection ? (
+                                    <button
+                                      onClick={() => handleConnect(person.id)}
+                                      style={{
+                                        padding: "6px 16px",
+                                        borderRadius: 9999,
+                                        border: isConn
+                                          ? "1px solid #057642"
+                                          : "1px solid #0A66C2",
+                                        background: isConn ? "#E5F6E8" : "none",
+                                        color: isConn ? "#057642" : "#0A66C2",
+                                        fontSize: 13,
+                                        fontWeight: 700,
+                                        cursor: "pointer",
+                                        fontFamily: "inherit",
+                                        flexShrink: 0,
+                                        display: "inline-flex",
+                                        alignItems: "center",
+                                        gap: 5,
+                                        transition: "all 150ms ease",
+                                      }}
+                                      onMouseEnter={(e) => {
+                                        if (!isConn)
+                                          (
+                                            e.currentTarget as HTMLElement
+                                          ).style.background = "#EAF1FA"
+                                      }}
+                                      onMouseLeave={(e) => {
+                                        ; (
+                                          e.currentTarget as HTMLElement
+                                        ).style.background = isConn
+                                          ? "#E5F6E8"
+                                          : "none"
+                                      }}
+                                    >
+                                      {isConn ? (
+                                        <>
+                                          <CheckCircle
+                                            size={14}
+                                            weight="fill"
+                                          />
+                                          Đã kết nối
+                                        </>
+                                      ) : (
+                                        <>
+                                          <PaperPlaneTilt
+                                            size={13}
+                                            weight="bold"
+                                          />
+                                          Nhắn tin
+                                        </>
+                                      )}
+                                    </button>
+                                  ) : (
+                                    <button
+                                      onClick={() => handleConnect(person.id)}
+                                      style={{
+                                        borderRadius: 9999,
+                                        border: `1px solid ${isConn ? "#057642" : "#0A66C2"}`,
+                                        background: isConn
+                                          ? "#E5F6E8"
+                                          : "transparent",
+                                        color: isConn ? "#057642" : "#0A66C2",
+                                        padding: "6px 18px",
+                                        fontSize: 13,
+                                        fontWeight: 700,
+                                        cursor: "pointer",
+                                        fontFamily: "inherit",
+                                        display: "inline-flex",
+                                        alignItems: "center",
+                                        gap: 5,
+                                        flexShrink: 0,
+                                        transition: "all 150ms ease",
+                                      }}
+                                      onMouseEnter={(e) => {
+                                        if (!isConn)
+                                          (
+                                            e.currentTarget as HTMLElement
+                                          ).style.background = "#EAF1FA"
+                                      }}
+                                      onMouseLeave={(e) => {
+                                        if (!isConn)
+                                          (
+                                            e.currentTarget as HTMLElement
+                                          ).style.background = "transparent"
+                                      }}
+                                    >
+                                      {isConn ? (
+                                        <>
+                                          <CheckCircle
+                                            size={14}
+                                            weight="fill"
+                                          />{" "}
+                                          Đã gửi
+                                        </>
+                                      ) : (
+                                        <>
+                                          <UserPlus
+                                            size={14}
+                                            weight="regular"
+                                          />{" "}
+                                          Kết nối
+                                        </>
+                                      )}
+                                    </button>
+                                  )}
+                                </div>
+                              </div>
+                            )
+                          })}
+                        </div>
+                      )}
+
+                    {/* Groups section */}
+                    {(searchFilterTab === "all" ||
+                      searchFilterTab === "groups") &&
+                      filteredGroups.length > 0 && (
+                        <div
+                          style={{
+                            background: "#fff",
+                            borderRadius: 8,
+                            boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+                            overflow: "hidden",
+                            marginBottom: 12,
+                          }}
+                        >
+                          <div
+                            style={{
+                              padding: "16px 20px 10px",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "space-between",
+                              borderBottom: "1px solid rgba(0,0,0,0.08)",
+                            }}
+                          >
+                            <span
+                              style={{
+                                fontWeight: 700,
+                                fontSize: 15,
+                                color: "rgba(0,0,0,0.90)",
+                              }}
+                            >
+                              Nhóm cộng đồng
+                            </span>
+                            <span
+                              style={{
+                                fontSize: 12,
+                                color: "rgba(0,0,0,0.45)",
+                                fontWeight: 600,
+                              }}
+                            >
+                              {filteredGroups.length} nhóm
+                            </span>
+                          </div>
+                          {filteredGroups.map((g, idx) => (
+                            <div key={g.id}>
+                              {idx > 0 && (
+                                <div
+                                  style={{
+                                    borderTop: "1px solid rgba(0,0,0,0.06)",
+                                  }}
+                                />
+                              )}
+                              <GroupListItem
+                                group={g}
+                                onClick={() => setOpenGroup(g)}
+                                badge={
+                                  MY_MANAGED_GROUP_IDS.includes(g.id)
+                                    ? "Quản trị viên"
+                                    : MY_JOINED_GROUP_IDS.includes(g.id)
+                                      ? "Đã tham gia"
+                                      : undefined
+                                }
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                  </>
+                )}
+              </div>
+            ) : (
+              /* Normal Gợi ý feed when not searching */
+              <>
+                <InvitationsCard
+                  invitations={invitations}
+                  onAccept={handleAccept}
+                  onIgnore={handleIgnore}
+                />
+                <RecommendSection
+                  title="Gợi ý dựa trên trường học của bạn"
+                  subtitle="Cựu sinh viên ĐHBK Hà Nội · Ngành Kỹ thuật Phần mềm"
+                  people={SCHOOL_RECOMMENDATIONS}
+                  connected={connected}
+                  onConnect={handleConnect}
+                  onViewProfile={onViewProfile}
+                />
+                <RecommendSection
+                  title="Gợi ý dựa trên ngành nghề"
+                  subtitle="Chuyên gia trong lĩnh vực Thiết kế Sản phẩm & Công nghệ"
+                  people={INDUSTRY_RECOMMENDATIONS}
+                  connected={connected}
+                  onConnect={handleConnect}
+                  onViewProfile={onViewProfile}
+                />
+                <RecommendSection
+                  title="Người đã xem hồ sơ của bạn cũng biết"
+                  people={VIEWER_RECOMMENDATIONS}
+                  connected={connected}
+                  onConnect={handleConnect}
+                  onViewProfile={onViewProfile}
+                />
+              </>
+            )}
           </>
         )}
 
