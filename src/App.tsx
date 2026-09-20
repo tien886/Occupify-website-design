@@ -219,6 +219,7 @@ function Toast({ message, onDone }: { message: string; onDone: () => void }) {
 const NAV_ITEMS = [
   { id: "home", label: "Trang chủ", Icon: House },
   { id: "projects", label: "Quản lý dự án", Icon: BriefcaseMetal },
+  { id: "saved", label: "Mục đã lưu", Icon: Bookmark },
   { id: "notifications", label: "Thông báo", Icon: Bell, badge: 3 },
 ]
 
@@ -1557,8 +1558,19 @@ function JobFilterSidebar({
 
 // ─── Job Card ─────────────────────────────────────────────────────────────────
 
-function JobCard({ job, onClick }: { job: JobListing; onClick?: () => void }) {
-  const [saved, setSaved] = useState(false)
+function JobCard({
+  job,
+  onClick,
+  isSaved,
+  onToggleSave,
+}: {
+  job: JobListing
+  onClick?: () => void
+  isSaved?: boolean
+  onToggleSave?: () => void
+}) {
+  const [localSaved, setLocalSaved] = useState(false)
+  const saved = isSaved !== undefined ? isSaved : localSaved
 
   return (
     <div
@@ -1688,7 +1700,11 @@ function JobCard({ job, onClick }: { job: JobListing; onClick?: () => void }) {
           <button
             onClick={(e) => {
               e.stopPropagation()
-              setSaved(!saved)
+              if (onToggleSave) {
+                onToggleSave()
+              } else {
+                setLocalSaved(!localSaved)
+              }
             }}
             style={{
               background: "none",
@@ -8913,11 +8929,15 @@ function NewHomePage({
   onViewProfile,
   onOpenFinancialHistory,
   onNavigateProjects,
+  savedJobIds = [],
+  onToggleSaveJob,
 }: {
   onSelectContract?: (c: Contract) => void
   onViewProfile?: (name?: string) => void
   onOpenFinancialHistory?: () => void
   onNavigateProjects?: () => void
+  savedJobIds?: number[]
+  onToggleSaveJob?: (id: number) => void
 }) {
   const [subPage, setSubPage] = useState<string | null>(null)
   const [toast, setToast] = useState<string | null>(null)
@@ -9510,6 +9530,8 @@ function NewHomePage({
                 <JobCard
                   key={job.id}
                   job={job}
+                  isSaved={savedJobIds.includes(job.id)}
+                  onToggleSave={() => onToggleSaveJob?.(job.id)}
                   onClick={() =>
                     onSelectContract?.({
                       id: job.id,
@@ -10719,6 +10741,459 @@ function ProjectsManagementPage({
 }
 
 const JobsPage = ProjectsManagementPage
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// SAVED ITEMS PAGE
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function SavedItemsPage({
+  savedJobIds,
+  onToggleSave,
+  onSelectContract,
+  onExploreJobs,
+}: {
+  savedJobIds: number[]
+  onToggleSave: (id: number) => void
+  onSelectContract?: (c: Contract) => void
+  onExploreJobs?: () => void
+}) {
+  const [searchQuery, setSearchQuery] = useState("")
+  const savedJobs = JOB_LISTINGS.filter((j) => savedJobIds.includes(j.id))
+
+  const displayJobs = savedJobs.filter((job) => {
+    if (!searchQuery.trim()) return true
+    const q = searchQuery.toLowerCase()
+    return (
+      job.title.toLowerCase().includes(q) ||
+      job.company.toLowerCase().includes(q) ||
+      job.description.toLowerCase().includes(q) ||
+      job.skills.some((s) => s.toLowerCase().includes(q))
+    )
+  })
+
+  return (
+    <div style={{ maxWidth: 1128, margin: "0 auto", padding: "28px 16px" }}>
+      {/* Header */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+          gap: 16,
+          marginBottom: 24,
+        }}
+      >
+        <div>
+          <div
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+              background: "#EAF1FA",
+              color: "#0A66C2",
+              padding: "4px 12px",
+              borderRadius: 9999,
+              fontSize: 12,
+              fontWeight: 700,
+              marginBottom: 8,
+            }}
+          >
+            <Bookmark size={14} weight="fill" />
+            <span>Mục đã lưu của bạn</span>
+          </div>
+          <h1
+            style={{
+              fontSize: 24,
+              fontWeight: 800,
+              color: "rgba(0,0,0,0.90)",
+              marginBottom: 4,
+              letterSpacing: "-0.02em",
+            }}
+          >
+            Việc làm đã lưu
+          </h1>
+          <p style={{ fontSize: 14, color: "rgba(0,0,0,0.60)" }}>
+            Danh sách các cơ hội việc làm và dự án freelance bạn đã đánh dấu để ứng tuyển sau
+          </p>
+        </div>
+
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <button
+            onClick={onExploreJobs}
+            style={{
+              background: "#0A66C2",
+              color: "#fff",
+              border: "none",
+              borderRadius: 9999,
+              padding: "8px 20px",
+              fontSize: 13,
+              fontWeight: 700,
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+              transition: "background 150ms",
+              boxShadow: "0 2px 8px rgba(10,102,194,0.25)",
+            }}
+            onMouseEnter={(e) =>
+              ((e.currentTarget as HTMLElement).style.background = "#084fa0")
+            }
+            onMouseLeave={(e) =>
+              ((e.currentTarget as HTMLElement).style.background = "#0A66C2")
+            }
+          >
+            <MagnifyingGlass size={16} weight="bold" />
+            <span>Khám phá thêm việc làm</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Main Layout 2-Column */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "minmax(0, 1fr) 340px",
+          gap: 20,
+          alignItems: "start",
+        }}
+      >
+        {/* Left: Saved list */}
+        <div>
+          {/* Summary / Search inside saved */}
+          {savedJobs.length > 0 && (
+            <div
+              style={{
+                background: "#fff",
+                borderRadius: 8,
+                boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+                padding: "12px 16px",
+                marginBottom: 16,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: 12,
+              }}
+            >
+              <div style={{ fontSize: 13, color: "rgba(0,0,0,0.60)" }}>
+                Đang lưu{" "}
+                <strong style={{ color: "rgba(0,0,0,0.90)" }}>
+                  {savedJobs.length}
+                </strong>{" "}
+                công việc
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                  background: "#F4F2EE",
+                  borderRadius: 9999,
+                  padding: "6px 14px",
+                  maxWidth: 280,
+                  flex: 1,
+                }}
+              >
+                <MagnifyingGlass size={14} color="rgba(0,0,0,0.50)" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Lọc trong mục đã lưu..."
+                  style={{
+                    border: "none",
+                    outline: "none",
+                    background: "transparent",
+                    fontSize: 13,
+                    width: "100%",
+                    color: "rgba(0,0,0,0.90)",
+                  }}
+                />
+                {searchQuery && (
+                  <X
+                    size={13}
+                    style={{ cursor: "pointer", color: "rgba(0,0,0,0.40)" }}
+                    onClick={() => setSearchQuery("")}
+                  />
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* List of saved jobs */}
+          {displayJobs.map((job) => (
+            <JobCard
+              key={job.id}
+              job={job}
+              isSaved={true}
+              onToggleSave={() => onToggleSave(job.id)}
+              onClick={() =>
+                onSelectContract?.({
+                  id: job.id,
+                  title: job.title,
+                  client: job.company,
+                  value: job.budget,
+                  deadline: "30 thg 12, 2026",
+                  status: "pending",
+                })
+              }
+            />
+          ))}
+
+          {/* Empty State */}
+          {savedJobs.length === 0 && (
+            <div
+              style={{
+                background: "#fff",
+                borderRadius: 8,
+                boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+                padding: "60px 24px",
+                textAlign: "center",
+              }}
+            >
+              <div
+                style={{
+                  width: 64,
+                  height: 64,
+                  borderRadius: "50%",
+                  background: "#EAF1FA",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  margin: "0 auto 16px",
+                  color: "#0A66C2",
+                }}
+              >
+                <Bookmark size={30} weight="fill" />
+              </div>
+              <h2
+                style={{
+                  fontSize: 18,
+                  fontWeight: 700,
+                  color: "rgba(0,0,0,0.90)",
+                  marginBottom: 6,
+                }}
+              >
+                Bạn chưa lưu việc làm nào
+              </h2>
+              <p
+                style={{
+                  fontSize: 14,
+                  color: "rgba(0,0,0,0.60)",
+                  maxWidth: 420,
+                  margin: "0 auto 20px",
+                  lineHeight: 1.5,
+                }}
+              >
+                Khi bạn bắt gặp các cơ hội việc làm hoặc dự án phù hợp trên Trang chủ, hãy bấm biểu tượng Lưu để gom vào danh sách này và ứng tuyển bất cứ lúc nào.
+              </p>
+              <button
+                onClick={onExploreJobs}
+                style={{
+                  background: "#0A66C2",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: 9999,
+                  padding: "9px 24px",
+                  fontSize: 14,
+                  fontWeight: 700,
+                  cursor: "pointer",
+                }}
+              >
+                Khám phá việc làm ngay
+              </button>
+            </div>
+          )}
+
+          {/* Search query empty within saved */}
+          {savedJobs.length > 0 && displayJobs.length === 0 && (
+            <div
+              style={{
+                background: "#fff",
+                borderRadius: 8,
+                boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+                padding: "36px 20px",
+                textAlign: "center",
+                color: "rgba(0,0,0,0.60)",
+                fontSize: 14,
+              }}
+            >
+              Không tìm thấy việc làm đã lưu nào khớp với từ khóa "{searchQuery}".
+              <div style={{ marginTop: 10 }}>
+                <button
+                  onClick={() => setSearchQuery("")}
+                  style={{
+                    background: "#EAF1FA",
+                    color: "#0A66C2",
+                    border: "none",
+                    borderRadius: 9999,
+                    padding: "6px 16px",
+                    fontSize: 13,
+                    fontWeight: 600,
+                    cursor: "pointer",
+                  }}
+                >
+                  Xóa tìm kiếm
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Right Sidebar Widgets */}
+        <div>
+          {/* Tips Card */}
+          <div
+            style={{
+              background: "#fff",
+              borderRadius: 8,
+              boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+              padding: "20px",
+              marginBottom: 16,
+            }}
+          >
+            <div
+              style={{
+                fontSize: 15,
+                fontWeight: 700,
+                color: "rgba(0,0,0,0.90)",
+                marginBottom: 14,
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+              }}
+            >
+              <Lightbulb size={18} color="#F59E0B" weight="fill" />
+              <span>Mẹo ứng tuyển hiệu quả</span>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                <div
+                  style={{
+                    width: 20,
+                    height: 20,
+                    borderRadius: "50%",
+                    background: "#EAF1FA",
+                    color: "#0A66C2",
+                    fontSize: 11,
+                    fontWeight: 700,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                  }}
+                >
+                  1
+                </div>
+                <div style={{ fontSize: 13, color: "rgba(0,0,0,0.70)", lineHeight: 1.4 }}>
+                  <strong style={{ color: "rgba(0,0,0,0.90)" }}>Ứng tuyển sớm:</strong>{" "}
+                  Ứng tuyển trong 24 giờ đầu giúp bạn tăng 40% cơ hội được nhà tuyển dụng xem hồ sơ.
+                </div>
+              </div>
+
+              <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                <div
+                  style={{
+                    width: 20,
+                    height: 20,
+                    borderRadius: "50%",
+                    background: "#EAF1FA",
+                    color: "#0A66C2",
+                    fontSize: 11,
+                    fontWeight: 700,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                  }}
+                >
+                  2
+                </div>
+                <div style={{ fontSize: 13, color: "rgba(0,0,0,0.70)", lineHeight: 1.4 }}>
+                  <strong style={{ color: "rgba(0,0,0,0.90)" }}>Hồ sơ chuyên nghiệp:</strong>{" "}
+                  Cập nhật đầy đủ kỹ năng và portfolio thực tế trước khi gửi đề xuất báo giá.
+                </div>
+              </div>
+
+              <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                <div
+                  style={{
+                    width: 20,
+                    height: 20,
+                    borderRadius: "50%",
+                    background: "#E5F6E8",
+                    color: "#057642",
+                    fontSize: 11,
+                    fontWeight: 700,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                  }}
+                >
+                  3
+                </div>
+                <div style={{ fontSize: 13, color: "rgba(0,0,0,0.70)", lineHeight: 1.4 }}>
+                  <strong style={{ color: "rgba(0,0,0,0.90)" }}>Bảo đảm Escrow:</strong>{" "}
+                  Luôn thực hiện hợp đồng và thanh toán qua hệ thống ký quỹ để đảm bảo quyền lợi.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Stats Card */}
+          <div
+            style={{
+              background: "#fff",
+              borderRadius: 8,
+              boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+              padding: "18px 20px",
+            }}
+          >
+            <div
+              style={{
+                fontSize: 14,
+                fontWeight: 700,
+                color: "rgba(0,0,0,0.90)",
+                marginBottom: 10,
+              }}
+            >
+              Hành động nhanh
+            </div>
+            <button
+              onClick={onExploreJobs}
+              style={{
+                width: "100%",
+                background: "#F4F2EE",
+                border: "none",
+                borderRadius: 8,
+                padding: "10px 14px",
+                fontSize: 13,
+                fontWeight: 600,
+                color: "rgba(0,0,0,0.85)",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                transition: "background 150ms",
+              }}
+              onMouseEnter={(e) =>
+                ((e.currentTarget as HTMLElement).style.background = "#EAF1FA")
+              }
+              onMouseLeave={(e) =>
+                ((e.currentTarget as HTMLElement).style.background = "#F4F2EE")
+              }
+            >
+              <span>Tìm kiếm cơ hội mới</span>
+              <ArrowRight size={14} />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // CONTRACT DETAILS PAGE + APPLY MODAL
@@ -16233,13 +16708,21 @@ function FinancialHistoryPage({ onBack }: { onBack: () => void }) {
 
 function MainApp({ onLogout }: { onLogout?: () => void }) {
   const [activeNav, setActiveNav] = useState("home")
-    const [toast, setToast] = useState<string | null>(null)
+  const [savedJobIds, setSavedJobIds] = useState<number[]>([1, 3])
+  const [toast, setToast] = useState<string | null>(null)
   const [selectedContract, setSelectedContract] = useState<Contract | null>(
     null,
   )
-        const [myProfileOpen, setMyProfileOpen] = useState(false)
+  const [myProfileOpen, setMyProfileOpen] = useState(false)
   const [financialHistoryOpen, setFinancialHistoryOpen] = useState(false)
   const [viewingUser, setViewingUser] = useState<string | null>(null)
+
+  const toggleSaveJob = (id: number) => {
+    setSavedJobIds((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
+    )
+  }
+
   const openMyProfile = () => {
     setViewingUser(null)
     setMyProfileOpen(true)
@@ -16338,6 +16821,8 @@ function MainApp({ onLogout }: { onLogout?: () => void }) {
 
       {activeNav === "home" && (
         <NewHomePage
+          savedJobIds={savedJobIds}
+          onToggleSaveJob={toggleSaveJob}
           onSelectContract={setSelectedContract}
           onViewProfile={openOtherProfile}
           onOpenFinancialHistory={() => setFinancialHistoryOpen(true)}
@@ -16352,10 +16837,21 @@ function MainApp({ onLogout }: { onLogout?: () => void }) {
         />
       )}
 
+      {activeNav === "saved" && (
+        <SavedItemsPage
+          savedJobIds={savedJobIds}
+          onToggleSave={toggleSaveJob}
+          onSelectContract={setSelectedContract}
+          onExploreJobs={() => setActiveNav("home")}
+        />
+      )}
+
       {activeNav === "notifications" && <NotificationsPage />}
 
-      {!["home", "projects", "notifications"].includes(activeNav) && (
+      {!["home", "projects", "saved", "notifications"].includes(activeNav) && (
         <NewHomePage
+          savedJobIds={savedJobIds}
+          onToggleSaveJob={toggleSaveJob}
           onSelectContract={setSelectedContract}
           onViewProfile={openOtherProfile}
           onOpenFinancialHistory={() => setFinancialHistoryOpen(true)}
