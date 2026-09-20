@@ -1607,11 +1607,13 @@ function JobCard({
   onClick,
   isSaved,
   onToggleSave,
+  onApply,
 }: {
   job: JobListing
   onClick?: () => void
   isSaved?: boolean
   onToggleSave?: () => void
+  onApply?: () => void
 }) {
   const [localSaved, setLocalSaved] = useState(false)
   const saved = isSaved !== undefined ? isSaved : localSaved
@@ -4481,6 +4483,7 @@ interface ProjectMember {
   email: string
   price: string
   dueDate?: string
+  status?: string
 }
 interface PendingProject {
   id: number
@@ -7933,10 +7936,10 @@ function NewHomePage({
                   {salaryRange === "under-15"
                     ? "< 15 triệu"
                     : salaryRange === "15-30"
-                    ? "15 - 30 triệu"
-                    : salaryRange === "30-50"
-                    ? "30 - 50 triệu"
-                    : "> 50 triệu"}
+                      ? "15 - 30 triệu"
+                      : salaryRange === "30-50"
+                        ? "30 - 50 triệu"
+                        : "> 50 triệu"}
                   <X
                     size={12}
                     style={{ cursor: "pointer" }}
@@ -7962,8 +7965,8 @@ function NewHomePage({
                   {timeFilter === "this-month"
                     ? "Tháng này"
                     : timeFilter === "last-month"
-                    ? "Tháng trước"
-                    : "30 ngày qua"}
+                      ? "Tháng trước"
+                      : "30 ngày qua"}
                   <X
                     size={12}
                     style={{ cursor: "pointer" }}
@@ -8463,12 +8466,12 @@ function NewHomePage({
               }}
               onMouseEnter={(e) => {
                 (e.currentTarget as HTMLElement).style.background = "#EAF1FA"
-                ;(e.currentTarget as HTMLElement).style.borderColor = "#0A66C2"
+                  ; (e.currentTarget as HTMLElement).style.borderColor = "#0A66C2"
               }}
               onMouseLeave={(e) => {
                 (e.currentTarget as HTMLElement).style.background = "none"
-                ;(e.currentTarget as HTMLElement).style.borderColor =
-                  "rgba(0,0,0,0.15)"
+                  ; (e.currentTarget as HTMLElement).style.borderColor =
+                    "rgba(0,0,0,0.15)"
               }}
             >
               <span>Vào trang Quản lý dự án</span>
@@ -17377,9 +17380,9 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
       setUserDetailModal((prev) =>
         prev
           ? {
-              ...prev,
-              status: prev.status === "Bị gắn cờ" ? "Hoạt động" : "Bị gắn cờ",
-            }
+            ...prev,
+            status: prev.status === "Bị gắn cờ" ? "Hoạt động" : "Bị gắn cờ",
+          }
           : null
       )
     }
@@ -17652,14 +17655,14 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                 }}
                 onMouseEnter={(e) => {
                   if (!isActive) {
-                    ;(e.currentTarget as HTMLElement).style.background = "#FAFAF8"
-                    ;(e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.90)"
+                    ; (e.currentTarget as HTMLElement).style.background = "#FAFAF8"
+                      ; (e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.90)"
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (!isActive) {
-                    ;(e.currentTarget as HTMLElement).style.background = "transparent"
-                    ;(e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.70)"
+                    ; (e.currentTarget as HTMLElement).style.background = "transparent"
+                      ; (e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.70)"
                   }
                 }}
               >
@@ -17769,15 +17772,15 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
               transition: "all 150ms",
             }}
             onMouseEnter={(e) => {
-              ;(e.currentTarget as HTMLElement).style.background = "#EAF1FA"
-              ;(e.currentTarget as HTMLElement).style.color = "#0A66C2"
-              ;(e.currentTarget as HTMLElement).style.borderColor = "#0A66C2"
+              ; (e.currentTarget as HTMLElement).style.background = "#EAF1FA"
+                ; (e.currentTarget as HTMLElement).style.color = "#0A66C2"
+                ; (e.currentTarget as HTMLElement).style.borderColor = "#0A66C2"
             }}
             onMouseLeave={(e) => {
-              ;(e.currentTarget as HTMLElement).style.background = "#fff"
-              ;(e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.75)"
-              ;(e.currentTarget as HTMLElement).style.borderColor =
-                "rgba(0,0,0,0.15)"
+              ; (e.currentTarget as HTMLElement).style.background = "#fff"
+                ; (e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.75)"
+                ; (e.currentTarget as HTMLElement).style.borderColor =
+                  "rgba(0,0,0,0.15)"
             }}
           >
             <ArrowLeft size={14} weight="bold" />
@@ -17885,13 +17888,13 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                         background: isSelected
                           ? "rgba(255,255,255,0.25)"
                           : tab.highlight && tab.count > 0
-                          ? "#FEF7E0"
-                          : "#F4F2EE",
+                            ? "#FEF7E0"
+                            : "#F4F2EE",
                         color: isSelected
                           ? "#fff"
                           : tab.highlight && tab.count > 0
-                          ? "#B06000"
-                          : "rgba(0,0,0,0.60)",
+                            ? "#B06000"
+                            : "rgba(0,0,0,0.60)",
                         padding: "1px 6px",
                         borderRadius: 8,
                         fontSize: 11,
@@ -17950,10 +17953,10 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                     fontFamily: "inherit",
                   }}
                   onFocus={(e) => {
-                    ;(e.currentTarget as HTMLElement).style.borderColor = "#0A66C2"
+                    ; (e.currentTarget as HTMLElement).style.borderColor = "#0A66C2"
                   }}
                   onBlur={(e) => {
-                    ;(e.currentTarget as HTMLElement).style.borderColor = "transparent"
+                    ; (e.currentTarget as HTMLElement).style.borderColor = "transparent"
                   }}
                 />
               </div>
@@ -18048,10 +18051,10 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                           transition: "background 120ms",
                         }}
                         onMouseEnter={(e) => {
-                          ;(e.currentTarget as HTMLElement).style.background = "#FAFAF8"
+                          ; (e.currentTarget as HTMLElement).style.background = "#FAFAF8"
                         }}
                         onMouseLeave={(e) => {
-                          ;(e.currentTarget as HTMLElement).style.background = "transparent"
+                          ; (e.currentTarget as HTMLElement).style.background = "transparent"
                         }}
                       >
                         <td style={{ padding: "12px 18px" }}>
@@ -18352,10 +18355,10 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                         transition: "background 120ms",
                       }}
                       onMouseEnter={(e) => {
-                        ;(e.currentTarget as HTMLElement).style.background = "#FAFAF8"
+                        ; (e.currentTarget as HTMLElement).style.background = "#FAFAF8"
                       }}
                       onMouseLeave={(e) => {
-                        ;(e.currentTarget as HTMLElement).style.background = "transparent"
+                        ; (e.currentTarget as HTMLElement).style.background = "transparent"
                       }}
                     >
                       <td style={{ padding: "12px 18px", maxWidth: 280 }}>
@@ -18639,10 +18642,10 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                         transition: "background 120ms",
                       }}
                       onMouseEnter={(e) => {
-                        ;(e.currentTarget as HTMLElement).style.background = "#FAFAF8"
+                        ; (e.currentTarget as HTMLElement).style.background = "#FAFAF8"
                       }}
                       onMouseLeave={(e) => {
-                        ;(e.currentTarget as HTMLElement).style.background = "transparent"
+                        ; (e.currentTarget as HTMLElement).style.background = "transparent"
                       }}
                     >
                       <td style={{ padding: "12px 18px" }}>
@@ -18889,10 +18892,10 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                         transition: "background 120ms",
                       }}
                       onMouseEnter={(e) => {
-                        ;(e.currentTarget as HTMLElement).style.background = "#FAFAF8"
+                        ; (e.currentTarget as HTMLElement).style.background = "#FAFAF8"
                       }}
                       onMouseLeave={(e) => {
-                        ;(e.currentTarget as HTMLElement).style.background = "transparent"
+                        ; (e.currentTarget as HTMLElement).style.background = "transparent"
                       }}
                     >
                       <td style={{ padding: "12px 18px" }}>
@@ -19472,10 +19475,10 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                   transition: "background 150ms",
                 }}
                 onMouseEnter={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background = "#fad2cf"
+                  ; (e.currentTarget as HTMLElement).style.background = "#fad2cf"
                 }}
                 onMouseLeave={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background = "#FCE8E6"
+                  ; (e.currentTarget as HTMLElement).style.background = "#FCE8E6"
                 }}
               >
                 Gỡ bỏ dự án
