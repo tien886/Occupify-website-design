@@ -87,257 +87,12 @@ function nameToGmail(name: string): string {
   )
 }
 
-// ─── Shared Types ─────────────────────────────────────────────────────────────
-
-interface Post {
-  id: number
-  author: string
-  headline: string
-  timestamp: string
-  degree: "1st" | "2nd" | "3rd+"
-  content: string
-  image?: string
-  likes: number
-  comments: number
-  reposts: number
-  liked: boolean
-  groupId?: string | null
-}
-
-// ─── Shared Constants ─────────────────────────────────────────────────────────
-
 const ME = {
   name: "Nguyễn Minh Khoa",
   headline: "nguyeminhkhoa@gmail.com",
   location: "Hà Nội, Việt Nam",
   connections: 534,
 }
-
-const INITIAL_POSTS: Post[] = [
-  {
-    id: 1,
-    author: "Nguyễn Thị Phương Linh",
-    headline: "Head of Product Design · Tiki · Ex-Grab",
-    timestamp: "3 giờ trước",
-    degree: "1st",
-    content:
-      "Tôi vừa hoàn thành một hành trình 6 tháng redesign toàn bộ checkout flow cho Tiki — và kết quả thực sự ấn tượng hơn tôi mong đợi.\n\nConversion rate tăng 23%. Thời gian trung bình từ giỏ hàng đến đặt hàng giảm từ 4 phút 12 giây xuống còn 1 phút 48 giây.\n\nBài học lớn nhất: đừng bao giờ giả định bạn biết người dùng muốn gì. Chúng tôi đã phỏng vấn 200+ khách hàng trước khi viết dòng code đầu tiên. Mọi quyết định thiết kế đều được validate bởi dữ liệu thực tế.",
-    image:
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=552&h=300&fit=crop&auto=format",
-    likes: 1247,
-    comments: 89,
-    reposts: 134,
-    liked: true,
-    groupId: null,
-  },
-  {
-    id: 2,
-    author: "Trần Đức Anh",
-    headline: "Engineering Manager · Sky Mavis | Ex-Google",
-    timestamp: "5 giờ trước",
-    degree: "2nd",
-    content:
-      'Một suy nghĩ về engineering culture mà tôi muốn chia sẻ:\n\nTôi đã làm việc ở Google 4 năm và Sky Mavis 2 năm. Sự khác biệt lớn nhất không phải là công nghệ hay quy trình — mà là cách mọi người đối xử với thất bại.\n\nỞ startup, mỗi lần fail là một bài học cần được tôn vinh. Ở big tech, có xu hướng che giấu mistakes vì lo ngại ảnh hưởng đến performance review.\n\nEngineering culture tốt nhất mà tôi từng chứng kiến là nơi mọi người dám nói "Tôi đã làm sai, đây là bài học" mà không sợ bị đánh giá.',
-    likes: 892,
-    comments: 167,
-    reposts: 203,
-    liked: false,
-    groupId: null,
-  },
-  {
-    id: 3,
-    author: "Lê Phương Anh",
-    headline: "Talent Partner · Grab Vietnam",
-    timestamp: "1 ngày trước",
-    degree: "2nd",
-    content:
-      "Grab Vietnam đang tuyển dụng hàng loạt vị trí kỹ thuật và thiết kế:\n\n• Senior Software Engineer (Backend) — Golang, microservices\n• Data Scientist — ML/AI, Python, SQL\n• Product Manager — Fintech, payments\n• UX Designer — Consumer apps\n\nTất cả vị trí đều có thể làm remote hoặc hybrid tại Hà Nội / TP.HCM. Salary range cạnh tranh. Stock options. Health insurance cho cả gia đình.\n\nDM tôi CV hoặc apply trực tiếp. #hiring #techjobs #vietnam",
-    likes: 456,
-    comments: 78,
-    reposts: 312,
-    liked: false,
-    groupId: null,
-  },
-]
-
-interface Group {
-  id: string
-  name: string
-  description: string
-  category: string
-  topics: string[]
-  memberCount: number
-  coverGradient: string
-  accentColor: string
-  members: string[]
-}
-
-const TECH_GROUPS: Group[] = [
-  {
-    id: "java-vn",
-    name: "Java Vietnam",
-    description:
-      "Cộng đồng lập trình viên Java tại Việt Nam. Chia sẻ kiến thức, kinh nghiệm và cơ hội nghề nghiệp liên quan đến Java ecosystem.",
-    category: "Lập trình",
-    topics: ["Java", "JVM", "Spring", "Microservices"],
-    memberCount: 58400,
-    coverGradient: "linear-gradient(135deg, #b8860b 0%, #e6a817 100%)",
-    accentColor: "#b8860b",
-    members: [
-      "Hoàng Văn Dũng",
-      "Trần Thị Hoa",
-      "Lê Quang Minh",
-      "Phạm Đức Thắng",
-    ],
-  },
-  {
-    id: "spring-boot",
-    name: "Spring Boot Developers",
-    description:
-      "Nhóm dành cho các developer chuyên sâu về Spring Boot, Spring Cloud và hệ sinh thái Spring. Thảo luận về architecture, best practices và case studies thực tế.",
-    category: "Framework",
-    topics: ["Spring Boot", "Spring Cloud", "REST API", "Microservices"],
-    memberCount: 34200,
-    coverGradient: "linear-gradient(135deg, #1a7a2e 0%, #2ecc71 100%)",
-    accentColor: "#1a7a2e",
-    members: [
-      "Nguyễn Đức Anh",
-      "Bùi Thị Lan",
-      "Võ Minh Trí",
-      "Dương Quốc Hùng",
-    ],
-  },
-  {
-    id: "ai-ml-vn",
-    name: "AI & Machine Learning Vietnam",
-    description:
-      "Cộng đồng nghiên cứu và ứng dụng AI/ML tại Việt Nam. Từ học thuật đến production: Computer Vision, NLP, LLM, và MLOps.",
-    category: "Trí tuệ nhân tạo",
-    topics: ["Machine Learning", "Deep Learning", "LLM", "Python"],
-    memberCount: 91700,
-    coverGradient: "linear-gradient(135deg, #1a237e 0%, #5c6bc0 100%)",
-    accentColor: "#3949ab",
-    members: [
-      "Phạm Minh Tuấn",
-      "Lê Thị Thu Hương",
-      "Trần Quốc Bảo",
-      "Ngô Đức Thịnh",
-    ],
-  },
-  {
-    id: "cloud-devops-vn",
-    name: "Cloud & DevOps Vietnam",
-    description:
-      "Nơi chia sẻ kiến thức về Cloud Infrastructure, CI/CD, Kubernetes, Terraform và các công nghệ DevOps hiện đại tại thị trường Việt Nam.",
-    category: "Cloud & Infrastructure",
-    topics: ["AWS", "Kubernetes", "Docker", "Terraform"],
-    memberCount: 47600,
-    coverGradient: "linear-gradient(135deg, #0d47a1 0%, #42a5f5 100%)",
-    accentColor: "#1565c0",
-    members: [
-      "Đinh Văn Khoa",
-      "Hoàng Thị Bích",
-      "Lưu Quang Vinh",
-      "Trần Đức Mạnh",
-    ],
-  },
-  {
-    id: "system-design",
-    name: "System Design Community",
-    description:
-      "Cộng đồng thảo luận về thiết kế hệ thống phân tán, scalability, high availability và architecture patterns cho các ứng dụng enterprise.",
-    category: "Kiến trúc hệ thống",
-    topics: [
-      "System Design",
-      "Distributed Systems",
-      "Scalability",
-      "Architecture",
-    ],
-    memberCount: 29300,
-    coverGradient: "linear-gradient(135deg, #4a0080 0%, #ab47bc 100%)",
-    accentColor: "#6a1b9a",
-    members: [
-      "Vũ Đình Phong",
-      "Nguyễn Thị Minh",
-      "Cao Văn Tuấn",
-      "Đỗ Minh Châu",
-    ],
-  },
-]
-
-// Legacy sidebar groups kept for sidebar widget
-const GROUPS = [
-  { name: "Java Vietnam", members: "58.4K thành viên", color: "#b8860b" },
-  { name: "AI & ML Vietnam", members: "91.7K thành viên", color: "#3949ab" },
-  { name: "Cloud & DevOps VN", members: "47.6K thành viên", color: "#1565c0" },
-  { name: "System Design", members: "29.3K thành viên", color: "#6a1b9a" },
-]
-
-const GROUP_POSTS: Post[] = [
-  {
-    id: 101,
-    author: "Hoàng Văn Dũng",
-    headline: "Senior Java Engineer · FPT Software",
-    timestamp: "1 giờ trước",
-    degree: "2nd",
-    content:
-      "Virtual Threads trong Java 21 thực sự là một game changer!\n\nVừa migrate một service xử lý 10,000 concurrent requests/giây từ thread pool sang Virtual Threads. Kết quả:\n• Memory giảm 70%\n• Throughput tăng 3.2x\n• Code đơn giản hơn nhiều — không cần reactive programming phức tạp\n\nAi đang dùng Java 21 trong production chưa?",
-    likes: 342,
-    comments: 67,
-    reposts: 89,
-    liked: false,
-    groupId: "java-vn",
-  },
-  {
-    id: 102,
-    author: "Phạm Minh Tuấn",
-    headline: "ML Engineer · VinAI Research",
-    timestamp: "4 giờ trước",
-    degree: "1st",
-    content:
-      "Benchmark thú vị về Llama 3.1 vs GPT-4o trên bộ dữ liệu tiếng Việt:\n\n• Llama 3.1 70B: ROUGE-L = 0.71, latency 180ms\n• GPT-4o: ROUGE-L = 0.78, latency 420ms\n• Gemini 1.5 Pro: ROUGE-L = 0.74, latency 290ms\n\nKhi fine-tune Llama 3.1 với 50K samples tiếng Việt, score tăng lên 0.76 — gần bằng GPT-4o với chi phí thấp hơn 10 lần.\n\nOpen source + fine-tuning vẫn là con đường tốt nhất cho tiếng Việt!",
-    image:
-      "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=552&h=300&fit=crop&auto=format",
-    likes: 891,
-    comments: 143,
-    reposts: 267,
-    liked: false,
-    groupId: "ai-ml-vn",
-  },
-  {
-    id: 103,
-    author: "Đinh Văn Khoa",
-    headline: "DevOps Lead · VNG Corporation",
-    timestamp: "6 giờ trước",
-    degree: "2nd",
-    content:
-      "Bài học đắt giá về Kubernetes resource limits:\n\nTháng trước production bị OOMKilled lúc 2 giờ sáng do không set memory limits đúng. Downtime 47 phút, ảnh hưởng 200K users.\n\nSau sự cố:\n1. Enforce resource requests/limits cho mọi pod\n2. Setup Vertical Pod Autoscaler để tự động điều chỉnh\n3. Alert khi memory usage > 80%\n4. Chaos engineering weekly để test khả năng chịu lỗi\n\nĐừng để sự cố tương tự xảy ra với hệ thống của bạn.",
-    likes: 567,
-    comments: 98,
-    reposts: 134,
-    liked: false,
-    groupId: "cloud-devops-vn",
-  },
-]
-
-const NEWS = [
-  {
-    title: "10 xu hướng UX năm 2026 không thể bỏ qua",
-    time: "2 giờ trước",
-    reads: "1.2K đọc",
-  },
-  {
-    title: "Thị trường tech Việt Nam phục hồi mạnh Q3",
-    time: "4 giờ trước",
-    reads: "3.4K đọc",
-  },
-  {
-    title: "AI thay thế hay hỗ trợ designer?",
-    time: "6 giờ trước",
-    reads: "5.1K đọc",
-  },
-]
-
 
 function HeaderBackButton({ onClick }: { onClick: () => void }) {
   return (
@@ -426,13 +181,44 @@ function Avatar({
   )
 }
 
+function Toast({ message, onDone }: { message: string; onDone: () => void }) {
+  useEffect(() => {
+    const t = setTimeout(onDone, 3000)
+    return () => clearTimeout(t)
+  }, [onDone])
+  return (
+    <div
+      style={{
+        position: "fixed",
+        bottom: 24,
+        left: "50%",
+        transform: "translateX(-50%)",
+        background: "rgba(0,0,0,0.85)",
+        color: "#fff",
+        padding: "12px 20px",
+        borderRadius: 9999,
+        fontSize: 14,
+        fontWeight: 600,
+        zIndex: 600,
+        display: "flex",
+        alignItems: "center",
+        gap: 8,
+        animation: "toastIn 250ms ease",
+        whiteSpace: "nowrap",
+      }}
+    >
+      <style>{`@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}`}</style>
+      <SealCheck size={18} color="#57C36D" weight="fill" />
+      {message}
+    </div>
+  )
+}
+
 // ─── Shared Navbar ────────────────────────────────────────────────────────────
 
 const NAV_ITEMS = [
   { id: "home", label: "Trang chủ", Icon: House },
-  { id: "network", label: "Mạng lưới", Icon: UsersThree },
-  { id: "jobs", label: "Việc làm", Icon: BriefcaseMetal },
-  { id: "messaging", label: "Tin nhắn", Icon: ChatCircleDots, badge: 5 },
+  { id: "projects", label: "Quản lý dự án", Icon: BriefcaseMetal },
   { id: "notifications", label: "Thông báo", Icon: Bell, badge: 3 },
 ]
 
@@ -763,3238 +549,6 @@ function Navbar({
         </div>
       </div>
     </nav>
-  )
-}
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// HOME PAGE
-// ═══════════════════════════════════════════════════════════════════════════════
-
-function DegreeBadge({ degree }: { degree: Post["degree"] }) {
-  return (
-    <span
-      style={{
-        fontSize: 11,
-        fontWeight: 600,
-        color: "rgba(0,0,0,0.45)",
-        border: "1px solid rgba(0,0,0,0.15)",
-        borderRadius: 4,
-        padding: "1px 5px",
-        lineHeight: 1.4,
-        flexShrink: 0,
-      }}
-    >
-      {degree}
-    </span>
-  )
-}
-
-function ProfileCard({
-  onOpenFinancialHistory,
-}: {
-  onOpenFinancialHistory?: () => void
-}) {
-  return (
-    <div
-      style={{
-        background: "#fff",
-        borderRadius: 8,
-        boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-        overflow: "hidden",
-        marginBottom: 8,
-      }}
-    >
-      <div
-        style={{
-          height: 60,
-          background: "linear-gradient(135deg, #6190CE 0%, #06407F 100%)",
-        }}
-      />
-      <div style={{ padding: "0 16px 16px" }}>
-        <div style={{ marginTop: -32, marginBottom: 8 }}>
-          <Avatar name={ME.name} size={64} border />
-        </div>
-        <div
-          style={{
-            fontWeight: 700,
-            fontSize: 15,
-            color: "rgba(0,0,0,0.90)",
-            cursor: "pointer",
-          }}
-          onMouseEnter={(e) =>
-            ((e.currentTarget as HTMLElement).style.color = "#0A66C2")
-          }
-          onMouseLeave={(e) =>
-            ((e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.90)")
-          }
-        >
-          {ME.name}
-        </div>
-        <div
-          style={{
-            fontSize: 12,
-            color: "rgba(0,0,0,0.60)",
-            lineHeight: 1.4,
-            marginTop: 2,
-          }}
-        >
-          {ME.headline}
-        </div>
-        <div
-          style={{
-            borderTop: "1px solid rgba(0,0,0,0.08)",
-            margin: "12px -16px 0",
-          }}
-        />
-        <div style={{ paddingTop: 12 }}>
-          <div style={{ fontSize: 12, color: "rgba(0,0,0,0.60)" }}>
-            Kết nối của bạn
-          </div>
-          <div
-            style={{
-              fontSize: 12,
-              fontWeight: 700,
-              color: "#0A66C2",
-              marginTop: 2,
-            }}
-          >
-            Phát triển mạng lưới của bạn
-          </div>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 6,
-              marginTop: 8,
-            }}
-          >
-            {["Nguyễn Thu Hà", "Lê Văn Đức", "Phạm Minh Tú"].map((n, i) => (
-              <div
-                key={n}
-                style={{ marginLeft: i === 0 ? 0 : -10, zIndex: 3 - i }}
-              >
-                <Avatar name={n} size={24} border />
-              </div>
-            ))}
-            <span
-              style={{
-                fontSize: 13,
-                fontWeight: 700,
-                color: "rgba(0,0,0,0.90)",
-              }}
-            >
-              {ME.connections.toLocaleString()}
-            </span>
-            <span style={{ fontSize: 12, color: "rgba(0,0,0,0.60)" }}>
-              kết nối
-            </span>
-          </div>
-        </div>
-        <div
-          style={{
-            borderTop: "1px solid rgba(0,0,0,0.08)",
-            margin: "12px -16px 0",
-          }}
-        />
-        <div
-          style={{
-            paddingTop: 12,
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            cursor: "pointer",
-          }}
-        >
-          <Bookmark size={16} color="rgba(0,0,0,0.60)" />
-          <span
-            style={{ fontSize: 13, fontWeight: 600, color: "rgba(0,0,0,0.60)" }}
-          >
-            Mục đã lưu
-          </span>
-        </div>
-        <div
-          onClick={onOpenFinancialHistory}
-          style={{
-            paddingTop: 10,
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            cursor: "pointer",
-          }}
-          onMouseEnter={(e) => {
-            const span = e.currentTarget.querySelector("span")
-            if (span) span.style.color = "#0A66C2"
-          }}
-          onMouseLeave={(e) => {
-            const span = e.currentTarget.querySelector("span")
-            if (span) span.style.color = "rgba(0,0,0,0.60)"
-          }}
-        >
-          <Wallet size={16} color="#0A66C2" weight="bold" />
-          <span
-            style={{
-              fontSize: 13,
-              fontWeight: 600,
-              color: "rgba(0,0,0,0.60)",
-              transition: "color 150ms ease",
-            }}
-          >
-            Lịch sử thu chi
-          </span>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function CreatePostCard({
-  onOpenModal,
-  onCreateGroup,
-}: {
-  onOpenModal: () => void
-  onCreateGroup?: () => void
-}) {
-  return (
-    <div
-      style={{
-        background: "#fff",
-        borderRadius: 8,
-        boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-        padding: "12px 16px",
-        marginBottom: 8,
-      }}
-    >
-      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-        <Avatar name={ME.name} size={48} />
-        <button
-          onClick={onOpenModal}
-          style={{
-            flex: 1,
-            textAlign: "left",
-            border: "1px solid rgba(0,0,0,0.40)",
-            borderRadius: 9999,
-            padding: "10px 16px",
-            background: "#fff",
-            fontSize: 14,
-            color: "rgba(0,0,0,0.60)",
-            cursor: "pointer",
-            fontFamily: "inherit",
-            transition: "border-color 150ms ease, background 150ms ease",
-          }}
-          onMouseEnter={(e) => {
-            ; (e.currentTarget as HTMLElement).style.background = "#F4F2EE"
-          }}
-          onMouseLeave={(e) => {
-            ; (e.currentTarget as HTMLElement).style.background = "#fff"
-          }}
-        >
-          Bắt đầu đăng bài...
-        </button>
-      </div>
-      <div
-        style={{
-          borderTop: "1px solid rgba(0,0,0,0.08)",
-          margin: "10px -16px 0",
-        }}
-      />
-      <div style={{ display: "flex", gap: 0, marginTop: 4, marginLeft: -8 }}>
-        {[
-          {
-            Icon: ImageIcon,
-            label: "Ảnh / Video",
-            color: "#44712E",
-            onClick: onOpenModal,
-          },
-          {
-            Icon: UsersThree,
-            label: "Tạo nhóm",
-            color: "#0A66C2",
-            onClick: onCreateGroup ?? (() => { }),
-          },
-        ].map(({ Icon, label, color, onClick }) => (
-          <button
-            key={label}
-            onClick={onClick}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 6,
-              padding: "8px 12px",
-              background: "none",
-              border: "none",
-              borderRadius: 8,
-              cursor: "pointer",
-              fontSize: 13,
-              fontWeight: 600,
-              color: "rgba(0,0,0,0.60)",
-              fontFamily: "inherit",
-              transition: "background 150ms ease, color 150ms ease",
-            }}
-            onMouseEnter={(e) => {
-              ; (e.currentTarget as HTMLElement).style.background = "#F4F2EE"
-                ; (e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.90)"
-            }}
-            onMouseLeave={(e) => {
-              ; (e.currentTarget as HTMLElement).style.background = "none"
-                ; (e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.60)"
-            }}
-          >
-            <Icon size={18} color={color} />
-            {label}
-          </button>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-function GroupBadge({
-  groupId,
-  onOpenGroup,
-}: {
-  groupId: string
-  onOpenGroup: (id: string) => void
-}) {
-  const group = TECH_GROUPS.find((g) => g.id === groupId)
-  const [showPreview, setShowPreview] = useState(false)
-  const [joined, setJoined] = useState(false)
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  if (!group) return null
-
-  const handleMouseEnter = () => {
-    timerRef.current = setTimeout(() => setShowPreview(true), 400)
-  }
-  const handleMouseLeave = () => {
-    if (timerRef.current) clearTimeout(timerRef.current)
-    setTimeout(() => setShowPreview(false), 200)
-  }
-
-  return (
-    <span style={{ position: "relative", display: "inline-block" }}>
-      <span
-        onClick={() => onOpenGroup(groupId)}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        style={{
-          fontWeight: 700,
-          fontSize: 13,
-          color: "#0A66C2",
-          cursor: "pointer",
-        }}
-      >
-        {group.name}
-      </span>
-      {showPreview && (
-        <div
-          onMouseEnter={() => {
-            if (timerRef.current) clearTimeout(timerRef.current)
-            setShowPreview(true)
-          }}
-          onMouseLeave={() => setShowPreview(false)}
-          style={{
-            position: "absolute",
-            top: "calc(100% + 6px)",
-            left: 0,
-            zIndex: 999,
-            width: 300,
-            background: "#fff",
-            borderRadius: 10,
-            boxShadow:
-              "0 4px 20px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.08)",
-            overflow: "hidden",
-          }}
-        >
-          <div style={{ height: 80, background: group.coverGradient }} />
-          <div style={{ padding: "10px 14px 14px" }}>
-            <div
-              style={{
-                fontWeight: 700,
-                fontSize: 15,
-                color: "rgba(0,0,0,0.90)",
-                marginBottom: 4,
-              }}
-            >
-              {group.name}
-            </div>
-            <div
-              style={{
-                fontSize: 12,
-                color: "rgba(0,0,0,0.60)",
-                lineHeight: 1.5,
-                marginBottom: 8,
-              }}
-            >
-              {group.description.slice(0, 80)}...
-            </div>
-            <div
-              style={{
-                fontSize: 12,
-                color: "rgba(0,0,0,0.55)",
-                marginBottom: 10,
-              }}
-            >
-              {(group.memberCount / 1000).toFixed(1)}K thành viên
-            </div>
-            <div style={{ display: "flex", gap: -8, marginBottom: 12 }}>
-              {group.members.slice(0, 4).map((m, i) => (
-                <div
-                  key={i}
-                  style={{ marginLeft: i === 0 ? 0 : -8, zIndex: 4 - i }}
-                >
-                  <Avatar name={m} size={28} border />
-                </div>
-              ))}
-            </div>
-            <div style={{ display: "flex", gap: 8 }}>
-              <button
-                onClick={() => setJoined((v) => !v)}
-                style={{
-                  flex: 1,
-                  borderRadius: 9999,
-                  border: "none",
-                  cursor: "pointer",
-                  background: joined ? "#E5F6E8" : "#0A66C2",
-                  color: joined ? "#057642" : "#fff",
-                  padding: "7px 0",
-                  fontSize: 13,
-                  fontWeight: 700,
-                  fontFamily: "inherit",
-                }}
-              >
-                {joined ? "Đã tham gia" : "Tham gia nhóm"}
-              </button>
-              <button
-                style={{
-                  borderRadius: 9999,
-                  border: "1px solid rgba(0,0,0,0.30)",
-                  cursor: "pointer",
-                  background: "none",
-                  color: "rgba(0,0,0,0.65)",
-                  padding: "7px 14px",
-                  fontSize: 13,
-                  fontWeight: 600,
-                  fontFamily: "inherit",
-                }}
-              >
-                Thêm
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </span>
-  )
-}
-
-function FeedPostCard({
-  post,
-  onLike,
-  onOpenGroup,
-  onDelete,
-}: {
-  post: Post
-  onLike: (id: number) => void
-  onOpenGroup?: (id: string) => void
-  onDelete?: (id: number) => void
-}) {
-  const [expanded, setExpanded] = useState(false)
-  const paragraphs = post.content.split("\n\n")
-  const hasMore = paragraphs.length > 1
-  const group = post.groupId
-    ? TECH_GROUPS.find((g) => g.id === post.groupId)
-    : null
-  const [joined, setJoined] = useState(false)
-  const [connected, setConnected] = useState(false)
-  const [dotMenuOpen, setDotMenuOpen] = React.useState(false)
-  const [reportPost, setReportPost] = React.useState(false)
-  const [reportReason, setReportReason] = React.useState("")
-
-  return (
-    <div
-      style={{
-        background: "#fff",
-        borderRadius: 8,
-        boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-        marginBottom: 8,
-        overflow: "hidden",
-      }}
-    >
-      <div
-        style={{
-          padding: "14px 16px 10px",
-          display: "flex",
-          alignItems: "flex-start",
-          justifyContent: "space-between",
-          gap: 10,
-        }}
-      >
-        <div style={{ display: "flex", gap: 10, flex: 1 }}>
-          <Avatar name={post.author} size={48} />
-          <div style={{ flex: 1, minWidth: 0 }}>
-            {group && (
-              <div
-                style={{
-                  fontSize: 13,
-                  marginBottom: 2,
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 6,
-                }}
-              >
-                <GroupBadge
-                  groupId={group.id}
-                  onOpenGroup={onOpenGroup ?? (() => { })}
-                />
-                <span style={{ color: "rgba(0,0,0,0.40)", fontSize: 12 }}>
-                  ·
-                </span>
-                <button
-                  onClick={() => setJoined((v) => !v)}
-                  style={{
-                    background: joined ? "#F4F2EE" : "#EAF1FA",
-                    border: joined ? "1px solid rgba(0,0,0,0.15)" : "1px solid #0A66C2",
-                    borderRadius: 9999,
-                    cursor: "pointer",
-                    fontSize: 12,
-                    fontWeight: 700,
-                    color: joined ? "rgba(0,0,0,0.60)" : "#0A66C2",
-                    fontFamily: "inherit",
-                    padding: "2px 10px",
-                    transition: "all 150ms ease",
-                  }}
-                  onMouseEnter={(e) => {
-                    if (!joined) (e.currentTarget as HTMLElement).style.background = "#D2E4F8"
-                  }}
-                  onMouseLeave={(e) => {
-                    ; (e.currentTarget as HTMLElement).style.background = joined ? "#F4F2EE" : "#EAF1FA"
-                  }}
-                >
-                  {joined ? "Đã tham gia" : "Tham gia nhóm"}
-                </button>
-              </div>
-            )}
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 6,
-                flexWrap: "wrap",
-              }}
-            >
-              <span
-                style={{
-                  fontWeight: 700,
-                  fontSize: 14,
-                  color: "rgba(0,0,0,0.90)",
-                  cursor: "pointer",
-                }}
-                onMouseEnter={(e) =>
-                  ((e.currentTarget as HTMLElement).style.color = "#0A66C2")
-                }
-                onMouseLeave={(e) =>
-                ((e.currentTarget as HTMLElement).style.color =
-                  "rgba(0,0,0,0.90)")
-                }
-              >
-                {post.author}
-              </span>
-            </div>
-            <div
-              style={{
-                fontSize: 12,
-                color: "rgba(0,0,0,0.60)",
-                lineHeight: 1.4,
-                marginTop: 1,
-              }}
-            >
-              {nameToGmail(post.author)}
-            </div>
-            <div
-              style={{
-                fontSize: 11,
-                color: "rgba(0,0,0,0.45)",
-                display: "flex",
-                alignItems: "center",
-                gap: 4,
-                marginTop: 2,
-              }}
-            >
-              {post.timestamp}
-            </div>
-          </div>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            gap: 4,
-            alignItems: "center",
-            flexShrink: 0,
-          }}
-        >
-          {!group && (
-            <button
-              onClick={() => setConnected((v) => !v)}
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 5,
-                border: `1px solid ${connected ? "#057642" : "#0A66C2"}`,
-                borderRadius: 9999,
-                padding: "5px 14px",
-                background: connected ? "#E5F6E8" : "none",
-                color: connected ? "#057642" : "#0A66C2",
-                fontSize: 13,
-                fontWeight: 700,
-                cursor: "pointer",
-                fontFamily: "inherit",
-                transition: "all 150ms ease",
-              }}
-              onMouseEnter={(e) => {
-                if (!connected)
-                  (e.currentTarget as HTMLElement).style.background = "#EAF1FA"
-              }}
-              onMouseLeave={(e) => {
-                if (!connected)
-                  (e.currentTarget as HTMLElement).style.background = "none"
-              }}
-            >
-              {connected ? (
-                <>
-                  <CheckCircle size={14} weight="fill" />
-                  Đã kết nối
-                </>
-              ) : (
-                <>
-                  <UserPlus size={14} />
-                  Kết nối
-                </>
-              )}
-            </button>
-          )}
-          <div style={{ position: "relative" }}>
-            <button
-              onClick={() => setDotMenuOpen(v => !v)}
-              style={{
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-                color: "rgba(0,0,0,0.45)",
-                borderRadius: 9999,
-                padding: 4,
-                display: "flex",
-              }}
-            >
-              <DotsThreeVertical size={20} />
-            </button>
-            {dotMenuOpen && (
-              <div style={{ position: "absolute", top: "100%", right: 0, zIndex: 10, background: "#fff", boxShadow: "0 4px 16px rgba(0,0,0,0.13)", borderRadius: 8, minWidth: 140, padding: "4px 0" }}>
-                <button onClick={() => { setDotMenuOpen(false); setReportPost(true); }} style={{ display: "block", width: "100%", textAlign: "left", padding: "10px 16px", background: "none", border: "none", cursor: "pointer", fontSize: 14, color: "#333" }}>Báo cáo</button>
-                {onDelete && <button onClick={() => { setDotMenuOpen(false); onDelete(post.id); }} style={{ display: "block", width: "100%", textAlign: "left", padding: "10px 16px", background: "none", border: "none", cursor: "pointer", fontSize: 14, color: "#C03A2B", fontWeight: 600 }}>Xóa bài viết</button>}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-      {reportPost && (
-        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.45)", zIndex: 50, display: "flex", alignItems: "center", justifyContent: "center" }} onClick={() => setReportPost(false)}>
-          <div style={{ background: "#fff", borderRadius: 16, padding: 28, maxWidth: 460, width: "100%", boxShadow: "0 8px 32px rgba(0,0,0,0.18)" }} onClick={e => e.stopPropagation()}>
-            <p style={{ fontWeight: 700, fontSize: 18, marginBottom: 16 }}>Báo cáo bài viết</p>
-            <label style={{ display: "block", fontWeight: 600, fontSize: 13, marginBottom: 6 }}>Lý do báo cáo <span style={{ color: "#C03A2B" }}>*</span></label>
-            <textarea value={reportReason} onChange={e => setReportReason(e.target.value)} rows={4} style={{ width: "100%", borderRadius: 8, border: "1px solid #ccc", padding: "10px 12px", fontSize: 14, resize: "vertical", boxSizing: "border-box" }} placeholder="Mô tả lý do..." />
-            <div style={{ display: "flex", gap: 12, justifyContent: "flex-end", marginTop: 20 }}>
-              <button onClick={() => setReportPost(false)} style={{ padding: "9px 22px", borderRadius: 9999, border: "1px solid rgba(0,0,0,0.20)", background: "#fff", color: "rgba(0,0,0,0.70)", cursor: "pointer", fontWeight: 600, fontFamily: "inherit" }}>Hủy</button>
-              <button disabled={!reportReason.trim()} onClick={() => { setReportReason(""); setReportPost(false); }} style={{ padding: "9px 22px", borderRadius: 9999, border: "none", background: reportReason.trim() ? "#0A66C2" : "#b0c4d8", color: "#fff", cursor: reportReason.trim() ? "pointer" : "not-allowed", fontWeight: 600, fontFamily: "inherit" }}>Gửi báo cáo</button>
-            </div>
-          </div>
-        </div>
-      )}
-      <div
-        style={{
-          padding: "0 16px 12px",
-          fontSize: 14,
-          color: "rgba(0,0,0,0.90)",
-          lineHeight: 1.55,
-        }}
-      >
-        {expanded ? (
-          paragraphs.map((p, i) => (
-            <p
-              key={i}
-              style={{ marginBottom: i < paragraphs.length - 1 ? 10 : 0 }}
-            >
-              {p}
-            </p>
-          ))
-        ) : (
-          <p>{paragraphs[0]}</p>
-        )}
-        {hasMore && (
-          <button
-            onClick={() => setExpanded(!expanded)}
-            style={{
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              color: "rgba(0,0,0,0.60)",
-              fontSize: 14,
-              fontWeight: 600,
-              fontFamily: "inherit",
-              padding: 0,
-              marginTop: 2,
-            }}
-          >
-            {expanded ? " Ẩn bớt" : " …xem thêm"}
-          </button>
-        )}
-      </div>
-      {post.image && (
-        <div style={{ background: "#e8e8e8" }}>
-          <img
-            src={post.image}
-            alt="post"
-            style={{
-              width: "100%",
-              maxHeight: 320,
-              objectFit: "cover",
-              display: "block",
-            }}
-          />
-        </div>
-      )}
-      <div
-        style={{
-          padding: "6px 16px",
-          display: "flex",
-          justifyContent: "space-between",
-          borderBottom: "1px solid rgba(0,0,0,0.08)",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 4,
-            fontSize: 12,
-            color: "rgba(0,0,0,0.60)",
-            cursor: "pointer",
-          }}
-        >
-          <span>👍❤️💡</span>
-          <span>{post.likes.toLocaleString("vi-VN")}</span>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            gap: 10,
-            fontSize: 12,
-            color: "rgba(0,0,0,0.60)",
-          }}
-        >
-          <span style={{ cursor: "pointer" }}>{post.comments} bình luận</span>
-          <span style={{ cursor: "pointer" }}>
-            {post.reposts} lượt đăng lại
-          </span>
-        </div>
-      </div>
-      <div style={{ display: "flex", padding: "2px 8px" }}>
-        {[
-          {
-            label: post.liked ? "Đã thích" : "Thích",
-            Icon: ThumbsUp,
-            active: post.liked,
-            onClick: () => onLike(post.id),
-          },
-          {
-            label: "Bình luận",
-            Icon: ChatCircle,
-            active: false,
-            onClick: () => { },
-          },
-          {
-            label: "Đăng lại",
-            Icon: ArrowsClockwise,
-            active: false,
-            onClick: () => { },
-          },
-        ].map(({ label, Icon, active, onClick }) => (
-          <button
-            key={label}
-            onClick={onClick}
-            style={{
-              flex: 1,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 6,
-              padding: "10px 4px",
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              color: active ? "#0A66C2" : "rgba(0,0,0,0.60)",
-              fontSize: 13,
-              fontWeight: 600,
-              fontFamily: "inherit",
-              borderRadius: 8,
-              transition: "background 150ms ease, color 150ms ease",
-            }}
-            onMouseEnter={(e) => {
-              ; (e.currentTarget as HTMLElement).style.background = "#EAF1FA"
-            }}
-            onMouseLeave={(e) => {
-              ; (e.currentTarget as HTMLElement).style.background = "none"
-            }}
-          >
-            <Icon size={18} weight={active ? "fill" : "regular"} />
-            {label}
-          </button>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-function GroupsNewsCard() {
-  const [showAll, setShowAll] = useState(false)
-  const visibleGroups = showAll ? GROUPS : GROUPS.slice(0, 3)
-  return (
-    <div
-      style={{
-        background: "#fff",
-        borderRadius: 8,
-        boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-        padding: "16px",
-        marginBottom: 8,
-      }}
-    >
-      <div
-        style={{
-          fontWeight: 700,
-          fontSize: 15,
-          color: "rgba(0,0,0,0.90)",
-          marginBottom: 12,
-        }}
-      >
-        Nhóm của bạn
-      </div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 2,
-          marginBottom: 4,
-        }}
-      >
-        {visibleGroups.map(({ name, members, color }) => (
-          <div
-            key={name}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-              padding: "7px 8px",
-              borderRadius: 8,
-              cursor: "pointer",
-              transition: "background 150ms ease",
-            }}
-            onMouseEnter={(e) =>
-              ((e.currentTarget as HTMLElement).style.background = "#F4F2EE")
-            }
-            onMouseLeave={(e) =>
-              ((e.currentTarget as HTMLElement).style.background = "none")
-            }
-          >
-            <div
-              style={{
-                width: 32,
-                height: 32,
-                borderRadius: 4,
-                background: color,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexShrink: 0,
-              }}
-            >
-              <UsersThree size={16} color="#fff" weight="fill" />
-            </div>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div
-                style={{
-                  fontSize: 13,
-                  fontWeight: 600,
-                  color: "rgba(0,0,0,0.90)",
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                }}
-              >
-                {name}
-              </div>
-              <div style={{ fontSize: 11, color: "rgba(0,0,0,0.45)" }}>
-                {members}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-      <button
-        onClick={() => setShowAll(!showAll)}
-        style={{
-          background: "none",
-          border: "none",
-          cursor: "pointer",
-          fontSize: 13,
-          fontWeight: 600,
-          color: "rgba(0,0,0,0.60)",
-          fontFamily: "inherit",
-          padding: "4px 8px",
-          borderRadius: 8,
-          width: "100%",
-          textAlign: "left",
-          transition: "background 150ms ease",
-        }}
-        onMouseEnter={(e) =>
-          ((e.currentTarget as HTMLElement).style.background = "#F4F2EE")
-        }
-        onMouseLeave={(e) =>
-          ((e.currentTarget as HTMLElement).style.background = "none")
-        }
-      >
-        {showAll ? "Ẩn bớt ↑" : "Xem thêm nhóm →"}
-      </button>
-      <div
-        style={{
-          borderTop: "1px solid rgba(0,0,0,0.08)",
-          margin: "12px -16px",
-        }}
-      />
-      <div
-        style={{
-          fontWeight: 700,
-          fontSize: 15,
-          color: "rgba(0,0,0,0.90)",
-          marginBottom: 10,
-        }}
-      >
-        Tin tức hôm nay
-      </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-        {NEWS.map(({ title, time, reads }) => (
-          <div
-            key={title}
-            style={{
-              padding: "7px 8px",
-              borderRadius: 8,
-              cursor: "pointer",
-              transition: "background 150ms ease",
-            }}
-            onMouseEnter={(e) =>
-              ((e.currentTarget as HTMLElement).style.background = "#F4F2EE")
-            }
-            onMouseLeave={(e) =>
-              ((e.currentTarget as HTMLElement).style.background = "none")
-            }
-          >
-            <div style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
-              <div
-                style={{
-                  width: 5,
-                  height: 5,
-                  borderRadius: 9999,
-                  background: "rgba(0,0,0,0.90)",
-                  marginTop: 6,
-                  flexShrink: 0,
-                }}
-              />
-              <div>
-                <div
-                  style={{
-                    fontSize: 13,
-                    fontWeight: 700,
-                    color: "rgba(0,0,0,0.90)",
-                    lineHeight: 1.4,
-                  }}
-                >
-                  {title}
-                </div>
-                <div
-                  style={{
-                    fontSize: 11,
-                    color: "rgba(0,0,0,0.45)",
-                    marginTop: 2,
-                  }}
-                >
-                  {time} · {reads}
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-function FooterLinks() {
-  const links = [
-    "Giới thiệu",
-    "Trợ giúp",
-    "Quyền riêng tư",
-    "Điều khoản",
-    "Quảng cáo",
-    "Kinh doanh",
-    "Tải ứng dụng",
-    "Thêm",
-  ]
-  return (
-    <div style={{ padding: "0 4px" }}>
-      <div
-        style={{ display: "flex", flexWrap: "wrap", gap: 4, marginBottom: 6 }}
-      >
-        {links.map((l) => (
-          <button
-            key={l}
-            style={{
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              fontSize: 11,
-              color: "rgba(0,0,0,0.45)",
-              fontFamily: "inherit",
-              padding: "1px 0",
-            }}
-            onMouseEnter={(e) =>
-              ((e.currentTarget as HTMLElement).style.color = "#0A66C2")
-            }
-            onMouseLeave={(e) =>
-            ((e.currentTarget as HTMLElement).style.color =
-              "rgba(0,0,0,0.45)")
-            }
-          >
-            {l}
-          </button>
-        ))}
-      </div>
-      <div
-        style={{
-          fontSize: 11,
-          color: "rgba(0,0,0,0.45)",
-          display: "flex",
-          alignItems: "center",
-          gap: 4,
-        }}
-      >
-        <div
-          style={{
-            width: 16,
-            height: 16,
-            background: "#0A66C2",
-            borderRadius: 3,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            color: "#fff",
-            fontSize: 10,
-            fontWeight: 900,
-          }}
-        >
-          O
-        </div>
-        Occupify Corporation © 2026
-      </div>
-    </div>
-  )
-}
-
-function CreatePostModal({
-  onClose,
-  onPost,
-}: {
-  onClose: () => void
-  onPost: () => void
-}) {
-  const [text, setText] = useState("")
-  const [visibility, setVisibility] = useState("Mọi người")
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
-  const canPost = text.trim().length > 0
-
-  useEffect(() => {
-    textareaRef.current?.focus()
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose()
-    }
-    window.addEventListener("keydown", handleKey)
-    return () => window.removeEventListener("keydown", handleKey)
-  }, [onClose])
-
-  return (
-    <div
-      style={{
-        position: "fixed",
-        inset: 0,
-        background: "rgba(0,0,0,0.55)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        zIndex: 500,
-        padding: 16,
-      }}
-      onClick={(e) => {
-        if (e.target === e.currentTarget) onClose()
-      }}
-    >
-      <div
-        style={{
-          background: "#fff",
-          borderRadius: 12,
-          boxShadow: "0 12px 28px rgba(0,0,0,0.14)",
-          width: "100%",
-          maxWidth: 552,
-          display: "flex",
-          flexDirection: "column",
-          overflow: "hidden",
-          animation: "modalIn 250ms cubic-bezier(0.22,1,0.36,1)",
-        }}
-      >
-        <style>{`@keyframes modalIn { from{opacity:0;transform:translateY(20px) scale(0.97)} to{opacity:1;transform:translateY(0) scale(1)} }`}</style>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            padding: "14px 16px",
-            borderBottom: "1px solid rgba(0,0,0,0.08)",
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <Avatar name={ME.name} size={48} />
-            <div>
-              <div style={{ fontWeight: 700, fontSize: 15 }}>{ME.name}</div>
-              <button
-                onClick={() =>
-                  setVisibility(
-                    visibility === "Mọi người" ? "Chỉ kết nối" : "Mọi người",
-                  )
-                }
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 4,
-                  border: "1px solid rgba(0,0,0,0.40)",
-                  borderRadius: 9999,
-                  padding: "2px 8px",
-                  background: "none",
-                  cursor: "pointer",
-                  fontSize: 12,
-                  fontWeight: 600,
-                  color: "rgba(0,0,0,0.90)",
-                  fontFamily: "inherit",
-                  marginTop: 4,
-                }}
-              >
-                <Globe size={12} weight="fill" color="#0A66C2" />
-                {visibility}
-                <CaretDown size={10} weight="bold" />
-              </button>
-            </div>
-          </div>
-          <button
-            onClick={onClose}
-            style={{
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              color: "rgba(0,0,0,0.60)",
-              borderRadius: 9999,
-              padding: 6,
-              display: "flex",
-            }}
-            onMouseEnter={(e) =>
-              ((e.currentTarget as HTMLElement).style.background = "#F4F2EE")
-            }
-            onMouseLeave={(e) =>
-              ((e.currentTarget as HTMLElement).style.background = "none")
-            }
-          >
-            <X size={22} />
-          </button>
-        </div>
-        <div style={{ padding: "12px 16px", flex: 1 }}>
-          <textarea
-            ref={textareaRef}
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            placeholder="Bạn muốn chia sẻ điều gì?"
-            style={{
-              width: "100%",
-              minHeight: 180,
-              border: "none",
-              outline: "none",
-              resize: "none",
-              fontSize: 16,
-              color: "rgba(0,0,0,0.90)",
-              fontFamily: "inherit",
-              lineHeight: 1.55,
-              background: "none",
-            }}
-          />
-        </div>
-        <div
-          style={{
-            display: "flex",
-            gap: 2,
-            padding: "8px 12px",
-            borderTop: "1px solid rgba(0,0,0,0.08)",
-            alignItems: "center",
-          }}
-        >
-          {[
-            { Icon: Image, color: "#44712E" },
-            { Icon: Video, color: "#C03A2B" },
-            { Icon: Article, color: "#0A66C2" },
-            { Icon: Buildings, color: "#915907" },
-          ].map(({ Icon, color }, i) => (
-            <button
-              key={i}
-              style={{
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-                borderRadius: 9999,
-                padding: 8,
-                display: "flex",
-                transition: "background 150ms ease",
-              }}
-              onMouseEnter={(e) =>
-                ((e.currentTarget as HTMLElement).style.background = "#F4F2EE")
-              }
-              onMouseLeave={(e) =>
-                ((e.currentTarget as HTMLElement).style.background = "none")
-              }
-            >
-              <Icon size={22} color={color} />
-            </button>
-          ))}
-          <div style={{ flex: 1 }} />
-          <button
-            disabled={!canPost}
-            onClick={() => {
-              if (canPost) {
-                onPost()
-                onClose()
-              }
-            }}
-            style={{
-              background: canPost ? "#0A66C2" : "transparent",
-              border: canPost ? "none" : "1px solid rgba(0,0,0,0.30)",
-              color: canPost ? "#fff" : "rgba(0,0,0,0.30)",
-              borderRadius: 9999,
-              padding: "9px 24px",
-              fontSize: 14,
-              fontWeight: 700,
-              fontFamily: "inherit",
-              cursor: canPost ? "pointer" : "not-allowed",
-            }}
-            onMouseEnter={(e) => {
-              if (canPost)
-                (e.currentTarget as HTMLElement).style.background = "#084FA0"
-            }}
-            onMouseLeave={(e) => {
-              if (canPost)
-                (e.currentTarget as HTMLElement).style.background = "#0A66C2"
-            }}
-          >
-            Đăng
-          </button>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function Toast({ message, onDone }: { message: string; onDone: () => void }) {
-  useEffect(() => {
-    const t = setTimeout(onDone, 3000)
-    return () => clearTimeout(t)
-  }, [onDone])
-  return (
-    <div
-      style={{
-        position: "fixed",
-        bottom: 24,
-        left: "50%",
-        transform: "translateX(-50%)",
-        background: "rgba(0,0,0,0.85)",
-        color: "#fff",
-        padding: "12px 20px",
-        borderRadius: 9999,
-        fontSize: 14,
-        fontWeight: 600,
-        zIndex: 600,
-        display: "flex",
-        alignItems: "center",
-        gap: 8,
-        animation: "toastIn 250ms ease",
-        whiteSpace: "nowrap",
-      }}
-    >
-      <style>{`@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}`}</style>
-      <SealCheck size={18} color="#57C36D" weight="fill" />
-      {message}
-    </div>
-  )
-}
-
-function HomePage({
-  onOpenModal,
-  onOpenFinancialHistory,
-}: {
-  onOpenModal: () => void
-  onOpenFinancialHistory?: () => void
-}) {
-  const [posts, setPosts] = useState<Post[]>(INITIAL_POSTS)
-  const handleLike = (id: number) =>
-    setPosts((prev) =>
-      prev.map((p) =>
-        p.id === id
-          ? {
-            ...p,
-            liked: !p.liked,
-            likes: p.liked ? p.likes - 1 : p.likes + 1,
-          }
-          : p,
-      ),
-    )
-  return (
-    <div
-      style={{
-        maxWidth: 1128,
-        margin: "0 auto",
-        padding: "24px 16px",
-        display: "grid",
-        gridTemplateColumns: "226px minmax(0,552px) 300px",
-        gap: 20,
-        alignItems: "start",
-      }}
-    >
-      <div>
-        <ProfileCard onOpenFinancialHistory={onOpenFinancialHistory} />
-      </div>
-      <div>
-        <CreatePostCard onOpenModal={onOpenModal} />
-        {posts.map((post) => (
-          <FeedPostCard key={post.id} post={post} onLike={handleLike} />
-        ))}
-        <div
-          style={{
-            textAlign: "center",
-            padding: "20px 0",
-            fontSize: 13,
-            color: "rgba(0,0,0,0.45)",
-          }}
-        >
-          Đang tải thêm bài viết...
-        </div>
-      </div>
-      <div>
-        <GroupsNewsCard />
-        <FooterLinks />
-      </div>
-    </div>
-  )
-}
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// NETWORK PAGE
-// ═══════════════════════════════════════════════════════════════════════════════
-
-interface Invitation {
-  id: number
-  name: string
-  headline: string
-  mutual: number
-  timeAgo: string
-  note?: string
-}
-
-interface Person {
-  id: number
-  name: string
-  headline: string
-  mutual: number
-  school?: string
-  company?: string
-}
-
-const INVITATIONS: Invitation[] = [
-  {
-    id: 1,
-    name: "Vũ Thành Long",
-    headline: "CTO tại NextGen Ventures · Ex-Grab",
-    mutual: 14,
-    timeAgo: "2 ngày trước",
-    note: "Chúng ta đã gặp tại Vietnam Tech Summit 2025.",
-  },
-  {
-    id: 2,
-    name: "Đặng Thị Mai",
-    headline: "Talent Acquisition Lead · Shopee Vietnam",
-    mutual: 7,
-    timeAgo: "3 ngày trước",
-  },
-  {
-    id: 3,
-    name: "Bùi Quang Huy",
-    headline: "Principal Engineer · VNG Corporation",
-    mutual: 21,
-    timeAgo: "5 ngày trước",
-    note: "Tôi ngưỡng mộ công việc của bạn trong lĩnh vực Product Design!",
-  },
-]
-
-const SCHOOL_RECOMMENDATIONS: Person[] = [
-  {
-    id: 1,
-    name: "Ngô Thị Lan Anh",
-    headline: "UX Researcher · Google",
-    mutual: 18,
-    school: "ĐHBK Hà Nội",
-  },
-  {
-    id: 2,
-    name: "Phạm Văn Hải",
-    headline: "Frontend Engineer · Meta",
-    mutual: 9,
-    school: "ĐHBK Hà Nội",
-  },
-  {
-    id: 3,
-    name: "Lý Minh Châu",
-    headline: "Product Manager · Stripe",
-    mutual: 13,
-    school: "ĐHBK Hà Nội",
-  },
-  {
-    id: 4,
-    name: "Trần Khánh Vân",
-    headline: "Data Scientist · Shopee",
-    mutual: 5,
-    school: "ĐHBK Hà Nội",
-  },
-]
-
-const INDUSTRY_RECOMMENDATIONS: Person[] = [
-  {
-    id: 5,
-    name: "Hoàng Đức Minh",
-    headline: "Creative Director · TBWA Vietnam",
-    mutual: 11,
-    company: "Thiết kế & Sáng tạo",
-  },
-  {
-    id: 6,
-    name: "Nguyễn Bảo Châu",
-    headline: "Brand Strategist · Ogilvy",
-    mutual: 6,
-    company: "Marketing",
-  },
-  {
-    id: 7,
-    name: "Đinh Thế Anh",
-    headline: "Motion Designer · Publicis",
-    mutual: 3,
-    company: "Thiết kế",
-  },
-  {
-    id: 8,
-    name: "Lê Thị Thu Thảo",
-    headline: "Product Designer · Lazada",
-    mutual: 22,
-    company: "E-commerce",
-  },
-  {
-    id: 9,
-    name: "Trương Quang Vinh",
-    headline: "UX Lead · Momo",
-    mutual: 17,
-    company: "Fintech",
-  },
-  {
-    id: 10,
-    name: "Cao Ngọc Linh",
-    headline: "Design System Lead · VNPAY",
-    mutual: 8,
-    company: "Fintech",
-  },
-]
-
-const VIEWER_RECOMMENDATIONS: Person[] = [
-  {
-    id: 11,
-    name: "Phan Thị Hồng Nhung",
-    headline: "HR Director · FPT Software",
-    mutual: 4,
-  },
-  {
-    id: 12,
-    name: "Vũ Ngọc Bảo",
-    headline: "Startup Founder · EdTech VN",
-    mutual: 16,
-  },
-  { id: 13, name: "Đỗ Minh Quân", headline: "Senior PM · Tiki", mutual: 29 },
-  {
-    id: 14,
-    name: "Nguyễn Thu Trang",
-    headline: "Growth Lead · Base.vn",
-    mutual: 11,
-  },
-]
-
-// Network sidebar cover colors for mini cards
-const COVER_GRADIENTS = [
-  "linear-gradient(135deg, #6190CE 0%, #06407F 100%)",
-  "linear-gradient(135deg, #6DB887 0%, #44712E 100%)",
-  "linear-gradient(135deg, #E08070 0%, #C03A2B 100%)",
-  "linear-gradient(135deg, #E8C070 0%, #915907 100%)",
-  "linear-gradient(135deg, #8096CE 0%, #3675BD 100%)",
-  "linear-gradient(135deg, #90C0A0 0%, #057642 100%)",
-]
-
-// ─── Mini Profile Card (for recommendation grids) ─────────────────────────────
-
-function MiniProfileCard({
-  person,
-  coverGradient,
-  onConnect,
-  connected,
-  onViewProfile,
-}: {
-  person: Person
-  coverGradient: string
-  onConnect: () => void
-  connected: boolean
-  onViewProfile?: () => void
-}) {
-  return (
-    <div
-      style={{
-        border: "1px solid rgba(0,0,0,0.08)",
-        borderRadius: 8,
-        overflow: "hidden",
-        background: "#fff",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        position: "relative",
-        transition: "box-shadow 150ms ease",
-      }}
-      onMouseEnter={(e) =>
-      ((e.currentTarget as HTMLElement).style.boxShadow =
-        "0 4px 12px rgba(0,0,0,0.10)")
-      }
-      onMouseLeave={(e) =>
-        ((e.currentTarget as HTMLElement).style.boxShadow = "none")
-      }
-    >
-      {/* Cover */}
-      <div style={{ height: 60, background: coverGradient, width: "100%" }} />
-
-      {/* Dismiss button */}
-      <button
-        style={{
-          position: "absolute",
-          top: 6,
-          right: 6,
-          background: "rgba(255,255,255,0.85)",
-          border: "none",
-          borderRadius: 9999,
-          width: 24,
-          height: 24,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          cursor: "pointer",
-          color: "rgba(0,0,0,0.60)",
-        }}
-      >
-        <X size={13} weight="bold" />
-      </button>
-
-      {/* Avatar — overlaps cover */}
-      <div style={{ marginTop: -32, zIndex: 1 }}>
-        <Avatar name={person.name} size={64} border />
-      </div>
-
-      {/* Info */}
-      <div
-        style={{
-          padding: "8px 10px 14px",
-          textAlign: "center",
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          width: "100%",
-        }}
-      >
-        <div
-          onClick={onViewProfile}
-          style={{
-            fontWeight: 700,
-            fontSize: 15,
-            color: "rgba(0,0,0,0.90)",
-            lineHeight: 1.25,
-            cursor: "pointer",
-            marginBottom: 3,
-          }}
-          onMouseEnter={(e) =>
-            ((e.currentTarget as HTMLElement).style.color = "#0A66C2")
-          }
-          onMouseLeave={(e) =>
-            ((e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.90)")
-          }
-        >
-          {person.name}
-        </div>
-        <div
-          style={{
-            fontSize: 12,
-            color: "rgba(0,0,0,0.60)",
-            lineHeight: 1.4,
-            overflow: "hidden",
-            display: "-webkit-box",
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: "vertical",
-            marginBottom: 6,
-            padding: "0 4px",
-          }}
-        >
-          {person.headline}
-        </div>
-        {person.mutual > 0 && (
-          <div
-            style={{
-              fontSize: 11,
-              color: "rgba(0,0,0,0.45)",
-              marginBottom: 10,
-              display: "flex",
-              alignItems: "center",
-              gap: 4,
-            }}
-          >
-            <Users size={12} weight="regular" />
-            {person.mutual} bạn chung
-          </div>
-        )}
-        <div style={{ flex: 1 }} />
-        {/* Connect button */}
-        <button
-          onClick={onConnect}
-          style={{
-            borderRadius: 9999,
-            border: `1px solid ${connected ? "#057642" : "#0A66C2"}`,
-            background: connected ? "#E5F6E8" : "transparent",
-            color: connected ? "#057642" : "#0A66C2",
-            padding: "6px 20px",
-            fontSize: 13,
-            fontWeight: 700,
-            cursor: "pointer",
-            fontFamily: "inherit",
-            display: "flex",
-            alignItems: "center",
-            gap: 5,
-            transition: "all 150ms ease",
-          }}
-          onMouseEnter={(e) => {
-            if (!connected)
-              (e.currentTarget as HTMLElement).style.background = "#EAF1FA"
-          }}
-          onMouseLeave={(e) => {
-            if (!connected)
-              (e.currentTarget as HTMLElement).style.background = "transparent"
-          }}
-        >
-          {connected ? (
-            <>
-              <CheckCircle size={14} weight="fill" /> Đã gửi
-            </>
-          ) : (
-            <>
-              <UserPlus size={14} weight="regular" /> Kết nối
-            </>
-          )}
-        </button>
-      </div>
-    </div>
-  )
-}
-
-// ─── Recommendation Section ───────────────────────────────────────────────────
-
-function RecommendSection({
-  title,
-  subtitle,
-  people,
-  connected,
-  onConnect,
-  onViewProfile,
-}: {
-  title: string
-  subtitle?: string
-  people: Person[]
-  connected: Set<number>
-  onConnect: (id: number) => void
-  onViewProfile?: () => void
-}) {
-  const [showAll, setShowAll] = useState(false)
-  const visible = showAll ? people : people.slice(0, 4)
-
-  return (
-    <div
-      style={{
-        background: "#fff",
-        borderRadius: 8,
-        boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-        marginBottom: 8,
-        overflow: "hidden",
-      }}
-    >
-      {/* Header */}
-      <div style={{ padding: "16px 20px 12px" }}>
-        <div
-          style={{ fontWeight: 700, fontSize: 17, color: "rgba(0,0,0,0.90)" }}
-        >
-          {title}
-        </div>
-        {subtitle && (
-          <div
-            style={{ fontSize: 13, color: "rgba(0,0,0,0.60)", marginTop: 2 }}
-          >
-            {subtitle}
-          </div>
-        )}
-      </div>
-
-      {/* Grid */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
-          gap: 12,
-          padding: "0 20px",
-        }}
-      >
-        {visible.map((person, i) => (
-          <MiniProfileCard
-            key={person.id}
-            person={person}
-            coverGradient={COVER_GRADIENTS[i % COVER_GRADIENTS.length]}
-            connected={connected.has(person.id)}
-            onConnect={() => onConnect(person.id)}
-            onViewProfile={onViewProfile}
-          />
-        ))}
-      </div>
-
-      {/* Show more */}
-      <button
-        onClick={() => setShowAll(!showAll)}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 6,
-          width: "100%",
-          padding: "14px 20px",
-          marginTop: 12,
-          background: "none",
-          border: "none",
-          borderTop: "1px solid rgba(0,0,0,0.08)",
-          cursor: "pointer",
-          fontSize: 14,
-          fontWeight: 600,
-          color: "rgba(0,0,0,0.60)",
-          fontFamily: "inherit",
-          transition: "background 150ms ease, color 150ms ease",
-        }}
-        onMouseEnter={(e) => {
-          ; (e.currentTarget as HTMLElement).style.background = "#F4F2EE"
-            ; (e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.90)"
-        }}
-        onMouseLeave={(e) => {
-          ; (e.currentTarget as HTMLElement).style.background = "none"
-            ; (e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.60)"
-        }}
-      >
-        {showAll ? "Ẩn bớt" : "Xem thêm gợi ý"}
-        <ArrowRight
-          size={16}
-          weight="regular"
-          style={{
-            transform: showAll ? "rotate(90deg)" : "none",
-            transition: "transform 150ms ease",
-          }}
-        />
-      </button>
-    </div>
-  )
-}
-
-// ─── Invitations Card ─────────────────────────────────────────────────────────
-
-function InvitationsCard({
-  invitations,
-  onAccept,
-  onIgnore,
-}: {
-  invitations: Invitation[]
-  onAccept: (id: number) => void
-  onIgnore: (id: number) => void
-}) {
-  const [expanded, setExpanded] = useState(false)
-  const visible = expanded ? invitations : invitations.slice(0, 2)
-
-  if (invitations.length === 0) return null
-
-  return (
-    <div
-      style={{
-        background: "#fff",
-        borderRadius: 8,
-        boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-        marginBottom: 8,
-        overflow: "hidden",
-      }}
-    >
-      {/* Header */}
-      <div
-        style={{
-          padding: "16px 20px 10px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <div>
-          <span
-            style={{ fontWeight: 700, fontSize: 17, color: "rgba(0,0,0,0.90)" }}
-          >
-            Lời mời kết nối
-          </span>
-          <span
-            style={{ marginLeft: 8, fontSize: 15, color: "rgba(0,0,0,0.60)" }}
-          >
-            ({invitations.length})
-          </span>
-        </div>
-        <button
-          style={{
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            fontSize: 13,
-            fontWeight: 600,
-            color: "#0A66C2",
-            fontFamily: "inherit",
-          }}
-          onMouseEnter={(e) =>
-          ((e.currentTarget as HTMLElement).style.textDecoration =
-            "underline")
-          }
-          onMouseLeave={(e) =>
-            ((e.currentTarget as HTMLElement).style.textDecoration = "none")
-          }
-        >
-          Xem tất cả
-        </button>
-      </div>
-
-      {/* List */}
-      <div>
-        {visible.map((inv, i) => (
-          <div key={inv.id}>
-            {i > 0 && (
-              <div
-                style={{
-                  borderTop: "1px solid rgba(0,0,0,0.08)",
-                  margin: "0 20px",
-                }}
-              />
-            )}
-            <div
-              style={{
-                padding: "14px 20px",
-                display: "flex",
-                gap: 14,
-                alignItems: "flex-start",
-              }}
-            >
-              {/* Avatar */}
-              <Avatar name={inv.name} size={56} />
-
-              {/* Info */}
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div
-                  style={{
-                    fontWeight: 700,
-                    fontSize: 14,
-                    color: "rgba(0,0,0,0.90)",
-                    cursor: "pointer",
-                  }}
-                  onMouseEnter={(e) =>
-                    ((e.currentTarget as HTMLElement).style.color = "#0A66C2")
-                  }
-                  onMouseLeave={(e) =>
-                  ((e.currentTarget as HTMLElement).style.color =
-                    "rgba(0,0,0,0.90)")
-                  }
-                >
-                  {inv.name}
-                </div>
-                <div
-                  style={{
-                    fontSize: 12,
-                    color: "rgba(0,0,0,0.60)",
-                    lineHeight: 1.4,
-                    marginTop: 1,
-                  }}
-                >
-                  {inv.headline}
-                </div>
-                <div
-                  style={{
-                    fontSize: 11,
-                    color: "rgba(0,0,0,0.45)",
-                    marginTop: 3,
-                  }}
-                >
-                  {inv.timeAgo}
-                </div>
-              </div>
-
-              {/* Actions */}
-              <div
-                style={{
-                  display: "flex",
-                  gap: 8,
-                  alignItems: "center",
-                  flexShrink: 0,
-                  paddingTop: 2,
-                }}
-              >
-                <button
-                  onClick={() => onIgnore(inv.id)}
-                  style={{
-                    background: "transparent",
-                    border: "none",
-                    borderRadius: 9999,
-                    padding: "9px 16px",
-                    fontSize: 14,
-                    fontWeight: 700,
-                    color: "rgba(0,0,0,0.60)",
-                    cursor: "pointer",
-                    fontFamily: "inherit",
-                    transition: "background 150ms ease, color 150ms ease",
-                  }}
-                  onMouseEnter={(e) => {
-                    ; (e.currentTarget as HTMLElement).style.background =
-                      "#F4F2EE"
-                      ; (e.currentTarget as HTMLElement).style.color =
-                        "rgba(0,0,0,0.90)"
-                  }}
-                  onMouseLeave={(e) => {
-                    ; (e.currentTarget as HTMLElement).style.background =
-                      "transparent"
-                      ; (e.currentTarget as HTMLElement).style.color =
-                        "rgba(0,0,0,0.60)"
-                  }}
-                >
-                  Bỏ qua
-                </button>
-                <button
-                  onClick={() => onAccept(inv.id)}
-                  style={{
-                    background: "#0A66C2",
-                    border: "none",
-                    borderRadius: 9999,
-                    padding: "9px 20px",
-                    fontSize: 14,
-                    fontWeight: 700,
-                    color: "#fff",
-                    cursor: "pointer",
-                    fontFamily: "inherit",
-                    transition: "background 150ms ease",
-                  }}
-                  onMouseEnter={(e) =>
-                  ((e.currentTarget as HTMLElement).style.background =
-                    "#084FA0")
-                  }
-                  onMouseLeave={(e) =>
-                  ((e.currentTarget as HTMLElement).style.background =
-                    "#0A66C2")
-                  }
-                >
-                  Chấp nhận
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Expand */}
-      {invitations.length > 2 && (
-        <button
-          onClick={() => setExpanded(!expanded)}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 6,
-            width: "100%",
-            padding: "12px 20px",
-            background: "none",
-            border: "none",
-            borderTop: "1px solid rgba(0,0,0,0.08)",
-            cursor: "pointer",
-            fontSize: 14,
-            fontWeight: 600,
-            color: "rgba(0,0,0,0.60)",
-            fontFamily: "inherit",
-            transition: "background 150ms ease, color 150ms ease",
-          }}
-          onMouseEnter={(e) => {
-            ; (e.currentTarget as HTMLElement).style.background = "#F4F2EE"
-              ; (e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.90)"
-          }}
-          onMouseLeave={(e) => {
-            ; (e.currentTarget as HTMLElement).style.background = "none"
-              ; (e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.60)"
-          }}
-        >
-          {expanded ? "Ẩn bớt" : `Xem thêm ${invitations.length - 2} lời mời`}
-          <ArrowRight
-            size={16}
-            style={{
-              transform: expanded ? "rotate(90deg)" : "none",
-              transition: "transform 150ms ease",
-            }}
-          />
-        </button>
-      )}
-    </div>
-  )
-}
-
-// ─── Network Sidebar ──────────────────────────────────────────────────────────
-
-// My-managed groups (first 2) vs joined groups (rest)
-const MY_MANAGED_GROUP_IDS = ["ai-ml-vn", "cloud-devops-vn"]
-const MY_JOINED_GROUP_IDS = ["java-vn", "spring-boot", "system-design"]
-
-const MY_CONNECTIONS: Person[] = [
-  {
-    id: 101,
-    name: "Vũ Thành Long",
-    headline: "CTO · NextGen Ventures",
-    mutual: 14,
-  },
-  {
-    id: 102,
-    name: "Đặng Thị Mai",
-    headline: "Talent Acquisition Lead · Shopee",
-    mutual: 7,
-  },
-  {
-    id: 103,
-    name: "Bùi Quang Huy",
-    headline: "Principal Engineer · VNG",
-    mutual: 21,
-  },
-  {
-    id: 104,
-    name: "Ngô Thị Lan Anh",
-    headline: "UX Researcher · Google",
-    mutual: 18,
-  },
-  {
-    id: 105,
-    name: "Phạm Văn Hải",
-    headline: "Frontend Engineer · Meta",
-    mutual: 9,
-  },
-  {
-    id: 106,
-    name: "Hoàng Đức Minh",
-    headline: "Creative Director · TBWA Vietnam",
-    mutual: 11,
-  },
-  {
-    id: 107,
-    name: "Lê Thị Thu Thảo",
-    headline: "Product Designer · Lazada",
-    mutual: 22,
-  },
-  {
-    id: 108,
-    name: "Trương Quang Vinh",
-    headline: "UX Lead · Momo",
-    mutual: 17,
-  },
-]
-
-const NETWORK_NAV_ITEMS = [
-  { key: "goi-y", label: "Gợi ý", Icon: Lightbulb },
-  { key: "nhom", label: "Nhóm", Icon: UsersThree },
-  { key: "ket-noi", label: "Kết nối", Icon: LinkSimple },
-]
-
-// ─── Network Sidebar ──────────────────────────────────────────────────────────
-
-function NetworkSidebar({
-  active,
-  onSelect,
-}: {
-  active: string
-  onSelect: (key: string) => void
-}) {
-  return (
-    <div style={{ width: 300, flexShrink: 0 }}>
-      {/* Nav card */}
-      <div
-        style={{
-          background: "#fff",
-          borderRadius: 8,
-          boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-          padding: "14px 0 6px",
-          marginBottom: 8,
-        }}
-      >
-        <div
-          style={{
-            fontSize: 14,
-            fontWeight: 700,
-            color: "rgba(0,0,0,0.90)",
-            padding: "0 16px",
-            marginBottom: 8,
-          }}
-        >
-          Quản lý mạng lưới
-        </div>
-        {NETWORK_NAV_ITEMS.map(({ key, label, Icon }) => {
-          const isActive = active === key
-          return (
-            <button
-              key={key}
-              onClick={() => onSelect(key)}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-                width: "100%",
-                padding: "9px 16px",
-                background: isActive ? "#EAF1FA" : "none",
-                border: "none",
-                cursor: "pointer",
-                fontFamily: "inherit",
-                transition: "background 150ms ease",
-              }}
-              onMouseEnter={(e) => {
-                if (!isActive)
-                  (e.currentTarget as HTMLElement).style.background = "#F4F2EE"
-              }}
-              onMouseLeave={(e) => {
-                if (!isActive)
-                  (e.currentTarget as HTMLElement).style.background = "none"
-              }}
-            >
-              <Icon
-                size={18}
-                color={isActive ? "#0A66C2" : "rgba(0,0,0,0.60)"}
-                weight={isActive ? "fill" : "regular"}
-              />
-              <span
-                style={{
-                  fontSize: 13,
-                  fontWeight: 600,
-                  color: isActive ? "rgba(0,0,0,0.90)" : "rgba(0,0,0,0.60)",
-                }}
-              >
-                {label}
-              </span>
-            </button>
-          )
-        })}
-      </div>
-
-      {/* Footer */}
-      <div style={{ padding: "4px" }}>
-        {[
-          "Giới thiệu",
-          "Trợ giúp",
-          "Quyền riêng tư",
-          "Điều khoản",
-          "Quảng cáo",
-          "Tải ứng dụng",
-        ].map((l) => (
-          <button
-            key={l}
-            style={{
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              fontSize: 11,
-              color: "rgba(0,0,0,0.45)",
-              fontFamily: "inherit",
-              padding: "1px 4px 1px 0",
-            }}
-            onMouseEnter={(e) =>
-              ((e.currentTarget as HTMLElement).style.color = "#0A66C2")
-            }
-            onMouseLeave={(e) =>
-            ((e.currentTarget as HTMLElement).style.color =
-              "rgba(0,0,0,0.45)")
-            }
-          >
-            {l}
-          </button>
-        ))}
-        <div
-          style={{
-            fontSize: 11,
-            color: "rgba(0,0,0,0.45)",
-            marginTop: 6,
-            display: "flex",
-            alignItems: "center",
-            gap: 4,
-          }}
-        >
-          <div
-            style={{
-              width: 14,
-              height: 14,
-              background: "#0A66C2",
-              borderRadius: 2,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "#fff",
-              fontSize: 9,
-              fontWeight: 900,
-            }}
-          >
-            O
-          </div>
-          Occupify © 2026
-        </div>
-      </div>
-    </div>
-  )
-}
-
-// ─── Group list item (compact) ────────────────────────────────────────────────
-
-function GroupListItem({
-  group,
-  onClick,
-  badge,
-}: {
-  group: Group
-  onClick: () => void
-  badge?: string
-}) {
-  return (
-    <div
-      onClick={onClick}
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: 12,
-        padding: "12px 20px",
-        cursor: "pointer",
-        transition: "background 150ms",
-      }}
-      onMouseEnter={(e) =>
-        ((e.currentTarget as HTMLElement).style.background = "#EAF1FA")
-      }
-      onMouseLeave={(e) =>
-        ((e.currentTarget as HTMLElement).style.background = "none")
-      }
-    >
-      <div
-        style={{
-          width: 44,
-          height: 44,
-          borderRadius: 8,
-          background: group.coverGradient,
-          flexShrink: 0,
-        }}
-      />
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div
-          style={{
-            fontSize: 14,
-            fontWeight: 700,
-            color: "rgba(0,0,0,0.90)",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-          }}
-        >
-          {group.name}
-        </div>
-        <div style={{ fontSize: 12, color: "rgba(0,0,0,0.55)", marginTop: 2 }}>
-          {(group.memberCount / 1000).toFixed(1)}K thành viên · {group.category}
-        </div>
-      </div>
-      {badge && (
-        <span
-          style={{
-            background: "#EAF1FA",
-            color: "#0A66C2",
-            borderRadius: 9999,
-            padding: "3px 10px",
-            fontSize: 11,
-            fontWeight: 700,
-            flexShrink: 0,
-          }}
-        >
-          {badge}
-        </span>
-      )}
-      <ArrowRight
-        size={15}
-        color="rgba(0,0,0,0.30)"
-        style={{ flexShrink: 0 }}
-      />
-    </div>
-  )
-}
-
-// ─── Groups section (Nhóm tab) ────────────────────────────────────────────────
-
-function NetworkGroupsSection({
-  onOpenGroup,
-}: {
-  onOpenGroup: (g: Group) => void
-}) {
-  const managedGroups = TECH_GROUPS.filter((g) =>
-    MY_MANAGED_GROUP_IDS.includes(g.id),
-  )
-  const joinedGroups = TECH_GROUPS.filter((g) =>
-    MY_JOINED_GROUP_IDS.includes(g.id),
-  )
-
-  const GroupCard = ({
-    title,
-    groups,
-    badge,
-  }: {
-    title: string
-    groups: Group[]
-    badge?: string
-  }) => (
-    <div
-      style={{
-        background: "#fff",
-        borderRadius: 8,
-        boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-        overflow: "hidden",
-        marginBottom: 8,
-      }}
-    >
-      <div
-        style={{
-          padding: "16px 20px 10px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <span
-          style={{ fontWeight: 700, fontSize: 15, color: "rgba(0,0,0,0.90)" }}
-        >
-          {title}
-        </span>
-        <span
-          style={{ fontSize: 12, color: "rgba(0,0,0,0.45)", fontWeight: 600 }}
-        >
-          {groups.length}
-        </span>
-      </div>
-      {groups.map((g, idx) => (
-        <div key={g.id}>
-          {idx > 0 && (
-            <div style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }} />
-          )}
-          <GroupListItem
-            group={g}
-            onClick={() => onOpenGroup(g)}
-            badge={badge}
-          />
-        </div>
-      ))}
-    </div>
-  )
-
-  return (
-    <>
-      <GroupCard
-        title="Nhóm tôi quản lý"
-        groups={managedGroups}
-        badge="Quản trị viên"
-      />
-      <GroupCard title="Nhóm tôi tham gia" groups={joinedGroups} />
-    </>
-  )
-}
-
-// ─── Connections section (Kết nối tab) ───────────────────────────────────────
-
-function NetworkConnectionsSection({
-  onViewProfile,
-}: {
-  onViewProfile?: () => void
-}) {
-  const [connectedSet, setConnectedSet] = useState<Set<number>>(new Set())
-
-  const toggleConnect = (id: number) =>
-    setConnectedSet((prev) => {
-      const next = new Set(prev)
-      next.has(id) ? next.delete(id) : next.add(id)
-      return next
-    })
-
-  return (
-    <div
-      style={{
-        background: "#fff",
-        borderRadius: 8,
-        boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-        overflow: "hidden",
-      }}
-    >
-      {/* Header */}
-      <div
-        style={{
-          padding: "16px 20px 12px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          borderBottom: "1px solid rgba(0,0,0,0.08)",
-        }}
-      >
-        <span
-          style={{ fontWeight: 700, fontSize: 16, color: "rgba(0,0,0,0.90)" }}
-        >
-          Danh sách kết nối
-        </span>
-        <span
-          style={{ fontSize: 13, color: "rgba(0,0,0,0.50)", fontWeight: 600 }}
-        >
-          {MY_CONNECTIONS.length} kết nối
-        </span>
-      </div>
-      {/* List */}
-      {MY_CONNECTIONS.map((person, idx) => {
-        const isConn = connectedSet.has(person.id)
-        return (
-          <div key={person.id}>
-            {idx > 0 && (
-              <div style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }} />
-            )}
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 12,
-                padding: "12px 20px",
-              }}
-            >
-              <div style={{ cursor: "pointer" }} onClick={onViewProfile}>
-                <Avatar name={person.name} size={44} />
-              </div>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div
-                  style={{
-                    fontSize: 14,
-                    fontWeight: 700,
-                    color: "rgba(0,0,0,0.90)",
-                    cursor: "pointer",
-                  }}
-                  onClick={onViewProfile}
-                >
-                  {person.name}
-                </div>
-                <div
-                  style={{
-                    fontSize: 12,
-                    color: "rgba(0,0,0,0.55)",
-                    marginTop: 1,
-                  }}
-                >
-                  {person.headline}
-                </div>
-                <div
-                  style={{
-                    fontSize: 12,
-                    color: "rgba(0,0,0,0.40)",
-                    marginTop: 1,
-                  }}
-                >
-                  {person.mutual} kết nối chung
-                </div>
-              </div>
-              <button
-                onClick={() => toggleConnect(person.id)}
-                style={{
-                  padding: "6px 16px",
-                  borderRadius: 9999,
-                  border: isConn
-                    ? "1px solid #057642"
-                    : "1px solid #0A66C2",
-                  background: isConn ? "#E5F6E8" : "none",
-                  color: isConn ? "#057642" : "#0A66C2",
-                  fontSize: 13,
-                  fontWeight: 700,
-                  cursor: "pointer",
-                  fontFamily: "inherit",
-                  flexShrink: 0,
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 5,
-                  transition: "all 150ms ease",
-                }}
-                onMouseEnter={(e) => {
-                  if (!isConn)
-                    (e.currentTarget as HTMLElement).style.background = "#EAF1FA"
-                }}
-                onMouseLeave={(e) => {
-                  ; (e.currentTarget as HTMLElement).style.background = isConn
-                    ? "#E5F6E8"
-                    : "none"
-                }}
-              >
-                {isConn ? (
-                  <>
-                    <CheckCircle size={14} weight="fill" />
-                    Đã kết nối
-                  </>
-                ) : (
-                  <>
-                    <PaperPlaneTilt size={13} weight="bold" />
-                    Nhắn tin
-                  </>
-                )}
-              </button>
-            </div>
-          </div>
-        )
-      })}
-      {MY_CONNECTIONS.length === 0 && (
-        <div
-          style={{
-            padding: "24px 20px",
-            fontSize: 14,
-            color: "rgba(0,0,0,0.45)",
-            textAlign: "center",
-          }}
-        >
-          Bạn chưa có kết nối nào.
-        </div>
-      )}
-    </div>
-  )
-}
-
-
-// ─── Full Network Page ────────────────────────────────────────────────────────
-
-function NetworkPage({ onViewProfile }: { onViewProfile?: () => void }) {
-  const [section, setSection] = useState("goi-y")
-  const [invitations, setInvitations] = useState<Invitation[]>(INVITATIONS)
-  const [connected, setConnected] = useState<Set<number>>(new Set())
-  const [toast, setToast] = useState<string | null>(null)
-  const [openGroup, setOpenGroup] = useState<Group | null>(null)
-  const [searchQuery, setSearchQuery] = useState("")
-  const [searchFilterTab, setSearchFilterTab] = useState<
-    "all" | "people" | "groups"
-  >("all")
-
-  const allSearchPeople = React.useMemo(() => {
-    const map = new Map<string, Person & { isMyConnection?: boolean }>()
-    MY_CONNECTIONS.forEach((p) =>
-      map.set(p.name, { ...p, isMyConnection: true }),
-    )
-    SCHOOL_RECOMMENDATIONS.forEach((p) => {
-      if (!map.has(p.name)) map.set(p.name, p)
-    })
-    INDUSTRY_RECOMMENDATIONS.forEach((p) => {
-      if (!map.has(p.name)) map.set(p.name, p)
-    })
-    VIEWER_RECOMMENDATIONS.forEach((p) => {
-      if (!map.has(p.name)) map.set(p.name, p)
-    })
-    return Array.from(map.values())
-  }, [])
-
-  const filteredPeople = React.useMemo(() => {
-    const q = searchQuery.toLowerCase().trim()
-    if (!q) return []
-    return allSearchPeople.filter(
-      (p) =>
-        p.name.toLowerCase().includes(q) ||
-        p.headline.toLowerCase().includes(q) ||
-        (p.company && p.company.toLowerCase().includes(q)) ||
-        (p.school && p.school.toLowerCase().includes(q)),
-    )
-  }, [searchQuery, allSearchPeople])
-
-  const filteredGroups = React.useMemo(() => {
-    const q = searchQuery.toLowerCase().trim()
-    if (!q) return []
-    return TECH_GROUPS.filter(
-      (g) =>
-        g.name.toLowerCase().includes(q) ||
-        g.description.toLowerCase().includes(q) ||
-        g.category.toLowerCase().includes(q),
-    )
-  }, [searchQuery])
-
-  const totalResults = filteredPeople.length + filteredGroups.length
-
-  const handleAccept = (id: number) => {
-    const inv = invitations.find((i) => i.id === id)
-    setInvitations((prev) => prev.filter((i) => i.id !== id))
-    setToast(`Đã chấp nhận lời mời từ ${inv?.name}`)
-  }
-
-  const handleIgnore = (id: number) =>
-    setInvitations((prev) => prev.filter((i) => i.id !== id))
-
-  const handleConnect = (id: number) =>
-    setConnected((prev) => {
-      const next = new Set(prev)
-      next.has(id) ? next.delete(id) : next.add(id)
-      return next
-    })
-
-  // Group detail takes over full page
-  if (openGroup) {
-    const isManager = MY_MANAGED_GROUP_IDS.includes(openGroup.id)
-    return (
-      <GroupDetailPage
-        group={openGroup}
-        isManager={isManager}
-        onBack={() => setOpenGroup(null)}
-      />
-    )
-  }
-
-  return (
-    <div
-      style={{
-        maxWidth: 1128,
-        margin: "0 auto",
-        padding: "24px 16px",
-        display: "flex",
-        gap: 20,
-        alignItems: "flex-start",
-      }}
-    >
-      <NetworkSidebar active={section} onSelect={setSection} />
-
-      {/* Main column */}
-      <div style={{ flex: 1, minWidth: 0 }}>
-        {/* Gợi ý */}
-        {section === "goi-y" && (
-          <>
-            {/* Search bar card */}
-            <div
-              style={{
-                background: "#fff",
-                borderRadius: 8,
-                boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-                padding: "16px 20px",
-                marginBottom: 12,
-              }}
-            >
-              <div
-                style={{
-                  fontSize: 15,
-                  fontWeight: 700,
-                  color: "rgba(0,0,0,0.90)",
-                  marginBottom: 10,
-                }}
-              >
-                Tìm kiếm gợi ý kết nối & nhóm
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 10,
-                  background: "#F4F2EE",
-                  borderRadius: 9999,
-                  padding: "0 16px",
-                  height: 40,
-                  border: searchQuery
-                    ? "1px solid #0A66C2"
-                    : "1px solid transparent",
-                  transition: "all 150ms ease",
-                }}
-              >
-                <MagnifyingGlass
-                  size={18}
-                  color={searchQuery ? "#0A66C2" : "rgba(0,0,0,0.50)"}
-                  weight="bold"
-                />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Tìm kiếm kết nối, chuyên gia, nhóm cộng đồng..."
-                  style={{
-                    background: "none",
-                    border: "none",
-                    outline: "none",
-                    fontSize: 14,
-                    color: "rgba(0,0,0,0.90)",
-                    width: "100%",
-                    fontFamily: "inherit",
-                  }}
-                />
-                {searchQuery && (
-                  <button
-                    onClick={() => setSearchQuery("")}
-                    style={{
-                      background: "none",
-                      border: "none",
-                      cursor: "pointer",
-                      color: "rgba(0,0,0,0.45)",
-                      padding: 4,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      borderRadius: 9999,
-                    }}
-                    onMouseEnter={(e) =>
-                      ((e.currentTarget as HTMLElement).style.color =
-                        "rgba(0,0,0,0.85)")
-                    }
-                    onMouseLeave={(e) =>
-                      ((e.currentTarget as HTMLElement).style.color =
-                        "rgba(0,0,0,0.45)")
-                    }
-                    title="Xóa tìm kiếm"
-                  >
-                    <X size={16} weight="bold" />
-                  </button>
-                )}
-              </div>
-            </div>
-
-            {searchQuery.trim() ? (
-              /* Search results view */
-              <div>
-                {/* Filter tabs */}
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 8,
-                    marginBottom: 14,
-                    flexWrap: "wrap",
-                  }}
-                >
-                  {[
-                    {
-                      id: "all" as const,
-                      label: "Tất cả",
-                      count: totalResults,
-                    },
-                    {
-                      id: "people" as const,
-                      label: "Kết nối & Chuyên gia",
-                      count: filteredPeople.length,
-                    },
-                    {
-                      id: "groups" as const,
-                      label: "Nhóm",
-                      count: filteredGroups.length,
-                    },
-                  ].map((tab) => {
-                    const active = searchFilterTab === tab.id
-                    return (
-                      <button
-                        key={tab.id}
-                        onClick={() => setSearchFilterTab(tab.id)}
-                        style={{
-                          borderRadius: 9999,
-                          border: active
-                            ? "none"
-                            : "1px solid rgba(0,0,0,0.18)",
-                          background: active ? "#0A66C2" : "#fff",
-                          color: active ? "#fff" : "rgba(0,0,0,0.70)",
-                          padding: "6px 16px",
-                          fontSize: 13,
-                          fontWeight: 700,
-                          cursor: "pointer",
-                          fontFamily: "inherit",
-                          display: "inline-flex",
-                          alignItems: "center",
-                          gap: 6,
-                          transition: "all 150ms ease",
-                        }}
-                        onMouseEnter={(e) => {
-                          if (!active)
-                            (e.currentTarget as HTMLElement).style.background =
-                              "#F4F2EE"
-                        }}
-                        onMouseLeave={(e) => {
-                          if (!active)
-                            (e.currentTarget as HTMLElement).style.background =
-                              "#fff"
-                        }}
-                      >
-                        {tab.label}
-                        <span
-                          style={{
-                            fontSize: 11,
-                            padding: "1px 6px",
-                            borderRadius: 9999,
-                            background: active
-                              ? "rgba(255,255,255,0.25)"
-                              : "rgba(0,0,0,0.08)",
-                            color: active ? "#fff" : "rgba(0,0,0,0.60)",
-                          }}
-                        >
-                          {tab.count}
-                        </span>
-                      </button>
-                    )
-                  })}
-                </div>
-
-                {/* Empty state */}
-                {totalResults === 0 ? (
-                  <div
-                    style={{
-                      background: "#fff",
-                      borderRadius: 8,
-                      boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-                      padding: "48px 24px",
-                      textAlign: "center",
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: 64,
-                        height: 64,
-                        borderRadius: "50%",
-                        background: "#F4F2EE",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        margin: "0 auto 16px",
-                      }}
-                    >
-                      <MagnifyingGlass
-                        size={28}
-                        color="rgba(0,0,0,0.35)"
-                        weight="bold"
-                      />
-                    </div>
-                    <div
-                      style={{
-                        fontWeight: 700,
-                        fontSize: 16,
-                        color: "rgba(0,0,0,0.85)",
-                        marginBottom: 6,
-                      }}
-                    >
-                      Không tìm thấy kết quả nào cho "{searchQuery}"
-                    </div>
-                    <div
-                      style={{
-                        fontSize: 13,
-                        color: "rgba(0,0,0,0.50)",
-                        maxWidth: 400,
-                        margin: "0 auto",
-                        lineHeight: 1.5,
-                      }}
-                    >
-                      Hãy thử kiểm tra chính tả hoặc tìm với từ khóa khác như tên
-                      chuyên gia, chức danh công việc hoặc chủ đề nhóm.
-                    </div>
-                  </div>
-                ) : (
-                  <>
-                    {/* People section */}
-                    {(searchFilterTab === "all" ||
-                      searchFilterTab === "people") &&
-                      filteredPeople.length > 0 && (
-                        <div
-                          style={{
-                            background: "#fff",
-                            borderRadius: 8,
-                            boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-                            overflow: "hidden",
-                            marginBottom: 12,
-                          }}
-                        >
-                          <div
-                            style={{
-                              padding: "16px 20px 10px",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "space-between",
-                              borderBottom: "1px solid rgba(0,0,0,0.08)",
-                            }}
-                          >
-                            <span
-                              style={{
-                                fontWeight: 700,
-                                fontSize: 15,
-                                color: "rgba(0,0,0,0.90)",
-                              }}
-                            >
-                              Kết nối & Chuyên gia
-                            </span>
-                            <span
-                              style={{
-                                fontSize: 12,
-                                color: "rgba(0,0,0,0.45)",
-                                fontWeight: 600,
-                              }}
-                            >
-                              {filteredPeople.length} kết quả
-                            </span>
-                          </div>
-                          {filteredPeople.map((person, idx) => {
-                            const isConn = connected.has(person.id)
-                            return (
-                              <div key={person.name}>
-                                {idx > 0 && (
-                                  <div
-                                    style={{
-                                      borderTop: "1px solid rgba(0,0,0,0.06)",
-                                    }}
-                                  />
-                                )}
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    gap: 12,
-                                    padding: "14px 20px",
-                                  }}
-                                >
-                                  <div
-                                    style={{ cursor: "pointer" }}
-                                    onClick={onViewProfile}
-                                  >
-                                    <Avatar name={person.name} size={46} />
-                                  </div>
-                                  <div style={{ flex: 1, minWidth: 0 }}>
-                                    <div
-                                      style={{
-                                        display: "flex",
-                                        alignItems: "center",
-                                        gap: 8,
-                                        flexWrap: "wrap",
-                                      }}
-                                    >
-                                      <span
-                                        style={{
-                                          fontSize: 14,
-                                          fontWeight: 700,
-                                          color: "rgba(0,0,0,0.90)",
-                                          cursor: "pointer",
-                                        }}
-                                        onClick={onViewProfile}
-                                        onMouseEnter={(e) =>
-                                          ((
-                                            e.currentTarget as HTMLElement
-                                          ).style.color = "#0A66C2")
-                                        }
-                                        onMouseLeave={(e) =>
-                                          ((
-                                            e.currentTarget as HTMLElement
-                                          ).style.color = "rgba(0,0,0,0.90)")
-                                        }
-                                      >
-                                        {person.name}
-                                      </span>
-                                      {person.isMyConnection && (
-                                        <span
-                                          style={{
-                                            fontSize: 11,
-                                            fontWeight: 600,
-                                            color: "#057642",
-                                            background: "#E5F6E8",
-                                            padding: "1px 7px",
-                                            borderRadius: 9999,
-                                          }}
-                                        >
-                                          Bạn bè
-                                        </span>
-                                      )}
-                                    </div>
-                                    <div
-                                      style={{
-                                        fontSize: 12,
-                                        color: "rgba(0,0,0,0.55)",
-                                        marginTop: 2,
-                                      }}
-                                    >
-                                      {person.headline}
-                                    </div>
-                                    <div
-                                      style={{
-                                        fontSize: 11,
-                                        color: "rgba(0,0,0,0.40)",
-                                        marginTop: 2,
-                                      }}
-                                    >
-                                      {person.school
-                                        ? `Cựu sinh viên · ${person.school}`
-                                        : person.company
-                                          ? `Lĩnh vực · ${person.company}`
-                                          : `${person.mutual} kết nối chung`}
-                                    </div>
-                                  </div>
-                                  {person.isMyConnection ? (
-                                    <button
-                                      onClick={() => handleConnect(person.id)}
-                                      style={{
-                                        padding: "6px 16px",
-                                        borderRadius: 9999,
-                                        border: isConn
-                                          ? "1px solid #057642"
-                                          : "1px solid #0A66C2",
-                                        background: isConn ? "#E5F6E8" : "none",
-                                        color: isConn ? "#057642" : "#0A66C2",
-                                        fontSize: 13,
-                                        fontWeight: 700,
-                                        cursor: "pointer",
-                                        fontFamily: "inherit",
-                                        flexShrink: 0,
-                                        display: "inline-flex",
-                                        alignItems: "center",
-                                        gap: 5,
-                                        transition: "all 150ms ease",
-                                      }}
-                                      onMouseEnter={(e) => {
-                                        if (!isConn)
-                                          (
-                                            e.currentTarget as HTMLElement
-                                          ).style.background = "#EAF1FA"
-                                      }}
-                                      onMouseLeave={(e) => {
-                                        ; (
-                                          e.currentTarget as HTMLElement
-                                        ).style.background = isConn
-                                          ? "#E5F6E8"
-                                          : "none"
-                                      }}
-                                    >
-                                      {isConn ? (
-                                        <>
-                                          <CheckCircle
-                                            size={14}
-                                            weight="fill"
-                                          />
-                                          Đã kết nối
-                                        </>
-                                      ) : (
-                                        <>
-                                          <PaperPlaneTilt
-                                            size={13}
-                                            weight="bold"
-                                          />
-                                          Nhắn tin
-                                        </>
-                                      )}
-                                    </button>
-                                  ) : (
-                                    <button
-                                      onClick={() => handleConnect(person.id)}
-                                      style={{
-                                        borderRadius: 9999,
-                                        border: `1px solid ${isConn ? "#057642" : "#0A66C2"}`,
-                                        background: isConn
-                                          ? "#E5F6E8"
-                                          : "transparent",
-                                        color: isConn ? "#057642" : "#0A66C2",
-                                        padding: "6px 18px",
-                                        fontSize: 13,
-                                        fontWeight: 700,
-                                        cursor: "pointer",
-                                        fontFamily: "inherit",
-                                        display: "inline-flex",
-                                        alignItems: "center",
-                                        gap: 5,
-                                        flexShrink: 0,
-                                        transition: "all 150ms ease",
-                                      }}
-                                      onMouseEnter={(e) => {
-                                        if (!isConn)
-                                          (
-                                            e.currentTarget as HTMLElement
-                                          ).style.background = "#EAF1FA"
-                                      }}
-                                      onMouseLeave={(e) => {
-                                        if (!isConn)
-                                          (
-                                            e.currentTarget as HTMLElement
-                                          ).style.background = "transparent"
-                                      }}
-                                    >
-                                      {isConn ? (
-                                        <>
-                                          <CheckCircle
-                                            size={14}
-                                            weight="fill"
-                                          />{" "}
-                                          Đã gửi
-                                        </>
-                                      ) : (
-                                        <>
-                                          <UserPlus
-                                            size={14}
-                                            weight="regular"
-                                          />{" "}
-                                          Kết nối
-                                        </>
-                                      )}
-                                    </button>
-                                  )}
-                                </div>
-                              </div>
-                            )
-                          })}
-                        </div>
-                      )}
-
-                    {/* Groups section */}
-                    {(searchFilterTab === "all" ||
-                      searchFilterTab === "groups") &&
-                      filteredGroups.length > 0 && (
-                        <div
-                          style={{
-                            background: "#fff",
-                            borderRadius: 8,
-                            boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-                            overflow: "hidden",
-                            marginBottom: 12,
-                          }}
-                        >
-                          <div
-                            style={{
-                              padding: "16px 20px 10px",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "space-between",
-                              borderBottom: "1px solid rgba(0,0,0,0.08)",
-                            }}
-                          >
-                            <span
-                              style={{
-                                fontWeight: 700,
-                                fontSize: 15,
-                                color: "rgba(0,0,0,0.90)",
-                              }}
-                            >
-                              Nhóm cộng đồng
-                            </span>
-                            <span
-                              style={{
-                                fontSize: 12,
-                                color: "rgba(0,0,0,0.45)",
-                                fontWeight: 600,
-                              }}
-                            >
-                              {filteredGroups.length} nhóm
-                            </span>
-                          </div>
-                          {filteredGroups.map((g, idx) => (
-                            <div key={g.id}>
-                              {idx > 0 && (
-                                <div
-                                  style={{
-                                    borderTop: "1px solid rgba(0,0,0,0.06)",
-                                  }}
-                                />
-                              )}
-                              <GroupListItem
-                                group={g}
-                                onClick={() => setOpenGroup(g)}
-                                badge={
-                                  MY_MANAGED_GROUP_IDS.includes(g.id)
-                                    ? "Quản trị viên"
-                                    : MY_JOINED_GROUP_IDS.includes(g.id)
-                                      ? "Đã tham gia"
-                                      : undefined
-                                }
-                              />
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                  </>
-                )}
-              </div>
-            ) : (
-              /* Normal Gợi ý feed when not searching */
-              <>
-                <InvitationsCard
-                  invitations={invitations}
-                  onAccept={handleAccept}
-                  onIgnore={handleIgnore}
-                />
-                <RecommendSection
-                  title="Gợi ý dựa trên trường học của bạn"
-                  subtitle="Cựu sinh viên ĐHBK Hà Nội · Ngành Kỹ thuật Phần mềm"
-                  people={SCHOOL_RECOMMENDATIONS}
-                  connected={connected}
-                  onConnect={handleConnect}
-                  onViewProfile={onViewProfile}
-                />
-                <RecommendSection
-                  title="Gợi ý dựa trên ngành nghề"
-                  subtitle="Chuyên gia trong lĩnh vực Thiết kế Sản phẩm & Công nghệ"
-                  people={INDUSTRY_RECOMMENDATIONS}
-                  connected={connected}
-                  onConnect={handleConnect}
-                  onViewProfile={onViewProfile}
-                />
-                <RecommendSection
-                  title="Người đã xem hồ sơ của bạn cũng biết"
-                  people={VIEWER_RECOMMENDATIONS}
-                  connected={connected}
-                  onConnect={handleConnect}
-                  onViewProfile={onViewProfile}
-                />
-              </>
-            )}
-          </>
-        )}
-
-        {/* Nhóm */}
-        {section === "nhom" && (
-          <NetworkGroupsSection onOpenGroup={setOpenGroup} />
-        )}
-
-        {/* Kết nối */}
-        {section === "ket-noi" && (
-          <NetworkConnectionsSection onViewProfile={onViewProfile} />
-        )}
-      </div>
-
-      {toast && <Toast message={toast} onDone={() => setToast(null)} />}
-    </div>
   )
 }
 
@@ -12350,7 +8904,1245 @@ function CreateContractPage({
   )
 }
 
-function JobsPage({
+// ═══════════════════════════════════════════════════════════════════════════════
+// NEW HOME PAGE (Freelance & Job Marketplace Hub)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function NewHomePage({
+  onSelectContract,
+  onViewProfile,
+  onOpenFinancialHistory,
+  onNavigateProjects,
+}: {
+  onSelectContract?: (c: Contract) => void
+  onViewProfile?: (name?: string) => void
+  onOpenFinancialHistory?: () => void
+  onNavigateProjects?: () => void
+}) {
+  const [subPage, setSubPage] = useState<string | null>(null)
+  const [toast, setToast] = useState<string | null>(null)
+  const [searchKeyword, setSearchKeyword] = useState("")
+  const [selectedCategory, setSelectedCategory] = useState("Tất cả")
+  const [activeTab, setActiveTab] = useState<
+    "recommended" | "latest" | "high-budget" | "contracts"
+  >("recommended")
+
+  const categories = [
+    "Tất cả",
+    "UI/UX Design",
+    "Frontend React",
+    "Mobile App",
+    "Backend & Node.js",
+    "Marketing & SEO",
+    "AI & Data",
+  ]
+
+  if (subPage === "search")
+    return (
+      <JobSearchPage
+        onBack={() => setSubPage(null)}
+        onSelectContract={onSelectContract}
+      />
+    )
+  if (subPage === "freelancer")
+    return (
+      <FindFreelancersPage
+        onBack={() => setSubPage(null)}
+        onViewProfile={onViewProfile}
+      />
+    )
+  if (subPage === "create-project")
+    return (
+      <CreateProjectPage
+        onBack={() => setSubPage(null)}
+        onSubmit={() => {
+          setSubPage(null)
+          setToast("Dự án đã được tạo thành công!")
+        }}
+      />
+    )
+  if (subPage === "create-contract")
+    return (
+      <CreateContractPage
+        onBack={() => setSubPage(null)}
+        onSubmit={() => {
+          setSubPage(null)
+          setToast("Hợp đồng đã được tạo và gửi lời mời!")
+        }}
+      />
+    )
+
+  // Filter jobs
+  const filteredJobs = JOB_LISTINGS.filter((job) => {
+    if (searchKeyword.trim()) {
+      const q = searchKeyword.toLowerCase()
+      const matchTitle = job.title.toLowerCase().includes(q)
+      const matchCompany = job.company.toLowerCase().includes(q)
+      const matchDesc = job.description.toLowerCase().includes(q)
+      const matchSkills = job.skills.some((s) => s.toLowerCase().includes(q))
+      if (!matchTitle && !matchCompany && !matchDesc && !matchSkills) return false
+    }
+
+    if (selectedCategory !== "Tất cả") {
+      const catKeyword = selectedCategory
+        .replace(" & ", " ")
+        .split(" ")[0]
+        .toLowerCase()
+      const matchSkills = job.skills.some((s) =>
+        s.toLowerCase().includes(catKeyword),
+      )
+      const matchTitle = job.title.toLowerCase().includes(catKeyword)
+      if (!matchSkills && !matchTitle) return false
+    }
+
+    if (activeTab === "high-budget") {
+      const num = parseInt(job.budget.replace(/[^0-9]/g, ""), 10)
+      if (num < 40000000) return false
+    }
+
+    return true
+  })
+
+  const displayJobs = [...filteredJobs]
+  if (activeTab === "latest") {
+    displayJobs.sort((a, b) => b.id - a.id)
+  }
+
+  return (
+    <div style={{ maxWidth: 1128, margin: "0 auto", padding: "24px 16px" }}>
+      {/* ─── Hero Banner ─── */}
+      <div
+        style={{
+          background: "linear-gradient(135deg, #0A66C2 0%, #004182 100%)",
+          borderRadius: 12,
+          padding: "32px 32px 28px",
+          color: "#fff",
+          marginBottom: 24,
+          boxShadow: "0 4px 20px rgba(10,102,194,0.18)",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        {/* Subtle decorative circles */}
+        <div
+          style={{
+            position: "absolute",
+            right: -30,
+            top: -40,
+            width: 220,
+            height: 220,
+            borderRadius: "50%",
+            background: "rgba(255,255,255,0.06)",
+            pointerEvents: "none",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            right: 140,
+            bottom: -50,
+            width: 150,
+            height: 150,
+            borderRadius: "50%",
+            background: "rgba(255,255,255,0.04)",
+            pointerEvents: "none",
+          }}
+        />
+
+        <div style={{ position: "relative", zIndex: 2 }}>
+          <div
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+              background: "rgba(255,255,255,0.16)",
+              backdropFilter: "blur(4px)",
+              borderRadius: 9999,
+              padding: "4px 14px",
+              fontSize: 12,
+              fontWeight: 600,
+              marginBottom: 12,
+              letterSpacing: "0.01em",
+            }}
+          >
+            <Sparkle size={14} weight="fill" color="#FFD700" />
+            <span>Nền tảng Việc làm & Hợp đồng Freelance Occupify</span>
+          </div>
+
+          <h1
+            style={{
+              fontSize: 26,
+              fontWeight: 800,
+              lineHeight: 1.3,
+              marginBottom: 8,
+              letterSpacing: "-0.02em",
+            }}
+          >
+            Chào mừng trở lại, {ME.name}! 👋
+          </h1>
+          <p
+            style={{
+              fontSize: 15,
+              color: "rgba(255,255,255,0.85)",
+              marginBottom: 20,
+              maxWidth: 650,
+              lineHeight: 1.5,
+            }}
+          >
+            Khám phá hàng ngàn dự án freelance hấp dẫn, kết nối trực tiếp với đối tác uy tín và bảo đảm thanh toán 100% qua Escrow.
+          </p>
+
+          {/* Quick Search Box inside Hero */}
+          <div
+            style={{
+              background: "#fff",
+              borderRadius: 9999,
+              padding: "4px 6px 4px 18px",
+              display: "flex",
+              alignItems: "center",
+              boxShadow: "0 6px 24px rgba(0,0,0,0.18)",
+              maxWidth: 720,
+            }}
+          >
+            <MagnifyingGlass size={20} color="#0A66C2" weight="bold" />
+            <input
+              type="text"
+              value={searchKeyword}
+              onChange={(e) => setSearchKeyword(e.target.value)}
+              placeholder="Tìm kiếm dự án, công việc theo kỹ năng, chức danh hoặc công ty..."
+              style={{
+                flex: 1,
+                border: "none",
+                outline: "none",
+                padding: "10px 12px",
+                fontSize: 14,
+                color: "rgba(0,0,0,0.90)",
+                background: "transparent",
+              }}
+            />
+            {searchKeyword && (
+              <button
+                onClick={() => setSearchKeyword("")}
+                style={{
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  padding: 6,
+                  color: "rgba(0,0,0,0.40)",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <X size={16} />
+              </button>
+            )}
+            <button
+              onClick={() => setSubPage("search")}
+              style={{
+                background: "#0A66C2",
+                color: "#fff",
+                border: "none",
+                borderRadius: 9999,
+                padding: "9px 22px",
+                fontSize: 14,
+                fontWeight: 700,
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: 6,
+                transition: "background 150ms",
+                flexShrink: 0,
+              }}
+              onMouseEnter={(e) =>
+                ((e.currentTarget as HTMLElement).style.background = "#084fa0")
+              }
+              onMouseLeave={(e) =>
+                ((e.currentTarget as HTMLElement).style.background = "#0A66C2")
+              }
+            >
+              <span>Tìm nâng cao</span>
+              <ArrowRight size={14} weight="bold" />
+            </button>
+          </div>
+
+          {/* Quick Category Chips */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: 8,
+              marginTop: 18,
+            }}
+          >
+            <span
+              style={{
+                fontSize: 13,
+                color: "rgba(255,255,255,0.75)",
+                fontWeight: 600,
+              }}
+            >
+              Chủ đề nổi bật:
+            </span>
+            {categories.map((cat) => {
+              const isSelected = selectedCategory === cat
+              return (
+                <button
+                  key={cat}
+                  onClick={() => setSelectedCategory(isSelected ? "Tất cả" : cat)}
+                  style={{
+                    background: isSelected ? "#fff" : "rgba(255,255,255,0.18)",
+                    color: isSelected ? "#0A66C2" : "#fff",
+                    border: "none",
+                    borderRadius: 9999,
+                    padding: "4px 12px",
+                    fontSize: 12,
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    transition: "all 150ms ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isSelected) {
+                      (e.currentTarget as HTMLElement).style.background =
+                        "rgba(255,255,255,0.28)"
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isSelected) {
+                      (e.currentTarget as HTMLElement).style.background =
+                        "rgba(255,255,255,0.18)"
+                    }
+                  }}
+                >
+                  {cat}
+                </button>
+              )
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* ─── Main 2-Column Marketplace Layout ─── */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "minmax(0, 1fr) 340px",
+          gap: 20,
+          alignItems: "start",
+        }}
+      >
+        {/* Left Column: Job & Contract Feed */}
+        <div>
+          {/* Filter Tabs Bar */}
+          <div
+            style={{
+              background: "#fff",
+              borderRadius: 8,
+              boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+              padding: "4px 8px",
+              marginBottom: 16,
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+              overflowX: "auto",
+            }}
+          >
+            {[
+              { id: "recommended", label: "Dành cho bạn", Icon: Sparkle },
+              { id: "latest", label: "Mới nhất", Icon: Clock },
+              { id: "high-budget", label: "Ngân sách cao (≥40tr)", Icon: Star },
+              { id: "contracts", label: "Hợp đồng gấp", Icon: FileText },
+            ].map(({ id, label, Icon }) => {
+              const isActive = activeTab === id
+              return (
+                <button
+                  key={id}
+                  onClick={() => setActiveTab(id as any)}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                    padding: "8px 16px",
+                    borderRadius: 9999,
+                    border: "none",
+                    background: isActive ? "#0A66C2" : "transparent",
+                    color: isActive ? "#fff" : "rgba(0,0,0,0.65)",
+                    fontSize: 13,
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    transition: "all 150ms ease",
+                    whiteSpace: "nowrap",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isActive)
+                      (e.currentTarget as HTMLElement).style.background =
+                        "#F4F2EE"
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isActive)
+                      (e.currentTarget as HTMLElement).style.background =
+                        "transparent"
+                  }}
+                >
+                  <Icon size={15} weight={isActive ? "fill" : "bold"} />
+                  <span>{label}</span>
+                </button>
+              )
+            })}
+          </div>
+
+          {/* Results Summary Header */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginBottom: 12,
+              padding: "0 4px",
+            }}
+          >
+            <div style={{ fontSize: 13, color: "rgba(0,0,0,0.60)" }}>
+              {activeTab === "contracts" ? (
+                <>
+                  Tìm thấy{" "}
+                  <strong style={{ color: "rgba(0,0,0,0.90)" }}>
+                    {OTHER_CONTRACTS.length}
+                  </strong>{" "}
+                  hợp đồng mở tuyển
+                </>
+              ) : (
+                <>
+                  Tìm thấy{" "}
+                  <strong style={{ color: "rgba(0,0,0,0.90)" }}>
+                    {displayJobs.length}
+                  </strong>{" "}
+                  cơ hội phù hợp
+                </>
+              )}
+              {searchKeyword && (
+                <span
+                  style={{
+                    marginLeft: 8,
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 4,
+                    background: "#EAF1FA",
+                    color: "#0A66C2",
+                    padding: "2px 8px",
+                    borderRadius: 9999,
+                    fontSize: 12,
+                    fontWeight: 600,
+                  }}
+                >
+                  "{searchKeyword}"
+                  <X
+                    size={12}
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setSearchKeyword("")}
+                  />
+                </span>
+              )}
+              {selectedCategory !== "Tất cả" && (
+                <span
+                  style={{
+                    marginLeft: 8,
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 4,
+                    background: "#E5F6E8",
+                    color: "#057642",
+                    padding: "2px 8px",
+                    borderRadius: 9999,
+                    fontSize: 12,
+                    fontWeight: 600,
+                  }}
+                >
+                  {selectedCategory}
+                  <X
+                    size={12}
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setSelectedCategory("Tất cả")}
+                  />
+                </span>
+              )}
+            </div>
+
+            <button
+              onClick={() => setSubPage("search")}
+              style={{
+                background: "none",
+                border: "none",
+                color: "#0A66C2",
+                fontSize: 13,
+                fontWeight: 600,
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: 4,
+              }}
+            >
+              <span>Bộ lọc nâng cao</span>
+              <ArrowRight size={13} weight="bold" />
+            </button>
+          </div>
+
+          {/* Tab = 'contracts' Content */}
+          {activeTab === "contracts" && (
+            <div>
+              {OTHER_CONTRACTS.map((contract) => (
+                <div
+                  key={contract.id}
+                  onClick={() => onSelectContract?.(contract)}
+                  style={{
+                    background: "#fff",
+                    borderRadius: 8,
+                    boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+                    padding: "18px 20px",
+                    marginBottom: 10,
+                    cursor: "pointer",
+                    transition: "all 150ms ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.background =
+                      "#FAFAF8"
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLElement).style.background = "#fff"
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "flex-start",
+                      justifyContent: "space-between",
+                      gap: 12,
+                      marginBottom: 8,
+                    }}
+                  >
+                    <div>
+                      <div
+                        style={{
+                          fontSize: 16,
+                          fontWeight: 700,
+                          color: "rgba(0,0,0,0.90)",
+                          marginBottom: 4,
+                        }}
+                      >
+                        {contract.title}
+                      </div>
+                      <div
+                        style={{
+                          fontSize: 13,
+                          color: "rgba(0,0,0,0.60)",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 6,
+                        }}
+                      >
+                        <Buildings size={14} />
+                        <span>{contract.client}</span>
+                        <span>•</span>
+                        <Clock size={14} />
+                        <span>Hạn chót: {contract.deadline}</span>
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        background: "#E5F6E8",
+                        color: "#057642",
+                        padding: "6px 12px",
+                        borderRadius: 6,
+                        fontSize: 15,
+                        fontWeight: 700,
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {contract.value}
+                    </div>
+                  </div>
+
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      paddingTop: 10,
+                      borderTop: "1px solid rgba(0,0,0,0.06)",
+                      marginTop: 10,
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 6,
+                        fontSize: 12,
+                        color: "#057642",
+                        fontWeight: 600,
+                      }}
+                    >
+                      <SealCheck size={16} weight="fill" />
+                      <span>Ký quỹ 100% được bảo hộ bởi Occupify</span>
+                    </div>
+                    <span
+                      style={{
+                        fontSize: 13,
+                        fontWeight: 600,
+                        color: "#0A66C2",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 4,
+                      }}
+                    >
+                      Xem chi tiết hợp đồng
+                      <ArrowRight size={13} weight="bold" />
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Tab != 'contracts' Content (Job Cards) */}
+          {activeTab !== "contracts" && (
+            <div>
+              {displayJobs.map((job) => (
+                <JobCard
+                  key={job.id}
+                  job={job}
+                  onClick={() =>
+                    onSelectContract?.({
+                      id: job.id,
+                      title: job.title,
+                      client: job.company,
+                      value: job.budget,
+                      deadline: "30 thg 12, 2026",
+                      status: "pending",
+                    })
+                  }
+                />
+              ))}
+
+              {displayJobs.length === 0 && (
+                <div
+                  style={{
+                    background: "#fff",
+                    borderRadius: 8,
+                    boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+                    padding: "48px 24px",
+                    textAlign: "center",
+                  }}
+                >
+                  <div style={{ fontSize: 36, marginBottom: 12 }}>🔍</div>
+                  <div
+                    style={{
+                      fontSize: 16,
+                      fontWeight: 700,
+                      color: "rgba(0,0,0,0.90)",
+                      marginBottom: 6,
+                    }}
+                  >
+                    Không tìm thấy công việc phù hợp
+                  </div>
+                  <p
+                    style={{
+                      fontSize: 14,
+                      color: "rgba(0,0,0,0.60)",
+                      maxWidth: 380,
+                      margin: "0 auto 16px",
+                    }}
+                  >
+                    Hãy thử từ khóa chung hơn hoặc chọn lại chủ đề để khám phá thêm nhiều cơ hội hấp dẫn.
+                  </p>
+                  <button
+                    onClick={() => {
+                      setSearchKeyword("")
+                      setSelectedCategory("Tất cả")
+                      setActiveTab("recommended")
+                    }}
+                    style={{
+                      background: "#0A66C2",
+                      color: "#fff",
+                      border: "none",
+                      borderRadius: 9999,
+                      padding: "8px 20px",
+                      fontSize: 13,
+                      fontWeight: 600,
+                      cursor: "pointer",
+                    }}
+                  >
+                    Xóa tất cả bộ lọc
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Bottom Banner Card */}
+          <div
+            style={{
+              background: "#fff",
+              borderRadius: 8,
+              boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+              padding: "20px 24px",
+              marginTop: 16,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 16,
+            }}
+          >
+            <div>
+              <div
+                style={{
+                  fontSize: 14,
+                  fontWeight: 700,
+                  color: "rgba(0,0,0,0.90)",
+                  marginBottom: 2,
+                }}
+              >
+                Bạn đang tìm kiếm việc làm với tiêu chí cụ thể hơn?
+              </div>
+              <div style={{ fontSize: 13, color: "rgba(0,0,0,0.60)" }}>
+                Tìm kiếm theo mức ngân sách min-max, kinh nghiệm, loại hình Remote hay Onsite.
+              </div>
+            </div>
+            <button
+              onClick={() => setSubPage("search")}
+              style={{
+                background: "#EAF1FA",
+                color: "#0A66C2",
+                border: "none",
+                borderRadius: 9999,
+                padding: "8px 18px",
+                fontSize: 13,
+                fontWeight: 700,
+                cursor: "pointer",
+                whiteSpace: "nowrap",
+                display: "flex",
+                alignItems: "center",
+                gap: 6,
+                transition: "background 150ms",
+              }}
+              onMouseEnter={(e) =>
+                ((e.currentTarget as HTMLElement).style.background = "#d3e5f8")
+              }
+              onMouseLeave={(e) =>
+                ((e.currentTarget as HTMLElement).style.background = "#EAF1FA")
+              }
+            >
+              <span>Tìm kiếm nâng cao</span>
+              <ArrowRight size={14} weight="bold" />
+            </button>
+          </div>
+        </div>
+
+        {/* Right Column: Widgets */}
+        <div>
+          {/* Quick Actions Card */}
+          <div
+            style={{
+              background: "#fff",
+              borderRadius: 8,
+              boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+              padding: "18px 20px",
+              marginBottom: 16,
+            }}
+          >
+            <div
+              style={{
+                fontSize: 15,
+                fontWeight: 700,
+                color: "rgba(0,0,0,0.90)",
+                marginBottom: 14,
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+              }}
+            >
+              <Sparkle size={16} color="#0A66C2" weight="fill" />
+              <span>Hành động nhanh</span>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              <button
+                onClick={() => setSubPage("create-project")}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 12,
+                  width: "100%",
+                  padding: "12px 14px",
+                  borderRadius: 8,
+                  border: "1px solid #0A66C2",
+                  background: "#0A66C2",
+                  color: "#fff",
+                  fontSize: 13,
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  textAlign: "left",
+                  transition: "background 150ms",
+                }}
+                onMouseEnter={(e) =>
+                  ((e.currentTarget as HTMLElement).style.background = "#084fa0")
+                }
+                onMouseLeave={(e) =>
+                  ((e.currentTarget as HTMLElement).style.background = "#0A66C2")
+                }
+              >
+                <div
+                  style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: 6,
+                    background: "rgba(255,255,255,0.2)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                  }}
+                >
+                  <FolderPlus size={18} color="#fff" />
+                </div>
+                <div>
+                  <div>+ Đăng tin tuyển dụng / Dự án</div>
+                  <div
+                    style={{
+                      fontSize: 11,
+                      fontWeight: 400,
+                      color: "rgba(255,255,255,0.85)",
+                    }}
+                  >
+                    Tìm nhân sự hoặc quản trị team
+                  </div>
+                </div>
+              </button>
+
+              <button
+                onClick={() => setSubPage("create-contract")}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 12,
+                  width: "100%",
+                  padding: "12px 14px",
+                  borderRadius: 8,
+                  border: "1px solid rgba(0,0,0,0.10)",
+                  background: "#fff",
+                  color: "rgba(0,0,0,0.85)",
+                  fontSize: 13,
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  textAlign: "left",
+                  transition: "all 150ms",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.background = "#F4F2EE"
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.background = "#fff"
+                }}
+              >
+                <div
+                  style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: 6,
+                    background: "#E5F6E8",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                  }}
+                >
+                  <FileText size={18} color="#057642" />
+                </div>
+                <div>
+                  <div style={{ color: "#057642" }}>+ Soạn thảo hợp đồng</div>
+                  <div
+                    style={{
+                      fontSize: 11,
+                      fontWeight: 400,
+                      color: "rgba(0,0,0,0.55)",
+                    }}
+                  >
+                    Mời ứng viên & thiết lập mốc ký quỹ
+                  </div>
+                </div>
+              </button>
+
+              <button
+                onClick={() => setSubPage("freelancer")}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 12,
+                  width: "100%",
+                  padding: "12px 14px",
+                  borderRadius: 8,
+                  border: "1px solid rgba(0,0,0,0.10)",
+                  background: "#fff",
+                  color: "rgba(0,0,0,0.85)",
+                  fontSize: 13,
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  textAlign: "left",
+                  transition: "all 150ms",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.background = "#F4F2EE"
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.background = "#fff"
+                }}
+              >
+                <div
+                  style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: 6,
+                    background: "#EAF1FA",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                  }}
+                >
+                  <Users size={18} color="#0A66C2" />
+                </div>
+                <div>
+                  <div>Khám phá Freelancers</div>
+                  <div
+                    style={{
+                      fontSize: 11,
+                      fontWeight: 400,
+                      color: "rgba(0,0,0,0.55)",
+                    }}
+                  >
+                    Hồ sơ chuyên gia đã qua xác thực
+                  </div>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          {/* Projects Management Status Widget */}
+          <div
+            style={{
+              background: "#fff",
+              borderRadius: 8,
+              boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+              padding: "18px 20px",
+              marginBottom: 16,
+            }}
+          >
+            <div
+              style={{
+                fontSize: 15,
+                fontWeight: 700,
+                color: "rgba(0,0,0,0.90)",
+                marginBottom: 12,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <span>Quản lý dự án</span>
+              <span
+                style={{
+                  fontSize: 11,
+                  background: "#EAF1FA",
+                  color: "#0A66C2",
+                  fontWeight: 700,
+                  padding: "2px 8px",
+                  borderRadius: 9999,
+                }}
+              >
+                Active
+              </span>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  padding: "8px 12px",
+                  background: "#FAFAF8",
+                  borderRadius: 6,
+                }}
+              >
+                <span style={{ fontSize: 13, color: "rgba(0,0,0,0.70)" }}>
+                  Dự án bạn quản lý
+                </span>
+                <span
+                  style={{
+                    fontSize: 13,
+                    fontWeight: 700,
+                    color: "rgba(0,0,0,0.90)",
+                  }}
+                >
+                  2 dự án
+                </span>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  padding: "8px 12px",
+                  background: "#FAFAF8",
+                  borderRadius: 6,
+                }}
+              >
+                <span style={{ fontSize: 13, color: "rgba(0,0,0,0.70)" }}>
+                  Dự án đang thực hiện
+                </span>
+                <span
+                  style={{
+                    fontSize: 13,
+                    fontWeight: 700,
+                    color: "#057642",
+                  }}
+                >
+                  2 hợp đồng
+                </span>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  padding: "8px 12px",
+                  background: "#FAFAF8",
+                  borderRadius: 6,
+                }}
+              >
+                <span style={{ fontSize: 13, color: "rgba(0,0,0,0.70)" }}>
+                  Đề xuất / Lời mời chờ
+                </span>
+                <span
+                  style={{
+                    fontSize: 13,
+                    fontWeight: 700,
+                    color: "#F59E0B",
+                  }}
+                >
+                  2 chờ duyệt
+                </span>
+              </div>
+            </div>
+
+            <button
+              onClick={onNavigateProjects}
+              style={{
+                width: "100%",
+                marginTop: 14,
+                background: "none",
+                border: "1px solid rgba(0,0,0,0.15)",
+                borderRadius: 9999,
+                padding: "8px 16px",
+                fontSize: 13,
+                fontWeight: 600,
+                color: "#0A66C2",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 6,
+                transition: "all 150ms",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.background = "#EAF1FA"
+                ;(e.currentTarget as HTMLElement).style.borderColor = "#0A66C2"
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.background = "none"
+                ;(e.currentTarget as HTMLElement).style.borderColor =
+                  "rgba(0,0,0,0.15)"
+              }}
+            >
+              <span>Vào trang Quản lý dự án</span>
+              <ArrowRight size={13} weight="bold" />
+            </button>
+          </div>
+
+          {/* Occupify Wallet Widget */}
+          <div
+            style={{
+              background: "#fff",
+              borderRadius: 8,
+              boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+              padding: "18px 20px",
+              marginBottom: 16,
+            }}
+          >
+            <div
+              style={{
+                fontSize: 15,
+                fontWeight: 700,
+                color: "rgba(0,0,0,0.90)",
+                marginBottom: 12,
+              }}
+            >
+              Ví tài khoản Occupify
+            </div>
+
+            <div
+              style={{
+                background: "linear-gradient(135deg, #1B3A5C 0%, #0A66C2 100%)",
+                borderRadius: 8,
+                padding: "16px",
+                color: "#fff",
+                marginBottom: 12,
+              }}
+            >
+              <div
+                style={{
+                  fontSize: 12,
+                  color: "rgba(255,255,255,0.75)",
+                  marginBottom: 4,
+                }}
+              >
+                Số dư khả dụng
+              </div>
+              <div
+                style={{
+                  fontSize: 22,
+                  fontWeight: 800,
+                  letterSpacing: "-0.02em",
+                  marginBottom: 10,
+                }}
+              >
+                12.500.000 ₫
+              </div>
+              <div
+                style={{
+                  fontSize: 11,
+                  color: "rgba(255,255,255,0.85)",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 4,
+                }}
+              >
+                <SealCheck size={14} color="#57D9A3" weight="fill" />
+                <span>Ký quỹ Escrow đang bảo vệ: 28.000.000 ₫</span>
+              </div>
+            </div>
+
+            <button
+              onClick={onOpenFinancialHistory}
+              style={{
+                width: "100%",
+                background: "#EAF1FA",
+                color: "#0A66C2",
+                border: "none",
+                borderRadius: 9999,
+                padding: "8px 16px",
+                fontSize: 13,
+                fontWeight: 700,
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 6,
+                transition: "background 150ms",
+              }}
+              onMouseEnter={(e) =>
+                ((e.currentTarget as HTMLElement).style.background = "#d3e5f8")
+              }
+              onMouseLeave={(e) =>
+                ((e.currentTarget as HTMLElement).style.background = "#EAF1FA")
+              }
+            >
+              <span>Lịch sử thu chi & Rút tiền</span>
+              <ArrowRight size={13} weight="bold" />
+            </button>
+          </div>
+
+          {/* Trust & Escrow Guarantee */}
+          <div
+            style={{
+              background: "#fff",
+              borderRadius: 8,
+              boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+              padding: "18px 20px",
+            }}
+          >
+            <div
+              style={{
+                fontSize: 14,
+                fontWeight: 700,
+                color: "rgba(0,0,0,0.90)",
+                marginBottom: 12,
+                display: "flex",
+                alignItems: "center",
+                gap: 6,
+              }}
+            >
+              <SealCheck size={16} color="#057642" weight="fill" />
+              <span>Cam kết bảo vệ 100%</span>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                <CheckCircle
+                  size={16}
+                  color="#057642"
+                  weight="fill"
+                  style={{ marginTop: 2, flexShrink: 0 }}
+                />
+                <div style={{ fontSize: 12, color: "rgba(0,0,0,0.70)" }}>
+                  <strong style={{ color: "rgba(0,0,0,0.90)" }}>
+                    Hợp đồng điện tử:
+                  </strong>{" "}
+                  Chuẩn pháp lý, có giá trị bảo vệ quyền sở hữu trí tuệ.
+                </div>
+              </div>
+              <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                <CheckCircle
+                  size={16}
+                  color="#057642"
+                  weight="fill"
+                  style={{ marginTop: 2, flexShrink: 0 }}
+                />
+                <div style={{ fontSize: 12, color: "rgba(0,0,0,0.70)" }}>
+                  <strong style={{ color: "rgba(0,0,0,0.90)" }}>
+                    Ký quỹ Escrow:
+                  </strong>{" "}
+                  Khách hàng nạp trước, thanh toán giải ngân khi nghiệm thu.
+                </div>
+              </div>
+              <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                <CheckCircle
+                  size={16}
+                  color="#057642"
+                  weight="fill"
+                  style={{ marginTop: 2, flexShrink: 0 }}
+                />
+                <div style={{ fontSize: 12, color: "rgba(0,0,0,0.70)" }}>
+                  <strong style={{ color: "rgba(0,0,0,0.90)" }}>
+                    Hỗ trợ giải quyết tranh chấp:
+                  </strong>{" "}
+                  Đội ngũ trọng tài Occupify đồng hành 24/7.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {toast && <Toast message={toast} onDone={() => setToast(null)} />}
+    </div>
+  )
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// PROJECTS MANAGEMENT PAGE (Dedicated Workspace)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function ProjectsManagementPage({
   onSelectContract,
   onViewProfile,
 }: {
@@ -12370,6 +10162,9 @@ function JobsPage({
   const [viewingEmpProject, setViewingEmpProject] = useState<MyProject | null>(
     null,
   )
+  const [activeTab, setActiveTab] = useState<
+    "all" | "owner" | "participant" | "pending"
+  >("all")
 
   if (subPage === "search")
     return (
@@ -12425,93 +10220,505 @@ function JobsPage({
     )
   void setMyProjects
 
+  const totalAll = myProjects.length + employeeProjects.length + pending.length
+
   return (
     <div style={{ maxWidth: 1128, margin: "0 auto", padding: "28px 16px" }}>
-      {/* Page heading */}
-      <div style={{ marginBottom: 20 }}>
-        <h1
-          style={{
-            fontSize: 22,
-            fontWeight: 700,
-            color: "rgba(0,0,0,0.90)",
-            marginBottom: 4,
-          }}
-        >
-          Việc làm & Hợp đồng
-        </h1>
-        <p style={{ fontSize: 14, color: "rgba(0,0,0,0.60)" }}>
-          Quản lý công việc, tìm cơ hội mới và phát triển sự nghiệp của bạn
-        </p>
+      {/* Page Header */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+          gap: 16,
+          marginBottom: 24,
+        }}
+      >
+        <div>
+          <h1
+            style={{
+              fontSize: 24,
+              fontWeight: 800,
+              color: "rgba(0,0,0,0.90)",
+              marginBottom: 4,
+              letterSpacing: "-0.02em",
+            }}
+          >
+            Quản lý dự án & Hợp đồng
+          </h1>
+          <p style={{ fontSize: 14, color: "rgba(0,0,0,0.60)" }}>
+            Theo dõi tiến độ bàn giao, kiểm soát các mốc thanh toán và điều phối nhân sự
+          </p>
+        </div>
+
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <button
+            onClick={() => setSubPage("create-contract")}
+            style={{
+              background: "#fff",
+              color: "#057642",
+              border: "1px solid #057642",
+              borderRadius: 9999,
+              padding: "8px 18px",
+              fontSize: 13,
+              fontWeight: 700,
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+              transition: "all 150ms",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLElement).style.background = "#E5F6E8"
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.background = "#fff"
+            }}
+          >
+            <FileText size={16} weight="bold" />
+            <span>+ Soạn hợp đồng</span>
+          </button>
+
+          <button
+            onClick={() => setSubPage("create-project")}
+            style={{
+              background: "#0A66C2",
+              color: "#fff",
+              border: "none",
+              borderRadius: 9999,
+              padding: "8px 20px",
+              fontSize: 13,
+              fontWeight: 700,
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+              boxShadow: "0 2px 8px rgba(10,102,194,0.25)",
+              transition: "background 150ms",
+            }}
+            onMouseEnter={(e) =>
+              ((e.currentTarget as HTMLElement).style.background = "#084fa0")
+            }
+            onMouseLeave={(e) =>
+              ((e.currentTarget as HTMLElement).style.background = "#0A66C2")
+            }
+          >
+            <FolderPlus size={16} weight="bold" />
+            <span>+ Tạo dự án mới</span>
+          </button>
+        </div>
       </div>
 
-      {/* 2-column layout */}
+      {/* 3 Metrics Top Cards */}
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "1fr 400px",
-          gap: 20,
-          alignItems: "start",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gap: 16,
+          marginBottom: 24,
         }}
       >
-        {/* Left — Actions + Projects cards */}
-        <div>
-          {/* Tìm việc card — full width across the grid */}
-          <div style={{ marginBottom: 12 }}>
-            <ActionCard
-              Icon={MagnifyingGlass}
-              label="Tìm việc"
-              description="Khám phá hàng ngàn cơ hội việc làm phù hợp với kỹ năng của bạn"
-              iconColor="#0A66C2"
-              iconBg="#EAF1FA"
-              onClick={() => setSubPage("search")}
-              descriptionMaxWidth={480}
-            />
-          </div>
-          {/* Tạo dự án + Tạo hợp đồng — side-by-side */}
+        {/* Metric 1 */}
+        <div
+          onClick={() => setActiveTab(activeTab === "owner" ? "all" : "owner")}
+          style={{
+            background: "#fff",
+            borderRadius: 8,
+            boxShadow:
+              activeTab === "owner"
+                ? "0 0 0 2px #0A66C2"
+                : "0 0 0 1px rgba(0,0,0,0.08)",
+            padding: "18px 20px",
+            cursor: "pointer",
+            transition: "all 150ms",
+            display: "flex",
+            alignItems: "center",
+            gap: 16,
+          }}
+          onMouseEnter={(e) => {
+            if (activeTab !== "owner")
+              (e.currentTarget as HTMLElement).style.background = "#FAFAF8"
+          }}
+          onMouseLeave={(e) => {
+            if (activeTab !== "owner")
+              (e.currentTarget as HTMLElement).style.background = "#fff"
+          }}
+        >
           <div
-            style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}
+            style={{
+              width: 48,
+              height: 48,
+              borderRadius: 8,
+              background: "#EAF1FA",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexShrink: 0,
+            }}
           >
-            <ActionCard
-              Icon={FolderPlus}
-              label="Tạo dự án"
-              description="Quản lý nhóm hoặc tìm nhân sự cho dự án của bạn"
-              iconColor="#0A66C2"
-              iconBg="#EAF1FA"
-              onClick={() => setSubPage("create-project")}
-            />
-            <ActionCard
-              Icon={FileText}
-              label="Tạo hợp đồng"
-              description="Soạn hợp đồng và mời freelancer tham gia dự án"
-              iconColor="#057642"
-              iconBg="#E5F6E8"
-              onClick={() => setSubPage("create-contract")}
-            />
+            <FolderPlus size={24} color="#0A66C2" />
+          </div>
+          <div>
+            <div
+              style={{
+                fontSize: 24,
+                fontWeight: 800,
+                color: "rgba(0,0,0,0.90)",
+              }}
+            >
+              {myProjects.length}
+            </div>
+            <div
+              style={{
+                fontSize: 13,
+                fontWeight: 600,
+                color: "rgba(0,0,0,0.85)",
+              }}
+            >
+              Dự án tôi quản lý
+            </div>
+            <div style={{ fontSize: 12, color: "rgba(0,0,0,0.50)" }}>
+              Đang làm chủ & điều phối
+            </div>
           </div>
         </div>
 
-        {/* Right — project lists */}
-        <div>
+        {/* Metric 2 */}
+        <div
+          onClick={() =>
+            setActiveTab(activeTab === "participant" ? "all" : "participant")
+          }
+          style={{
+            background: "#fff",
+            borderRadius: 8,
+            boxShadow:
+              activeTab === "participant"
+                ? "0 0 0 2px #057642"
+                : "0 0 0 1px rgba(0,0,0,0.08)",
+            padding: "18px 20px",
+            cursor: "pointer",
+            transition: "all 150ms",
+            display: "flex",
+            alignItems: "center",
+            gap: 16,
+          }}
+          onMouseEnter={(e) => {
+            if (activeTab !== "participant")
+              (e.currentTarget as HTMLElement).style.background = "#FAFAF8"
+          }}
+          onMouseLeave={(e) => {
+            if (activeTab !== "participant")
+              (e.currentTarget as HTMLElement).style.background = "#fff"
+          }}
+        >
+          <div
+            style={{
+              width: 48,
+              height: 48,
+              borderRadius: 8,
+              background: "#E5F6E8",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexShrink: 0,
+            }}
+          >
+            <BriefcaseMetal size={24} color="#057642" />
+          </div>
+          <div>
+            <div
+              style={{
+                fontSize: 24,
+                fontWeight: 800,
+                color: "rgba(0,0,0,0.90)",
+              }}
+            >
+              {employeeProjects.length}
+            </div>
+            <div
+              style={{
+                fontSize: 13,
+                fontWeight: 600,
+                color: "rgba(0,0,0,0.85)",
+              }}
+            >
+              Dự án tôi tham gia
+            </div>
+            <div style={{ fontSize: 12, color: "rgba(0,0,0,0.50)" }}>
+              Thực hiện theo hợp đồng
+            </div>
+          </div>
+        </div>
+
+        {/* Metric 3 */}
+        <div
+          onClick={() =>
+            setActiveTab(activeTab === "pending" ? "all" : "pending")
+          }
+          style={{
+            background: "#fff",
+            borderRadius: 8,
+            boxShadow:
+              activeTab === "pending"
+                ? "0 0 0 2px #F59E0B"
+                : "0 0 0 1px rgba(0,0,0,0.08)",
+            padding: "18px 20px",
+            cursor: "pointer",
+            transition: "all 150ms",
+            display: "flex",
+            alignItems: "center",
+            gap: 16,
+          }}
+          onMouseEnter={(e) => {
+            if (activeTab !== "pending")
+              (e.currentTarget as HTMLElement).style.background = "#FAFAF8"
+          }}
+          onMouseLeave={(e) => {
+            if (activeTab !== "pending")
+              (e.currentTarget as HTMLElement).style.background = "#fff"
+          }}
+        >
+          <div
+            style={{
+              width: 48,
+              height: 48,
+              borderRadius: 8,
+              background: "#FEF3C7",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexShrink: 0,
+            }}
+          >
+            <Clock size={24} color="#D97706" />
+          </div>
+          <div>
+            <div
+              style={{
+                fontSize: 24,
+                fontWeight: 800,
+                color: "rgba(0,0,0,0.90)",
+              }}
+            >
+              {pending.length}
+            </div>
+            <div
+              style={{
+                fontSize: 13,
+                fontWeight: 600,
+                color: "rgba(0,0,0,0.85)",
+              }}
+            >
+              Chờ xác nhận
+            </div>
+            <div style={{ fontSize: 12, color: "rgba(0,0,0,0.50)" }}>
+              Đề xuất & lời mời cần duyệt
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Filter Tabs Bar */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 8,
+          marginBottom: 20,
+          borderBottom: "1px solid rgba(0,0,0,0.08)",
+          paddingBottom: 10,
+        }}
+      >
+        {[
+          { id: "all", label: `Tất cả (${totalAll})` },
+          { id: "owner", label: `Dự án của tôi (${myProjects.length})` },
+          {
+            id: "participant",
+            label: `Dự án tham gia (${employeeProjects.length})`,
+          },
+          { id: "pending", label: `Chờ xử lý (${pending.length})` },
+        ].map(({ id, label }) => {
+          const isActive = activeTab === id
+          return (
+            <button
+              key={id}
+              onClick={() => setActiveTab(id as any)}
+              style={{
+                padding: "6px 16px",
+                borderRadius: 9999,
+                border: "none",
+                background: isActive ? "#0A66C2" : "transparent",
+                color: isActive ? "#fff" : "rgba(0,0,0,0.65)",
+                fontSize: 13,
+                fontWeight: 600,
+                cursor: "pointer",
+                transition: "all 150ms",
+              }}
+              onMouseEnter={(e) => {
+                if (!isActive)
+                  (e.currentTarget as HTMLElement).style.background = "#F4F2EE"
+              }}
+              onMouseLeave={(e) => {
+                if (!isActive)
+                  (e.currentTarget as HTMLElement).style.background =
+                    "transparent"
+              }}
+            >
+              {label}
+            </button>
+          )
+        })}
+      </div>
+
+      {/* Tab Content Display */}
+      {activeTab === "all" && (
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 400px",
+            gap: 20,
+            alignItems: "start",
+          }}
+        >
+          {/* Left Column: Projects */}
+          <div>
+            <ProjectListCard
+              title="Các dự án của tôi"
+              projects={myProjects}
+              emptyText="Bạn chưa có dự án nào do bạn làm chủ."
+              onSelect={setViewingMyProject}
+            />
+            <ProjectListCard
+              title="Các dự án tôi đang thực hiện"
+              projects={employeeProjects}
+              emptyText="Bạn chưa tham gia dự án nào."
+              onSelect={setViewingEmpProject}
+            />
+          </div>
+
+          {/* Right Column: Pending & Quick shortcuts */}
+          <div>
+            <PendingProjectCard pending={pending} setPending={setPending} />
+
+            {/* Quick Action Shortcuts Card */}
+            <div
+              style={{
+                background: "#fff",
+                borderRadius: 8,
+                boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+                padding: "18px 20px",
+                marginTop: 12,
+              }}
+            >
+              <div
+                style={{
+                  fontSize: 14,
+                  fontWeight: 700,
+                  color: "rgba(0,0,0,0.90)",
+                  marginBottom: 10,
+                }}
+              >
+                Mở rộng dự án của bạn
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                <button
+                  onClick={() => setSubPage("freelancer")}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                    width: "100%",
+                    padding: "10px 14px",
+                    background: "#FAFAF8",
+                    border: "1px solid rgba(0,0,0,0.08)",
+                    borderRadius: 6,
+                    fontSize: 13,
+                    fontWeight: 600,
+                    color: "#0A66C2",
+                    cursor: "pointer",
+                    textAlign: "left",
+                  }}
+                >
+                  <Users size={16} />
+                  <span>Tìm kiếm thêm Freelancer tài năng</span>
+                </button>
+                <button
+                  onClick={() => setSubPage("search")}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                    width: "100%",
+                    padding: "10px 14px",
+                    background: "#FAFAF8",
+                    border: "1px solid rgba(0,0,0,0.08)",
+                    borderRadius: 6,
+                    fontSize: 13,
+                    fontWeight: 600,
+                    color: "rgba(0,0,0,0.85)",
+                    cursor: "pointer",
+                    textAlign: "left",
+                  }}
+                >
+                  <MagnifyingGlass size={16} />
+                  <span>Tìm kiếm cơ hội việc làm mới</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {activeTab === "owner" && (
+        <div style={{ maxWidth: 800 }}>
           <ProjectListCard
             title="Các dự án của tôi"
             projects={myProjects}
             emptyText="Bạn chưa có dự án nào."
             onSelect={setViewingMyProject}
           />
+        </div>
+      )}
+
+      {activeTab === "participant" && (
+        <div style={{ maxWidth: 800 }}>
           <ProjectListCard
             title="Các dự án tôi đang thực hiện"
             projects={employeeProjects}
             emptyText="Bạn chưa tham gia dự án nào."
             onSelect={setViewingEmpProject}
           />
-          <PendingProjectCard pending={pending} setPending={setPending} />
         </div>
-      </div>
+      )}
+
+      {activeTab === "pending" && (
+        <div style={{ maxWidth: 800 }}>
+          <PendingProjectCard pending={pending} setPending={setPending} />
+          {pending.length === 0 && (
+            <div
+              style={{
+                background: "#fff",
+                borderRadius: 8,
+                boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+                padding: "36px 20px",
+                textAlign: "center",
+                color: "rgba(0,0,0,0.50)",
+                fontSize: 14,
+              }}
+            >
+              Hiện tại không có lời mời hoặc đề xuất nào đang chờ duyệt.
+            </div>
+          )}
+        </div>
+      )}
 
       {toast && <Toast message={toast} onDone={() => setToast(null)} />}
     </div>
   )
 }
+
+const JobsPage = ProjectsManagementPage
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // CONTRACT DETAILS PAGE + APPLY MODAL
@@ -13552,1318 +11759,6 @@ function ContractDetailsPage({
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// MESSAGING PAGE
-// ═══════════════════════════════════════════════════════════════════════════════
-
-interface Message {
-  id: number
-  from: "me" | "other"
-  text: string
-  time: string
-}
-
-interface Conversation {
-  id: number
-  name: string
-  headline: string
-  preview: string
-  time: string
-  unread: number
-  messages: Message[]
-  type?: "friend" | "work"
-}
-
-const CONVERSATIONS: Conversation[] = [
-  {
-    id: 1,
-    type: "friend",
-    name: "Trần Đức Anh",
-    headline: nameToGmail("Trần Đức Anh"),
-    preview: "Cảm ơn bạn đã phản hồi nhanh!",
-    time: "2 giờ trước",
-    unread: 2,
-    messages: [
-      {
-        id: 1,
-        from: "other",
-        text: "Chào bạn! Tôi đang xem qua portfolio của bạn và rất ấn tượng với dự án VNPAY.",
-        time: "10:00",
-      },
-      {
-        id: 2,
-        from: "me",
-        text: "Cảm ơn bạn! Dự án đó mình đã đầu tư khá nhiều thời gian cho phần UX Research.",
-        time: "10:05",
-      },
-      {
-        id: 3,
-        from: "other",
-        text: "Mình muốn hỏi bạn có thể tham gia một dự án redesign cho ứng dụng Fintech không?",
-        time: "10:08",
-      },
-      {
-        id: 4,
-        from: "me",
-        text: "Mình đang available đến cuối tháng 10. Bạn có thể share thêm details về dự án không?",
-        time: "10:12",
-      },
-      {
-        id: 5,
-        from: "other",
-        text: "Cảm ơn bạn đã phản hồi nhanh! Mình sẽ gửi brief qua email nhé.",
-        time: "10:15",
-      },
-    ],
-  },
-  {
-    id: 2,
-    type: "friend",
-    name: "Lê Thị Bảo Châu",
-    headline: nameToGmail("Lê Thị Bảo Châu"),
-    preview: "Bạn có available cuối tuần này không?",
-    time: "Hôm qua",
-    unread: 0,
-    messages: [
-      {
-        id: 1,
-        from: "other",
-        text: "Hi, mình đang tổ chức một buổi workshop về UX Research vào cuối tuần này.",
-        time: "Hôm qua 14:00",
-      },
-      {
-        id: 2,
-        from: "me",
-        text: "Nghe hay đấy! Workshop tổ chức ở đâu vậy bạn?",
-        time: "Hôm qua 14:30",
-      },
-      {
-        id: 3,
-        from: "other",
-        text: "Bạn có available cuối tuần này không?",
-        time: "Hôm qua 15:00",
-      },
-    ],
-  },
-  {
-    id: 3,
-    type: "friend",
-    name: "Nguyễn Đức Hùng",
-    headline: nameToGmail("Nguyễn Đức Hùng"),
-    preview: "Ok, mình sẽ xem lại spec nhé.",
-    time: "T2",
-    unread: 0,
-    messages: [
-      {
-        id: 1,
-        from: "me",
-        text: "Hùng ơi, bạn đã review Figma file mình share chưa?",
-        time: "T2 09:00",
-      },
-      {
-        id: 2,
-        from: "other",
-        text: "Chưa kịp. Chiều nay mình sẽ xem.",
-        time: "T2 09:20",
-      },
-      {
-        id: 3,
-        from: "me",
-        text: "Ok, có gì cần hỏi cứ ping mình nhé.",
-        time: "T2 09:22",
-      },
-      {
-        id: 4,
-        from: "other",
-        text: "Ok, mình sẽ xem lại spec nhé.",
-        time: "T2 11:00",
-      },
-    ],
-  },
-  {
-    id: 4,
-    type: "friend",
-    name: "Phạm Quang Hưng",
-    headline: nameToGmail("Phạm Quang Hưng"),
-    preview: "Proposal đã được duyệt!",
-    time: "T7",
-    unread: 1,
-    messages: [
-      {
-        id: 1,
-        from: "other",
-        text: "Mình đã review proposal của bạn.",
-        time: "T7 16:00",
-      },
-      {
-        id: 2,
-        from: "other",
-        text: "Proposal đã được duyệt! Mình sẽ gửi hợp đồng vào đầu tuần.",
-        time: "T7 16:02",
-      },
-    ],
-  },
-  {
-    id: 5,
-    type: "friend",
-    name: "Vũ Thành Long",
-    headline: nameToGmail("Vũ Thành Long"),
-    preview: "Rất vui được kết nối với bạn!",
-    time: "25/9",
-    unread: 0,
-    messages: [
-      {
-        id: 1,
-        from: "other",
-        text: "Rất vui được kết nối với bạn!",
-        time: "25/9 08:00",
-      },
-      {
-        id: 2,
-        from: "me",
-        text: "Tương tự! Hân hạnh được kết nối với bạn.",
-        time: "25/9 09:30",
-      },
-    ],
-  },
-  // Work conversations
-  {
-    id: 10,
-    type: "work",
-    name: "Dự án: Redesign Mobile App",
-    headline: "Lê Văn Hùng & Nguyễn Thị Thu",
-    preview: "Hợp đồng tháng 10 đã được xác nhận.",
-    time: "1 giờ trước",
-    unread: 3,
-    messages: [
-      {
-        id: 1,
-        from: "other",
-        text: "Chào anh, em đã hoàn thành wireframes cho màn hình onboarding.",
-        time: "09:00",
-      },
-      {
-        id: 2,
-        from: "me",
-        text: "Tốt lắm! Mình sẽ review và feedback trước cuối ngày nhé.",
-        time: "09:15",
-      },
-      {
-        id: 3,
-        from: "other",
-        text: "Hợp đồng tháng 10 đã được xác nhận.",
-        time: "10:30",
-      },
-    ],
-  },
-  {
-    id: 11,
-    type: "work",
-    name: "Dự án: Design System SaaS",
-    headline: "Phạm Đức Anh",
-    preview: "Em đã đẩy component library lên Figma.",
-    time: "Hôm qua",
-    unread: 0,
-    messages: [
-      {
-        id: 1,
-        from: "other",
-        text: "Anh ơi, em cần clarify về token naming convention.",
-        time: "Hôm qua 11:00",
-      },
-      {
-        id: 2,
-        from: "me",
-        text: "Dùng theo BEM kết hợp với semantic naming nhé. Mình sẽ share doc.",
-        time: "Hôm qua 11:20",
-      },
-      {
-        id: 3,
-        from: "other",
-        text: "Em đã đẩy component library lên Figma.",
-        time: "Hôm qua 17:00",
-      },
-    ],
-  },
-  {
-    id: 12,
-    type: "work",
-    name: "HĐ: Landing Page Marketing",
-    headline: "Trần Minh Khoa (Employer)",
-    preview: "Anh đã thanh toán đợt 2 rồi nhé.",
-    time: "T4",
-    unread: 1,
-    messages: [
-      {
-        id: 1,
-        from: "other",
-        text: "Em ơi, deadline delivery là thứ 6 này đúng không?",
-        time: "T4 08:00",
-      },
-      {
-        id: 2,
-        from: "me",
-        text: "Dạ đúng ạ, em sẽ deliver trước 17:00 thứ 6.",
-        time: "T4 08:10",
-      },
-      {
-        id: 3,
-        from: "other",
-        text: "Anh đã thanh toán đợt 2 rồi nhé.",
-        time: "T4 14:00",
-      },
-    ],
-  },
-]
-
-function MessagingPage() {
-  const [msgTab, setMsgTab] = useState<"friend" | "work">("friend")
-  const [activeId, setActiveId] = useState(1)
-  const [search, setSearch] = useState("")
-  const [inputText, setInputText] = useState("")
-  const [threads, setThreads] = useState<Conversation[]>(CONVERSATIONS)
-  const [showCreateGroup, setShowCreateGroup] = useState(false)
-  const messagesEndRef = useRef<HTMLDivElement>(null)
-
-  const tabThreads = threads.filter((t) => (t.type ?? "friend") === msgTab)
-  const activeThread = threads.find((t) => t.id === activeId) ?? tabThreads[0]!
-
-  const filtered = search
-    ? tabThreads.filter((t) =>
-      t.name.toLowerCase().includes(search.toLowerCase()),
-    )
-    : tabThreads
-
-  const handleSend = () => {
-    const text = inputText.trim()
-    if (!text) return
-    const now = new Date()
-    const timeStr = `${now.getHours()}:${String(now.getMinutes()).padStart(2, "0")}`
-    setThreads((prev) =>
-      prev.map((t) =>
-        t.id === activeId
-          ? {
-            ...t,
-            preview: text,
-            time: "Vừa xong",
-            messages: [
-              ...t.messages,
-              { id: Date.now(), from: "me" as const, text, time: timeStr },
-            ],
-          }
-          : t,
-      ),
-    )
-    setInputText("")
-  }
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  }, [activeThread?.messages.length])
-
-  return (
-    <div
-      style={{ background: "#F4F2EE", minHeight: "100%", padding: "24px 16px" }}
-    >
-      <div
-        style={{
-          maxWidth: 1128,
-          margin: "0 auto",
-          height: "calc(100vh - 112px)",
-          minHeight: 500,
-        }}
-      >
-        <div
-          style={{
-            background: "#fff",
-            borderRadius: 8,
-            boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-            height: "100%",
-            display: "flex",
-            overflow: "hidden",
-          }}
-        >
-          {/* ── LEFT PANEL ── */}
-          <div
-            style={{
-              width: 340,
-              borderRight: "1px solid rgba(0,0,0,0.08)",
-              display: "flex",
-              flexDirection: "column",
-              flexShrink: 0,
-            }}
-          >
-            {/* Header */}
-            <div
-              style={{
-                padding: "12px 14px",
-                display: "flex",
-                alignItems: "center",
-                gap: 8,
-                justifyContent: "space-between",
-                borderBottom: "1px solid rgba(0,0,0,0.06)",
-              }}
-            >
-              <button
-                onClick={() => setShowCreateGroup(true)}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 5,
-                  padding: "6px 12px",
-                  borderRadius: 9999,
-                  border: "1px solid #0A66C2",
-                  background: "none",
-                  color: "#0A66C2",
-                  fontSize: 12,
-                  fontWeight: 700,
-                  cursor: "pointer",
-                  fontFamily: "inherit",
-                  flexShrink: 0,
-                  transition: "background 150ms",
-                }}
-                onMouseEnter={(e) => {
-                  ; (e.currentTarget as HTMLElement).style.background = "#EAF1FA"
-                }}
-                onMouseLeave={(e) => {
-                  ; (e.currentTarget as HTMLElement).style.background = "none"
-                }}
-              >
-                <Plus size={13} weight="bold" /> Tạo nhóm
-              </button>
-              <span
-                style={{
-                  fontSize: 18,
-                  fontWeight: 700,
-                  color: "rgba(0,0,0,0.90)",
-                  flex: 1,
-                  textAlign: "center",
-                }}
-              >
-                Nhắn tin
-              </span>
-              <button
-                style={{
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  borderRadius: 9999,
-                  padding: 6,
-                  display: "flex",
-                  alignItems: "center",
-                  color: "rgba(0,0,0,0.60)",
-                  transition: "background 150ms",
-                  flexShrink: 0,
-                }}
-                onMouseEnter={(e) =>
-                ((e.currentTarget as HTMLElement).style.background =
-                  "#EAF1FA")
-                }
-                onMouseLeave={(e) =>
-                  ((e.currentTarget as HTMLElement).style.background = "none")
-                }
-              >
-                <NotePencil size={20} />
-              </button>
-            </div>
-            {/* Tab nav */}
-            <div
-              style={{
-                display: "flex",
-                borderBottom: "1px solid rgba(0,0,0,0.08)",
-              }}
-            >
-              {(["friend", "work"] as const).map((tab) => {
-                const label = tab === "friend" ? "Bạn bè" : "Công việc"
-                const active = msgTab === tab
-                const unreadCount = threads
-                  .filter((t) => (t.type ?? "friend") === tab && t.unread > 0)
-                  .reduce((s, t) => s + t.unread, 0)
-                return (
-                  <button
-                    key={tab}
-                    onClick={() => {
-                      setMsgTab(tab)
-                      const first = threads.find(
-                        (t) => (t.type ?? "friend") === tab,
-                      )
-                      if (first) setActiveId(first.id)
-                    }}
-                    style={{
-                      flex: 1,
-                      padding: "10px 0",
-                      background: "none",
-                      border: "none",
-                      cursor: "pointer",
-                      fontSize: 14,
-                      fontWeight: active ? 700 : 500,
-                      color: active ? "#0A66C2" : "rgba(0,0,0,0.55)",
-                      borderBottom: active
-                        ? "2px solid #0A66C2"
-                        : "2px solid transparent",
-                      fontFamily: "inherit",
-                      transition: "color 150ms",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: 6,
-                    }}
-                  >
-                    {label}
-                    {unreadCount > 0 && (
-                      <span
-                        style={{
-                          background: "#0A66C2",
-                          color: "#fff",
-                          borderRadius: 9999,
-                          fontSize: 10,
-                          fontWeight: 700,
-                          padding: "1px 6px",
-                          lineHeight: 1.6,
-                        }}
-                      >
-                        {unreadCount}
-                      </span>
-                    )}
-                  </button>
-                )
-              })}
-            </div>
-
-            {/* Search */}
-            <div style={{ padding: "10px 12px" }}>
-              <div style={{ position: "relative" }}>
-                <MagnifyingGlass
-                  size={14}
-                  color="rgba(0,0,0,0.45)"
-                  style={{
-                    position: "absolute",
-                    left: 10,
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                  }}
-                />
-                <input
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Tìm kiếm tin nhắn..."
-                  style={{
-                    width: "100%",
-                    background: "#EAF1FA",
-                    border: "none",
-                    borderRadius: 4,
-                    padding: "7px 10px 7px 30px",
-                    fontSize: 13,
-                    color: "rgba(0,0,0,0.80)",
-                    outline: "none",
-                    fontFamily: "inherit",
-                  }}
-                />
-              </div>
-            </div>
-
-            {/* Thread list */}
-            <div style={{ flex: 1, overflowY: "auto" }}>
-              {filtered.map((t) => {
-                const isActive = t.id === activeId
-                return (
-                  <div
-                    key={t.id}
-                    onClick={() => setActiveId(t.id)}
-                    style={{
-                      padding: "12px 14px",
-                      display: "flex",
-                      gap: 12,
-                      alignItems: "center",
-                      cursor: "pointer",
-                      background: isActive ? "#F0F7FF" : "none",
-                      borderLeft: isActive
-                        ? "3px solid #0A66C2"
-                        : "3px solid transparent",
-                      borderBottom: "1px solid rgba(0,0,0,0.04)",
-                      transition: "background 150ms",
-                    }}
-                    onMouseEnter={(e) => {
-                      if (!isActive)
-                        (e.currentTarget as HTMLElement).style.background =
-                          "#FAFAF8"
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!isActive)
-                        (e.currentTarget as HTMLElement).style.background =
-                          "none"
-                    }}
-                  >
-                    <div style={{ position: "relative", flexShrink: 0 }}>
-                      <Avatar name={t.name} size={48} />
-                      {t.unread > 0 && (
-                        <div
-                          style={{
-                            position: "absolute",
-                            top: 0,
-                            right: 0,
-                            width: 16,
-                            height: 16,
-                            borderRadius: 9999,
-                            background: "#0A66C2",
-                            border: "2px solid #fff",
-                            fontSize: 9,
-                            fontWeight: 700,
-                            color: "#fff",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                          }}
-                        >
-                          {t.unread}
-                        </div>
-                      )}
-                    </div>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "baseline",
-                          justifyContent: "space-between",
-                          gap: 6,
-                        }}
-                      >
-                        <span
-                          style={{
-                            fontSize: 14,
-                            fontWeight: t.unread > 0 ? 700 : 600,
-                            color: "rgba(0,0,0,0.90)",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            whiteSpace: "nowrap",
-                          }}
-                        >
-                          {t.name}
-                        </span>
-                        <span
-                          style={{
-                            fontSize: 11,
-                            color: "rgba(0,0,0,0.50)",
-                            flexShrink: 0,
-                          }}
-                        >
-                          {t.time}
-                        </span>
-                      </div>
-                      <div
-                        style={{
-                          fontSize: 12,
-                          color: "rgba(0,0,0,0.55)",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          whiteSpace: "nowrap",
-                          marginTop: 1,
-                        }}
-                      >
-                        {t.headline}
-                      </div>
-                      <div
-                        style={{
-                          fontSize: 13,
-                          color:
-                            t.unread > 0
-                              ? "rgba(0,0,0,0.90)"
-                              : "rgba(0,0,0,0.55)",
-                          fontWeight: t.unread > 0 ? 600 : 400,
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          whiteSpace: "nowrap",
-                          marginTop: 2,
-                        }}
-                      >
-                        {t.preview}
-                      </div>
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
-          </div>
-
-          {/* ── RIGHT PANEL ── */}
-          <div
-            style={{
-              flex: 1,
-              display: "flex",
-              flexDirection: "column",
-              minWidth: 0,
-            }}
-          >
-            {/* Chat header */}
-            <div
-              style={{
-                height: 64,
-                padding: "0 20px",
-                display: "flex",
-                alignItems: "center",
-                gap: 12,
-                borderBottom: "1px solid rgba(0,0,0,0.08)",
-                flexShrink: 0,
-              }}
-            >
-              <Avatar name={activeThread.name} size={36} />
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div
-                  style={{
-                    fontSize: 15,
-                    fontWeight: 700,
-                    color: "rgba(0,0,0,0.90)",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {activeThread.name}
-                </div>
-                <div
-                  style={{
-                    fontSize: 12,
-                    color: "rgba(0,0,0,0.55)",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {activeThread.headline}
-                </div>
-              </div>
-              <button
-                style={{
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  borderRadius: 9999,
-                  padding: 6,
-                  color: "rgba(0,0,0,0.55)",
-                }}
-                onMouseEnter={(e) =>
-                ((e.currentTarget as HTMLElement).style.background =
-                  "#EAF1FA")
-                }
-                onMouseLeave={(e) =>
-                  ((e.currentTarget as HTMLElement).style.background = "none")
-                }
-              >
-                <DotsThreeVertical size={20} />
-              </button>
-            </div>
-
-            {/* Messages */}
-            <div
-              style={{
-                flex: 1,
-                overflowY: "auto",
-                padding: "20px 20px 12px",
-                display: "flex",
-                flexDirection: "column",
-                gap: 14,
-              }}
-            >
-              {activeThread.messages.map((msg) => {
-                const isMe = msg.from === "me"
-                return (
-                  <div
-                    key={msg.id}
-                    style={{
-                      display: "flex",
-                      justifyContent: isMe ? "flex-end" : "flex-start",
-                      gap: 10,
-                      alignItems: "flex-end",
-                    }}
-                  >
-                    {!isMe && <Avatar name={activeThread.name} size={32} />}
-                    <div style={{ maxWidth: "62%" }}>
-                      <div
-                        style={{
-                          padding: "10px 14px",
-                          fontSize: 14,
-                          lineHeight: 1.6,
-                          background: isMe ? "#0A66C2" : "#F4F2EE",
-                          color: isMe ? "#fff" : "rgba(0,0,0,0.90)",
-                          borderRadius: isMe
-                            ? "12px 12px 4px 12px"
-                            : "12px 12px 12px 4px",
-                        }}
-                      >
-                        {msg.text}
-                      </div>
-                      <div
-                        style={{
-                          fontSize: 11,
-                          color: "rgba(0,0,0,0.40)",
-                          marginTop: 3,
-                          textAlign: isMe ? "right" : "left",
-                        }}
-                      >
-                        {msg.time}
-                      </div>
-                    </div>
-                  </div>
-                )
-              })}
-              <div ref={messagesEndRef} />
-            </div>
-
-            {/* Input area */}
-            <div
-              style={{
-                padding: "12px 20px 16px",
-                borderTop: "1px solid rgba(0,0,0,0.08)",
-                background: "#fff",
-                flexShrink: 0,
-              }}
-            >
-              <textarea
-                value={inputText}
-                onChange={(e) => setInputText(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
-                    e.preventDefault()
-                    handleSend()
-                  }
-                }}
-                placeholder="Viết tin nhắn..."
-                rows={2}
-                style={{
-                  width: "100%",
-                  background: "#FAFAF8",
-                  border: "1px solid rgba(0,0,0,0.15)",
-                  borderRadius: 4,
-                  padding: "10px 12px",
-                  fontSize: 14,
-                  color: "rgba(0,0,0,0.80)",
-                  resize: "none",
-                  outline: "none",
-                  fontFamily: "inherit",
-                  lineHeight: 1.5,
-                  transition: "border-color 150ms",
-                }}
-                onFocus={(e) =>
-                ((e.currentTarget as HTMLElement).style.borderColor =
-                  "#0A66C2")
-                }
-                onBlur={(e) =>
-                ((e.currentTarget as HTMLElement).style.borderColor =
-                  "rgba(0,0,0,0.15)")
-                }
-              />
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginTop: 10,
-                }}
-              >
-                <div style={{ display: "flex", gap: 4 }}>
-                  {[Paperclip, ImageIcon, Smiley].map((Icon, i) => (
-                    <button
-                      key={i}
-                      style={{
-                        background: "none",
-                        border: "none",
-                        cursor: "pointer",
-                        borderRadius: 9999,
-                        padding: 6,
-                        color: "rgba(0,0,0,0.55)",
-                        display: "flex",
-                        alignItems: "center",
-                        transition: "background 150ms",
-                      }}
-                      onMouseEnter={(e) =>
-                      ((e.currentTarget as HTMLElement).style.background =
-                        "#EAF1FA")
-                      }
-                      onMouseLeave={(e) =>
-                      ((e.currentTarget as HTMLElement).style.background =
-                        "none")
-                      }
-                    >
-                      <Icon size={20} />
-                    </button>
-                  ))}
-                </div>
-                <button
-                  onClick={handleSend}
-                  disabled={!inputText.trim()}
-                  style={{
-                    borderRadius: 9999,
-                    border: "none",
-                    background: inputText.trim()
-                      ? "#0A66C2"
-                      : "rgba(0,0,0,0.12)",
-                    color: inputText.trim() ? "#fff" : "rgba(0,0,0,0.35)",
-                    padding: "8px 22px",
-                    fontSize: 13,
-                    fontWeight: 700,
-                    cursor: inputText.trim() ? "pointer" : "default",
-                    fontFamily: "inherit",
-                    transition: "all 150ms",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 6,
-                  }}
-                  onMouseEnter={(e) => {
-                    if (inputText.trim())
-                      (e.currentTarget as HTMLElement).style.background =
-                        "#084FA0"
-                  }}
-                  onMouseLeave={(e) => {
-                    if (inputText.trim())
-                      (e.currentTarget as HTMLElement).style.background =
-                        "#0A66C2"
-                  }}
-                >
-                  <PaperPlaneTilt size={14} weight="fill" />
-                  Gửi
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {showCreateGroup && (
-        <MsgCreateGroupModal
-          onClose={() => setShowCreateGroup(false)}
-          onCreate={(thread) => {
-            setThreads((p) => [thread, ...p])
-            setMsgTab(thread.type as "friend" | "work")
-            setActiveId(thread.id)
-            setShowCreateGroup(false)
-          }}
-        />
-      )}
-    </div>
-  )
-}
-
-// ─── Create Group Modal (for Messaging) ──────────────────────────────────────
-
-function MsgCreateGroupModal({
-  onClose,
-  onCreate,
-}: {
-  onClose: () => void
-  onCreate: (thread: Conversation) => void
-}) {
-  const [groupName, setGroupName] = useState("")
-  const [groupType, setGroupType] = useState<"friend" | "work">("friend")
-  const [memberInput, setMemberInput] = useState("")
-  const [members, setMembers] = useState<string[]>([])
-  const [avatarName, setAvatarName] = useState("")
-  const avatarFileRef = useRef<HTMLInputElement>(null)
-
-  useEffect(() => {
-    const fn = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose()
-    }
-    window.addEventListener("keydown", fn)
-    return () => window.removeEventListener("keydown", fn)
-  }, [onClose])
-
-  const addMember = () => {
-    const v = memberInput.trim()
-    if (v && !members.includes(v)) {
-      setMembers((p) => [...p, v])
-      setMemberInput("")
-    }
-  }
-
-  const canCreate = groupName.trim() && members.length > 0
-
-  const inputSt: React.CSSProperties = {
-    width: "100%",
-    padding: "9px 12px",
-    border: "1.5px solid rgba(0,0,0,0.18)",
-    borderRadius: 6,
-    fontSize: 14,
-    fontFamily: "inherit",
-    outline: "none",
-    color: "rgba(0,0,0,0.90)",
-    boxSizing: "border-box",
-    transition: "border-color 150ms",
-  }
-  const labelSt: React.CSSProperties = {
-    fontSize: 13,
-    fontWeight: 700,
-    color: "rgba(0,0,0,0.65)",
-    display: "block",
-    marginBottom: 6,
-  }
-
-  return (
-    <div
-      style={{
-        position: "fixed",
-        inset: 0,
-        background: "rgba(0,0,0,0.55)",
-        zIndex: 2000,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: 16,
-      }}
-      onClick={(e) => {
-        if (e.target === e.currentTarget) onClose()
-      }}
-    >
-      <div
-        style={{
-          background: "#fff",
-          borderRadius: 12,
-          width: "100%",
-          maxWidth: 460,
-          boxShadow: "0 16px 48px rgba(0,0,0,0.22)",
-          overflow: "hidden",
-        }}
-      >
-        {/* Modal header */}
-        <div
-          style={{
-            padding: "18px 24px",
-            borderBottom: "1px solid rgba(0,0,0,0.08)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <span
-            style={{ fontSize: 18, fontWeight: 700, color: "rgba(0,0,0,0.90)" }}
-          >
-            Tạo nhóm chat
-          </span>
-          <button
-            onClick={onClose}
-            style={{
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              borderRadius: 9999,
-              padding: 6,
-              display: "flex",
-              color: "rgba(0,0,0,0.55)",
-            }}
-            onMouseEnter={(e) =>
-              ((e.currentTarget as HTMLElement).style.background = "#F4F2EE")
-            }
-            onMouseLeave={(e) =>
-              ((e.currentTarget as HTMLElement).style.background = "none")
-            }
-          >
-            <X size={20} />
-          </button>
-        </div>
-
-        <div
-          style={{
-            padding: "20px 24px",
-            display: "flex",
-            flexDirection: "column",
-            gap: 18,
-          }}
-        >
-          {/* Tên nhóm */}
-          <div>
-            <label style={labelSt}>Tên nhóm *</label>
-            <input
-              value={groupName}
-              onChange={(e) => setGroupName(e.target.value)}
-              placeholder="VD: Team Design Sprint"
-              style={inputSt}
-              onFocus={(e) =>
-                ((e.currentTarget as HTMLElement).style.borderColor = "#0A66C2")
-              }
-              onBlur={(e) =>
-              ((e.currentTarget as HTMLElement).style.borderColor =
-                "rgba(0,0,0,0.18)")
-              }
-            />
-          </div>
-
-          {/* Loại nhóm */}
-          <div>
-            <label style={labelSt}>Loại nhóm</label>
-            <div style={{ display: "flex", gap: 10 }}>
-              {(["friend", "work"] as const).map((t) => {
-                const active = groupType === t
-                return (
-                  <button
-                    key={t}
-                    onClick={() => setGroupType(t)}
-                    style={{
-                      flex: 1,
-                      padding: "9px 0",
-                      borderRadius: 8,
-                      border: `1.5px solid ${active ? "#0A66C2" : "rgba(0,0,0,0.15)"
-                        }`,
-                      background: active ? "#EAF1FA" : "#FAFAF8",
-                      color: active ? "#0A66C2" : "rgba(0,0,0,0.65)",
-                      fontSize: 14,
-                      fontWeight: active ? 700 : 500,
-                      cursor: "pointer",
-                      fontFamily: "inherit",
-                      transition: "all 150ms",
-                    }}
-                  >
-                    {t === "friend" ? "Bạn bè" : "Công việc"}
-                  </button>
-                )
-              })}
-            </div>
-          </div>
-
-          {/* Thành viên */}
-          <div>
-            <label style={labelSt}>Thành viên *</label>
-            <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
-              <input
-                value={memberInput}
-                onChange={(e) => setMemberInput(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault()
-                    addMember()
-                  }
-                }}
-                placeholder="Tìm theo tên hoặc Gmail..."
-                style={{ ...inputSt, flex: 1 }}
-                onFocus={(e) =>
-                ((e.currentTarget as HTMLElement).style.borderColor =
-                  "#0A66C2")
-                }
-                onBlur={(e) =>
-                ((e.currentTarget as HTMLElement).style.borderColor =
-                  "rgba(0,0,0,0.18)")
-                }
-              />
-              <button
-                onClick={addMember}
-                style={{
-                  padding: "9px 18px",
-                  background: "#0A66C2",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: 9999,
-                  fontSize: 13,
-                  fontWeight: 600,
-                  cursor: "pointer",
-                  fontFamily: "inherit",
-                  flexShrink: 0,
-                }}
-              >
-                Thêm
-              </button>
-            </div>
-            {members.length > 0 ? (
-              <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                {members.map((m) => (
-                  <div
-                    key={m}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      padding: "8px 12px",
-                      background: "#FAFAF8",
-                      borderRadius: 6,
-                      border: "1px solid rgba(0,0,0,0.06)",
-                    }}
-                  >
-                    <div
-                      style={{ display: "flex", alignItems: "center", gap: 8 }}
-                    >
-                      <Avatar name={m} size={28} />
-                      <span style={{ fontSize: 14, color: "rgba(0,0,0,0.85)" }}>
-                        {m}
-                      </span>
-                    </div>
-                    <button
-                      onClick={() =>
-                        setMembers((p) => p.filter((x) => x !== m))
-                      }
-                      style={{
-                        background: "none",
-                        border: "none",
-                        cursor: "pointer",
-                        color: "rgba(0,0,0,0.35)",
-                        display: "flex",
-                        padding: 4,
-                      }}
-                      onMouseEnter={(e) => {
-                        ; (e.currentTarget as HTMLElement).style.color =
-                          "#C03A2B"
-                      }}
-                      onMouseLeave={(e) => {
-                        ; (e.currentTarget as HTMLElement).style.color =
-                          "rgba(0,0,0,0.35)"
-                      }}
-                    >
-                      <X size={13} weight="bold" />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p style={{ fontSize: 13, color: "rgba(0,0,0,0.40)" }}>
-                Chưa thêm thành viên nào.
-              </p>
-            )}
-          </div>
-
-          {/* Ảnh đại diện */}
-          <div>
-            <label style={labelSt}>Ảnh đại diện nhóm</label>
-            <input
-              ref={avatarFileRef}
-              type="file"
-              accept="image/*"
-              style={{ display: "none" }}
-              onChange={(e) => {
-                const f = e.target.files?.[0]
-                if (f) setAvatarName(f.name)
-              }}
-            />
-            <div
-              onClick={() => avatarFileRef.current?.click()}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 14,
-                padding: "12px 16px",
-                border: "1.5px dashed rgba(0,0,0,0.18)",
-                borderRadius: 8,
-                cursor: "pointer",
-                background: avatarName ? "#EAF1FA" : "#FAFAF8",
-                transition: "border-color 150ms",
-              }}
-              onMouseEnter={(e) => {
-                ; (e.currentTarget as HTMLElement).style.borderColor = "#0A66C2"
-              }}
-              onMouseLeave={(e) => {
-                ; (e.currentTarget as HTMLElement).style.borderColor =
-                  "rgba(0,0,0,0.18)"
-              }}
-            >
-              <div
-                style={{
-                  width: 44,
-                  height: 44,
-                  borderRadius: "50%",
-                  background: avatarName ? "#0A66C2" : "rgba(0,0,0,0.10)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexShrink: 0,
-                }}
-              >
-                {avatarName ? (
-                  <CheckFat size={20} color="#fff" weight="fill" />
-                ) : (
-                  <UserCircle size={24} color="rgba(0,0,0,0.40)" />
-                )}
-              </div>
-              <div>
-                <div
-                  style={{
-                    fontSize: 14,
-                    fontWeight: 600,
-                    color: avatarName ? "#0A66C2" : "rgba(0,0,0,0.65)",
-                  }}
-                >
-                  {avatarName || "Tải lên ảnh nhóm"}
-                </div>
-                <div
-                  style={{
-                    fontSize: 12,
-                    color: "rgba(0,0,0,0.40)",
-                    marginTop: 2,
-                  }}
-                >
-                  {avatarName ? "Nhấn để thay thế" : "JPG, PNG (tối đa 2MB)"}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Footer */}
-        <div
-          style={{
-            padding: "16px 24px",
-            borderTop: "1px solid rgba(0,0,0,0.08)",
-            display: "flex",
-            justifyContent: "flex-end",
-            gap: 10,
-          }}
-        >
-          <button
-            onClick={onClose}
-            style={{
-              padding: "9px 22px",
-              borderRadius: 9999,
-              border: "1px solid rgba(0,0,0,0.25)",
-              background: "none",
-              fontSize: 14,
-              fontWeight: 600,
-              cursor: "pointer",
-              fontFamily: "inherit",
-              color: "rgba(0,0,0,0.65)",
-            }}
-          >
-            Hủy
-          </button>
-          <button
-            onClick={() => {
-              if (!canCreate) return
-              const thread: Conversation = {
-                id: Date.now(),
-                type: groupType,
-                name: groupName.trim(),
-                headline: members.join(", "),
-                preview: "Nhóm vừa được tạo",
-                time: "Vừa xong",
-                unread: 0,
-                messages: [
-                  {
-                    id: 1,
-                    from: "me" as const,
-                    text: `Chào mọi người! Đây là nhóm "${groupName.trim()}".`,
-                    time: new Date().toLocaleTimeString("vi", {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    }),
-                  },
-                ],
-              }
-              onCreate(thread)
-            }}
-            disabled={!canCreate}
-            style={{
-              padding: "9px 24px",
-              borderRadius: 9999,
-              border: "none",
-              background: canCreate ? "#0A66C2" : "rgba(0,0,0,0.12)",
-              color: canCreate ? "#fff" : "rgba(0,0,0,0.35)",
-              fontSize: 14,
-              fontWeight: 700,
-              cursor: canCreate ? "pointer" : "default",
-              fontFamily: "inherit",
-            }}
-          >
-            Tạo nhóm
-          </button>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-// ═══════════════════════════════════════════════════════════════════════════════
 // NOTIFICATIONS PAGE
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -15347,1113 +12242,6 @@ function NotificationsPage() {
           </div>
         </div>
       </div>
-    </div>
-  )
-}
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// CREATE GROUP MODAL
-// ═══════════════════════════════════════════════════════════════════════════════
-
-const GROUP_CATEGORIES = [
-  "Lập trình",
-  "Framework",
-  "Trí tuệ nhân tạo",
-  "Cloud & Infrastructure",
-  "Kiến trúc hệ thống",
-  "Bảo mật",
-  "Mobile Development",
-  "Data Engineering",
-  "Game Development",
-  "Blockchain",
-]
-
-function CreateGroupModal({
-  onClose,
-  onCreate,
-}: {
-  onClose: () => void
-  onCreate: (group: Group) => void
-}) {
-  const [name, setName] = useState("")
-  const [avatarName, setAvatarName] = useState("")
-  const [memberInput, setMemberInput] = useState("")
-  const [members, setMembers] = useState<string[]>([])
-  const avatarFileRef = useRef<HTMLInputElement>(null)
-
-  const addMember = () => {
-    const v = memberInput.trim()
-    if (v && !members.includes(v)) {
-      setMembers((p) => [...p, v])
-      setMemberInput("")
-    }
-  }
-
-  const handleSubmit = () => {
-    if (!name.trim()) return
-    const newGroup: Group = {
-      id: `group-${Date.now()}`,
-      name: name.trim(),
-      description: "",
-      category: GROUP_CATEGORIES[0],
-      topics: [],
-      memberCount: 1 + members.length,
-      coverGradient: "linear-gradient(135deg, #0A66C2 0%, #42a5f5 100%)",
-      accentColor: "#0A66C2",
-      members: [ME.name, ...members],
-    }
-    onCreate(newGroup)
-    onClose()
-  }
-
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose()
-    }
-    window.addEventListener("keydown", handler)
-    return () => window.removeEventListener("keydown", handler)
-  }, [])
-
-  const inputSt: React.CSSProperties = {
-    width: "100%",
-    padding: "9px 12px",
-    border: "1px solid rgba(0,0,0,0.20)",
-    borderRadius: 4,
-    fontSize: 14,
-    fontFamily: "inherit",
-    outline: "none",
-    color: "rgba(0,0,0,0.90)",
-    boxSizing: "border-box",
-  }
-  const labelSt: React.CSSProperties = {
-    fontSize: 13,
-    fontWeight: 600,
-    color: "rgba(0,0,0,0.70)",
-    display: "block",
-    marginBottom: 6,
-  }
-
-  return (
-    <div
-      style={{
-        position: "fixed",
-        inset: 0,
-        background: "rgba(0,0,0,0.55)",
-        zIndex: 1000,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: 16,
-      }}
-      onClick={(e) => {
-        if (e.target === e.currentTarget) onClose()
-      }}
-    >
-      <div
-        style={{
-          background: "#fff",
-          borderRadius: 12,
-          width: "100%",
-          maxWidth: 460,
-          boxShadow: "0 16px 48px rgba(0,0,0,0.22)",
-          overflow: "hidden",
-        }}
-      >
-        {/* Header */}
-        <div
-          style={{
-            padding: "18px 24px",
-            borderBottom: "1px solid rgba(0,0,0,0.08)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <div
-            style={{ fontSize: 20, fontWeight: 700, color: "rgba(0,0,0,0.90)" }}
-          >
-            Tạo group
-          </div>
-          <button
-            onClick={onClose}
-            style={{
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              borderRadius: 9999,
-              padding: 6,
-              display: "flex",
-              color: "rgba(0,0,0,0.55)",
-            }}
-            onMouseEnter={(e) =>
-              ((e.currentTarget as HTMLElement).style.background = "#F4F2EE")
-            }
-            onMouseLeave={(e) =>
-              ((e.currentTarget as HTMLElement).style.background = "none")
-            }
-          >
-            <X size={20} />
-          </button>
-        </div>
-
-        <div
-          style={{
-            padding: 24,
-            display: "flex",
-            flexDirection: "column",
-            gap: 20,
-          }}
-        >
-          {/* Tên group */}
-          <div>
-            <label style={labelSt}>Tên group *</label>
-            <input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="VD: React Vietnam Community"
-              style={inputSt}
-              onFocus={(e) =>
-                ((e.currentTarget as HTMLElement).style.borderColor = "#0A66C2")
-              }
-              onBlur={(e) =>
-              ((e.currentTarget as HTMLElement).style.borderColor =
-                "rgba(0,0,0,0.20)")
-              }
-            />
-          </div>
-
-          {/* Avatar */}
-          <div>
-            <label style={labelSt}>Avatar</label>
-            <input
-              ref={avatarFileRef}
-              type="file"
-              accept="image/*"
-              style={{ display: "none" }}
-              onChange={(e) => {
-                const f = e.target.files?.[0]
-                if (f) setAvatarName(f.name)
-              }}
-            />
-            <div
-              onClick={() => avatarFileRef.current?.click()}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 14,
-                padding: "12px 16px",
-                border: "1.5px dashed rgba(0,0,0,0.18)",
-                borderRadius: 8,
-                cursor: "pointer",
-                background: avatarName ? "#EAF1FA" : "#FAFAF8",
-                transition: "border-color 150ms",
-              }}
-              onMouseEnter={(e) => {
-                ; (e.currentTarget as HTMLElement).style.borderColor = "#0A66C2"
-              }}
-              onMouseLeave={(e) => {
-                ; (e.currentTarget as HTMLElement).style.borderColor =
-                  "rgba(0,0,0,0.18)"
-              }}
-            >
-              <div
-                style={{
-                  width: 44,
-                  height: 44,
-                  borderRadius: "50%",
-                  background: avatarName ? "#0A66C2" : "rgba(0,0,0,0.10)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexShrink: 0,
-                }}
-              >
-                {avatarName ? (
-                  <CheckFat size={20} color="#fff" weight="fill" />
-                ) : (
-                  <UserCircle size={24} color="rgba(0,0,0,0.40)" />
-                )}
-              </div>
-              <div>
-                <div
-                  style={{
-                    fontSize: 14,
-                    fontWeight: 600,
-                    color: avatarName ? "#0A66C2" : "rgba(0,0,0,0.65)",
-                  }}
-                >
-                  {avatarName || "Tải lên ảnh đại diện"}
-                </div>
-                <div
-                  style={{
-                    fontSize: 12,
-                    color: "rgba(0,0,0,0.40)",
-                    marginTop: 2,
-                  }}
-                >
-                  {avatarName ? "Nhấn để thay thế" : "JPG, PNG (tối đa 2MB)"}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Thành viên */}
-          <div>
-            <label style={labelSt}>Thành viên</label>
-            <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
-              <input
-                value={memberInput}
-                onChange={(e) => setMemberInput(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault()
-                    addMember()
-                  }
-                }}
-                placeholder="Nhập tên hoặc email thành viên..."
-                style={{ ...inputSt, flex: 1 }}
-                onFocus={(e) =>
-                ((e.currentTarget as HTMLElement).style.borderColor =
-                  "#0A66C2")
-                }
-                onBlur={(e) =>
-                ((e.currentTarget as HTMLElement).style.borderColor =
-                  "rgba(0,0,0,0.20)")
-                }
-              />
-              <button
-                onClick={addMember}
-                style={{
-                  padding: "9px 18px",
-                  background: "#0A66C2",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: 9999,
-                  fontSize: 13,
-                  fontWeight: 600,
-                  cursor: "pointer",
-                  fontFamily: "inherit",
-                  flexShrink: 0,
-                }}
-              >
-                Thêm
-              </button>
-            </div>
-            {members.length > 0 && (
-              <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                {members.map((m) => (
-                  <div
-                    key={m}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      padding: "8px 12px",
-                      background: "#FAFAF8",
-                      borderRadius: 6,
-                      border: "1px solid rgba(0,0,0,0.06)",
-                    }}
-                  >
-                    <div
-                      style={{ display: "flex", alignItems: "center", gap: 8 }}
-                    >
-                      <Avatar name={m} size={28} />
-                      <span style={{ fontSize: 14, color: "rgba(0,0,0,0.85)" }}>
-                        {m}
-                      </span>
-                    </div>
-                    <button
-                      onClick={() =>
-                        setMembers((p) => p.filter((x) => x !== m))
-                      }
-                      style={{
-                        background: "none",
-                        border: "none",
-                        cursor: "pointer",
-                        color: "rgba(0,0,0,0.40)",
-                        display: "flex",
-                        padding: 4,
-                      }}
-                      onMouseEnter={(e) => {
-                        ; (e.currentTarget as HTMLElement).style.color =
-                          "#C03A2B"
-                      }}
-                      onMouseLeave={(e) => {
-                        ; (e.currentTarget as HTMLElement).style.color =
-                          "rgba(0,0,0,0.40)"
-                      }}
-                    >
-                      <X size={14} weight="bold" />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
-            {members.length === 0 && (
-              <p style={{ fontSize: 13, color: "rgba(0,0,0,0.40)" }}>
-                Chưa có thành viên nào được thêm.
-              </p>
-            )}
-          </div>
-        </div>
-
-        {/* Footer */}
-        <div
-          style={{
-            padding: "16px 24px",
-            borderTop: "1px solid rgba(0,0,0,0.08)",
-            display: "flex",
-            justifyContent: "flex-end",
-            gap: 10,
-          }}
-        >
-          <button
-            onClick={onClose}
-            style={{
-              padding: "9px 22px",
-              borderRadius: 9999,
-              border: "1px solid rgba(0,0,0,0.30)",
-              background: "none",
-              fontSize: 14,
-              fontWeight: 600,
-              cursor: "pointer",
-              fontFamily: "inherit",
-              color: "rgba(0,0,0,0.70)",
-            }}
-          >
-            Hủy
-          </button>
-          <button
-            onClick={handleSubmit}
-            disabled={!name.trim()}
-            style={{
-              padding: "9px 24px",
-              borderRadius: 9999,
-              border: "none",
-              background: name.trim() ? "#0A66C2" : "rgba(0,0,0,0.12)",
-              color: name.trim() ? "#fff" : "rgba(0,0,0,0.35)",
-              fontSize: 14,
-              fontWeight: 700,
-              cursor: name.trim() ? "pointer" : "default",
-              fontFamily: "inherit",
-            }}
-          >
-            Tạo group
-          </button>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// GROUP DETAIL PAGE
-// ═══════════════════════════════════════════════════════════════════════════════
-
-const GROUP_DETAIL_TABS = [
-  "Giới thiệu",
-  "Thảo luận",
-  "Bài viết",
-  "Thành viên",
-]
-
-function GroupDetailPage({
-  group,
-  onBack,
-  isManager,
-}: {
-  group: Group
-  onBack: () => void
-  isManager?: boolean
-}) {
-  const [activeTab, setActiveTab] = useState("Thảo luận")
-  const [joined, setJoined] = useState(false)
-  const [postText, setPostText] = useState("")
-  const [adminTab, setAdminTab] = React.useState<"members" | "posts" | "admins" | null>(null)
-  const [mgmtSearch, setMgmtSearch] = React.useState("")
-  const [removeMemberTarget, setRemoveMemberTarget] = React.useState<string | null>(null)
-  const [removePostTarget, setRemovePostTarget] = React.useState<number | null>(null)
-
-  const groupPosts = GROUP_POSTS.filter((p) => p.groupId === group.id)
-  const [likes, setLikes] = useState<Record<number, boolean>>({})
-
-  const allMembers = [
-    ...group.members,
-    "Nguyễn Văn An",
-    "Trần Thị Bích",
-    "Lê Minh Đức",
-    "Phạm Hồng Linh",
-    "Vũ Quốc Dũng",
-  ]
-
-  const admins = group.members.slice(0, 2)
-
-  return (
-    <div style={{ background: "#F4F2EE", minHeight: "100%" }}>
-      {/* Cover + Group Info */}
-      <div
-        style={{
-          height: 220,
-          background: group.coverGradient,
-          position: "relative",
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: "rgba(0,0,0,0.25)",
-          }}
-        />
-      </div>
-
-      <div style={{ maxWidth: 1128, margin: "0 auto", padding: "0 16px" }}>
-        {/* Group Header Card */}
-        <div
-          style={{
-            background: "#fff",
-            borderRadius: "0 0 8px 8px",
-            padding: "20px 24px",
-            boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-            marginBottom: 16,
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "flex-start",
-              justifyContent: "space-between",
-              flexWrap: "wrap",
-              gap: 12,
-            }}
-          >
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div
-                style={{
-                  fontSize: 11,
-                  fontWeight: 600,
-                  color: "rgba(0,0,0,0.50)",
-                  textTransform: "uppercase",
-                  letterSpacing: 1,
-                  marginBottom: 4,
-                }}
-              >
-                {group.category}
-              </div>
-              <h1
-                style={{
-                  fontSize: 26,
-                  fontWeight: 800,
-                  color: "rgba(0,0,0,0.90)",
-                  lineHeight: 1.2,
-                  marginBottom: 6,
-                }}
-              >
-                {group.name}
-              </h1>
-              <div
-                style={{
-                  fontSize: 13,
-                  color: "rgba(0,0,0,0.60)",
-                  marginBottom: 10,
-                }}
-              >
-                {(group.memberCount / 1000).toFixed(1)}K thành viên · Nhóm công
-                nghệ
-              </div>
-              <div style={{ display: "flex", gap: -6, marginBottom: 8 }}>
-                {allMembers.slice(0, 5).map((m, i) => (
-                  <div
-                    key={i}
-                    style={{ marginLeft: i === 0 ? 0 : -8, zIndex: 5 - i }}
-                  >
-                    <Avatar name={m} size={30} border />
-                  </div>
-                ))}
-                <span
-                  style={{
-                    marginLeft: 8,
-                    fontSize: 12,
-                    color: "rgba(0,0,0,0.55)",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  và {(group.memberCount - 5).toLocaleString("vi-VN")} thành
-                  viên khác
-                </span>
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: 6,
-                  marginTop: 8,
-                }}
-              >
-                {group.topics.map((t) => (
-                  <span
-                    key={t}
-                    style={{
-                      background: "#EAF1FA",
-                      color: "#0A66C2",
-                      borderRadius: 4,
-                      padding: "3px 10px",
-                      fontSize: 12,
-                      fontWeight: 600,
-                    }}
-                  >
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div
-              style={{
-                display: "flex",
-                gap: 10,
-                flexShrink: 0,
-                alignItems: "center",
-              }}
-            >
-              <button
-                onClick={onBack}
-                style={{
-                  background: "none",
-                  border: "1px solid rgba(0,0,0,0.20)",
-                  borderRadius: 9999,
-                  padding: "7px 16px",
-                  fontSize: 13,
-                  fontWeight: 600,
-                  cursor: "pointer",
-                  color: "rgba(0,0,0,0.65)",
-                  fontFamily: "inherit",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 5,
-                  transition: "background 150ms",
-                }}
-                onMouseEnter={(e) => {
-                  ; (e.currentTarget as HTMLElement).style.background = "#F4F2EE"
-                }}
-                onMouseLeave={(e) => {
-                  ; (e.currentTarget as HTMLElement).style.background = "none"
-                }}
-              >
-                <CaretLeft size={14} weight="bold" /> Quay lại
-              </button>
-              <button
-                onClick={() => setJoined((v) => !v)}
-                style={{
-                  borderRadius: 9999,
-                  border: "none",
-                  cursor: "pointer",
-                  padding: "8px 22px",
-                  fontSize: 14,
-                  fontWeight: 700,
-                  fontFamily: "inherit",
-                  background: joined ? "#E5F6E8" : "#0A66C2",
-                  color: joined ? "#057642" : "#fff",
-                  transition: "all 150ms",
-                }}
-              >
-                {joined ? "Đã tham gia" : "Tham gia nhóm"}
-              </button>
-
-            </div>
-          </div>
-
-          {/* Tabs */}
-          <div
-            style={{
-              display: "flex",
-              gap: 0,
-              marginTop: 16,
-              borderTop: "1px solid rgba(0,0,0,0.08)",
-              paddingTop: 4,
-              marginLeft: -24,
-              marginRight: -24,
-              paddingLeft: 24,
-              overflowX: "auto",
-            }}
-          >
-            {GROUP_DETAIL_TABS.map((tab) => (
-              <button
-                key={tab}
-                onClick={() => { setActiveTab(tab); setAdminTab(null); }}
-                style={{
-                  padding: "10px 16px",
-                  background: "none",
-                  cursor: "pointer",
-                  fontSize: 14,
-                  fontWeight: 600,
-                  fontFamily: "inherit",
-                  whiteSpace: "nowrap",
-                  flexShrink: 0,
-                  color:
-                    activeTab === tab ? "rgba(0,0,0,0.90)" : "rgba(0,0,0,0.55)",
-                  borderTop: "none",
-                  borderLeft: "none",
-                  borderRight: "none",
-                  borderBottom:
-                    activeTab === tab
-                      ? "2px solid rgba(0,0,0,0.90)"
-                      : "2px solid transparent",
-                  transition: "all 150ms",
-                }}
-                onMouseEnter={(e) => {
-                  if (activeTab !== tab)
-                    (e.currentTarget as HTMLElement).style.background =
-                      "#F4F2EE"
-                }}
-                onMouseLeave={(e) => {
-                  ; (e.currentTarget as HTMLElement).style.background = "none"
-                }}
-              >
-                {tab}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Dynamic Layout */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: isManager ? "224px 1fr 300px" : "1fr 300px",
-            gap: 20,
-            alignItems: "start",
-            paddingBottom: 48,
-          }}
-        >
-          {isManager && (
-            <div style={{ background: "#fff", borderRadius: 8, boxShadow: "0 0 0 1px rgba(0,0,0,0.08)", padding: "16px 0", position: "sticky", top: 20 }}>
-              <h3 style={{ padding: "0 16px 12px", fontSize: 15, fontWeight: 700, borderBottom: "1px solid rgba(0,0,0,0.08)", marginBottom: 8, color: "rgba(0,0,0,0.90)", margin: 0 }}>Quản lý nhóm</h3>
-              {[{ key: "members", label: "Quản lý thành viên" }, { key: "posts", label: "Quản lý bài viết" }, { key: "admins", label: "Quản trị viên" }].map(item => (
-                <button key={item.key} onClick={() => { setAdminTab(item.key as any); setMgmtSearch(""); }} style={{ display: "block", width: "100%", textAlign: "left", padding: "10px 16px", background: adminTab === item.key ? "#EAF1FA" : "none", color: adminTab === item.key ? "#0A66C2" : "#555", borderLeft: adminTab === item.key ? "3px solid #0A66C2" : "3px solid transparent", borderTop: "none", borderRight: "none", borderBottom: "none", cursor: "pointer", fontWeight: adminTab === item.key ? 700 : 600, fontSize: 14 }}>{item.label}</button>
-              ))}
-            </div>
-          )}
-
-          {/* Middle Column */}
-          <div style={{ minWidth: 0 }}>
-            {adminTab === "members" ? (
-              <div style={{ background: "#fff", borderRadius: 8, boxShadow: "0 0 0 1px rgba(0,0,0,0.08)", padding: 24 }}>
-                <h2 style={{ fontWeight: 700, fontSize: 20, marginBottom: 16, marginTop: 0 }}>Quản lý thành viên</h2>
-                <input value={mgmtSearch} onChange={e => setMgmtSearch(e.target.value)} placeholder="Tìm thành viên..." style={{ width: "100%", padding: "10px 14px", borderRadius: 8, border: "1px solid #ccc", fontSize: 14, marginBottom: 16, boxSizing: "border-box", outline: "none" }} onFocus={e => e.currentTarget.style.borderColor = "#0A66C2"} onBlur={e => e.currentTarget.style.borderColor = "#ccc"} />
-                {(group.members || []).filter((m: any) => m.toLowerCase().includes(mgmtSearch.toLowerCase())).map((m: any) => (
-                  <div key={m} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 0", borderBottom: "1px solid rgba(0,0,0,0.08)" }}>
-                    <span style={{ fontWeight: 600, fontSize: 14 }}>{m}</span>
-                    <button onClick={() => setRemoveMemberTarget(m)} style={{ padding: "6px 14px", borderRadius: 99, border: "1px solid #C03A2B", color: "#C03A2B", background: "#fff", cursor: "pointer", fontSize: 13, fontWeight: 600 }}>Xóa</button>
-                  </div>
-                ))}
-              </div>
-            ) : adminTab === "posts" ? (
-              <div>
-                <div style={{ background: "#fff", borderRadius: 8, boxShadow: "0 0 0 1px rgba(0,0,0,0.08)", padding: "16px 20px", marginBottom: 16 }}>
-                  <h2 style={{ fontWeight: 700, fontSize: 18, marginBottom: 12, marginTop: 0 }}>Quản lý bài viết</h2>
-                  <input value={mgmtSearch} onChange={e => setMgmtSearch(e.target.value)} placeholder="Tìm kiếm bài viết..." style={{ width: "100%", padding: "10px 14px", borderRadius: 8, border: "1px solid rgba(0,0,0,0.15)", fontSize: 14, boxSizing: "border-box", outline: "none" }} onFocus={e => e.currentTarget.style.borderColor = "#0A66C2"} onBlur={e => e.currentTarget.style.borderColor = "rgba(0,0,0,0.15)"} />
-                </div>
-                {(GROUP_POSTS || []).filter((p: any) => p.groupId === group.id && (p.content || "").toLowerCase().includes(mgmtSearch.toLowerCase())).map((p: any) => (
-                  <div key={p.id} style={{ marginBottom: 10 }}>
-                    <FeedPostCard post={p} onLike={(id) => setLikes((prev) => ({ ...prev, [id]: !prev[id] }))} onDelete={(id) => setRemovePostTarget(id)} />
-                  </div>
-                ))}
-              </div>
-            ) : adminTab === "admins" ? (
-              <div style={{ background: "#fff", borderRadius: 8, boxShadow: "0 0 0 1px rgba(0,0,0,0.08)", padding: 24 }}>
-                <h2 style={{ fontWeight: 700, fontSize: 20, marginBottom: 16, marginTop: 0 }}>Quản trị viên</h2>
-                <input value={mgmtSearch} onChange={e => setMgmtSearch(e.target.value)} placeholder="Tìm quản trị viên..." style={{ width: "100%", padding: "10px 14px", borderRadius: 8, border: "1px solid #ccc", fontSize: 14, marginBottom: 16, boxSizing: "border-box", outline: "none" }} onFocus={e => e.currentTarget.style.borderColor = "#0A66C2"} onBlur={e => e.currentTarget.style.borderColor = "#ccc"} />
-                {admins.map((m: any) => (
-                  <div key={m} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 0", borderBottom: "1px solid rgba(0,0,0,0.08)" }}>
-                    <div><span style={{ fontWeight: 600, fontSize: 14 }}>{m}</span><span style={{ color: "rgba(0,0,0,0.60)", fontSize: 13, marginLeft: 12 }}>Quản trị viên đầy đủ</span></div>
-                  </div>
-                ))}
-                <p style={{ color: "rgba(0,0,0,0.55)", fontSize: 13, marginTop: 16 }}>Liên hệ Occupify để thay đổi quyền quản trị viên.</p>
-              </div>
-            ) : (
-              <>
-                {(activeTab === "Thảo luận" || activeTab === "Bài viết") && (
-                  <>
-                    {/* Composer */}
-                    <div
-                      style={{
-                        background: "#fff",
-                        borderRadius: 8,
-                        boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-                        padding: "14px 16px",
-                        marginBottom: 10,
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          gap: 10,
-                          alignItems: "flex-start",
-                        }}
-                      >
-                        <Avatar name={ME.name} size={44} />
-                        <textarea
-                          value={postText}
-                          onChange={(e) => setPostText(e.target.value)}
-                          placeholder={`Chia sẻ với nhóm ${group.name}...`}
-                          rows={2}
-                          style={{
-                            flex: 1,
-                            padding: "9px 12px",
-                            border: "1px solid rgba(0,0,0,0.20)",
-                            borderRadius: 8,
-                            fontSize: 14,
-                            fontFamily: "inherit",
-                            outline: "none",
-                            resize: "none",
-                            color: "rgba(0,0,0,0.80)",
-                          }}
-                          onFocus={(e) =>
-                          ((e.currentTarget as HTMLElement).style.borderColor =
-                            "#0A66C2")
-                          }
-                          onBlur={(e) =>
-                          ((e.currentTarget as HTMLElement).style.borderColor =
-                            "rgba(0,0,0,0.20)")
-                          }
-                        />
-                      </div>
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                          marginTop: 10,
-                        }}
-                      >
-                        <button
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 6,
-                            background: "none",
-                            border: "none",
-                            cursor: "pointer",
-                            fontSize: 13,
-                            color: "rgba(0,0,0,0.60)",
-                            fontFamily: "inherit",
-                            borderRadius: 6,
-                            padding: "6px 10px",
-                          }}
-                          onMouseEnter={(e) =>
-                          ((e.currentTarget as HTMLElement).style.background =
-                            "#F4F2EE")
-                          }
-                          onMouseLeave={(e) =>
-                          ((e.currentTarget as HTMLElement).style.background =
-                            "none")
-                          }
-                        >
-                          <ImageIcon size={18} color="#44712E" /> Ảnh/Video
-                        </button>
-                        <button
-                          style={{
-                            borderRadius: 9999,
-                            border: "none",
-                            background: postText.trim()
-                              ? "#0A66C2"
-                              : "rgba(0,0,0,0.12)",
-                            color: postText.trim() ? "#fff" : "rgba(0,0,0,0.35)",
-                            padding: "7px 20px",
-                            fontSize: 13,
-                            fontWeight: 700,
-                            cursor: postText.trim() ? "pointer" : "default",
-                            fontFamily: "inherit",
-                          }}
-                        >
-                          Đăng bài
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Group posts */}
-                    {groupPosts.length > 0 ? (
-                      groupPosts.map((p) => (
-                        <FeedPostCard
-                          key={p.id}
-                          post={p}
-                          onLike={(id) =>
-                            setLikes((prev) => ({ ...prev, [id]: !prev[id] }))
-                          }
-                        />
-                      ))
-                    ) : (
-                      <div
-                        style={{
-                          background: "#fff",
-                          borderRadius: 8,
-                          boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-                          padding: 32,
-                          textAlign: "center",
-                          color: "rgba(0,0,0,0.45)",
-                          fontSize: 14,
-                        }}
-                      >
-                        Chưa có bài viết nào trong nhóm. Hãy là người đầu tiên!
-                      </div>
-                    )}
-                  </>
-                )}
-
-                {activeTab === "Giới thiệu" && (
-                  <div
-                    style={{
-                      background: "#fff",
-                      borderRadius: 8,
-                      boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-                      padding: 24,
-                    }}
-                  >
-                    <div
-                      style={{ fontSize: 18, fontWeight: 700, marginBottom: 12 }}
-                    >
-                      Về nhóm
-                    </div>
-                    <p
-                      style={{
-                        fontSize: 14,
-                        color: "rgba(0,0,0,0.80)",
-                        lineHeight: 1.75,
-                      }}
-                    >
-                      {group.description}
-                    </p>
-                    <div
-                      style={{
-                        marginTop: 20,
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: 12,
-                      }}
-                    >
-                      {[
-                        { label: "Danh mục", value: group.category },
-                        {
-                          label: "Thành viên",
-                          value: `${group.memberCount.toLocaleString("vi-VN")} thành viên`,
-                        },
-                        { label: "Chủ đề", value: group.topics.join(", ") },
-                      ].map(({ label, value }) => (
-                        <div key={label} style={{ display: "flex", gap: 10 }}>
-                          <span
-                            style={{
-                              fontSize: 13,
-                              fontWeight: 600,
-                              color: "rgba(0,0,0,0.55)",
-                              minWidth: 100,
-                            }}
-                          >
-                            {label}
-                          </span>
-                          <span style={{ fontSize: 13, color: "rgba(0,0,0,0.80)" }}>
-                            {value}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {activeTab === "Thành viên" && (
-                  <div
-                    style={{
-                      background: "#fff",
-                      borderRadius: 8,
-                      boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-                      padding: 24,
-                    }}
-                  >
-                    <div
-                      style={{ fontSize: 18, fontWeight: 700, marginBottom: 16 }}
-                    >
-                      Thành viên ({allMembers.length})
-                    </div>
-                    <div
-                      style={{ display: "flex", flexDirection: "column", gap: 14 }}
-                    >
-                      {allMembers.map((m, i) => (
-                        <div
-                          key={i}
-                          style={{ display: "flex", alignItems: "center", gap: 12 }}
-                        >
-                          <Avatar name={m} size={44} />
-                          <div style={{ flex: 1 }}>
-                            <div
-                              style={{
-                                fontWeight: 700,
-                                fontSize: 14,
-                                color: "rgba(0,0,0,0.90)",
-                              }}
-                            >
-                              {m}
-                            </div>
-                            <div
-                              style={{ fontSize: 12, color: "rgba(0,0,0,0.55)" }}
-                            >
-                              Thành viên{i < 2 ? " · Quản trị viên" : ""}
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </>
-            )}
-
-          </div>
-
-          {/* Sidebar */}
-          <div>
-            {/* About */}
-            <div
-              style={{
-                background: "#fff",
-                borderRadius: 8,
-                boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-                padding: 18,
-                marginBottom: 14,
-              }}
-            >
-              <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 10 }}>
-                Giới thiệu
-              </div>
-              <p
-                style={{
-                  fontSize: 13,
-                  color: "rgba(0,0,0,0.70)",
-                  lineHeight: 1.65,
-                }}
-              >
-                {group.description.slice(0, 120)}...
-              </p>
-            </div>
-
-            {/* Members */}
-            <div
-              style={{
-                background: "#fff",
-                borderRadius: 8,
-                boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-                padding: 18,
-                marginBottom: 14,
-              }}
-            >
-              <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 12 }}>
-                Thành viên
-              </div>
-              <div
-                style={{ display: "flex", flexDirection: "column", gap: 10 }}
-              >
-                {allMembers.slice(0, 4).map((m, i) => (
-                  <div
-                    key={i}
-                    style={{ display: "flex", alignItems: "center", gap: 8 }}
-                  >
-                    <Avatar name={m} size={36} />
-                    <div
-                      style={{
-                        fontSize: 13,
-                        fontWeight: 600,
-                        color: "rgba(0,0,0,0.80)",
-                      }}
-                    >
-                      {m}
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <button
-                style={{
-                  fontSize: 13,
-                  color: "#0A66C2",
-                  fontWeight: 600,
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  padding: "8px 0 0",
-                  fontFamily: "inherit",
-                }}
-              >
-                Xem tất cả
-              </button>
-            </div>
-
-            {/* Admins */}
-            <div
-              style={{
-                background: "#fff",
-                borderRadius: 8,
-                boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-                padding: 18,
-              }}
-            >
-              <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 12 }}>
-                Quản trị viên
-              </div>
-              <div
-                style={{ display: "flex", flexDirection: "column", gap: 10 }}
-              >
-                {admins.map((m, i) => (
-                  <div
-                    key={i}
-                    style={{ display: "flex", alignItems: "center", gap: 8 }}
-                  >
-                    <Avatar name={m} size={36} />
-                    <div>
-                      <div
-                        style={{
-                          fontSize: 13,
-                          fontWeight: 700,
-                          color: "rgba(0,0,0,0.90)",
-                        }}
-                      >
-                        {m}
-                      </div>
-                      <div style={{ fontSize: 11, color: "rgba(0,0,0,0.50)" }}>
-                        Quản trị viên
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {removePostTarget !== null && (
-        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.45)", zIndex: 60, display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <div style={{ background: "#fff", borderRadius: 12, padding: 32, maxWidth: 400, width: "100%", boxShadow: "0 8px 32px rgba(0,0,0,0.18)" }}>
-            <p style={{ fontWeight: 700, fontSize: 18, marginBottom: 12 }}>Xác nhận xóa bài viết</p>
-            <p style={{ color: "#555", marginBottom: 24, fontSize: 14 }}>Bạn có chắc chắn muốn xóa bài viết này không? Hành động này không thể hoàn tác.</p>
-            <div style={{ display: "flex", gap: 12, justifyContent: "flex-end" }}>
-              <button onClick={() => setRemovePostTarget(null)} style={{ padding: "8px 20px", borderRadius: 9999, border: "1px solid rgba(0,0,0,0.20)", background: "#fff", color: "rgba(0,0,0,0.70)", cursor: "pointer", fontWeight: 600, fontFamily: "inherit" }}>Hủy</button>
-              <button onClick={() => { setRemovePostTarget(null); }} style={{ padding: "8px 20px", borderRadius: 9999, border: "none", background: "#C03A2B", color: "#fff", cursor: "pointer", fontWeight: 600, fontFamily: "inherit" }}>Xóa bài viết</button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {removeMemberTarget && (
-        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.45)", zIndex: 60, display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <div style={{ background: "#fff", borderRadius: 12, padding: 32, maxWidth: 400, width: "100%", boxShadow: "0 8px 32px rgba(0,0,0,0.18)" }}>
-            <p style={{ fontWeight: 700, fontSize: 18, marginBottom: 12 }}>Xác nhận xóa thành viên</p>
-            <p style={{ color: "#555", marginBottom: 24, fontSize: 14 }}>Xác nhận xóa thành viên <b>{removeMemberTarget}</b>?</p>
-            <div style={{ display: "flex", gap: 12, justifyContent: "flex-end" }}>
-              <button onClick={() => setRemoveMemberTarget(null)} style={{ padding: "8px 20px", borderRadius: 9999, border: "1px solid rgba(0,0,0,0.20)", background: "#fff", color: "rgba(0,0,0,0.70)", cursor: "pointer", fontWeight: 600, fontFamily: "inherit" }}>Hủy</button>
-              <button onClick={() => setRemoveMemberTarget(null)} style={{ padding: "8px 20px", borderRadius: 9999, border: "none", background: "#C03A2B", color: "#fff", cursor: "pointer", fontWeight: 600, fontFamily: "inherit" }}>Xóa thành viên</button>
-            </div>
-          </div>
-        </div>
-      )}
-
     </div>
   )
 }
@@ -20445,15 +16233,11 @@ function FinancialHistoryPage({ onBack }: { onBack: () => void }) {
 
 function MainApp({ onLogout }: { onLogout?: () => void }) {
   const [activeNav, setActiveNav] = useState("home")
-  const [modalOpen, setModalOpen] = useState(false)
-  const [toast, setToast] = useState<string | null>(null)
+    const [toast, setToast] = useState<string | null>(null)
   const [selectedContract, setSelectedContract] = useState<Contract | null>(
     null,
   )
-  const [createGroupOpen, setCreateGroupOpen] = useState(false)
-  const [selectedGroup, setSelectedGroup] = useState<Group | null>(null)
-  const [userGroups, setUserGroups] = useState<Group[]>(TECH_GROUPS)
-  const [myProfileOpen, setMyProfileOpen] = useState(false)
+        const [myProfileOpen, setMyProfileOpen] = useState(false)
   const [financialHistoryOpen, setFinancialHistoryOpen] = useState(false)
   const [viewingUser, setViewingUser] = useState<string | null>(null)
   const openMyProfile = () => {
@@ -20501,28 +16285,6 @@ function MainApp({ onLogout }: { onLogout?: () => void }) {
           onLogout={onLogout}
         />
         <MyProfilePage onBack={closeMyProfile} isOwnProfile={!viewingUser} />
-      </>
-    )
-  }
-
-  if (selectedGroup) {
-    return (
-      <>
-        <Navbar
-          active={activeNav}
-          setActive={(v) => {
-            setSelectedGroup(null)
-            setActiveNav(v)
-          }}
-          onOpenMyProfile={openMyProfile}
-          onOpenFinancialHistory={() => setFinancialHistoryOpen(true)}
-          onLogout={onLogout}
-        />
-        <GroupDetailPage
-          group={selectedGroup}
-          onBack={() => setSelectedGroup(null)}
-          isManager={true}
-        />
       </>
     )
   }
@@ -20575,101 +16337,29 @@ function MainApp({ onLogout }: { onLogout?: () => void }) {
       />
 
       {activeNav === "home" && (
-        <div
-          className="three-col"
-          style={{
-            maxWidth: 1128,
-            margin: "0 auto",
-            padding: "24px 16px",
-            display: "grid",
-            gridTemplateColumns: "226px minmax(0,552px) 300px",
-            gap: 20,
-            alignItems: "start",
-          }}
-        >
-          <div>
-            <ProfileCard onOpenFinancialHistory={() => setFinancialHistoryOpen(true)} />
-          </div>
-          <div>
-            <CreatePostCard
-              onOpenModal={() => setModalOpen(true)}
-              onCreateGroup={() => setCreateGroupOpen(true)}
-            />
-            {[...INITIAL_POSTS, ...GROUP_POSTS].map((post) => (
-              <FeedPostCard
-                key={post.id}
-                post={post}
-                onLike={() => { }}
-                onOpenGroup={(id) => {
-                  const g = userGroups.find((g) => g.id === id)
-                  if (g) setSelectedGroup(g)
-                }}
-              />
-            ))}
-          </div>
-          <div>
-            <GroupsNewsCard />
-            <FooterLinks />
-          </div>
-        </div>
+        <NewHomePage
+          onSelectContract={setSelectedContract}
+          onViewProfile={openOtherProfile}
+          onOpenFinancialHistory={() => setFinancialHistoryOpen(true)}
+          onNavigateProjects={() => setActiveNav("projects")}
+        />
       )}
 
-      {activeNav === "network" && (
-        <NetworkPage onViewProfile={openOtherProfile} />
-      )}
-
-      {activeNav === "jobs" && (
-        <JobsPage
+      {activeNav === "projects" && (
+        <ProjectsManagementPage
           onSelectContract={setSelectedContract}
           onViewProfile={openOtherProfile}
         />
       )}
 
-      {activeNav === "messaging" && <MessagingPage />}
-
       {activeNav === "notifications" && <NotificationsPage />}
 
-      {!["home", "network", "jobs", "messaging", "notifications"].includes(
-        activeNav,
-      ) && (
-          <div
-            style={{
-              maxWidth: 1128,
-              margin: "80px auto",
-              textAlign: "center",
-              color: "rgba(0,0,0,0.45)",
-              padding: "0 16px",
-            }}
-          >
-            <div style={{ fontSize: 48, marginBottom: 12 }}>🚧</div>
-            <div
-              style={{
-                fontWeight: 700,
-                fontSize: 20,
-                marginBottom: 6,
-                color: "rgba(0,0,0,0.90)",
-              }}
-            >
-              Đang phát triển
-            </div>
-            <div style={{ fontSize: 14 }}>Tính năng này sẽ sớm ra mắt.</div>
-          </div>
-        )}
-
-      {createGroupOpen && (
-        <CreateGroupModal
-          onClose={() => setCreateGroupOpen(false)}
-          onCreate={(g) => {
-            setUserGroups((prev) => [g, ...prev])
-            setToast(`Nhóm "${g.name}" đã được tạo!`)
-          }}
-        />
-      )}
-
-      {modalOpen && (
-        <CreatePostModal
-          onClose={() => setModalOpen(false)}
-          onPost={() => setToast("Bài đăng đã được chia sẻ!")}
+      {!["home", "projects", "notifications"].includes(activeNav) && (
+        <NewHomePage
+          onSelectContract={setSelectedContract}
+          onViewProfile={openOtherProfile}
+          onOpenFinancialHistory={() => setFinancialHistoryOpen(true)}
+          onNavigateProjects={() => setActiveNav("projects")}
         />
       )}
 
