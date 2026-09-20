@@ -74,6 +74,11 @@ import {
   ArrowUpRight,
   ArrowDownRight,
   Funnel,
+  Bank,
+  Copy,
+  Check,
+  QrCode,
+  ArrowDownLeft,
 } from "@phosphor-icons/react"
 
 function nameToGmail(name: string): string {
@@ -229,12 +234,14 @@ function Navbar({
   onOpenMyProfile,
   onLogout,
   onOpenFinancialHistory,
+  onOpenWallet,
 }: {
   active: string
   setActive: (v: string) => void
   onOpenMyProfile?: () => void
   onLogout?: () => void
   onOpenFinancialHistory?: () => void
+  onOpenWallet?: () => void
 }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
@@ -500,6 +507,13 @@ function Navbar({
                   action: () => {
                     setMenuOpen(false)
                     onOpenMyProfile?.()
+                  },
+                },
+                {
+                  label: "Ví của tôi",
+                  action: () => {
+                    setMenuOpen(false)
+                    onOpenWallet?.()
                   },
                 },
                 {
@@ -7367,6 +7381,7 @@ function NewHomePage({
   onNavigateProjects,
   savedJobIds = [],
   onToggleSaveJob,
+  onOpenWallet,
 }: {
   onSelectContract?: (c: Contract) => void
   onViewProfile?: (name?: string) => void
@@ -7374,6 +7389,7 @@ function NewHomePage({
   onNavigateProjects?: () => void
   savedJobIds?: number[]
   onToggleSaveJob?: (id: number) => void
+  onOpenWallet?: () => void
 }) {
   const [subPage, setSubPage] = useState<string | null>(null)
   const [toast, setToast] = useState<string | null>(null)
@@ -8511,34 +8527,64 @@ function NewHomePage({
               </div>
             </div>
 
-            <button
-              onClick={onOpenFinancialHistory}
-              style={{
-                width: "100%",
-                background: "#EAF1FA",
-                color: "#0A66C2",
-                border: "none",
-                borderRadius: 9999,
-                padding: "8px 16px",
-                fontSize: 13,
-                fontWeight: 700,
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 6,
-                transition: "background 150ms",
-              }}
-              onMouseEnter={(e) =>
-                ((e.currentTarget as HTMLElement).style.background = "#d3e5f8")
-              }
-              onMouseLeave={(e) =>
-                ((e.currentTarget as HTMLElement).style.background = "#EAF1FA")
-              }
-            >
-              <span>Lịch sử thu chi & Rút tiền</span>
-              <ArrowRight size={13} weight="bold" />
-            </button>
+            <div style={{ display: "flex", gap: 8 }}>
+              <button
+                onClick={onOpenWallet}
+                style={{
+                  flex: 1,
+                  background: "#0A66C2",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: 9999,
+                  padding: "8px 12px",
+                  fontSize: 13,
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 5,
+                  transition: "background 150ms",
+                }}
+                onMouseEnter={(e) =>
+                  ((e.currentTarget as HTMLElement).style.background = "#084fa0")
+                }
+                onMouseLeave={(e) =>
+                  ((e.currentTarget as HTMLElement).style.background = "#0A66C2")
+                }
+              >
+                <Wallet size={14} weight="bold" />
+                <span>Ví của tôi</span>
+              </button>
+              <button
+                onClick={onOpenFinancialHistory}
+                style={{
+                  flex: 1,
+                  background: "#EAF1FA",
+                  color: "#0A66C2",
+                  border: "none",
+                  borderRadius: 9999,
+                  padding: "8px 12px",
+                  fontSize: 13,
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 4,
+                  transition: "background 150ms",
+                }}
+                onMouseEnter={(e) =>
+                  ((e.currentTarget as HTMLElement).style.background = "#d3e5f8")
+                }
+                onMouseLeave={(e) =>
+                  ((e.currentTarget as HTMLElement).style.background = "#EAF1FA")
+                }
+              >
+                <span>Thu chi</span>
+                <ArrowRight size={12} weight="bold" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -14965,6 +15011,1602 @@ function FinancialHistoryPage({ onBack }: { onBack: () => void }) {
   )
 }
 
+// ─── My Wallet & SePay Integration ─────────────────────────────────────────────
+
+interface WalletTransaction {
+  id: string
+  type: "deposit" | "withdraw" | "income"
+  title: string
+  subtitle: string
+  amount: number
+  date: string
+  time: string
+  status: "success" | "pending" | "failed"
+  code: string
+  bankInfo?: string
+}
+
+const VIETNAM_BANKS = [
+  { code: "VCB", shortName: "Vietcombank", fullName: "Ngân hàng TMCP Ngoại thương Việt Nam" },
+  { code: "MB", shortName: "MB Bank", fullName: "Ngân hàng TMCP Quân Đội" },
+  { code: "TCB", shortName: "Techcombank", fullName: "Ngân hàng TMCP Kỹ Thương Việt Nam" },
+  { code: "ACB", shortName: "ACB", fullName: "Ngân hàng TMCP Á Châu" },
+  { code: "BIDV", shortName: "BIDV", fullName: "Ngân hàng TMCP Đầu tư và Phát triển Việt Nam" },
+  { code: "CTG", shortName: "VietinBank", fullName: "Ngân hàng TMCP Công Thương Việt Nam" },
+  { code: "VPB", shortName: "VPBank", fullName: "Ngân hàng TMCP Việt Nam Thịnh Vượng" },
+  { code: "TPB", shortName: "TPBank", fullName: "Ngân hàng TMCP Tiên Phong" },
+  { code: "STB", shortName: "Sacombank", fullName: "Ngân hàng TMCP Sài Gòn Thương Tín" },
+  { code: "VIB", shortName: "VIB", fullName: "Ngân hàng TMCP Quốc Tế Việt Nam" },
+  { code: "HDB", shortName: "HDBank", fullName: "Ngân hàng TMCP Phát triển TP.HCM" },
+]
+
+const INITIAL_WALLET_TRANSACTIONS: WalletTransaction[] = [
+  {
+    id: "tx-1",
+    type: "deposit",
+    title: "Nạp tiền vào ví",
+    subtitle: "Chuyển khoản VietQR tự động 24/7 (Đơn hàng OPF-88912)",
+    amount: 10000000,
+    date: "18/09/2026",
+    time: "15:45",
+    status: "success",
+    code: "SEPAY-88912",
+  },
+  {
+    id: "tx-3",
+    type: "withdraw",
+    title: "Rút tiền về Vietcombank",
+    subtitle: "STK: 1029384756 • NGUYEN MINH KHOA",
+    amount: -5000000,
+    date: "14/09/2026",
+    time: "18:20",
+    status: "success",
+    code: "WD-881923",
+    bankInfo: "Vietcombank - 1029384756",
+  },
+  {
+    id: "tx-4",
+    type: "deposit",
+    title: "Nạp tiền vào ví",
+    subtitle: "Chuyển khoản VietQR tự động 24/7 (Đơn hàng OPF-76291)",
+    amount: 2500000,
+    date: "10/09/2026",
+    time: "09:12",
+    status: "success",
+    code: "SEPAY-76291",
+  },
+  {
+    id: "tx-5",
+    type: "withdraw",
+    title: "Rút tiền về MB Bank",
+    subtitle: "STK: 0988776655 • NGUYEN MINH KHOA",
+    amount: -3000000,
+    date: "05/09/2026",
+    time: "14:05",
+    status: "success",
+    code: "WD-661209",
+    bankInfo: "MB Bank - 0988776655",
+  },
+]
+
+function formatVND(amount: number): string {
+  return new Intl.NumberFormat("vi-VN").format(Math.abs(amount)) + " ₫"
+}
+
+// ─── Deposit Modal ─────────────────────────────────────────────────────────────
+
+function DepositModal({
+  balance,
+  onClose,
+  onProceedToSepay,
+}: {
+  balance: number
+  onClose: () => void
+  onProceedToSepay: (amount: number) => void
+}) {
+  const [depositAmount, setDepositAmount] = useState<string>("1000000")
+  const [customError, setCustomError] = useState<string | null>(null)
+
+  const quickAmounts = [100000, 200000, 500000, 1000000, 2000000, 5000000]
+  const numericAmount = parseInt(depositAmount.replace(/\D/g, ""), 10) || 0
+
+  const handleQuickAdd = (val: number) => {
+    setDepositAmount(val.toString())
+    setCustomError(null)
+  }
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawVal = e.target.value.replace(/\D/g, "")
+    setDepositAmount(rawVal)
+    if (customError) setCustomError(null)
+  }
+
+  const handleProceed = () => {
+    if (numericAmount < 10000) {
+      setCustomError("Số tiền nạp tối thiểu là 10.000 ₫")
+      return
+    }
+    onProceedToSepay(numericAmount)
+  }
+
+  return (
+    <div
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 500,
+        background: "rgba(0,0,0,0.60)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 16,
+      }}
+      onClick={onClose}
+    >
+      <div
+        style={{
+          background: "#fff",
+          borderRadius: 12,
+          maxWidth: 480,
+          width: "100%",
+          boxShadow: "0 20px 40px rgba(0,0,0,0.25)",
+          overflow: "hidden",
+          display: "flex",
+          flexDirection: "column",
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div
+          style={{
+            padding: "20px 24px",
+            borderBottom: "1px solid rgba(0,0,0,0.08)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <div
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: 10,
+                background: "#EAF1FA",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#0A66C2",
+              }}
+            >
+              <Wallet size={22} weight="bold" />
+            </div>
+            <div>
+              <h3 style={{ fontSize: 18, fontWeight: 700, color: "rgba(0,0,0,0.90)" }}>
+                Nạp tiền vào ví
+              </h3>
+              <p style={{ fontSize: 13, color: "rgba(0,0,0,0.55)" }}>
+                Nhập số tiền bạn muốn nạp vào tài khoản
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              color: "rgba(0,0,0,0.50)",
+              padding: 4,
+              borderRadius: 6,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <X size={20} weight="bold" />
+          </button>
+        </div>
+
+        {/* Body */}
+        <div style={{ padding: "24px", display: "flex", flexDirection: "column", gap: 20 }}>
+          {/* Current balance reminder */}
+          <div
+            style={{
+              background: "#F8FAFC",
+              border: "1px solid rgba(0,0,0,0.06)",
+              borderRadius: 8,
+              padding: "12px 16px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <span style={{ fontSize: 13, color: "rgba(0,0,0,0.60)", fontWeight: 500 }}>
+              Số dư khả dụng hiện tại:
+            </span>
+            <span style={{ fontSize: 15, fontWeight: 700, color: "#0A66C2" }}>
+              {formatVND(balance)}
+            </span>
+          </div>
+
+          {/* Amount input */}
+          <div>
+            <label
+              style={{
+                display: "block",
+                fontSize: 13,
+                fontWeight: 600,
+                color: "rgba(0,0,0,0.80)",
+                marginBottom: 8,
+              }}
+            >
+              Nhập số tiền muốn nạp <span style={{ color: "#C03A2B" }}>*</span>
+            </label>
+            <div
+              style={{
+                position: "relative",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <input
+                type="text"
+                value={numericAmount > 0 ? new Intl.NumberFormat("vi-VN").format(numericAmount) : ""}
+                placeholder="0"
+                onChange={handleInputChange}
+                autoFocus
+                style={{
+                  width: "100%",
+                  height: 48,
+                  padding: "0 40px 0 16px",
+                  borderRadius: 8,
+                  border: customError
+                    ? "2px solid #C03A2B"
+                    : "1px solid rgba(0,0,0,0.20)",
+                  fontSize: 18,
+                  fontWeight: 700,
+                  color: "rgba(0,0,0,0.90)",
+                  outline: "none",
+                }}
+                onFocus={(e) => {
+                  if (!customError) e.target.style.borderColor = "#0A66C2"
+                }}
+                onBlur={(e) => {
+                  if (!customError) e.target.style.borderColor = "rgba(0,0,0,0.20)"
+                }}
+              />
+              <span
+                style={{
+                  position: "absolute",
+                  right: 16,
+                  fontSize: 16,
+                  fontWeight: 700,
+                  color: "rgba(0,0,0,0.45)",
+                  pointerEvents: "none",
+                }}
+              >
+                ₫
+              </span>
+            </div>
+            {customError && (
+              <div style={{ fontSize: 12, color: "#C03A2B", marginTop: 6, fontWeight: 500 }}>
+                {customError}
+              </div>
+            )}
+          </div>
+
+          {/* Quick choices */}
+          <div>
+            <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(0,0,0,0.60)", marginBottom: 8 }}>
+              Chọn nhanh số tiền:
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 }}>
+              {quickAmounts.map((q) => {
+                const isSelected = numericAmount === q
+                return (
+                  <button
+                    key={q}
+                    type="button"
+                    onClick={() => handleQuickAdd(q)}
+                    style={{
+                      padding: "9px 8px",
+                      borderRadius: 6,
+                      border: isSelected ? "1.5px solid #0A66C2" : "1px solid rgba(0,0,0,0.12)",
+                      background: isSelected ? "#EAF1FA" : "#fff",
+                      color: isSelected ? "#0A66C2" : "rgba(0,0,0,0.80)",
+                      fontSize: 13,
+                      fontWeight: 600,
+                      cursor: "pointer",
+                      transition: "all 120ms ease",
+                    }}
+                  >
+                    +{new Intl.NumberFormat("vi-VN").format(q)}đ
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div
+          style={{
+            padding: "16px 24px",
+            borderTop: "1px solid rgba(0,0,0,0.08)",
+            display: "flex",
+            justifyContent: "flex-end",
+            gap: 12,
+            background: "#FAFAF9",
+          }}
+        >
+          <button
+            onClick={onClose}
+            style={{
+              padding: "10px 18px",
+              borderRadius: 8,
+              border: "1px solid rgba(0,0,0,0.15)",
+              background: "#fff",
+              fontSize: 14,
+              fontWeight: 600,
+              color: "rgba(0,0,0,0.70)",
+              cursor: "pointer",
+            }}
+          >
+            Hủy
+          </button>
+          <button
+            onClick={handleProceed}
+            disabled={numericAmount < 10000}
+            style={{
+              padding: "10px 22px",
+              borderRadius: 8,
+              border: "none",
+              background: numericAmount >= 10000 ? "#0A66C2" : "#94B4DE",
+              fontSize: 14,
+              fontWeight: 600,
+              color: "#fff",
+              cursor: numericAmount >= 10000 ? "pointer" : "not-allowed",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+              boxShadow: numericAmount >= 10000 ? "0 2px 6px rgba(10,102,194,0.3)" : "none",
+            }}
+          >
+            Đến trang giao dịch <ArrowRight size={16} weight="bold" />
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ─── Withdraw Modal ────────────────────────────────────────────────────────────
+
+function WithdrawModal({
+  balance,
+  onClose,
+  onConfirmWithdraw,
+}: {
+  balance: number
+  onClose: () => void
+  onConfirmWithdraw: (bank: string, accountNumber: string, amount: number, accountName: string) => void
+}) {
+  const [selectedBank, setSelectedBank] = useState(VIETNAM_BANKS[0].shortName)
+  const [accountNumber, setAccountNumber] = useState("1029384756")
+  const [accountName] = useState("NGUYEN MINH KHOA")
+  const [withdrawAmount, setWithdrawAmount] = useState<string>("5000000")
+  const [errorMsg, setErrorMsg] = useState<string | null>(null)
+
+  const numericAmount = parseInt(withdrawAmount.replace(/\D/g, ""), 10) || 0
+
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawVal = e.target.value.replace(/\D/g, "")
+    setWithdrawAmount(rawVal)
+    if (errorMsg) setErrorMsg(null)
+  }
+
+  const handleWithdrawAll = () => {
+    setWithdrawAmount(balance.toString())
+    if (errorMsg) setErrorMsg(null)
+  }
+
+  const handleSubmit = () => {
+    if (!accountNumber.trim()) {
+      setErrorMsg("Vui lòng nhập số tài khoản ngân hàng")
+      return
+    }
+    if (numericAmount < 50000) {
+      setErrorMsg("Số tiền rút tối thiểu là 50.000 ₫")
+      return
+    }
+    if (numericAmount > balance) {
+      setErrorMsg(`Số tiền rút vượt quá số dư khả dụng (${formatVND(balance)})`)
+      return
+    }
+    onConfirmWithdraw(selectedBank, accountNumber.trim(), numericAmount, accountName)
+  }
+
+  return (
+    <div
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 500,
+        background: "rgba(0,0,0,0.60)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 16,
+      }}
+      onClick={onClose}
+    >
+      <div
+        style={{
+          background: "#fff",
+          borderRadius: 12,
+          maxWidth: 500,
+          width: "100%",
+          boxShadow: "0 20px 40px rgba(0,0,0,0.25)",
+          overflow: "hidden",
+          display: "flex",
+          flexDirection: "column",
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div
+          style={{
+            padding: "20px 24px",
+            borderBottom: "1px solid rgba(0,0,0,0.08)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <div
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: 10,
+                background: "#FEE2E2",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#C03A2B",
+              }}
+            >
+              <Bank size={22} weight="bold" />
+            </div>
+            <div>
+              <h3 style={{ fontSize: 18, fontWeight: 700, color: "rgba(0,0,0,0.90)" }}>
+                Rút tiền về tài khoản ngân hàng
+              </h3>
+              <p style={{ fontSize: 13, color: "rgba(0,0,0,0.55)" }}>
+                Chuyển khoản liên ngân hàng 24/7 tức thì
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              color: "rgba(0,0,0,0.50)",
+              padding: 4,
+              borderRadius: 6,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <X size={20} weight="bold" />
+          </button>
+        </div>
+
+        {/* Body */}
+        <div style={{ padding: "24px", display: "flex", flexDirection: "column", gap: 18 }}>
+          {/* Balance card */}
+          <div
+            style={{
+              background: "#F8FAFC",
+              border: "1px solid rgba(0,0,0,0.06)",
+              borderRadius: 8,
+              padding: "12px 16px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <span style={{ fontSize: 13, color: "rgba(0,0,0,0.60)", fontWeight: 500 }}>
+              Số dư khả dụng để rút:
+            </span>
+            <span style={{ fontSize: 16, fontWeight: 700, color: "#137333" }}>
+              {formatVND(balance)}
+            </span>
+          </div>
+
+          {/* Bank selector */}
+          <div>
+            <label
+              style={{
+                display: "block",
+                fontSize: 13,
+                fontWeight: 600,
+                color: "rgba(0,0,0,0.80)",
+                marginBottom: 6,
+              }}
+            >
+              Chọn ngân hàng nhận tiền <span style={{ color: "#C03A2B" }}>*</span>
+            </label>
+            <select
+              value={selectedBank}
+              onChange={(e) => setSelectedBank(e.target.value)}
+              style={{
+                width: "100%",
+                height: 44,
+                padding: "0 14px",
+                borderRadius: 8,
+                border: "1px solid rgba(0,0,0,0.20)",
+                fontSize: 14,
+                fontWeight: 600,
+                color: "rgba(0,0,0,0.90)",
+                background: "#fff",
+                outline: "none",
+                cursor: "pointer",
+              }}
+            >
+              {VIETNAM_BANKS.map((b) => (
+                <option key={b.code} value={b.shortName}>
+                  [{b.code}] {b.shortName} - {b.fullName}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Account number */}
+          <div>
+            <label
+              style={{
+                display: "block",
+                fontSize: 13,
+                fontWeight: 600,
+                color: "rgba(0,0,0,0.80)",
+                marginBottom: 6,
+              }}
+            >
+              Số tài khoản thụ hưởng <span style={{ color: "#C03A2B" }}>*</span>
+            </label>
+            <input
+              type="text"
+              value={accountNumber}
+              onChange={(e) => {
+                setAccountNumber(e.target.value)
+                if (errorMsg) setErrorMsg(null)
+              }}
+              placeholder="Nhập số tài khoản ngân hàng"
+              style={{
+                width: "100%",
+                height: 44,
+                padding: "0 14px",
+                borderRadius: 8,
+                border: "1px solid rgba(0,0,0,0.20)",
+                fontSize: 15,
+                fontWeight: 600,
+                color: "rgba(0,0,0,0.90)",
+                outline: "none",
+              }}
+            />
+            <div
+              style={{
+                fontSize: 12,
+                color: "rgba(0,0,0,0.55)",
+                marginTop: 5,
+                display: "flex",
+                alignItems: "center",
+                gap: 5,
+              }}
+            >
+              <CheckCircle size={13} color="#137333" weight="fill" />
+              Tên người thụ hưởng: <strong style={{ color: "rgba(0,0,0,0.85)" }}>{accountName}</strong>
+            </div>
+          </div>
+
+          {/* Amount input */}
+          <div>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+              <label
+                style={{
+                  fontSize: 13,
+                  fontWeight: 600,
+                  color: "rgba(0,0,0,0.80)",
+                }}
+              >
+                Số tiền muốn rút <span style={{ color: "#C03A2B" }}>*</span>
+              </label>
+              <button
+                type="button"
+                onClick={handleWithdrawAll}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "#0A66C2",
+                  fontSize: 12.5,
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  padding: 0,
+                }}
+              >
+                Rút toàn bộ
+              </button>
+            </div>
+            <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
+              <input
+                type="text"
+                value={numericAmount > 0 ? new Intl.NumberFormat("vi-VN").format(numericAmount) : ""}
+                placeholder="0"
+                onChange={handleAmountChange}
+                style={{
+                  width: "100%",
+                  height: 46,
+                  padding: "0 40px 0 14px",
+                  borderRadius: 8,
+                  border: errorMsg ? "2px solid #C03A2B" : "1px solid rgba(0,0,0,0.20)",
+                  fontSize: 17,
+                  fontWeight: 700,
+                  color: "rgba(0,0,0,0.90)",
+                  outline: "none",
+                }}
+              />
+              <span
+                style={{
+                  position: "absolute",
+                  right: 14,
+                  fontSize: 15,
+                  fontWeight: 700,
+                  color: "rgba(0,0,0,0.45)",
+                  pointerEvents: "none",
+                }}
+              >
+                ₫
+              </span>
+            </div>
+            {errorMsg && (
+              <div style={{ fontSize: 12, color: "#C03A2B", marginTop: 6, fontWeight: 500 }}>
+                {errorMsg}
+              </div>
+            )}
+          </div>
+
+          {/* Summary */}
+          <div
+            style={{
+              background: "#FAFAF9",
+              border: "1px dashed rgba(0,0,0,0.12)",
+              borderRadius: 8,
+              padding: "12px 16px",
+              display: "flex",
+              flexDirection: "column",
+              gap: 6,
+              fontSize: 12.5,
+            }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", color: "rgba(0,0,0,0.60)" }}>
+              <span>Phí giao dịch:</span>
+              <span style={{ color: "#137333", fontWeight: 700 }}>Miễn phí (0 ₫)</span>
+            </div>
+            <div style={{ display: "flex", justifyContent: "space-between", color: "rgba(0,0,0,0.60)" }}>
+              <span>Thời gian xử lý:</span>
+              <span>Khoảng 5 - 15 phút</span>
+            </div>
+            <div
+              style={{
+                borderTop: "1px solid rgba(0,0,0,0.06)",
+                paddingTop: 6,
+                display: "flex",
+                justifyContent: "space-between",
+                fontWeight: 700,
+                color: "rgba(0,0,0,0.90)",
+                fontSize: 13.5,
+              }}
+            >
+              <span>Số tiền thực nhận:</span>
+              <span style={{ color: "#C03A2B" }}>{formatVND(numericAmount)}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div
+          style={{
+            padding: "16px 24px",
+            borderTop: "1px solid rgba(0,0,0,0.08)",
+            display: "flex",
+            justifyContent: "flex-end",
+            gap: 12,
+            background: "#FAFAF9",
+          }}
+        >
+          <button
+            onClick={onClose}
+            style={{
+              padding: "10px 18px",
+              borderRadius: 8,
+              border: "1px solid rgba(0,0,0,0.15)",
+              background: "#fff",
+              fontSize: 14,
+              fontWeight: 600,
+              color: "rgba(0,0,0,0.70)",
+              cursor: "pointer",
+            }}
+          >
+            Hủy
+          </button>
+          <button
+            onClick={handleSubmit}
+            disabled={numericAmount <= 0 || numericAmount > balance}
+            style={{
+              padding: "10px 22px",
+              borderRadius: 8,
+              border: "none",
+              background: numericAmount > 0 && numericAmount <= balance ? "#0A66C2" : "#94B4DE",
+              fontSize: 14,
+              fontWeight: 600,
+              color: "#fff",
+              cursor: numericAmount > 0 && numericAmount <= balance ? "pointer" : "not-allowed",
+              boxShadow: numericAmount > 0 && numericAmount <= balance ? "0 2px 6px rgba(10,102,194,0.3)" : "none",
+            }}
+          >
+            Xác nhận Rút tiền
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ─── SePay Checkout Sandbox View ───────────────────────────────────────────────
+
+function SepayCheckoutSandbox({
+  order,
+  onSuccess,
+  onCancel,
+}: {
+  order: { orderCode: string; amount: number; date: string }
+  onSuccess: (amount: number, orderCode: string) => void
+  onCancel: () => void
+}) {
+  const [timeLeft, setTimeLeft] = useState(600) // 10 minutes
+  const [copiedItem, setCopiedItem] = useState<string | null>(null)
+  const [isProcessing, setIsProcessing] = useState(false)
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0))
+    }, 1000)
+    return () => clearInterval(timer)
+  }, [])
+
+  const minutes = Math.floor(timeLeft / 60)
+  const seconds = timeLeft % 60
+  const timeFormatted = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`
+
+  const copyToClipboard = (text: string, label: string) => {
+    navigator.clipboard?.writeText(text)
+    setCopiedItem(label)
+    setTimeout(() => setCopiedItem(null), 1800)
+  }
+
+  const handleSimulatePaymentSuccess = () => {
+    setIsProcessing(true)
+    setTimeout(() => {
+      setIsProcessing(false)
+      onSuccess(order.amount, order.orderCode)
+    }, 700)
+  }
+
+  const qrImageUrl = `https://img.vietqr.io/image/MB-0988888888-compact2.png?amount=${order.amount}&addInfo=OPF${order.orderCode}&accountName=CONG%20TY%20CP%20OCCUPIFY`
+
+  return (
+    <div style={{ minHeight: "100vh", background: "#0F172A", color: "#F8FAFC", fontFamily: "sans-serif" }}>
+      {/* Simulated Browser Address Bar */}
+      <div
+        style={{
+          background: "#1E293B",
+          borderBottom: "1px solid rgba(255,255,255,0.10)",
+          padding: "10px 16px",
+          display: "flex",
+          alignItems: "center",
+          gap: 12,
+        }}
+      >
+        <div style={{ display: "flex", gap: 6 }}>
+          <div style={{ width: 11, height: 11, borderRadius: "50%", background: "#EF4444" }} />
+          <div style={{ width: 11, height: 11, borderRadius: "50%", background: "#F59E0B" }} />
+          <div style={{ width: 11, height: 11, borderRadius: "50%", background: "#10B981" }} />
+        </div>
+        <div
+          style={{
+            flex: 1,
+            maxWidth: 680,
+            margin: "0 auto",
+            background: "#0F172A",
+            borderRadius: 6,
+            padding: "6px 14px",
+            fontSize: 12.5,
+            color: "#94A3B8",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            border: "1px solid rgba(255,255,255,0.06)",
+          }}
+        >
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 6, color: "#E2E8F0" }}>
+            <Lock size={13} color="#10B981" weight="bold" />
+            https://sandbox.sepay.vn/checkout/order-OPF{order.orderCode}
+          </span>
+          <span
+            style={{
+              background: "rgba(245, 158, 11, 0.15)",
+              color: "#FBBF24",
+              fontSize: 10.5,
+              fontWeight: 700,
+              padding: "2px 8px",
+              borderRadius: 4,
+              letterSpacing: "0.03em",
+            }}
+          >
+            SEPAY SANDBOX GATEWAY
+          </span>
+        </div>
+      </div>
+
+      {/* Main Sandbox Checkout Canvas */}
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 16px 48px" }}>
+        {/* Gateway Brand Header */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginBottom: 24,
+            flexWrap: "wrap",
+            gap: 12,
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <div
+              style={{
+                background: "linear-gradient(135deg, #0284C7 0%, #0369A1 100%)",
+                width: 44,
+                height: 44,
+                borderRadius: 10,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontWeight: 900,
+                fontSize: 22,
+                color: "#fff",
+                letterSpacing: "-0.03em",
+                boxShadow: "0 4px 12px rgba(2,132,199,0.35)",
+              }}
+            >
+              S
+            </div>
+            <div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <h1 style={{ fontSize: 20, fontWeight: 800, letterSpacing: "-0.01em", color: "#F8FAFC" }}>
+                  SePay Checkout
+                </h1>
+                <span
+                  style={{
+                    background: "#0369A1",
+                    color: "#E0F2FE",
+                    fontSize: 11,
+                    fontWeight: 700,
+                    padding: "2px 8px",
+                    borderRadius: 9999,
+                  }}
+                >
+                  Sandbox Mode
+                </span>
+              </div>
+              <p style={{ fontSize: 13, color: "#94A3B8" }}>
+                Cổng thanh toán liên ngân hàng VietQR Napas 24/7 tự động
+              </p>
+            </div>
+          </div>
+
+          <div
+            style={{
+              background: "#1E293B",
+              border: "1px solid rgba(255,255,255,0.10)",
+              borderRadius: 8,
+              padding: "8px 16px",
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+            }}
+          >
+            <Clock size={16} color="#38BDF8" weight="bold" />
+            <span style={{ fontSize: 13, color: "#94A3B8" }}>Hết hạn sau:</span>
+            <span style={{ fontSize: 16, fontWeight: 800, color: "#38BDF8", fontFamily: "monospace" }}>
+              {timeFormatted}
+            </span>
+          </div>
+        </div>
+
+        {/* 2-Column Checkout Layout */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+            gap: 20,
+            marginBottom: 24,
+          }}
+        >
+          {/* Order info card */}
+          <div
+            style={{
+              background: "#1E293B",
+              borderRadius: 12,
+              border: "1px solid rgba(255,255,255,0.10)",
+              padding: "24px",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+            }}
+          >
+            <div>
+              <div style={{ fontSize: 12, fontWeight: 700, color: "#38BDF8", letterSpacing: "0.05em", textTransform: "uppercase", marginBottom: 12 }}>
+                Thông tin đơn hàng nạp ví
+              </div>
+              <div style={{ fontSize: 26, fontWeight: 800, color: "#F8FAFC", marginBottom: 6 }}>
+                {formatVND(order.amount)}
+              </div>
+              <div style={{ fontSize: 13, color: "#94A3B8", marginBottom: 20 }}>
+                Nạp tiền tài khoản Occupify: Nguyễn Minh Khoa
+              </div>
+
+              <div
+                style={{
+                  borderTop: "1px solid rgba(255,255,255,0.08)",
+                  paddingTop: 16,
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 12,
+                  fontSize: 13,
+                }}
+              >
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <span style={{ color: "#94A3B8" }}>Mã đơn hàng:</span>
+                  <span style={{ fontWeight: 700, color: "#F1F5F9" }}>OPF-{order.orderCode}</span>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <span style={{ color: "#94A3B8" }}>Đơn vị thụ hưởng:</span>
+                  <span style={{ fontWeight: 600, color: "#F1F5F9" }}>Occupify Platform Vietnam</span>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <span style={{ color: "#94A3B8" }}>Thời gian tạo:</span>
+                  <span style={{ color: "#F1F5F9" }}>{order.date}</span>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <span style={{ color: "#94A3B8" }}>Trạng thái:</span>
+                  <span style={{ color: "#FBBF24", fontWeight: 700, display: "inline-flex", alignItems: "center", gap: 4 }}>
+                    <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#FBBF24" }} />
+                    Chờ thanh toán
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div
+              style={{
+                marginTop: 24,
+                background: "rgba(2,132,199,0.12)",
+                border: "1px solid rgba(2,132,199,0.30)",
+                borderRadius: 8,
+                padding: "14px",
+                fontSize: 12.5,
+                color: "#BAE6FD",
+                lineHeight: 1.45,
+              }}
+            >
+              ℹ️ Đây là trang thanh toán độc lập do <strong>SePay Checkout Sandbox</strong> vận hành. Sau khi xác nhận thanh toán, SePay sẽ tự động bắn webhook và chuyển hướng trở về Ví Occupify của bạn.
+            </div>
+          </div>
+
+          {/* VietQR & Transfer Card */}
+          <div
+            style={{
+              background: "#1E293B",
+              borderRadius: 12,
+              border: "1px solid rgba(255,255,255,0.10)",
+              padding: "24px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            {/* VietQR Code Box */}
+            <div
+              style={{
+                background: "#fff",
+                borderRadius: 12,
+                padding: "14px",
+                boxShadow: "0 8px 24px rgba(0,0,0,0.35)",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                maxWidth: 240,
+                width: "100%",
+                marginBottom: 16,
+              }}
+            >
+              <img
+                src={qrImageUrl}
+                alt="SePay VietQR"
+                style={{ width: "100%", height: "auto", borderRadius: 6, display: "block" }}
+                onError={(e) => {
+                  // Fallback if VietQR API is not reachable
+                  (e.currentTarget as HTMLElement).style.display = "none"
+                }}
+              />
+              <div
+                style={{
+                  marginTop: 8,
+                  fontSize: 11,
+                  fontWeight: 700,
+                  color: "#0284C7",
+                  textAlign: "center",
+                  letterSpacing: "0.02em",
+                }}
+              >
+                QUÉT MÃ VIETQR QUA APP NGÂN HÀNG
+              </div>
+            </div>
+
+            {/* Bank details with copy */}
+            <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: 10 }}>
+              {[
+                { label: "Ngân hàng", value: "MB Bank (Quân Đội)", copyVal: "MB Bank" },
+                { label: "Số tài khoản", value: "0988 888 888", copyVal: "0988888888" },
+                { label: "Tên tài khoản", value: "CONG TY CP OCCUPIFY", copyVal: "CONG TY CP OCCUPIFY" },
+                { label: "Số tiền", value: formatVND(order.amount), copyVal: order.amount.toString() },
+                { label: "Nội dung CK", value: `OPF${order.orderCode}`, copyVal: `OPF${order.orderCode}`, highlight: true },
+              ].map((row) => (
+                <div
+                  key={row.label}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    padding: "8px 12px",
+                    borderRadius: 6,
+                    background: row.highlight ? "rgba(245, 158, 11, 0.12)" : "rgba(255,255,255,0.04)",
+                    border: row.highlight ? "1px solid rgba(245, 158, 11, 0.35)" : "1px solid rgba(255,255,255,0.06)",
+                    fontSize: 13,
+                  }}
+                >
+                  <div>
+                    <span style={{ color: "#94A3B8", marginRight: 8, fontSize: 12 }}>{row.label}:</span>
+                    <strong style={{ color: row.highlight ? "#FCD34D" : "#F8FAFC" }}>{row.value}</strong>
+                  </div>
+                  <button
+                    onClick={() => copyToClipboard(row.copyVal, row.label)}
+                    style={{
+                      background: copiedItem === row.label ? "#10B981" : "rgba(255,255,255,0.12)",
+                      border: "none",
+                      color: "#fff",
+                      fontSize: 11,
+                      fontWeight: 600,
+                      padding: "4px 8px",
+                      borderRadius: 4,
+                      cursor: "pointer",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 4,
+                    }}
+                  >
+                    {copiedItem === row.label ? (
+                      <>
+                        <Check size={12} weight="bold" /> Đã chép
+                      </>
+                    ) : (
+                      <>
+                        <Copy size={12} weight="bold" /> Sao chép
+                      </>
+                    )}
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Sandbox Test Action Panel */}
+        <div
+          style={{
+            background: "linear-gradient(135deg, #1E293B 0%, #0F172A 100%)",
+            border: "2px dashed #0284C7",
+            borderRadius: 12,
+            padding: "20px 24px",
+            display: "flex",
+            flexDirection: "column",
+            gap: 14,
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <Sparkle size={20} color="#38BDF8" weight="fill" />
+            <div>
+              <h3 style={{ fontSize: 15, fontWeight: 700, color: "#F8FAFC" }}>
+                Bảng điều khiển Sandbox (Testing Sandbox Controls)
+              </h3>
+              <p style={{ fontSize: 12.5, color: "#94A3B8" }}>
+                Vì đây là môi trường sandbox SePay, bạn có thể click nút bên dưới để mô phỏng quét mã thanh toán thành công và tự động điều hướng về Occupify với số dư được cộng ngay lập tức.
+              </p>
+            </div>
+          </div>
+
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+            <button
+              onClick={handleSimulatePaymentSuccess}
+              disabled={isProcessing}
+              style={{
+                flex: 1,
+                minWidth: 260,
+                padding: "14px 24px",
+                borderRadius: 8,
+                border: "none",
+                background: "linear-gradient(135deg, #10B981 0%, #059669 100%)",
+                color: "#fff",
+                fontSize: 15,
+                fontWeight: 700,
+                cursor: isProcessing ? "wait" : "pointer",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 8,
+                boxShadow: "0 4px 14px rgba(16,185,129,0.35)",
+              }}
+            >
+              {isProcessing ? (
+                <>
+                  <ArrowsClockwise size={18} className="animate-spin" /> Đang truyền tín hiệu SePay webhook...
+                </>
+              ) : (
+                <>
+                  <CheckCircle size={18} weight="fill" /> Mô phỏng Quét mã & Thanh toán thành công
+                </>
+              )}
+            </button>
+
+            <button
+              onClick={onCancel}
+              style={{
+                padding: "14px 20px",
+                borderRadius: 8,
+                border: "1px solid rgba(255,255,255,0.20)",
+                background: "rgba(255,255,255,0.06)",
+                color: "#CBD5E1",
+                fontSize: 14,
+                fontWeight: 600,
+                cursor: "pointer",
+              }}
+            >
+              ✕ Hủy giao dịch & Quay về Occupify
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ─── My Wallet Page ────────────────────────────────────────────────────────────
+
+function MyWalletPage({
+  balance,
+  transactions,
+  onOpenDeposit,
+  onOpenWithdraw,
+  onBack,
+  onOpenFinancialHistory,
+}: {
+  balance: number
+  transactions: WalletTransaction[]
+  onOpenDeposit: () => void
+  onOpenWithdraw: () => void
+  onBack: () => void
+  onOpenFinancialHistory?: () => void
+}) {
+  const [showBalance, setShowBalance] = useState(true)
+  const [filterType, setFilterType] = useState<"all" | "deposit" | "withdraw">("all")
+
+  const filteredList = transactions.filter((t) => {
+    if (filterType === "all") return true
+    return t.type === filterType
+  })
+
+  return (
+    <div style={{ minHeight: "100%", background: "#F4F2EE", paddingBottom: 48 }}>
+      <div style={{ maxWidth: 1128, margin: "0 auto", padding: "24px 16px" }}>
+        {/* Navigation & Header */}
+        <div style={{ marginBottom: 20 }}>
+          <button
+            onClick={onBack}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              fontSize: 14,
+              fontWeight: 600,
+              color: "rgba(0,0,0,0.60)",
+              fontFamily: "inherit",
+              padding: "4px 0",
+              marginBottom: 12,
+              transition: "color 150ms ease",
+            }}
+            onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.90)")}
+            onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.60)")}
+          >
+            <ArrowLeft size={16} weight="bold" /> Quay lại
+          </button>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
+            <div>
+              <h1
+                style={{
+                  fontSize: 24,
+                  fontWeight: 700,
+                  color: "rgba(0,0,0,0.90)",
+                  marginBottom: 4,
+                  letterSpacing: "-0.015em",
+                }}
+              >
+                Ví của tôi
+              </h1>
+              <p style={{ fontSize: 14, color: "rgba(0,0,0,0.60)" }}>
+                Quản lý số dư, nạp tiền vào ví và rút tiền về tài khoản ngân hàng
+              </p>
+            </div>
+            {onOpenFinancialHistory && (
+              <button
+                onClick={onOpenFinancialHistory}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 6,
+                  padding: "8px 14px",
+                  borderRadius: 9999,
+                  border: "1px solid rgba(0,0,0,0.15)",
+                  background: "#fff",
+                  fontSize: 13,
+                  fontWeight: 600,
+                  color: "rgba(0,0,0,0.75)",
+                  cursor: "pointer",
+                }}
+              >
+                <ChartLine size={16} color="#0A66C2" weight="bold" /> Xem lịch sử thu chi
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Hero Balance Card */}
+        <div
+          style={{
+            background: "linear-gradient(135deg, #0A66C2 0%, #06407F 100%)",
+            borderRadius: 12,
+            padding: "28px 32px",
+            marginBottom: 20,
+            color: "#fff",
+            boxShadow: "0 8px 24px rgba(10,102,194,0.22)",
+            position: "relative",
+            overflow: "hidden",
+          }}
+        >
+          <div style={{ position: "relative", zIndex: 2 }}>
+            {/* Top balance info */}
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+              <span
+                style={{
+                  fontSize: 12,
+                  fontWeight: 700,
+                  letterSpacing: "0.06em",
+                  color: "rgba(255,255,255,0.80)",
+                  textTransform: "uppercase",
+                }}
+              >
+                Số dư khả dụng
+              </span>
+              <button
+                onClick={() => setShowBalance((v) => !v)}
+                style={{
+                  background: "rgba(255,255,255,0.15)",
+                  border: "none",
+                  borderRadius: 9999,
+                  color: "#fff",
+                  padding: "3px 8px",
+                  fontSize: 12,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 4,
+                  cursor: "pointer",
+                }}
+              >
+                {showBalance ? <EyeSlash size={14} weight="bold" /> : <Eye size={14} weight="bold" />}
+                <span>{showBalance ? "Ẩn số dư" : "Hiện số dư"}</span>
+              </button>
+            </div>
+
+            {/* Main Balance Display */}
+            <div
+              style={{
+                fontSize: 36,
+                fontWeight: 800,
+                letterSpacing: "-0.02em",
+                color: "#fff",
+                marginBottom: 24,
+              }}
+            >
+              {showBalance ? formatVND(balance) : "•••••••• ₫"}
+            </div>
+
+            {/* Action Buttons: Nạp tiền vào ví & Rút tiền */}
+            <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
+              <button
+                onClick={onOpenDeposit}
+                style={{
+                  padding: "12px 24px",
+                  borderRadius: 8,
+                  border: "none",
+                  background: "#fff",
+                  color: "#0A66C2",
+                  fontSize: 15,
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+                  transition: "transform 150ms ease",
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.transform = "translateY(-1px)")}
+                onMouseLeave={(e) => (e.currentTarget.style.transform = "none")}
+              >
+                <Plus size={18} weight="bold" color="#0A66C2" /> Nạp tiền vào ví
+              </button>
+
+              <button
+                onClick={onOpenWithdraw}
+                style={{
+                  padding: "12px 24px",
+                  borderRadius: 8,
+                  border: "1.5px solid rgba(255,255,255,0.40)",
+                  background: "rgba(255,255,255,0.12)",
+                  color: "#fff",
+                  fontSize: 15,
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  backdropFilter: "blur(6px)",
+                  transition: "all 150ms ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "rgba(255,255,255,0.20)"
+                  e.currentTarget.style.transform = "translateY(-1px)"
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "rgba(255,255,255,0.12)"
+                  e.currentTarget.style.transform = "none"
+                }}
+              >
+                <ArrowUpRight size={18} weight="bold" /> Rút tiền
+              </button>
+            </div>
+          </div>
+
+          {/* Decorative background shape */}
+          <div
+            style={{
+              position: "absolute",
+              top: -60,
+              right: -60,
+              width: 260,
+              height: 260,
+              borderRadius: "50%",
+              background: "rgba(255,255,255,0.06)",
+              pointerEvents: "none",
+            }}
+          />
+        </div>
+
+        {/* Transactions Table Section */}
+        <div
+          style={{
+            background: "#fff",
+            borderRadius: 8,
+            boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+            overflow: "hidden",
+          }}
+        >
+          {/* Section Header & Filters */}
+          <div
+            style={{
+              padding: "18px 24px",
+              borderBottom: "1px solid rgba(0,0,0,0.08)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              flexWrap: "wrap",
+              gap: 12,
+            }}
+          >
+            <div>
+              <h2 style={{ fontSize: 16, fontWeight: 700, color: "rgba(0,0,0,0.90)" }}>
+                Lịch sử nạp và rút tiền
+              </h2>
+              <p style={{ fontSize: 12.5, color: "rgba(0,0,0,0.55)", marginTop: 2 }}>
+                Ghi nhận chi tiết các lần nạp tiền vào ví và rút tiền về tài khoản ngân hàng
+              </p>
+            </div>
+
+            {/* Filter Chips */}
+            <div style={{ display: "flex", gap: 6 }}>
+              {[
+                { id: "all", label: `Tất cả (${transactions.length})` },
+                { id: "deposit", label: `Nạp tiền (${transactions.filter((t) => t.type === "deposit").length})` },
+                { id: "withdraw", label: `Rút tiền (${transactions.filter((t) => t.type === "withdraw").length})` },
+              ].map((tab) => {
+                const isActive = filterType === tab.id
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setFilterType(tab.id as any)}
+                    style={{
+                      padding: "6px 12px",
+                      borderRadius: 9999,
+                      border: isActive ? "1px solid #0A66C2" : "1px solid rgba(0,0,0,0.12)",
+                      background: isActive ? "#EAF1FA" : "transparent",
+                      color: isActive ? "#0A66C2" : "rgba(0,0,0,0.70)",
+                      fontSize: 12,
+                      fontWeight: 600,
+                      cursor: "pointer",
+                      fontFamily: "inherit",
+                      transition: "all 120ms ease",
+                    }}
+                  >
+                    {tab.label}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* List */}
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            {filteredList.length === 0 ? (
+              <div style={{ padding: "48px 24px", textAlign: "center", color: "rgba(0,0,0,0.45)", fontSize: 14 }}>
+                Không có giao dịch nào trong danh mục này.
+              </div>
+            ) : (
+              filteredList.map((tx, idx) => {
+                const isDeposit = tx.type === "deposit"
+
+                return (
+                  <div
+                    key={tx.id}
+                    style={{
+                      padding: "16px 24px",
+                      borderBottom:
+                        idx === filteredList.length - 1 ? "none" : "1px solid rgba(0,0,0,0.06)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      gap: 16,
+                      transition: "background 150ms ease",
+                    }}
+                    onMouseEnter={(e) => (e.currentTarget.style.background = "#FAFAF9")}
+                    onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+                  >
+                    {/* Left Icon + Text */}
+                    <div style={{ display: "flex", alignItems: "center", gap: 14, minWidth: 0 }}>
+                      <div
+                        style={{
+                          width: 40,
+                          height: 40,
+                          borderRadius: "50%",
+                          background: isDeposit ? "#E5F6E8" : "#FBE2E2",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flexShrink: 0,
+                          color: isDeposit ? "#057642" : "#C03A2B",
+                        }}
+                      >
+                        {isDeposit ? (
+                          <ArrowDownLeft size={20} weight="bold" />
+                        ) : (
+                          <ArrowUpRight size={20} weight="bold" />
+                        )}
+                      </div>
+
+                      <div style={{ minWidth: 0 }}>
+                        <div
+                          style={{
+                            fontSize: 14,
+                            fontWeight: 600,
+                            color: "rgba(0,0,0,0.90)",
+                            marginBottom: 2,
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                          }}
+                        >
+                          {tx.title}
+                        </div>
+                        <div
+                          style={{
+                            fontSize: 12,
+                            color: "rgba(0,0,0,0.55)",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 6,
+                          }}
+                        >
+                          <span>{tx.subtitle}</span>
+                          <span>•</span>
+                          <span>{tx.time} {tx.date}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Right Amount + Status */}
+                    <div style={{ textAlign: "right", flexShrink: 0 }}>
+                      <div
+                        style={{
+                          fontSize: 16,
+                          fontWeight: 700,
+                          color: tx.amount > 0 ? "#137333" : "#C03A2B",
+                          letterSpacing: "-0.01em",
+                          marginBottom: 4,
+                        }}
+                      >
+                        {tx.amount > 0 ? `+${formatVND(tx.amount)}` : `-${formatVND(tx.amount)}`}
+                      </div>
+                      <span
+                        style={{
+                          display: "inline-block",
+                          fontSize: 11,
+                          fontWeight: 600,
+                          padding: "2px 8px",
+                          borderRadius: 9999,
+                          background: "#E5F6E8",
+                          color: "#057642",
+                        }}
+                      >
+                        Thành công
+                      </span>
+                    </div>
+                  </div>
+                )
+              })
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+
 function MainApp({ onLogout }: { onLogout?: () => void }) {
   const [activeNav, setActiveNav] = useState("home")
   const [savedJobIds, setSavedJobIds] = useState<number[]>([1, 3])
@@ -14974,6 +16616,16 @@ function MainApp({ onLogout }: { onLogout?: () => void }) {
   )
   const [myProfileOpen, setMyProfileOpen] = useState(false)
   const [financialHistoryOpen, setFinancialHistoryOpen] = useState(false)
+  const [walletOpen, setWalletOpen] = useState(false)
+  const [walletBalance, setWalletBalance] = useState(52450000)
+  const [walletTransactions, setWalletTransactions] = useState<WalletTransaction[]>(INITIAL_WALLET_TRANSACTIONS)
+  const [depositModalOpen, setDepositModalOpen] = useState(false)
+  const [withdrawModalOpen, setWithdrawModalOpen] = useState(false)
+  const [sepaySandboxOrder, setSepaySandboxOrder] = useState<{
+    orderCode: string
+    amount: number
+    date: string
+  } | null>(null)
   const [viewingUser, setViewingUser] = useState<string | null>(null)
 
   const toggleSaveJob = (id: number) => {
@@ -14984,15 +16636,151 @@ function MainApp({ onLogout }: { onLogout?: () => void }) {
 
   const openMyProfile = () => {
     setViewingUser(null)
+    setFinancialHistoryOpen(false)
+    setWalletOpen(false)
+    setSelectedContract(null)
     setMyProfileOpen(true)
   }
   const openOtherProfile = (name?: string) => {
     setViewingUser(name ?? null)
+    setFinancialHistoryOpen(false)
+    setWalletOpen(false)
+    setSelectedContract(null)
     setMyProfileOpen(true)
   }
   const closeMyProfile = () => {
     setMyProfileOpen(false)
     setViewingUser(null)
+  }
+
+  const openWallet = () => {
+    setFinancialHistoryOpen(false)
+    closeMyProfile()
+    setSelectedContract(null)
+    setWalletOpen(true)
+  }
+
+  const handleOpenSepaySandbox = (amount: number) => {
+    const randomCode = Math.floor(10000 + Math.random() * 90000).toString()
+    const now = new Date()
+    const timeStr = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`
+    const dateStr = `${String(now.getDate()).padStart(2, "0")}/${String(now.getMonth() + 1).padStart(2, "0")}/${now.getFullYear()}`
+    setSepaySandboxOrder({
+      orderCode: randomCode,
+      amount,
+      date: `${dateStr} ${timeStr}`,
+    })
+  }
+
+  const handleCompleteSepayPayment = (amount: number, orderCode: string) => {
+    const now = new Date()
+    const timeStr = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`
+    const dateStr = `${String(now.getDate()).padStart(2, "0")}/${String(now.getMonth() + 1).padStart(2, "0")}/${now.getFullYear()}`
+
+    setWalletBalance((prev) => prev + amount)
+    const newTx: WalletTransaction = {
+      id: `tx-dep-${Date.now()}`,
+      type: "deposit",
+      title: "Nạp tiền vào ví",
+      subtitle: `Chuyển khoản VietQR tự động 24/7 (Đơn hàng OPF-${orderCode})`,
+      amount: amount,
+      date: dateStr,
+      time: timeStr,
+      status: "success",
+      code: `SEPAY-${orderCode}`,
+    }
+    setWalletTransactions((prev) => [newTx, ...prev])
+    setSepaySandboxOrder(null)
+    setToast(`Nạp tiền thành công! Đã cộng +${formatVND(amount)} vào ví.`)
+  }
+
+  const handleWithdraw = (bank: string, accountNumber: string, amount: number, accountName: string) => {
+    const now = new Date()
+    const timeStr = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`
+    const dateStr = `${String(now.getDate()).padStart(2, "0")}/${String(now.getMonth() + 1).padStart(2, "0")}/${now.getFullYear()}`
+
+    setWalletBalance((prev) => prev - amount)
+    const newTx: WalletTransaction = {
+      id: `tx-wd-${Date.now()}`,
+      type: "withdraw",
+      title: `Rút tiền về ${bank}`,
+      subtitle: `STK: ${accountNumber} • ${accountName}`,
+      amount: -amount,
+      date: dateStr,
+      time: timeStr,
+      status: "success",
+      code: `WD-${Math.floor(100000 + Math.random() * 900000)}`,
+      bankInfo: `${bank} - ${accountNumber}`,
+    }
+    setWalletTransactions((prev) => [newTx, ...prev])
+    setToast(`Đã tạo lệnh rút ${formatVND(amount)} về ${bank} thành công!`)
+  }
+
+  if (sepaySandboxOrder) {
+    return (
+      <SepayCheckoutSandbox
+        order={sepaySandboxOrder}
+        onSuccess={(amount, orderCode) => {
+          handleCompleteSepayPayment(amount, orderCode)
+        }}
+        onCancel={() => {
+          setSepaySandboxOrder(null)
+        }}
+      />
+    )
+  }
+
+  if (walletOpen) {
+    return (
+      <>
+        <Navbar
+          active={activeNav}
+          setActive={(v) => {
+            setWalletOpen(false)
+            setActiveNav(v)
+          }}
+          onOpenMyProfile={openMyProfile}
+          onOpenWallet={openWallet}
+          onOpenFinancialHistory={() => {
+            setWalletOpen(false)
+            setFinancialHistoryOpen(true)
+          }}
+          onLogout={onLogout}
+        />
+        <MyWalletPage
+          balance={walletBalance}
+          transactions={walletTransactions}
+          onOpenDeposit={() => setDepositModalOpen(true)}
+          onOpenWithdraw={() => setWithdrawModalOpen(true)}
+          onBack={() => setWalletOpen(false)}
+          onOpenFinancialHistory={() => {
+            setWalletOpen(false)
+            setFinancialHistoryOpen(true)
+          }}
+        />
+        {depositModalOpen && (
+          <DepositModal
+            balance={walletBalance}
+            onClose={() => setDepositModalOpen(false)}
+            onProceedToSepay={(amount) => {
+              setDepositModalOpen(false)
+              handleOpenSepaySandbox(amount)
+            }}
+          />
+        )}
+        {withdrawModalOpen && (
+          <WithdrawModal
+            balance={walletBalance}
+            onClose={() => setWithdrawModalOpen(false)}
+            onConfirmWithdraw={(bank, accountNumber, amount, accountName) => {
+              handleWithdraw(bank, accountNumber, amount, accountName)
+              setWithdrawModalOpen(false)
+            }}
+          />
+        )}
+        {toast && <Toast message={toast} onDone={() => setToast(null)} />}
+      </>
+    )
   }
 
   if (financialHistoryOpen) {
@@ -15005,6 +16793,10 @@ function MainApp({ onLogout }: { onLogout?: () => void }) {
             setActiveNav(v)
           }}
           onOpenMyProfile={openMyProfile}
+          onOpenWallet={() => {
+            setFinancialHistoryOpen(false)
+            openWallet()
+          }}
           onOpenFinancialHistory={() => setFinancialHistoryOpen(true)}
           onLogout={onLogout}
         />
@@ -15023,6 +16815,10 @@ function MainApp({ onLogout }: { onLogout?: () => void }) {
             setActiveNav(v)
           }}
           onOpenMyProfile={openMyProfile}
+          onOpenWallet={() => {
+            closeMyProfile()
+            openWallet()
+          }}
           onOpenFinancialHistory={() => setFinancialHistoryOpen(true)}
           onLogout={onLogout}
         />
@@ -15041,6 +16837,10 @@ function MainApp({ onLogout }: { onLogout?: () => void }) {
             setActiveNav(v)
           }}
           onOpenMyProfile={openMyProfile}
+          onOpenWallet={() => {
+            setSelectedContract(null)
+            openWallet()
+          }}
           onOpenFinancialHistory={() => setFinancialHistoryOpen(true)}
           onLogout={onLogout}
         />
@@ -15074,6 +16874,7 @@ function MainApp({ onLogout }: { onLogout?: () => void }) {
         active={activeNav}
         setActive={setActiveNav}
         onOpenMyProfile={openMyProfile}
+        onOpenWallet={openWallet}
         onOpenFinancialHistory={() => setFinancialHistoryOpen(true)}
         onLogout={onLogout}
       />
@@ -15085,6 +16886,7 @@ function MainApp({ onLogout }: { onLogout?: () => void }) {
           onSelectContract={setSelectedContract}
           onViewProfile={openOtherProfile}
           onOpenFinancialHistory={() => setFinancialHistoryOpen(true)}
+          onOpenWallet={openWallet}
           onNavigateProjects={() => setActiveNav("projects")}
         />
       )}
