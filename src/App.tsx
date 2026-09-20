@@ -8385,18 +8385,6 @@ function NewHomePage({
               >
                 12.500.000 ₫
               </div>
-              <div
-                style={{
-                  fontSize: 11,
-                  color: "rgba(255,255,255,0.85)",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 4,
-                }}
-              >
-                <SealCheck size={14} color="#57D9A3" weight="fill" />
-                <span>Ký quỹ Escrow đang bảo vệ: 28.000.000 ₫</span>
-              </div>
             </div>
 
             <button
@@ -8427,76 +8415,6 @@ function NewHomePage({
               <span>Lịch sử thu chi & Rút tiền</span>
               <ArrowRight size={13} weight="bold" />
             </button>
-          </div>
-
-          {/* Trust & Escrow Guarantee */}
-          <div
-            style={{
-              background: "#fff",
-              borderRadius: 8,
-              boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-              padding: "18px 20px",
-            }}
-          >
-            <div
-              style={{
-                fontSize: 14,
-                fontWeight: 700,
-                color: "rgba(0,0,0,0.90)",
-                marginBottom: 12,
-                display: "flex",
-                alignItems: "center",
-                gap: 6,
-              }}
-            >
-              <SealCheck size={16} color="#057642" weight="fill" />
-              <span>Cam kết bảo vệ 100%</span>
-            </div>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
-                <CheckCircle
-                  size={16}
-                  color="#057642"
-                  weight="fill"
-                  style={{ marginTop: 2, flexShrink: 0 }}
-                />
-                <div style={{ fontSize: 12, color: "rgba(0,0,0,0.70)" }}>
-                  <strong style={{ color: "rgba(0,0,0,0.90)" }}>
-                    Hợp đồng điện tử:
-                  </strong>{" "}
-                  Chuẩn pháp lý, có giá trị bảo vệ quyền sở hữu trí tuệ.
-                </div>
-              </div>
-              <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
-                <CheckCircle
-                  size={16}
-                  color="#057642"
-                  weight="fill"
-                  style={{ marginTop: 2, flexShrink: 0 }}
-                />
-                <div style={{ fontSize: 12, color: "rgba(0,0,0,0.70)" }}>
-                  <strong style={{ color: "rgba(0,0,0,0.90)" }}>
-                    Ký quỹ Escrow:
-                  </strong>{" "}
-                  Khách hàng nạp trước, thanh toán giải ngân khi nghiệm thu.
-                </div>
-              </div>
-              <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
-                <CheckCircle
-                  size={16}
-                  color="#057642"
-                  weight="fill"
-                  style={{ marginTop: 2, flexShrink: 0 }}
-                />
-                <div style={{ fontSize: 12, color: "rgba(0,0,0,0.70)" }}>
-                  <strong style={{ color: "rgba(0,0,0,0.90)" }}>
-                    Hỗ trợ giải quyết tranh chấp:
-                  </strong>{" "}
-                  Đội ngũ trọng tài Occupify đồng hành 24/7.
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -15533,18 +15451,6 @@ const ADMIN_CONTRACTS = [
 
 const ADMIN_VIOLATIONS = [
   {
-    id: "#RP-1042",
-    reporter: { name: "Nguyễn Minh Khoa", initials: "NK", color: "#0A66C2" },
-    target: "Bài viết: Tuyển dụng giả mạo công ty lớn",
-    category: "Bài viết",
-    time: "15/09/2026 08:32",
-    status: "Chờ xử lý",
-    reason:
-      "Bài viết đăng thông tin tuyển dụng giả mạo thương hiệu VinGroup, có thể gây lừa đảo người dùng.",
-    evidence:
-      'Người dùng @hoangtuan đăng bài "Tuyển gấp 50 nhân viên tại VinGroup - lương 50tr" kèm link đến website giả mạo. Bài viết đã nhận 200+ lượt tương tác trong vòng 2 giờ.',
-  },
-  {
     id: "#RP-1041",
     reporter: { name: "Trần Thị Hương", initials: "TH", color: "#057642" },
     target: "Tài khoản: @tiendung_vn",
@@ -15569,22 +15475,10 @@ const ADMIN_VIOLATIONS = [
       "Hợp đồng #HD-8431 đã bị hủy đơn phương bởi client sau khi freelancer giao sản phẩm hoàn chỉnh. Client không cung cấp lý do hợp lệ.",
   },
   {
-    id: "#RP-1037",
-    reporter: { name: "Bùi Thị Ngọc", initials: "BN", color: "#059669" },
-    target: "Bài viết: Nội dung phản cảm về đối thủ",
-    category: "Bài viết",
-    time: "12/09/2026 09:45",
-    status: "Đã bác bỏ",
-    reason:
-      "Bài viết có nội dung bình luận tiêu cực về đối thủ cạnh tranh với ngôn từ không phù hợp.",
-    evidence:
-      "Bài viết sử dụng ngôn từ nhẹ về đối thủ trong bối cảnh nhận xét chuyên nghiệp. Sau xem xét, không vi phạm chính sách.",
-  },
-  {
     id: "#RP-1035",
     reporter: { name: "Ngô Đức Hải", initials: "NH", color: "#6366F1" },
     target: "Tài khoản: @lananh_designer",
-    category: "Dự án",
+    category: "Tài khoản",
     time: "10/09/2026 16:30",
     status: "Chờ xử lý",
     reason:
@@ -15594,205 +15488,190 @@ const ADMIN_VIOLATIONS = [
   },
 ]
 
-const ADMIN_DISPUTES = [
-  {
-    id: 1,
-    complainant: { name: "Hoàng Minh Tuấn", initials: "MT", color: "#D97706" },
-    email: "hoangtuan.dev@gmail.com",
-    title: "Khiếu nại đánh giá 1 sao không công bằng từ client",
-    date: "13/09/2026",
-    status: "Chờ phân xử",
-    content:
-      "Sau khi giao đầy đủ sản phẩm theo yêu cầu hợp đồng, tôi nhận được đánh giá 1 sao từ client mà không có bất kỳ phản hồi cụ thể nào. Client từ chối liên lạc và không giải thích lý do đánh giá thấp. Đây là đánh giá đầu tiên của tôi trên nền tảng và ảnh hưởng nghiêm trọng đến hồ sơ chuyên nghiệp của tôi.\n\nTôi đã cố gắng liên hệ với support nhưng không nhận được phản hồi. Xin admin xem xét và gỡ bỏ đánh giá không công bằng này.",
-  },
-  {
-    id: 2,
-    complainant: { name: "Lê Văn Đức", initials: "LĐ", color: "#B06000" },
-    email: "leduc.dev@gmail.com",
-    title: "Đánh giá sai sự thật về chất lượng code",
-    date: "11/09/2026",
-    status: "Đã chấp nhận",
-    content:
-      'Client để lại đánh giá 2 sao với nội dung "code không chạy được" nhưng thực tế tôi đã test toàn bộ và có bằng chứng video. Client đã yêu cầu thêm tính năng ngoài phạm vi hợp đồng và khi tôi từ chối, họ đã để lại đánh giá tiêu cực để trả thù.\n\nTôi đính kèm video demo sản phẩm hoạt động bình thường và lịch sử chat cho thấy yêu cầu thêm không nằm trong hợp đồng ban đầu.',
-  },
-  {
-    id: 3,
-    complainant: { name: "Đinh Thị Thu", initials: "DT", color: "#EC4899" },
-    email: "dinhthithu@vingroup.net",
-    title: "Khiếu nại về freelancer không giao sản phẩm đúng hạn",
-    date: "09/09/2026",
-    status: "Đã bác bỏ",
-    content:
-      "Freelancer cam kết giao sản phẩm sau 7 ngày nhưng đã 21 ngày vẫn chưa nhận được gì. Tôi đã gửi nhắc nhở nhiều lần nhưng freelancer tiếp tục hứa hẹn mà không thực hiện. Dự án của tôi bị ảnh hưởng nghiêm trọng.",
-  },
-  {
-    id: 4,
-    complainant: { name: "Ngô Đức Hải", initials: "NH", color: "#6366F1" },
-    email: "duchaiseo@gmail.com",
-    title: "Yêu cầu hoàn tiền do client hủy hợp đồng đột ngột",
-    date: "07/09/2026",
-    status: "Chờ phân xử",
-    content:
-      "Client hủy hợp đồng sau khi tôi đã hoàn thành 70% công việc mà không thông báo trước. Theo điều khoản hợp đồng, tôi có quyền nhận thanh toán tương ứng với công việc đã thực hiện. Client từ chối thanh toán phần này với lý do không hợp lý.",
-  },
-]
-
 type AdminProject = typeof ADMIN_PROJECTS[0]
 type AdminContract = typeof ADMIN_CONTRACTS[0]
 type AdminViolation = typeof ADMIN_VIOLATIONS[0]
-type AdminDispute = typeof ADMIN_DISPUTES[0]
 
 function AdminPortal({ onBack }: { onBack: () => void }) {
-  const [activeNav, setActiveNav] = useState("all-users")
-  const [search, setSearch] = useState("")
-  const [statusFilter, setStatusFilter] = useState("Tất cả")
-  const [roleFilter, setRoleFilter] = useState("Tất cả")
+  const [activeNav, setActiveNav] = useState<"users" | "projects" | "contracts" | "violations">("users")
+  const [toast, setToast] = useState<string | null>(null)
+
+  // ── 1. USERS STATE ────────────────────────────────────────────────────────
+  const [users, setUsers] = useState(ADMIN_USERS_DATA)
+  const [userSearch, setUserSearch] = useState("")
+  const [userStatusFilter, setUserStatusFilter] = useState("Tất cả")
+  const [userRoleFilter, setUserRoleFilter] = useState("Tất cả")
+  const [userCurrentPage, setUserCurrentPage] = useState(1)
   const [deleteTarget, setDeleteTarget] = useState<AdminUser | null>(null)
   const [deleteReason, setDeleteReason] = useState("")
-  const [users, setUsers] = useState(ADMIN_USERS_DATA)
-  const [currentPage, setCurrentPage] = useState(1)
+  const [userDetailModal, setUserDetailModal] = useState<AdminUser | null>(null)
   const ROWS_PER_PAGE = 8
 
-  // Projects state
-  const [projectSearch, setProjectSearch] = useState("")
-  const [projectStatus, setProjectStatus] = useState("Tất cả")
-  const [projectDetail, setProjectDetail] = useState<AdminProject | null>(null)
+  // ── 2. PROJECTS STATE ─────────────────────────────────────────────────────
   const [projects, setProjects] = useState(ADMIN_PROJECTS)
-  const [projectDeleteTarget, setProjectDeleteTarget] =
-    useState<AdminProject | null>(null)
+  const [projectSearch, setProjectSearch] = useState("")
+  const [projectStatusFilter, setProjectStatusFilter] = useState("Tất cả")
+  const [projectDetail, setProjectDetail] = useState<AdminProject | null>(null)
+  const [projectDeleteTarget, setProjectDeleteTarget] = useState<AdminProject | null>(null)
   const [projectDeleteReason, setProjectDeleteReason] = useState("")
-  // Contracts state
+
+  // ── 3. CONTRACTS STATE ────────────────────────────────────────────────────
+  const [contracts] = useState(ADMIN_CONTRACTS)
   const [contractSearch, setContractSearch] = useState("")
-  const [contractStatus, setContractStatus] = useState("Tất cả trạng thái")
-  // Violations state
-  const [violationSearch, setViolationSearch] = useState("")
-  const [violationType, setViolationType] = useState("Tất cả loại vi phạm")
-  const [violationStatus, setViolationStatus] = useState("Tất cả")
-  const [evidenceTarget, setEvidenceTarget] = useState<AdminViolation | null>(
-    null,
-  )
+  const [contractStatusFilter, setContractStatusFilter] = useState("Tất cả")
+  const [selectedContractDetail, setSelectedContractDetail] = useState<AdminContract | null>(null)
+
+  // ── 4. VIOLATIONS STATE ───────────────────────────────────────────────────
   const [violations, setViolations] = useState(ADMIN_VIOLATIONS)
-  // Disputes state
-  const [disputeSearch, setDisputeSearch] = useState("")
-  const [disputeStatusFilter, setDisputeStatusFilter] = useState("Tất cả")
-  const [disputeDetail, setDisputeDetail] = useState<AdminDispute | null>(null)
-  const [restoreRating, setRestoreRating] = useState(true)
-  const [disputes, setDisputes] = useState(ADMIN_DISPUTES)
+  const [violationSearch, setViolationSearch] = useState("")
+  const [violationCategoryFilter, setViolationCategoryFilter] = useState("Tất cả")
+  const [violationStatusFilter, setViolationStatusFilter] = useState("Tất cả")
+  const [evidenceTarget, setEvidenceTarget] = useState<AdminViolation | null>(null)
 
-  const flaggedCount = users.filter((u) => u.status === "Bị gắn cờ").length
+  // Counts for Badges & Sub-filters
+  const flaggedUsersCount = users.filter((u) => u.status === "Bị gắn cờ").length
+  const lockedUsersCount = users.filter((u) => u.status === "Bị khóa").length
+  const activeUsersCount = users.filter((u) => u.status === "Hoạt động").length
 
-  const isUserView = activeNav === "all-users" || activeNav === "flagged"
+  const hiringProjectsCount = projects.filter((p) => p.status === "Đang tuyển").length
+  const inProgressProjectsCount = projects.filter((p) => p.status === "Đang thực hiện").length
+  const closedProjectsCount = projects.filter((p) => p.status === "Đã đóng").length
 
-  const filtered = users.filter((u) => {
-    if (activeNav === "flagged" && u.status !== "Bị gắn cờ") return false
+  const pendingViolationsCount = violations.filter((v) => v.status === "Chờ xử lý").length
+
+  // Helper toggle handlers
+  const handleToggleFlag = (id: number) => {
+    setUsers((prev) =>
+      prev.map((u) =>
+        u.id === id
+          ? { ...u, status: u.status === "Bị gắn cờ" ? "Hoạt động" : "Bị gắn cờ" }
+          : u
+      )
+    )
+    if (userDetailModal && userDetailModal.id === id) {
+      setUserDetailModal((prev) =>
+        prev
+          ? {
+              ...prev,
+              status: prev.status === "Bị gắn cờ" ? "Hoạt động" : "Bị gắn cờ",
+            }
+          : null
+      )
+    }
+    setToast("Đã cập nhật trạng thái cờ người dùng!")
+  }
+
+  const handleToggleLock = (id: number) => {
+    setUsers((prev) =>
+      prev.map((u) =>
+        u.id === id
+          ? { ...u, status: u.status === "Bị khóa" ? "Hoạt động" : "Bị khóa" }
+          : u
+      )
+    )
+    if (userDetailModal && userDetailModal.id === id) {
+      setUserDetailModal((prev) =>
+        prev
+          ? { ...prev, status: prev.status === "Bị khóa" ? "Hoạt động" : "Bị khóa" }
+          : null
+      )
+    }
+    setToast("Đã cập nhật trạng thái khóa tài khoản!")
+  }
+
+  // ── FILTERED DATA ─────────────────────────────────────────────────────────
+
+  // Users filtered
+  const filteredUsers = users.filter((u) => {
     const matchSearch =
-      !search ||
-      u.name.toLowerCase().includes(search.toLowerCase()) ||
-      u.email.toLowerCase().includes(search.toLowerCase())
-    const matchStatus = statusFilter === "Tất cả" || u.status === statusFilter
-    const matchRole = roleFilter === "Tất cả" || u.role === roleFilter
+      !userSearch ||
+      u.name.toLowerCase().includes(userSearch.toLowerCase()) ||
+      u.email.toLowerCase().includes(userSearch.toLowerCase())
+    const matchStatus =
+      userStatusFilter === "Tất cả" || u.status === userStatusFilter
+    const matchRole =
+      userRoleFilter === "Tất cả" || u.role === userRoleFilter
     return matchSearch && matchStatus && matchRole
   })
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / ROWS_PER_PAGE))
-  const pageUsers = filtered.slice(
-    (currentPage - 1) * ROWS_PER_PAGE,
-    currentPage * ROWS_PER_PAGE,
+  const userTotalPages = Math.max(
+    1,
+    Math.ceil(filteredUsers.length / ROWS_PER_PAGE)
+  )
+  const paginatedUsers = filteredUsers.slice(
+    (userCurrentPage - 1) * ROWS_PER_PAGE,
+    userCurrentPage * ROWS_PER_PAGE
   )
 
-  const navGroups = [
-    {
-      label: "Người dùng",
-      items: [
-        {
-          id: "all-users",
-          label: "Tất cả tài khoản",
-          Icon: UsersThree,
-          badge: null as number | null,
-        },
-        {
-          id: "flagged",
-          label: "Tài khoản bị gắn cờ",
-          Icon: Warning,
-          badge: flaggedCount,
-        },
-      ],
-    },
-    {
-      label: "Việc làm & Hợp đồng",
-      items: [
-        {
-          id: "projects",
-          label: "Quản lý dự án",
-          Icon: BriefcaseMetal,
-          badge: null,
-        },
-        {
-          id: "contracts",
-          label: "Danh sách hợp đồng",
-          Icon: FileText,
-          badge: null,
-        },
-      ],
-    },
-    {
-      label: "Kiểm duyệt",
-      items: [
-        {
-          id: "violations",
-          label: "Báo cáo vi phạm",
-          Icon: ShieldCheck,
-          badge: null,
-        },
-        {
-          id: "reviews",
-          label: "Đánh giá & Khiếu nại",
-          Icon: Star,
-          badge: null,
-        },
-      ],
-    },
-    {
-      label: "Hệ thống & Truyền thông",
-      items: [
-        {
-          id: "broadcast",
-          label: "Thông báo toàn hệ thống",
-          Icon: Bell,
-          badge: null,
-        },
-        {
-          id: "email-quota",
-          label: "Mẫu Email & Quota",
-          Icon: Envelope,
-          badge: null,
-        },
-        {
-          id: "logs",
-          label: "Nhật ký hệ thống",
-          Icon: ClipboardText,
-          badge: null,
-        },
-      ],
-    },
-  ]
+  // Projects filtered
+  const filteredProjects = projects.filter((p) => {
+    const q = projectSearch.toLowerCase()
+    const matchQ =
+      !q ||
+      p.title.toLowerCase().includes(q) ||
+      p.owner.name.toLowerCase().includes(q)
+    const matchS =
+      projectStatusFilter === "Tất cả" || p.status === projectStatusFilter
+    return matchQ && matchS
+  })
 
-  const statusBadge = (status: string) => {
+  // Contracts filtered
+  const filteredContracts = contracts.filter((c) => {
+    const q = contractSearch.toLowerCase()
+    const matchQ =
+      !q ||
+      c.id.toLowerCase().includes(q) ||
+      c.project.toLowerCase().includes(q) ||
+      c.client.name.toLowerCase().includes(q) ||
+      c.freelancer.name.toLowerCase().includes(q)
+    const matchS =
+      contractStatusFilter === "Tất cả" || c.status === contractStatusFilter
+    return matchQ && matchS
+  })
+
+  // Violations filtered (Không có "Bài viết")
+  const filteredViolations = violations.filter((v) => {
+    const q = violationSearch.toLowerCase()
+    const matchQ =
+      !q ||
+      v.id.toLowerCase().includes(q) ||
+      v.reporter.name.toLowerCase().includes(q) ||
+      v.target.toLowerCase().includes(q)
+    const matchCat =
+      violationCategoryFilter === "Tất cả" || v.category === violationCategoryFilter
+    const matchStatus =
+      violationStatusFilter === "Tất cả" || v.status === violationStatusFilter
+    return matchQ && matchCat && matchStatus
+  })
+
+  // Semantic Status Badges
+  const renderStatusBadge = (status: string) => {
     const map: Record<string, { bg: string; fg: string }> = {
       "Hoạt động": { bg: "#E6F4EA", fg: "#137333" },
+      "Đang tuyển": { bg: "#EAF1FA", fg: "#0A66C2" },
+      "Đang thực hiện": { bg: "#EAF1FA", fg: "#0A66C2" },
+      "Hoàn thành": { bg: "#E6F4EA", fg: "#137333" },
+      "Đã giải quyết": { bg: "#E6F4EA", fg: "#137333" },
       "Bị gắn cờ": { bg: "#FEF7E0", fg: "#B06000" },
+      "Chờ xử lý": { bg: "#FEF7E0", fg: "#B06000" },
       "Bị khóa": { bg: "#FCE8E6", fg: "#C03A2B" },
+      "Đã hủy / Thất bại": { bg: "#FCE8E6", fg: "#C03A2B" },
+      "Đã bác bỏ": { bg: "#FCE8E6", fg: "#C03A2B" },
+      "Đã đóng": { bg: "#F4F2EE", fg: "rgba(0,0,0,0.50)" },
     }
-    const s = map[status] ?? map["Hoạt động"]
+    const c = map[status] ?? { bg: "#F4F2EE", fg: "rgba(0,0,0,0.65)" }
     return (
       <span
         style={{
-          background: s.bg,
-          color: s.fg,
+          background: c.bg,
+          color: c.fg,
           fontSize: 12,
-          fontWeight: 600,
+          fontWeight: 700,
           padding: "3px 10px",
           borderRadius: 9999,
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 4,
           whiteSpace: "nowrap",
         }}
       >
@@ -15801,9 +15680,45 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
     )
   }
 
+  // ── 4 CORE NAV ITEMS ──────────────────────────────────────────────────────
+  const NAV_ITEMS = [
+    {
+      id: "users" as const,
+      label: "Quản lý tài khoản",
+      Icon: UsersThree,
+      badge: flaggedUsersCount > 0 ? flaggedUsersCount : null,
+      badgeColor: "#B06000",
+      badgeBg: "#FEF7E0",
+    },
+    {
+      id: "projects" as const,
+      label: "Quản lý dự án",
+      Icon: BriefcaseMetal,
+      badge: null,
+      badgeColor: "#0A66C2",
+      badgeBg: "#EAF1FA",
+    },
+    {
+      id: "contracts" as const,
+      label: "Quản lý hợp đồng",
+      Icon: FileText,
+      badge: null,
+      badgeColor: "#0A66C2",
+      badgeBg: "#EAF1FA",
+    },
+    {
+      id: "violations" as const,
+      label: "Báo cáo vi phạm",
+      Icon: ShieldCheck,
+      badge: pendingViolationsCount > 0 ? pendingViolationsCount : null,
+      badgeColor: "#C03A2B",
+      badgeBg: "#FCE8E6",
+    },
+  ]
+
   return (
     <div style={{ display: "flex", minHeight: "100vh", background: "#F4F2EE" }}>
-      {/* ── Fixed Sidebar ─────────────────────────────────────────────── */}
+      {/* ── Fixed Sidebar ───────────────────────────────────────────────── */}
       <aside
         style={{
           width: 260,
@@ -15822,7 +15737,7 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
         <div
           style={{
             height: 64,
-            padding: "0 24px",
+            padding: "0 22px",
             display: "flex",
             alignItems: "center",
             gap: 10,
@@ -15832,9 +15747,9 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
         >
           <div
             style={{
-              width: 30,
-              height: 30,
-              borderRadius: 7,
+              width: 32,
+              height: 32,
+              borderRadius: 8,
               background: "#0A66C2",
               display: "flex",
               alignItems: "center",
@@ -15842,7 +15757,7 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
               flexShrink: 0,
             }}
           >
-            <BriefcaseMetal size={17} color="#fff" weight="fill" />
+            <BriefcaseMetal size={18} color="#fff" weight="fill" />
           </div>
           <span
             style={{
@@ -15865,332 +15780,389 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
               flexShrink: 0,
             }}
           >
-            Admin
+            Admin Portal
           </span>
         </div>
 
         {/* Navigation */}
-        <nav style={{ flex: 1, overflowY: "auto", padding: "12px 0 8px" }}>
-          {navGroups.map((group) => (
-            <div key={group.label} style={{ marginBottom: 4 }}>
-              <div
+        <nav style={{ flex: 1, padding: "18px 12px 12px", display: "flex", flexDirection: "column", gap: 4 }}>
+          <div
+            style={{
+              fontSize: 11,
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: 0.8,
+              color: "rgba(0,0,0,0.40)",
+              padding: "0 10px 8px",
+            }}
+          >
+            Bảng điều khiển cốt lõi
+          </div>
+
+          {NAV_ITEMS.map(({ id, label, Icon, badge, badgeColor, badgeBg }) => {
+            const isActive = activeNav === id
+            return (
+              <button
+                key={id}
+                onClick={() => {
+                  setActiveNav(id)
+                  setUserCurrentPage(1)
+                }}
                 style={{
-                  fontSize: 10,
-                  fontWeight: 700,
-                  color: "rgba(0,0,0,0.38)",
-                  textTransform: "uppercase",
-                  letterSpacing: 0.9,
-                  padding: "8px 16px 4px",
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 12,
+                  padding: "10px 14px",
+                  borderRadius: 8,
+                  border: "none",
+                  background: isActive ? "#EAF1FA" : "transparent",
+                  color: isActive ? "#0A66C2" : "rgba(0,0,0,0.70)",
+                  fontSize: 14,
+                  fontWeight: isActive ? 700 : 600,
+                  cursor: "pointer",
+                  fontFamily: "inherit",
+                  textAlign: "left",
+                  transition: "all 150ms",
+                }}
+                onMouseEnter={(e) => {
+                  if (!isActive) {
+                    ;(e.currentTarget as HTMLElement).style.background = "#FAFAF8"
+                    ;(e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.90)"
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isActive) {
+                    ;(e.currentTarget as HTMLElement).style.background = "transparent"
+                    ;(e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.70)"
+                  }
                 }}
               >
-                {group.label}
-              </div>
-              {group.items.map(({ id, label, Icon, badge }) => {
-                const isActive = activeNav === id
-                return (
-                  <button
-                    key={id}
-                    onClick={() => {
-                      setActiveNav(id)
-                      setCurrentPage(1)
-                    }}
+                <Icon
+                  size={18}
+                  weight={isActive ? "fill" : "regular"}
+                  style={{ flexShrink: 0 }}
+                />
+                <span style={{ flex: 1 }}>{label}</span>
+                {badge !== null && badge > 0 && (
+                  <span
                     style={{
-                      width: "calc(100% - 24px)",
-                      margin: "1px 12px",
-                      display: "flex",
+                      background: badgeBg,
+                      color: badgeColor,
+                      fontSize: 11,
+                      fontWeight: 700,
+                      minWidth: 20,
+                      height: 18,
+                      borderRadius: 9,
+                      display: "inline-flex",
                       alignItems: "center",
-                      gap: 9,
-                      padding: "8px 10px 8px 9px",
-                      borderRadius: 6,
-                      border: "none",
-                      borderLeft: isActive
-                        ? "3px solid #0A66C2"
-                        : "3px solid transparent",
-                      background: isActive ? "#EAF1FA" : "none",
-                      color: isActive ? "#0A66C2" : "rgba(0,0,0,0.60)",
-                      fontSize: 13.5,
-                      fontWeight: 600,
-                      cursor: "pointer",
-                      fontFamily: "inherit",
-                      textAlign: "left",
-                      transition: "background 120ms, color 120ms",
-                    }}
-                    onMouseEnter={(e) => {
-                      if (!isActive) {
-                        const el = e.currentTarget as HTMLElement
-                        el.style.background = "#FAFAF8"
-                        el.style.color = "rgba(0,0,0,0.90)"
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!isActive) {
-                        const el = e.currentTarget as HTMLElement
-                        el.style.background = "none"
-                        el.style.color = "rgba(0,0,0,0.60)"
-                      }
+                      justifyContent: "center",
+                      padding: "0 6px",
                     }}
                   >
-                    <Icon
-                      size={15}
-                      weight={isActive ? "fill" : "regular"}
-                      style={{ flexShrink: 0 }}
-                    />
-                    <span style={{ flex: 1, lineHeight: 1.3 }}>{label}</span>
-                    {badge !== null && badge > 0 && (
-                      <span
-                        style={{
-                          background: "#FEF7E0",
-                          color: "#B06000",
-                          fontSize: 11,
-                          fontWeight: 700,
-                          minWidth: 20,
-                          height: 18,
-                          borderRadius: 9,
-                          display: "inline-flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          padding: "0 5px",
-                        }}
-                      >
-                        {badge}
-                      </span>
-                    )}
-                  </button>
-                )
-              })}
-            </div>
-          ))}
+                    {badge}
+                  </span>
+                )}
+              </button>
+            )
+          })}
         </nav>
 
-        {/* Footer — admin profile + logout */}
+        {/* Footer Admin info + Back button */}
         <div
           style={{
             borderTop: "1px solid rgba(0,0,0,0.08)",
-            padding: "14px 16px",
+            padding: "16px",
+            background: "#FAFAF8",
             display: "flex",
-            alignItems: "center",
-            gap: 10,
+            flexDirection: "column",
+            gap: 12,
             flexShrink: 0,
           }}
         >
-          <div
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <div
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: "50%",
+                background: "#0A66C2",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexShrink: 0,
+                color: "#fff",
+                fontSize: 12,
+                fontWeight: 800,
+              }}
+            >
+              AD
+            </div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div
+                style={{
+                  fontSize: 13,
+                  fontWeight: 700,
+                  color: "rgba(0,0,0,0.90)",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
+              >
+                Quản trị viên
+              </div>
+              <div
+                style={{
+                  fontSize: 11,
+                  color: "rgba(0,0,0,0.45)",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
+              >
+                admin@occupify.vn
+              </div>
+            </div>
+          </div>
+
+          <button
+            onClick={onBack}
             style={{
-              width: 36,
-              height: 36,
-              borderRadius: "50%",
-              background: "#0A66C2",
+              width: "100%",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              flexShrink: 0,
-            }}
-          >
-            <span style={{ fontSize: 12, fontWeight: 800, color: "#fff" }}>
-              AD
-            </span>
-          </div>
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <div
-              style={{
-                fontSize: 13,
-                fontWeight: 700,
-                color: "rgba(0,0,0,0.90)",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-              }}
-            >
-              Admin Hệ thống
-            </div>
-            <div
-              style={{
-                fontSize: 11,
-                color: "rgba(0,0,0,0.45)",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-              }}
-            >
-              admin@occupify.vn
-            </div>
-          </div>
-          <button
-            onClick={onBack}
-            title="Thoát Admin"
-            style={{
-              background: "none",
-              border: "none",
+              gap: 8,
+              padding: "8px 14px",
+              borderRadius: 9999,
+              border: "1px solid rgba(0,0,0,0.15)",
+              background: "#fff",
+              color: "rgba(0,0,0,0.75)",
+              fontSize: 13,
+              fontWeight: 600,
               cursor: "pointer",
-              color: "rgba(0,0,0,0.38)",
-              padding: 6,
-              borderRadius: 6,
-              display: "flex",
-              alignItems: "center",
-              transition: "color 120ms, background 120ms",
+              transition: "all 150ms",
             }}
             onMouseEnter={(e) => {
-              const el = e.currentTarget as HTMLElement
-              el.style.color = "#C03A2B"
-              el.style.background = "#FBE2E2"
+              ;(e.currentTarget as HTMLElement).style.background = "#EAF1FA"
+              ;(e.currentTarget as HTMLElement).style.color = "#0A66C2"
+              ;(e.currentTarget as HTMLElement).style.borderColor = "#0A66C2"
             }}
             onMouseLeave={(e) => {
-              const el = e.currentTarget as HTMLElement
-              el.style.color = "rgba(0,0,0,0.38)"
-              el.style.background = "none"
+              ;(e.currentTarget as HTMLElement).style.background = "#fff"
+              ;(e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.75)"
+              ;(e.currentTarget as HTMLElement).style.borderColor =
+                "rgba(0,0,0,0.15)"
             }}
           >
-            <ArrowLeft size={15} />
+            <ArrowLeft size={14} weight="bold" />
+            <span>Quay lại Occupify</span>
           </button>
         </div>
       </aside>
 
-      {/* ── Main workspace ─────────────────────────────────────────────── */}
-      <main
-        style={{ marginLeft: 260, flex: 1, minHeight: "100vh", padding: 32 }}
-      >
-        {/* ── User Management view ────────────────────────────────────── */}
-        {isUserView && (
-          <>
-            {/* Page header */}
-            <div style={{ marginBottom: 24 }}>
-              <h1
-                style={{
-                  fontSize: 24,
-                  fontWeight: 600,
-                  color: "rgba(0,0,0,0.90)",
-                  marginBottom: 3,
-                }}
-              >
-                {activeNav === "flagged"
-                  ? "Tài khoản bị gắn cờ"
-                  : "Quản lý người dùng"}
-              </h1>
-              <p style={{ fontSize: 14, color: "rgba(0,0,0,0.60)" }}>
-                Tổng cộng{" "}
-                <strong style={{ color: "rgba(0,0,0,0.80)" }}>
-                  {filtered.length}
-                </strong>{" "}
-                người dùng
-                {activeNav === "flagged"
-                  ? " đang bị gắn cờ"
-                  : " trong hệ thống"}
-              </p>
+      {/* ── Main Workspace ──────────────────────────────────────────────── */}
+      <main style={{ marginLeft: 260, flex: 1, minHeight: "100vh", padding: "32px 40px" }}>
+        {/* ═══════════════════════════════════════════════════════════════════
+            TAB 1: QUẢN LÝ TÀI KHOẢN (ACCOUNTS MANAGEMENT)
+           ═══════════════════════════════════════════════════════════════════ */}
+        {activeNav === "users" && (
+          <div>
+            {/* Header */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginBottom: 20,
+              }}
+            >
+              <div>
+                <h1
+                  style={{
+                    fontSize: 24,
+                    fontWeight: 800,
+                    color: "rgba(0,0,0,0.90)",
+                    letterSpacing: "-0.02em",
+                    marginBottom: 4,
+                  }}
+                >
+                  Quản lý tài khoản
+                </h1>
+                <p style={{ fontSize: 14, color: "rgba(0,0,0,0.60)" }}>
+                  Kiểm soát người dùng, phân loại đối tượng, xử lý vi phạm và bảo vệ an toàn nền tảng
+                </p>
+              </div>
+
+              <div style={{ display: "flex", gap: 10 }}>
+                {flaggedUsersCount > 0 && (
+                  <div
+                    style={{
+                      background: "#FEF7E0",
+                      color: "#B06000",
+                      padding: "6px 14px",
+                      borderRadius: 9999,
+                      fontSize: 13,
+                      fontWeight: 700,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 6,
+                    }}
+                  >
+                    <Warning size={15} weight="fill" />
+                    <span>{flaggedUsersCount} tài khoản cần xem xét</span>
+                  </div>
+                )}
+              </div>
             </div>
 
-            {/* Filter & search toolbar */}
+            {/* Quick Status Filter Tabs */}
+            <div
+              style={{
+                display: "flex",
+                gap: 8,
+                marginBottom: 16,
+                flexWrap: "wrap",
+              }}
+            >
+              {[
+                { key: "Tất cả", label: "Tất cả", count: users.length },
+                { key: "Hoạt động", label: "Hoạt động", count: activeUsersCount },
+                { key: "Bị gắn cờ", label: "Bị gắn cờ", count: flaggedUsersCount, highlight: true },
+                { key: "Bị khóa", label: "Bị khóa", count: lockedUsersCount },
+              ].map((tab) => {
+                const isSelected = userStatusFilter === tab.key
+                return (
+                  <button
+                    key={tab.key}
+                    onClick={() => {
+                      setUserStatusFilter(tab.key)
+                      setUserCurrentPage(1)
+                    }}
+                    style={{
+                      padding: "7px 16px",
+                      borderRadius: 9999,
+                      border: isSelected ? "none" : "1px solid rgba(0,0,0,0.12)",
+                      background: isSelected ? "#0A66C2" : "#fff",
+                      color: isSelected ? "#fff" : "rgba(0,0,0,0.70)",
+                      fontSize: 13,
+                      fontWeight: isSelected ? 700 : 600,
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 6,
+                      transition: "all 120ms",
+                    }}
+                  >
+                    <span>{tab.label}</span>
+                    <span
+                      style={{
+                        background: isSelected
+                          ? "rgba(255,255,255,0.25)"
+                          : tab.highlight && tab.count > 0
+                          ? "#FEF7E0"
+                          : "#F4F2EE",
+                        color: isSelected
+                          ? "#fff"
+                          : tab.highlight && tab.count > 0
+                          ? "#B06000"
+                          : "rgba(0,0,0,0.60)",
+                        padding: "1px 6px",
+                        borderRadius: 8,
+                        fontSize: 11,
+                        fontWeight: 700,
+                      }}
+                    >
+                      {tab.count}
+                    </span>
+                  </button>
+                )
+              })}
+            </div>
+
+            {/* Search & Role Filter Bar */}
             <div
               style={{
                 background: "#fff",
-                padding: "14px 16px",
+                padding: "12px 16px",
                 borderRadius: 8,
                 boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-                marginBottom: 20,
+                marginBottom: 16,
                 display: "flex",
-                gap: 10,
+                gap: 12,
                 alignItems: "center",
                 flexWrap: "wrap",
               }}
             >
-              {/* Search */}
-              <div
-                style={{
-                  position: "relative",
-                  flex: "1 1 260px",
-                  maxWidth: 360,
-                }}
-              >
+              <div style={{ position: "relative", flex: "1 1 280px", maxWidth: 400 }}>
                 <MagnifyingGlass
-                  size={14}
+                  size={15}
                   color="rgba(0,0,0,0.40)"
                   style={{
                     position: "absolute",
-                    left: 10,
+                    left: 12,
                     top: "50%",
                     transform: "translateY(-50%)",
                     pointerEvents: "none",
                   }}
                 />
                 <input
-                  value={search}
+                  value={userSearch}
                   onChange={(e) => {
-                    setSearch(e.target.value)
-                    setCurrentPage(1)
+                    setUserSearch(e.target.value)
+                    setUserCurrentPage(1)
                   }}
-                  placeholder="Tìm theo tên hoặc email..."
+                  placeholder="Tìm theo họ tên hoặc email..."
                   style={{
                     width: "100%",
-                    background: "#EAF1FA",
+                    background: "#F4F2EE",
                     border: "1px solid transparent",
-                    borderRadius: 4,
-                    padding: "7px 12px 7px 30px",
-                    fontSize: 14,
+                    borderRadius: 6,
+                    padding: "8px 12px 8px 34px",
+                    fontSize: 13.5,
                     outline: "none",
                     color: "rgba(0,0,0,0.90)",
                     fontFamily: "inherit",
-                    transition: "border-color 150ms",
-                    boxSizing: "border-box",
                   }}
                   onFocus={(e) => {
-                    ; (e.currentTarget as HTMLElement).style.borderColor =
-                      "#0A66C2"
+                    ;(e.currentTarget as HTMLElement).style.borderColor = "#0A66C2"
                   }}
                   onBlur={(e) => {
-                    ; (e.currentTarget as HTMLElement).style.borderColor =
-                      "transparent"
+                    ;(e.currentTarget as HTMLElement).style.borderColor = "transparent"
                   }}
                 />
               </div>
-              {/* Status dropdown */}
-              <select
-                value={statusFilter}
-                onChange={(e) => {
-                  setStatusFilter(e.target.value)
-                  setCurrentPage(1)
-                }}
-                style={{
-                  padding: "7px 30px 7px 10px",
-                  borderRadius: 4,
-                  border: "1px solid rgba(0,0,0,0.15)",
-                  fontSize: 13.5,
-                  fontFamily: "inherit",
-                  color: "rgba(0,0,0,0.80)",
-                  background: "#fff",
-                  cursor: "pointer",
-                  outline: "none",
-                  appearance: "auto",
-                }}
-              >
-                {["Tất cả", "Hoạt động", "Bị gắn cờ", "Bị khóa"].map((s) => (
-                  <option key={s}>{s}</option>
-                ))}
-              </select>
-              {/* Role dropdown */}
-              <select
-                value={roleFilter}
-                onChange={(e) => {
-                  setRoleFilter(e.target.value)
-                  setCurrentPage(1)
-                }}
-                style={{
-                  padding: "7px 30px 7px 10px",
-                  borderRadius: 4,
-                  border: "1px solid rgba(0,0,0,0.15)",
-                  fontSize: 13.5,
-                  fontFamily: "inherit",
-                  color: "rgba(0,0,0,0.80)",
-                  background: "#fff",
-                  cursor: "pointer",
-                  outline: "none",
-                  appearance: "auto",
-                }}
-              >
-                {["Tất cả", "Client", "Freelancer"].map((r) => (
-                  <option key={r}>{r}</option>
-                ))}
-              </select>
+
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ fontSize: 13, color: "rgba(0,0,0,0.55)", fontWeight: 600 }}>
+                  Vai trò:
+                </span>
+                <select
+                  value={userRoleFilter}
+                  onChange={(e) => {
+                    setUserRoleFilter(e.target.value)
+                    setUserCurrentPage(1)
+                  }}
+                  style={{
+                    padding: "7px 12px",
+                    borderRadius: 6,
+                    border: "1px solid rgba(0,0,0,0.15)",
+                    fontSize: 13,
+                    fontFamily: "inherit",
+                    color: "rgba(0,0,0,0.80)",
+                    background: "#fff",
+                    cursor: "pointer",
+                    outline: "none",
+                  }}
+                >
+                  <option>Tất cả</option>
+                  <option>Client</option>
+                  <option>Freelancer</option>
+                </select>
+              </div>
             </div>
 
-            {/* Data table */}
+            {/* Table */}
             <div
               style={{
                 background: "#fff",
@@ -16201,12 +16173,7 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
             >
               <table style={{ width: "100%", borderCollapse: "collapse" }}>
                 <thead>
-                  <tr
-                    style={{
-                      background: "#FAFAF8",
-                      borderBottom: "1px solid rgba(0,0,0,0.08)",
-                    }}
-                  >
+                  <tr style={{ background: "#FAFAF8", borderBottom: "1px solid rgba(0,0,0,0.08)" }}>
                     {[
                       "Người dùng",
                       "Email",
@@ -16218,14 +16185,13 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                       <th
                         key={h}
                         style={{
-                          padding: "11px 20px",
+                          padding: "12px 18px",
                           textAlign: "left",
                           fontSize: 11.5,
                           fontWeight: 700,
                           textTransform: "uppercase",
                           letterSpacing: 0.6,
-                          color: "rgba(0,0,0,0.55)",
-                          whiteSpace: "nowrap",
+                          color: "rgba(0,0,0,0.50)",
                         }}
                       >
                         {h}
@@ -16234,99 +16200,77 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                   </tr>
                 </thead>
                 <tbody>
-                  {pageUsers.length === 0 ? (
+                  {paginatedUsers.length === 0 ? (
                     <tr>
                       <td
                         colSpan={6}
                         style={{
-                          padding: "56px 20px",
+                          padding: "50px 20px",
                           textAlign: "center",
-                          color: "rgba(0,0,0,0.38)",
+                          color: "rgba(0,0,0,0.40)",
                           fontSize: 14,
                         }}
                       >
-                        Không tìm thấy người dùng phù hợp với bộ lọc hiện tại.
+                        Không tìm thấy người dùng nào phù hợp.
                       </td>
                     </tr>
                   ) : (
-                    pageUsers.map((u) => (
+                    paginatedUsers.map((u) => (
                       <tr
                         key={u.id}
                         style={{
-                          borderBottom: "1px solid rgba(0,0,0,0.04)",
+                          borderBottom: "1px solid rgba(0,0,0,0.05)",
                           transition: "background 120ms",
                         }}
                         onMouseEnter={(e) => {
-                          ; (e.currentTarget as HTMLElement).style.background =
-                            "#FAFAF8"
+                          ;(e.currentTarget as HTMLElement).style.background = "#FAFAF8"
                         }}
                         onMouseLeave={(e) => {
-                          ; (e.currentTarget as HTMLElement).style.background =
-                            "transparent"
+                          ;(e.currentTarget as HTMLElement).style.background = "transparent"
                         }}
                       >
-                        {/* User cell */}
-                        <td style={{ padding: "13px 20px" }}>
-                          <div
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              gap: 10,
-                            }}
-                          >
+                        <td style={{ padding: "12px 18px" }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                             <div
                               style={{
-                                width: 38,
-                                height: 38,
+                                width: 34,
+                                height: 34,
                                 borderRadius: "50%",
                                 background: u.color,
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "center",
                                 flexShrink: 0,
+                                color: "#fff",
+                                fontSize: 11.5,
+                                fontWeight: 800,
                               }}
                             >
-                              <span
-                                style={{
-                                  fontSize: 12,
-                                  fontWeight: 800,
-                                  color: "#fff",
-                                }}
-                              >
-                                {u.initials}
-                              </span>
+                              {u.initials}
                             </div>
                             <span
+                              onClick={() => setUserDetailModal(u)}
                               style={{
-                                fontSize: 14,
+                                fontSize: 13.5,
                                 fontWeight: 700,
                                 color: "rgba(0,0,0,0.90)",
+                                cursor: "pointer",
                               }}
                             >
                               {u.name}
                             </span>
                           </div>
                         </td>
-                        {/* Email */}
-                        <td
-                          style={{
-                            padding: "13px 20px",
-                            fontSize: 13.5,
-                            color: "rgba(0,0,0,0.60)",
-                          }}
-                        >
+                        <td style={{ padding: "12px 18px", fontSize: 13, color: "rgba(0,0,0,0.60)" }}>
                           {u.email}
                         </td>
-                        {/* Role badge */}
-                        <td style={{ padding: "13px 20px" }}>
+                        <td style={{ padding: "12px 18px" }}>
                           <span
                             style={{
                               fontSize: 12,
-                              fontWeight: 600,
-                              color:
-                                u.role === "Freelancer" ? "#0A66C2" : "#057642",
-                              background:
-                                u.role === "Freelancer" ? "#EAF1FA" : "#E6F4EA",
+                              fontWeight: 700,
+                              color: u.role === "Freelancer" ? "#0A66C2" : "#057642",
+                              background: u.role === "Freelancer" ? "#EAF1FA" : "#E6F4EA",
                               padding: "3px 10px",
                               borderRadius: 9999,
                             }}
@@ -16334,88 +16278,28 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                             {u.role}
                           </span>
                         </td>
-                        {/* Status */}
-                        <td style={{ padding: "13px 20px" }}>
-                          {statusBadge(u.status)}
+                        <td style={{ padding: "12px 18px" }}>
+                          {renderStatusBadge(u.status)}
                         </td>
-                        {/* Joined */}
-                        <td
-                          style={{
-                            padding: "13px 20px",
-                            fontSize: 13.5,
-                            color: "rgba(0,0,0,0.60)",
-                          }}
-                        >
+                        <td style={{ padding: "12px 18px", fontSize: 13, color: "rgba(0,0,0,0.55)" }}>
                           {u.joined}
                         </td>
-                        {/* Actions */}
-                        <td style={{ padding: "13px 20px" }}>
-                          <div
+                        <td style={{ padding: "12px 18px" }}>
+                          <button
+                            onClick={() => setUserDetailModal(u)}
                             style={{
-                              display: "flex",
-                              alignItems: "center",
-                              gap: 6,
+                              background: "none",
+                              border: "none",
+                              cursor: "pointer",
+                              fontSize: 13,
+                              fontWeight: 700,
+                              color: "#0A66C2",
+                              padding: "4px 8px",
+                              borderRadius: 4,
                             }}
                           >
-                            <button
-                              style={{
-                                background: "none",
-                                border: "none",
-                                cursor: "pointer",
-                                fontSize: 13,
-                                fontWeight: 600,
-                                color: "#0A66C2",
-                                padding: "4px 0",
-                                fontFamily: "inherit",
-                              }}
-                              onMouseEnter={(e) => {
-                                ; (e.currentTarget as HTMLElement).style.textDecoration =
-                                  "underline"
-                              }}
-                              onMouseLeave={(e) => {
-                                ; (e.currentTarget as HTMLElement).style.textDecoration =
-                                  "none"
-                              }}
-                            >
-                              Chi tiết
-                            </button>
-                            <span
-                              style={{
-                                color: "rgba(0,0,0,0.15)",
-                                fontSize: 12,
-                              }}
-                            >
-                              |
-                            </span>
-                            <button
-                              onClick={() => {
-                                setDeleteTarget(u)
-                                setDeleteReason("")
-                              }}
-                              style={{
-                                background: "none",
-                                border: "none",
-                                cursor: "pointer",
-                                fontSize: 13,
-                                fontWeight: 600,
-                                color: "#C03A2B",
-                                padding: "4px 10px",
-                                borderRadius: 9999,
-                                fontFamily: "inherit",
-                                transition: "background 120ms",
-                              }}
-                              onMouseEnter={(e) => {
-                                ; (e.currentTarget as HTMLElement).style.background =
-                                  "#FCE8E6"
-                              }}
-                              onMouseLeave={(e) => {
-                                ; (e.currentTarget as HTMLElement).style.background =
-                                  "none"
-                              }}
-                            >
-                              Xóa tài khoản
-                            </button>
-                          </div>
+                            Chi tiết
+                          </button>
                         </td>
                       </tr>
                     ))
@@ -16424,1930 +16308,858 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
               </table>
 
               {/* Pagination */}
-              {totalPages > 1 && (
+              {userTotalPages > 1 && (
                 <div
                   style={{
                     padding: "12px 20px",
                     display: "flex",
                     alignItems: "center",
-                    justifyContent: "center",
-                    gap: 6,
+                    justifyContent: "space-between",
                     borderTop: "1px solid rgba(0,0,0,0.06)",
+                    background: "#FAFAF8",
                   }}
                 >
-                  <button
-                    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                    disabled={currentPage === 1}
-                    style={{
-                      padding: "6px 14px",
-                      borderRadius: 9999,
-                      border: "1px solid rgba(0,0,0,0.15)",
-                      background: currentPage === 1 ? "#F4F2EE" : "#fff",
-                      color:
-                        currentPage === 1
-                          ? "rgba(0,0,0,0.28)"
-                          : "rgba(0,0,0,0.70)",
-                      cursor: currentPage === 1 ? "default" : "pointer",
-                      fontSize: 13,
-                      fontWeight: 600,
-                      fontFamily: "inherit",
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: 4,
-                      transition: "background 120ms",
-                    }}
-                  >
-                    <CaretLeft size={12} weight="bold" /> Trước
-                  </button>
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                    (p) => (
-                      <button
-                        key={p}
-                        onClick={() => setCurrentPage(p)}
-                        style={{
-                          width: 30,
-                          height: 30,
-                          borderRadius: "50%",
-                          border: "none",
-                          background:
-                            p === currentPage ? "#0A66C2" : "transparent",
-                          color:
-                            p === currentPage ? "#fff" : "rgba(0,0,0,0.60)",
-                          cursor: "pointer",
-                          fontSize: 13,
-                          fontWeight: 600,
-                          fontFamily: "inherit",
-                          transition: "background 120ms",
-                        }}
-                      >
-                        {p}
-                      </button>
-                    ),
-                  )}
-                  <button
-                    onClick={() =>
-                      setCurrentPage((p) => Math.min(totalPages, p + 1))
-                    }
-                    disabled={currentPage === totalPages}
-                    style={{
-                      padding: "6px 14px",
-                      borderRadius: 9999,
-                      border: "1px solid rgba(0,0,0,0.15)",
-                      background:
-                        currentPage === totalPages ? "#F4F2EE" : "#fff",
-                      color:
-                        currentPage === totalPages
-                          ? "rgba(0,0,0,0.28)"
-                          : "rgba(0,0,0,0.70)",
-                      cursor:
-                        currentPage === totalPages ? "default" : "pointer",
-                      fontSize: 13,
-                      fontWeight: 600,
-                      fontFamily: "inherit",
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: 4,
-                      transition: "background 120ms",
-                    }}
-                  >
-                    Tiếp <CaretRight size={12} weight="bold" />
-                  </button>
+                  <span style={{ fontSize: 13, color: "rgba(0,0,0,0.60)" }}>
+                    Trang {userCurrentPage} / {userTotalPages} ({filteredUsers.length} tài khoản)
+                  </span>
+                  <div style={{ display: "flex", gap: 6 }}>
+                    <button
+                      disabled={userCurrentPage <= 1}
+                      onClick={() => setUserCurrentPage((p) => Math.max(1, p - 1))}
+                      style={{
+                        padding: "5px 12px",
+                        borderRadius: 6,
+                        border: "1px solid rgba(0,0,0,0.15)",
+                        background: "#fff",
+                        fontSize: 12.5,
+                        fontWeight: 600,
+                        cursor: userCurrentPage <= 1 ? "default" : "pointer",
+                        opacity: userCurrentPage <= 1 ? 0.4 : 1,
+                      }}
+                    >
+                      Trước
+                    </button>
+                    <button
+                      disabled={userCurrentPage >= userTotalPages}
+                      onClick={() => setUserCurrentPage((p) => Math.min(userTotalPages, p + 1))}
+                      style={{
+                        padding: "5px 12px",
+                        borderRadius: 6,
+                        border: "1px solid rgba(0,0,0,0.15)",
+                        background: "#fff",
+                        fontSize: 12.5,
+                        fontWeight: 600,
+                        cursor: userCurrentPage >= userTotalPages ? "default" : "pointer",
+                        opacity: userCurrentPage >= userTotalPages ? 0.4 : 1,
+                      }}
+                    >
+                      Tiếp theo
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
-          </>
+          </div>
         )}
 
-        {/* ── Project Management view ─────────────────────────────────── */}
-        {activeNav === "projects" &&
-          (() => {
-            const filtered = projects.filter((p) => {
-              const q = projectSearch.toLowerCase()
-              const matchQ =
-                !q ||
-                p.title.toLowerCase().includes(q) ||
-                p.owner.name.toLowerCase().includes(q)
-              const matchS =
-                projectStatus === "Tất cả" || p.status === projectStatus
-              return matchQ && matchS
-            })
-            const statusBadge = (s: string) => {
-              const map: Record<string, { bg: string; fg: string }> = {
-                "Đang tuyển": { bg: "#EAF1FA", fg: "#0A66C2" },
-                "Đang thực hiện": { bg: "#E6F4EA", fg: "#137333" },
-                "Đã đóng": { bg: "#F4F2EE", fg: "rgba(0,0,0,0.50)" },
-              }
-              const c = map[s] ?? map["Đã đóng"]
-              return (
-                <span
-                  style={{
-                    background: c.bg,
-                    color: c.fg,
-                    fontSize: 12,
-                    fontWeight: 600,
-                    padding: "3px 10px",
-                    borderRadius: 9999,
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {s}
-                </span>
-              )
-            }
-            return (
-              <>
-                <div style={{ marginBottom: 24 }}>
-                  <h1
-                    style={{
-                      fontSize: 24,
-                      fontWeight: 600,
-                      color: "rgba(0,0,0,0.90)",
-                      marginBottom: 3,
-                    }}
-                  >
-                    Quản lý dự án
-                  </h1>
-                  <p style={{ fontSize: 14, color: "rgba(0,0,0,0.60)" }}>
-                    Tổng cộng{" "}
-                    <strong style={{ color: "rgba(0,0,0,0.80)" }}>
-                      {filtered.length}
-                    </strong>{" "}
-                    dự án trong hệ thống
-                  </p>
-                </div>
-                <div
-                  style={{
-                    background: "#fff",
-                    padding: "14px 16px",
-                    borderRadius: 8,
-                    boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-                    marginBottom: 20,
-                    display: "flex",
-                    gap: 10,
-                    alignItems: "center",
-                    flexWrap: "wrap",
-                  }}
-                >
-                  <div
-                    style={{
-                      position: "relative",
-                      flex: "1 1 260px",
-                      maxWidth: 360,
-                    }}
-                  >
-                    <MagnifyingGlass
-                      size={14}
-                      color="rgba(0,0,0,0.40)"
-                      style={{
-                        position: "absolute",
-                        left: 10,
-                        top: "50%",
-                        transform: "translateY(-50%)",
-                        pointerEvents: "none",
-                      }}
-                    />
-                    <input
-                      value={projectSearch}
-                      onChange={(e) => setProjectSearch(e.target.value)}
-                      placeholder="Tìm theo tên dự án hoặc chủ sở hữu..."
-                      style={{
-                        width: "100%",
-                        background: "#EAF1FA",
-                        border: "1px solid transparent",
-                        borderRadius: 4,
-                        padding: "7px 12px 7px 30px",
-                        fontSize: 14,
-                        outline: "none",
-                        color: "rgba(0,0,0,0.90)",
-                        fontFamily: "inherit",
-                        boxSizing: "border-box",
-                      }}
-                      onFocus={(e) => {
-                        ; (e.currentTarget as HTMLElement).style.borderColor =
-                          "#0A66C2"
-                      }}
-                      onBlur={(e) => {
-                        ; (e.currentTarget as HTMLElement).style.borderColor =
-                          "transparent"
-                      }}
-                    />
-                  </div>
-                  <select
-                    value={projectStatus}
-                    onChange={(e) => setProjectStatus(e.target.value)}
-                    style={{
-                      padding: "7px 10px",
-                      borderRadius: 4,
-                      border: "1px solid rgba(0,0,0,0.15)",
-                      fontSize: 13.5,
-                      fontFamily: "inherit",
-                      color: "rgba(0,0,0,0.80)",
-                      background: "#fff",
-                      cursor: "pointer",
-                      outline: "none",
-                    }}
-                  >
-                    {["Tất cả", "Đang tuyển", "Đang thực hiện", "Đã đóng"].map(
-                      (s) => (
-                        <option key={s}>{s}</option>
-                      ),
-                    )}
-                  </select>
-                </div>
-                <div
-                  style={{
-                    background: "#fff",
-                    borderRadius: 8,
-                    boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-                    overflow: "hidden",
-                  }}
-                >
-                  <table style={{ width: "100%", borderCollapse: "collapse" }}>
-                    <thead>
-                      <tr
-                        style={{
-                          background: "#FAFAF8",
-                          borderBottom: "1px solid rgba(0,0,0,0.08)",
-                        }}
-                      >
-                        {[
-                          "Tên dự án",
-                          "Người đăng",
-                          "Ngân sách",
-                          "Ứng viên",
-                          "Trạng thái",
-                          "Thao tác",
-                        ].map((h) => (
-                          <th
-                            key={h}
-                            style={{
-                              padding: "11px 20px",
-                              textAlign: "left",
-                              fontSize: 11.5,
-                              fontWeight: 700,
-                              textTransform: "uppercase",
-                              letterSpacing: 0.6,
-                              color: "rgba(0,0,0,0.55)",
-                              whiteSpace: "nowrap",
-                            }}
-                          >
-                            {h}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filtered.length === 0 ? (
-                        <tr>
-                          <td
-                            colSpan={6}
-                            style={{
-                              padding: "56px 20px",
-                              textAlign: "center",
-                              color: "rgba(0,0,0,0.38)",
-                              fontSize: 14,
-                            }}
-                          >
-                            Không tìm thấy dự án phù hợp.
-                          </td>
-                        </tr>
-                      ) : (
-                        filtered.map((p) => (
-                          <tr
-                            key={p.id}
-                            style={{
-                              borderBottom: "1px solid rgba(0,0,0,0.04)",
-                              transition: "background 120ms",
-                            }}
-                            onMouseEnter={(e) => {
-                              ; (e.currentTarget as HTMLElement).style.background =
-                                "#FAFAF8"
-                            }}
-                            onMouseLeave={(e) => {
-                              ; (e.currentTarget as HTMLElement).style.background =
-                                "transparent"
-                            }}
-                          >
-                            <td style={{ padding: "13px 20px", maxWidth: 280 }}>
-                              <div
-                                style={{
-                                  fontSize: 14,
-                                  fontWeight: 700,
-                                  color: "rgba(0,0,0,0.90)",
-                                  marginBottom: 2,
-                                }}
-                              >
-                                {p.title}
-                              </div>
-                              <div
-                                style={{
-                                  fontSize: 12,
-                                  color: "rgba(0,0,0,0.45)",
-                                }}
-                              >
-                                Đăng ngày {p.date} · {p.field}
-                              </div>
-                            </td>
-                            <td style={{ padding: "13px 20px" }}>
-                              <div
-                                style={{
-                                  display: "flex",
-                                  alignItems: "center",
-                                  gap: 8,
-                                }}
-                              >
-                                <div
-                                  style={{
-                                    width: 32,
-                                    height: 32,
-                                    borderRadius: "50%",
-                                    background: p.owner.color,
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    flexShrink: 0,
-                                  }}
-                                >
-                                  <span
-                                    style={{
-                                      fontSize: 11,
-                                      fontWeight: 800,
-                                      color: "#fff",
-                                    }}
-                                  >
-                                    {p.owner.initials}
-                                  </span>
-                                </div>
-                                <span
-                                  style={{
-                                    fontSize: 13.5,
-                                    fontWeight: 600,
-                                    color: "rgba(0,0,0,0.80)",
-                                  }}
-                                >
-                                  {p.owner.name}
-                                </span>
-                              </div>
-                            </td>
-                            <td style={{ padding: "13px 20px" }}>
-                              <div
-                                style={{
-                                  fontSize: 14,
-                                  fontWeight: 600,
-                                  color: "rgba(0,0,0,0.85)",
-                                }}
-                              >
-                                {p.budget}
-                              </div>
-                              <div
-                                style={{
-                                  fontSize: 12,
-                                  color: "rgba(0,0,0,0.45)",
-                                }}
-                              >
-                                {p.budgetType}
-                              </div>
-                            </td>
-                            <td
-                              style={{
-                                padding: "13px 20px",
-                                fontSize: 14,
-                                fontWeight: 700,
-                                color: "rgba(0,0,0,0.80)",
-                              }}
-                            >
-                              {p.applicants}
-                            </td>
-                            <td style={{ padding: "13px 20px" }}>
-                              {statusBadge(p.status)}
-                            </td>
-                            <td style={{ padding: "13px 20px" }}>
-                              <div
-                                style={{
-                                  display: "flex",
-                                  alignItems: "center",
-                                  gap: 6,
-                                }}
-                              >
-                                <button
-                                  onClick={() => setProjectDetail(p)}
-                                  style={{
-                                    background: "none",
-                                    border: "none",
-                                    cursor: "pointer",
-                                    fontSize: 13,
-                                    fontWeight: 600,
-                                    color: "#0A66C2",
-                                    padding: "4px 0",
-                                    fontFamily: "inherit",
-                                  }}
-                                  onMouseEnter={(e) => {
-                                    ; (e.currentTarget as HTMLElement).style.textDecoration =
-                                      "underline"
-                                  }}
-                                  onMouseLeave={(e) => {
-                                    ; (e.currentTarget as HTMLElement).style.textDecoration =
-                                      "none"
-                                  }}
-                                >
-                                  Xem chi tiết
-                                </button>
-                                <span
-                                  style={{
-                                    color: "rgba(0,0,0,0.15)",
-                                    fontSize: 12,
-                                  }}
-                                >
-                                  |
-                                </span>
-                                <button
-                                  onClick={() => {
-                                    setProjectDeleteTarget(p)
-                                    setProjectDeleteReason("")
-                                  }}
-                                  style={{
-                                    background: "none",
-                                    border: "none",
-                                    cursor: "pointer",
-                                    fontSize: 13,
-                                    fontWeight: 600,
-                                    color: "#C03A2B",
-                                    padding: "4px 10px",
-                                    borderRadius: 9999,
-                                    fontFamily: "inherit",
-                                    transition: "background 120ms",
-                                  }}
-                                  onMouseEnter={(e) => {
-                                    ; (e.currentTarget as HTMLElement).style.background =
-                                      "#FCE8E6"
-                                  }}
-                                  onMouseLeave={(e) => {
-                                    ; (e.currentTarget as HTMLElement).style.background =
-                                      "none"
-                                  }}
-                                >
-                                  Xóa dự án
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                        ))
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              </>
-            )
-          })()}
-
-        {/* ── Contract Management view ─────────────────────────────────── */}
-        {activeNav === "contracts" &&
-          (() => {
-            const filtered = ADMIN_CONTRACTS.filter((c) => {
-              const q = contractSearch.toLowerCase()
-              const matchQ =
-                !q ||
-                c.id.toLowerCase().includes(q) ||
-                c.project.toLowerCase().includes(q) ||
-                c.client.name.toLowerCase().includes(q) ||
-                c.freelancer.name.toLowerCase().includes(q)
-              const matchS =
-                contractStatus === "Tất cả trạng thái" ||
-                c.status === contractStatus
-              return matchQ && matchS
-            })
-            const statusBadge = (s: string) => {
-              const map: Record<string, { bg: string; fg: string }> = {
-                "Hoàn thành": { bg: "#E6F4EA", fg: "#137333" },
-                "Đang thực hiện": { bg: "#EAF1FA", fg: "#0A66C2" },
-                "Đã hủy / Thất bại": { bg: "#FCE8E6", fg: "#C03A2B" },
-              }
-              const c = map[s] ?? map["Đang thực hiện"]
-              return (
-                <span
-                  style={{
-                    background: c.bg,
-                    color: c.fg,
-                    fontSize: 12,
-                    fontWeight: 600,
-                    padding: "3px 10px",
-                    borderRadius: 9999,
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {s}
-                </span>
-              )
-            }
-            return (
-              <>
-                <div style={{ marginBottom: 24 }}>
-                  <h1
-                    style={{
-                      fontSize: 24,
-                      fontWeight: 600,
-                      color: "rgba(0,0,0,0.90)",
-                      marginBottom: 3,
-                    }}
-                  >
-                    Danh sách hợp đồng
-                  </h1>
-                  <p style={{ fontSize: 14, color: "rgba(0,0,0,0.60)" }}>
-                    Tổng cộng{" "}
-                    <strong style={{ color: "rgba(0,0,0,0.80)" }}>
-                      {filtered.length}
-                    </strong>{" "}
-                    hợp đồng
-                  </p>
-                </div>
-                <div
-                  style={{
-                    background: "#fff",
-                    padding: "14px 16px",
-                    borderRadius: 8,
-                    boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-                    marginBottom: 20,
-                    display: "flex",
-                    gap: 10,
-                    alignItems: "center",
-                    flexWrap: "wrap",
-                  }}
-                >
-                  <div
-                    style={{
-                      position: "relative",
-                      flex: "1 1 260px",
-                      maxWidth: 360,
-                    }}
-                  >
-                    <MagnifyingGlass
-                      size={14}
-                      color="rgba(0,0,0,0.40)"
-                      style={{
-                        position: "absolute",
-                        left: 10,
-                        top: "50%",
-                        transform: "translateY(-50%)",
-                        pointerEvents: "none",
-                      }}
-                    />
-                    <input
-                      value={contractSearch}
-                      onChange={(e) => setContractSearch(e.target.value)}
-                      placeholder="Tìm theo mã HĐ, tên dự án, hoặc thành viên..."
-                      style={{
-                        width: "100%",
-                        background: "#EAF1FA",
-                        border: "1px solid transparent",
-                        borderRadius: 4,
-                        padding: "7px 12px 7px 30px",
-                        fontSize: 14,
-                        outline: "none",
-                        color: "rgba(0,0,0,0.90)",
-                        fontFamily: "inherit",
-                        boxSizing: "border-box",
-                      }}
-                      onFocus={(e) => {
-                        ; (e.currentTarget as HTMLElement).style.borderColor =
-                          "#0A66C2"
-                      }}
-                      onBlur={(e) => {
-                        ; (e.currentTarget as HTMLElement).style.borderColor =
-                          "transparent"
-                      }}
-                    />
-                  </div>
-                  <select
-                    value={contractStatus}
-                    onChange={(e) => setContractStatus(e.target.value)}
-                    style={{
-                      padding: "7px 10px",
-                      borderRadius: 4,
-                      border: "1px solid rgba(0,0,0,0.15)",
-                      fontSize: 13.5,
-                      fontFamily: "inherit",
-                      color: "rgba(0,0,0,0.80)",
-                      background: "#fff",
-                      cursor: "pointer",
-                      outline: "none",
-                    }}
-                  >
-                    {[
-                      "Tất cả trạng thái",
-                      "Đang thực hiện",
-                      "Hoàn thành",
-                      "Đã hủy / Thất bại",
-                    ].map((s) => (
-                      <option key={s}>{s}</option>
-                    ))}
-                  </select>
-                </div>
-                <div
-                  style={{
-                    background: "#fff",
-                    borderRadius: 8,
-                    boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-                    overflow: "hidden",
-                  }}
-                >
-                  <table style={{ width: "100%", borderCollapse: "collapse" }}>
-                    <thead>
-                      <tr
-                        style={{
-                          background: "#FAFAF8",
-                          borderBottom: "1px solid rgba(0,0,0,0.08)",
-                        }}
-                      >
-                        {[
-                          "Mã hợp đồng",
-                          "Tên dự án",
-                          "Bên thuê",
-                          "Freelancer",
-                          "Hình thức trả lương",
-                          "Thời gian",
-                          "Trạng thái",
-                          "Thao tác",
-                        ].map((h) => (
-                          <th
-                            key={h}
-                            style={{
-                              padding: "11px 16px",
-                              textAlign: "left",
-                              fontSize: 11.5,
-                              fontWeight: 700,
-                              textTransform: "uppercase",
-                              letterSpacing: 0.6,
-                              color: "rgba(0,0,0,0.55)",
-                              whiteSpace: "nowrap",
-                            }}
-                          >
-                            {h}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filtered.length === 0 ? (
-                        <tr>
-                          <td
-                            colSpan={8}
-                            style={{
-                              padding: "56px 20px",
-                              textAlign: "center",
-                              color: "rgba(0,0,0,0.38)",
-                              fontSize: 14,
-                            }}
-                          >
-                            Không tìm thấy hợp đồng phù hợp.
-                          </td>
-                        </tr>
-                      ) : (
-                        filtered.map((c, i) => {
-                          const UserCell = ({
-                            u,
-                          }: {
-                            u: { name: string; initials: string; color: string }
-                          }) => (
-                            <div
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: 8,
-                              }}
-                            >
-                              <div
-                                style={{
-                                  width: 28,
-                                  height: 28,
-                                  borderRadius: "50%",
-                                  background: u.color,
-                                  display: "flex",
-                                  alignItems: "center",
-                                  justifyContent: "center",
-                                  flexShrink: 0,
-                                }}
-                              >
-                                <span
-                                  style={{
-                                    fontSize: 10,
-                                    fontWeight: 800,
-                                    color: "#fff",
-                                  }}
-                                >
-                                  {u.initials}
-                                </span>
-                              </div>
-                              <span
-                                style={{
-                                  fontSize: 13,
-                                  fontWeight: 600,
-                                  color: "rgba(0,0,0,0.80)",
-                                }}
-                              >
-                                {u.name}
-                              </span>
-                            </div>
-                          )
-                          return (
-                            <tr
-                              key={i}
-                              style={{
-                                borderBottom: "1px solid rgba(0,0,0,0.04)",
-                                transition: "background 120ms",
-                              }}
-                              onMouseEnter={(e) => {
-                                ; (e.currentTarget as HTMLElement).style.background =
-                                  "#FAFAF8"
-                              }}
-                              onMouseLeave={(e) => {
-                                ; (e.currentTarget as HTMLElement).style.background =
-                                  "transparent"
-                              }}
-                            >
-                              <td style={{ padding: "13px 16px" }}>
-                                <span
-                                  style={{
-                                    fontFamily: "monospace",
-                                    fontSize: 13,
-                                    fontWeight: 700,
-                                    background: "#F4F2EE",
-                                    padding: "2px 8px",
-                                    borderRadius: 4,
-                                    color: "rgba(0,0,0,0.70)",
-                                  }}
-                                >
-                                  {c.id}
-                                </span>
-                              </td>
-                              <td
-                                style={{
-                                  padding: "13px 16px",
-                                  fontSize: 13.5,
-                                  fontWeight: 600,
-                                  color: "rgba(0,0,0,0.85)",
-                                  maxWidth: 200,
-                                }}
-                              >
-                                <span
-                                  style={{
-                                    display: "-webkit-box",
-                                    WebkitLineClamp: 2,
-                                    WebkitBoxOrient: "vertical",
-                                    overflow: "hidden",
-                                  }}
-                                >
-                                  {c.project}
-                                </span>
-                              </td>
-                              <td style={{ padding: "13px 16px" }}>
-                                <UserCell u={c.client} />
-                              </td>
-                              <td style={{ padding: "13px 16px" }}>
-                                <UserCell u={c.freelancer} />
-                              </td>
-                              <td
-                                style={{
-                                  padding: "13px 16px",
-                                  fontSize: 13,
-                                  color: "rgba(0,0,0,0.70)",
-                                  whiteSpace: "nowrap",
-                                }}
-                              >
-                                {c.payment}
-                              </td>
-                              <td
-                                style={{
-                                  padding: "13px 16px",
-                                  fontSize: 12.5,
-                                  color: "rgba(0,0,0,0.55)",
-                                  whiteSpace: "nowrap",
-                                }}
-                              >
-                                {c.dateRange}
-                              </td>
-                              <td style={{ padding: "13px 16px" }}>
-                                {statusBadge(c.status)}
-                              </td>
-                              <td style={{ padding: "13px 16px" }}>
-                                <button
-                                  style={{
-                                    background: "none",
-                                    border: "none",
-                                    cursor: "pointer",
-                                    fontSize: 13,
-                                    fontWeight: 600,
-                                    color: "#0A66C2",
-                                    padding: "4px 0",
-                                    fontFamily: "inherit",
-                                  }}
-                                  onMouseEnter={(e) => {
-                                    ; (e.currentTarget as HTMLElement).style.textDecoration =
-                                      "underline"
-                                  }}
-                                  onMouseLeave={(e) => {
-                                    ; (e.currentTarget as HTMLElement).style.textDecoration =
-                                      "none"
-                                  }}
-                                >
-                                  Chi tiết
-                                </button>
-                              </td>
-                            </tr>
-                          )
-                        })
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              </>
-            )
-          })()}
-
-        {/* ── Violation Reports view ───────────────────────────────────── */}
-        {activeNav === "violations" &&
-          (() => {
-            const filtered = violations.filter((v) => {
-              const q = violationSearch.toLowerCase()
-              const matchQ =
-                !q ||
-                v.id.toLowerCase().includes(q) ||
-                v.reporter.name.toLowerCase().includes(q) ||
-                v.target.toLowerCase().includes(q)
-              const matchT =
-                violationType === "Tất cả loại vi phạm" ||
-                v.category ===
-                violationType
-                  .replace(" (Post)", "")
-                  .replace(" (User)", "")
-                  .replace(" / Hợp đồng", "")
-              const matchS =
-                violationStatus === "Tất cả" ||
-                (violationStatus === "Chờ xử lý" && v.status === "Chờ xử lý") ||
-                (violationStatus === "Đã xử lý" &&
-                  v.status === "Đã giải quyết") ||
-                (violationStatus === "Đã bác bỏ" && v.status === "Đã bác bỏ")
-              return matchQ && matchT && matchS
-            })
-            const vStatusBadge = (s: string) => {
-              const map: Record<string, { bg: string; fg: string }> = {
-                "Chờ xử lý": { bg: "#FEF7E0", fg: "#B06000" },
-                "Đã giải quyết": { bg: "#E6F4EA", fg: "#137333" },
-                "Đã bác bỏ": { bg: "#FCE8E6", fg: "#C03A2B" },
-              }
-              const c = map[s] ?? map["Chờ xử lý"]
-              return (
-                <span
-                  style={{
-                    background: c.bg,
-                    color: c.fg,
-                    fontSize: 12,
-                    fontWeight: 600,
-                    padding: "3px 10px",
-                    borderRadius: 9999,
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {s}
-                </span>
-              )
-            }
-            const pendingCount = violations.filter(
-              (v) => v.status === "Chờ xử lý",
-            ).length
-            return (
-              <>
-                <div style={{ marginBottom: 24 }}>
-                  <h1
-                    style={{
-                      fontSize: 24,
-                      fontWeight: 600,
-                      color: "rgba(0,0,0,0.90)",
-                      marginBottom: 3,
-                    }}
-                  >
-                    Báo cáo vi phạm
-                  </h1>
-                  <p style={{ fontSize: 14, color: "rgba(0,0,0,0.60)" }}>
-                    <strong style={{ color: "#B06000" }}>{pendingCount}</strong>{" "}
-                    báo cáo đang chờ xử lý
-                  </p>
-                </div>
-                <div
-                  style={{
-                    background: "#fff",
-                    padding: "14px 16px",
-                    borderRadius: 8,
-                    boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-                    marginBottom: 20,
-                    display: "flex",
-                    gap: 10,
-                    alignItems: "center",
-                    flexWrap: "wrap",
-                  }}
-                >
-                  <div
-                    style={{
-                      position: "relative",
-                      flex: "1 1 220px",
-                      maxWidth: 320,
-                    }}
-                  >
-                    <MagnifyingGlass
-                      size={14}
-                      color="rgba(0,0,0,0.40)"
-                      style={{
-                        position: "absolute",
-                        left: 10,
-                        top: "50%",
-                        transform: "translateY(-50%)",
-                        pointerEvents: "none",
-                      }}
-                    />
-                    <input
-                      value={violationSearch}
-                      onChange={(e) => setViolationSearch(e.target.value)}
-                      placeholder="Tìm theo người báo cáo, đối tượng..."
-                      style={{
-                        width: "100%",
-                        background: "#EAF1FA",
-                        border: "1px solid transparent",
-                        borderRadius: 4,
-                        padding: "7px 12px 7px 30px",
-                        fontSize: 14,
-                        outline: "none",
-                        color: "rgba(0,0,0,0.90)",
-                        fontFamily: "inherit",
-                        boxSizing: "border-box",
-                      }}
-                      onFocus={(e) => {
-                        ; (e.currentTarget as HTMLElement).style.borderColor =
-                          "#0A66C2"
-                      }}
-                      onBlur={(e) => {
-                        ; (e.currentTarget as HTMLElement).style.borderColor =
-                          "transparent"
-                      }}
-                    />
-                  </div>
-                  <select
-                    value={violationType}
-                    onChange={(e) => setViolationType(e.target.value)}
-                    style={{
-                      padding: "7px 10px",
-                      borderRadius: 4,
-                      border: "1px solid rgba(0,0,0,0.15)",
-                      fontSize: 13.5,
-                      fontFamily: "inherit",
-                      color: "rgba(0,0,0,0.80)",
-                      background: "#fff",
-                      cursor: "pointer",
-                      outline: "none",
-                    }}
-                  >
-                    {[
-                      "Tất cả loại vi phạm",
-                      "Bài viết (Post)",
-                      "Tài khoản (User)",
-                      "Dự án / Hợp đồng",
-                    ].map((s) => (
-                      <option key={s}>{s}</option>
-                    ))}
-                  </select>
-                  <select
-                    value={violationStatus}
-                    onChange={(e) => setViolationStatus(e.target.value)}
-                    style={{
-                      padding: "7px 10px",
-                      borderRadius: 4,
-                      border: "1px solid rgba(0,0,0,0.15)",
-                      fontSize: 13.5,
-                      fontFamily: "inherit",
-                      color: "rgba(0,0,0,0.80)",
-                      background: "#fff",
-                      cursor: "pointer",
-                      outline: "none",
-                    }}
-                  >
-                    {["Tất cả", "Chờ xử lý", "Đã xử lý", "Đã bác bỏ"].map(
-                      (s) => (
-                        <option key={s}>{s}</option>
-                      ),
-                    )}
-                  </select>
-                </div>
-                <div
-                  style={{
-                    background: "#fff",
-                    borderRadius: 8,
-                    boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-                    overflow: "hidden",
-                  }}
-                >
-                  <table style={{ width: "100%", borderCollapse: "collapse" }}>
-                    <thead>
-                      <tr
-                        style={{
-                          background: "#FAFAF8",
-                          borderBottom: "1px solid rgba(0,0,0,0.08)",
-                        }}
-                      >
-                        {[
-                          "Mã báo cáo",
-                          "Người báo cáo",
-                          "Đối tượng bị báo cáo",
-                          "Phân loại",
-                          "Thời gian gửi",
-                          "Trạng thái",
-                          "Thao tác",
-                        ].map((h) => (
-                          <th
-                            key={h}
-                            style={{
-                              padding: "11px 16px",
-                              textAlign: "left",
-                              fontSize: 11.5,
-                              fontWeight: 700,
-                              textTransform: "uppercase",
-                              letterSpacing: 0.6,
-                              color: "rgba(0,0,0,0.55)",
-                              whiteSpace: "nowrap",
-                            }}
-                          >
-                            {h}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filtered.length === 0 ? (
-                        <tr>
-                          <td
-                            colSpan={7}
-                            style={{
-                              padding: "56px 20px",
-                              textAlign: "center",
-                              color: "rgba(0,0,0,0.38)",
-                              fontSize: 14,
-                            }}
-                          >
-                            Không tìm thấy báo cáo phù hợp.
-                          </td>
-                        </tr>
-                      ) : (
-                        filtered.map((v) => (
-                          <tr
-                            key={v.id}
-                            style={{
-                              borderBottom: "1px solid rgba(0,0,0,0.04)",
-                              transition: "background 120ms",
-                            }}
-                            onMouseEnter={(e) => {
-                              ; (e.currentTarget as HTMLElement).style.background =
-                                "#FAFAF8"
-                            }}
-                            onMouseLeave={(e) => {
-                              ; (e.currentTarget as HTMLElement).style.background =
-                                "transparent"
-                            }}
-                          >
-                            <td style={{ padding: "13px 16px" }}>
-                              <span
-                                style={{
-                                  fontFamily: "monospace",
-                                  fontSize: 13,
-                                  fontWeight: 700,
-                                  background: "#F4F2EE",
-                                  padding: "2px 8px",
-                                  borderRadius: 4,
-                                  color: "rgba(0,0,0,0.70)",
-                                }}
-                              >
-                                {v.id}
-                              </span>
-                            </td>
-                            <td style={{ padding: "13px 16px" }}>
-                              <div
-                                style={{
-                                  display: "flex",
-                                  alignItems: "center",
-                                  gap: 8,
-                                }}
-                              >
-                                <div
-                                  style={{
-                                    width: 30,
-                                    height: 30,
-                                    borderRadius: "50%",
-                                    background: v.reporter.color,
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    flexShrink: 0,
-                                  }}
-                                >
-                                  <span
-                                    style={{
-                                      fontSize: 10,
-                                      fontWeight: 800,
-                                      color: "#fff",
-                                    }}
-                                  >
-                                    {v.reporter.initials}
-                                  </span>
-                                </div>
-                                <span
-                                  style={{
-                                    fontSize: 13,
-                                    fontWeight: 600,
-                                    color: "rgba(0,0,0,0.80)",
-                                  }}
-                                >
-                                  {v.reporter.name}
-                                </span>
-                              </div>
-                            </td>
-                            <td
-                              style={{
-                                padding: "13px 16px",
-                                fontSize: 13.5,
-                                color: "rgba(0,0,0,0.80)",
-                                maxWidth: 220,
-                              }}
-                            >
-                              <span
-                                style={{
-                                  display: "-webkit-box",
-                                  WebkitLineClamp: 2,
-                                  WebkitBoxOrient: "vertical",
-                                  overflow: "hidden",
-                                }}
-                              >
-                                {v.target}
-                              </span>
-                            </td>
-                            <td style={{ padding: "13px 16px" }}>
-                              <span
-                                style={{
-                                  background: "#FAFAF8",
-                                  border: "1px solid rgba(0,0,0,0.08)",
-                                  color: "rgba(0,0,0,0.80)",
-                                  fontSize: 12,
-                                  fontWeight: 600,
-                                  padding: "3px 10px",
-                                  borderRadius: 4,
-                                }}
-                              >
-                                {v.category}
-                              </span>
-                            </td>
-                            <td
-                              style={{
-                                padding: "13px 16px",
-                                fontSize: 12.5,
-                                color: "rgba(0,0,0,0.55)",
-                                whiteSpace: "nowrap",
-                              }}
-                            >
-                              {v.time}
-                            </td>
-                            <td style={{ padding: "13px 16px" }}>
-                              {vStatusBadge(v.status)}
-                            </td>
-                            <td style={{ padding: "13px 16px" }}>
-                              <button
-                                onClick={() => setEvidenceTarget(v)}
-                                style={{
-                                  background: "none",
-                                  border: "none",
-                                  cursor: "pointer",
-                                  fontSize: 13,
-                                  fontWeight: 600,
-                                  color: "#0A66C2",
-                                  padding: "4px 0",
-                                  fontFamily: "inherit",
-                                }}
-                                onMouseEnter={(e) => {
-                                  ; (e.currentTarget as HTMLElement).style.textDecoration =
-                                    "underline"
-                                }}
-                                onMouseLeave={(e) => {
-                                  ; (e.currentTarget as HTMLElement).style.textDecoration =
-                                    "none"
-                                }}
-                              >
-                                Xem bằng chứng
-                              </button>
-                            </td>
-                          </tr>
-                        ))
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              </>
-            )
-          })()}
-
-        {/* ── Disputes & Appeals view ──────────────────────────────────── */}
-        {activeNav === "reviews" &&
-          (() => {
-            const filtered = disputes.filter((d) => {
-              const q = disputeSearch.toLowerCase()
-              const matchQ =
-                !q ||
-                d.complainant.name.toLowerCase().includes(q) ||
-                d.email.toLowerCase().includes(q) ||
-                d.title.toLowerCase().includes(q)
-              const matchS =
-                disputeStatusFilter === "Tất cả" ||
-                (disputeStatusFilter === "Chờ phân xử" &&
-                  d.status === "Chờ phân xử") ||
-                (disputeStatusFilter === "Đã chấp nhận" &&
-                  d.status === "Đã chấp nhận") ||
-                (disputeStatusFilter === "Đã từ chối" &&
-                  d.status === "Đã bác bỏ")
-              return matchQ && matchS
-            })
-            const dStatusBadge = (s: string) => {
-              const map: Record<string, { bg: string; fg: string }> = {
-                "Chờ phân xử": { bg: "#FEF7E0", fg: "#B06000" },
-                "Đã chấp nhận": { bg: "#E6F4EA", fg: "#137333" },
-                "Đã bác bỏ": { bg: "#FCE8E6", fg: "#C03A2B" },
-              }
-              const c = map[s] ?? map["Chờ phân xử"]
-              return (
-                <span
-                  style={{
-                    background: c.bg,
-                    color: c.fg,
-                    fontSize: 12,
-                    fontWeight: 600,
-                    padding: "3px 10px",
-                    borderRadius: 9999,
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {s}
-                </span>
-              )
-            }
-            const pendingCount = disputes.filter(
-              (d) => d.status === "Chờ phân xử",
-            ).length
-            return (
-              <>
-                <div style={{ marginBottom: 24 }}>
-                  <h1
-                    style={{
-                      fontSize: 24,
-                      fontWeight: 600,
-                      color: "rgba(0,0,0,0.90)",
-                      marginBottom: 3,
-                    }}
-                  >
-                    Danh sách khiếu nại
-                  </h1>
-                  <p style={{ fontSize: 14, color: "rgba(0,0,0,0.60)" }}>
-                    <strong style={{ color: "#B06000" }}>{pendingCount}</strong>{" "}
-                    khiếu nại đang chờ phân xử
-                  </p>
-                </div>
-                <div
-                  style={{
-                    background: "#fff",
-                    padding: "14px 16px",
-                    borderRadius: 8,
-                    boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-                    marginBottom: 20,
-                    display: "flex",
-                    gap: 10,
-                    alignItems: "center",
-                    flexWrap: "wrap",
-                  }}
-                >
-                  <div
-                    style={{
-                      position: "relative",
-                      flex: "1 1 260px",
-                      maxWidth: 360,
-                    }}
-                  >
-                    <MagnifyingGlass
-                      size={14}
-                      color="rgba(0,0,0,0.40)"
-                      style={{
-                        position: "absolute",
-                        left: 10,
-                        top: "50%",
-                        transform: "translateY(-50%)",
-                        pointerEvents: "none",
-                      }}
-                    />
-                    <input
-                      value={disputeSearch}
-                      onChange={(e) => setDisputeSearch(e.target.value)}
-                      placeholder="Tìm theo tên, email hoặc tiêu đề..."
-                      style={{
-                        width: "100%",
-                        background: "#EAF1FA",
-                        border: "1px solid transparent",
-                        borderRadius: 4,
-                        padding: "7px 12px 7px 30px",
-                        fontSize: 14,
-                        outline: "none",
-                        color: "rgba(0,0,0,0.90)",
-                        fontFamily: "inherit",
-                        boxSizing: "border-box",
-                      }}
-                      onFocus={(e) => {
-                        ; (e.currentTarget as HTMLElement).style.borderColor =
-                          "#0A66C2"
-                      }}
-                      onBlur={(e) => {
-                        ; (e.currentTarget as HTMLElement).style.borderColor =
-                          "transparent"
-                      }}
-                    />
-                  </div>
-                  <select
-                    value={disputeStatusFilter}
-                    onChange={(e) => setDisputeStatusFilter(e.target.value)}
-                    style={{
-                      padding: "7px 10px",
-                      borderRadius: 4,
-                      border: "1px solid rgba(0,0,0,0.15)",
-                      fontSize: 13.5,
-                      fontFamily: "inherit",
-                      color: "rgba(0,0,0,0.80)",
-                      background: "#fff",
-                      cursor: "pointer",
-                      outline: "none",
-                    }}
-                  >
-                    {[
-                      "Tất cả",
-                      "Chờ phân xử",
-                      "Đã chấp nhận",
-                      "Đã từ chối",
-                    ].map((s) => (
-                      <option key={s}>{s}</option>
-                    ))}
-                  </select>
-                </div>
-                <div
-                  style={{
-                    background: "#fff",
-                    borderRadius: 8,
-                    boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-                    overflow: "hidden",
-                  }}
-                >
-                  <table style={{ width: "100%", borderCollapse: "collapse" }}>
-                    <thead>
-                      <tr
-                        style={{
-                          background: "#FAFAF8",
-                          borderBottom: "1px solid rgba(0,0,0,0.08)",
-                        }}
-                      >
-                        {[
-                          "Người khiếu nại",
-                          "Email",
-                          "Tiêu đề khiếu nại",
-                          "Ngày gửi",
-                          "Trạng thái",
-                          "Thao tác",
-                        ].map((h) => (
-                          <th
-                            key={h}
-                            style={{
-                              padding: "11px 16px",
-                              textAlign: "left",
-                              fontSize: 11.5,
-                              fontWeight: 700,
-                              textTransform: "uppercase",
-                              letterSpacing: 0.6,
-                              color: "rgba(0,0,0,0.55)",
-                              whiteSpace: "nowrap",
-                            }}
-                          >
-                            {h}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filtered.length === 0 ? (
-                        <tr>
-                          <td
-                            colSpan={6}
-                            style={{
-                              padding: "56px 20px",
-                              textAlign: "center",
-                              color: "rgba(0,0,0,0.38)",
-                              fontSize: 14,
-                            }}
-                          >
-                            Không tìm thấy khiếu nại phù hợp.
-                          </td>
-                        </tr>
-                      ) : (
-                        filtered.map((d) => (
-                          <tr
-                            key={d.id}
-                            style={{
-                              borderBottom: "1px solid rgba(0,0,0,0.04)",
-                              transition: "background 120ms",
-                            }}
-                            onMouseEnter={(e) => {
-                              ; (e.currentTarget as HTMLElement).style.background =
-                                "#FAFAF8"
-                            }}
-                            onMouseLeave={(e) => {
-                              ; (e.currentTarget as HTMLElement).style.background =
-                                "transparent"
-                            }}
-                          >
-                            <td style={{ padding: "13px 16px" }}>
-                              <div
-                                style={{
-                                  display: "flex",
-                                  alignItems: "center",
-                                  gap: 8,
-                                }}
-                              >
-                                <div
-                                  style={{
-                                    width: 30,
-                                    height: 30,
-                                    borderRadius: "50%",
-                                    background: d.complainant.color,
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    flexShrink: 0,
-                                  }}
-                                >
-                                  <span
-                                    style={{
-                                      fontSize: 10,
-                                      fontWeight: 800,
-                                      color: "#fff",
-                                    }}
-                                  >
-                                    {d.complainant.initials}
-                                  </span>
-                                </div>
-                                <span
-                                  style={{
-                                    fontSize: 13.5,
-                                    fontWeight: 600,
-                                    color: "rgba(0,0,0,0.85)",
-                                  }}
-                                >
-                                  {d.complainant.name}
-                                </span>
-                              </div>
-                            </td>
-                            <td
-                              style={{
-                                padding: "13px 16px",
-                                fontSize: 13,
-                                color: "rgba(0,0,0,0.60)",
-                              }}
-                            >
-                              {d.email}
-                            </td>
-                            <td
-                              style={{
-                                padding: "13px 16px",
-                                fontSize: 13.5,
-                                fontWeight: 600,
-                                color: "rgba(0,0,0,0.85)",
-                                maxWidth: 280,
-                              }}
-                            >
-                              <span
-                                style={{
-                                  display: "-webkit-box",
-                                  WebkitLineClamp: 2,
-                                  WebkitBoxOrient: "vertical",
-                                  overflow: "hidden",
-                                }}
-                              >
-                                {d.title}
-                              </span>
-                            </td>
-                            <td
-                              style={{
-                                padding: "13px 16px",
-                                fontSize: 13,
-                                color: "rgba(0,0,0,0.55)",
-                                whiteSpace: "nowrap",
-                              }}
-                            >
-                              {d.date}
-                            </td>
-                            <td style={{ padding: "13px 16px" }}>
-                              {dStatusBadge(d.status)}
-                            </td>
-                            <td style={{ padding: "13px 16px" }}>
-                              <button
-                                onClick={() => {
-                                  setDisputeDetail(d)
-                                  setRestoreRating(true)
-                                }}
-                                style={{
-                                  background: "none",
-                                  border: "none",
-                                  cursor: "pointer",
-                                  fontSize: 13,
-                                  fontWeight: 600,
-                                  color: "#0A66C2",
-                                  padding: "4px 0",
-                                  fontFamily: "inherit",
-                                }}
-                                onMouseEnter={(e) => {
-                                  ; (e.currentTarget as HTMLElement).style.textDecoration =
-                                    "underline"
-                                }}
-                                onMouseLeave={(e) => {
-                                  ; (e.currentTarget as HTMLElement).style.textDecoration =
-                                    "none"
-                                }}
-                              >
-                                Chi tiết
-                              </button>
-                            </td>
-                          </tr>
-                        ))
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              </>
-            )
-          })()}
-
-        {/* ── Other nav items placeholder ──────────────────────────────── */}
-        {!isUserView &&
-          !["projects", "contracts", "violations", "reviews"].includes(
-            activeNav,
-          ) && (
+        {/* ═══════════════════════════════════════════════════════════════════
+            TAB 2: QUẢN LÝ DỰ ÁN (PROJECTS MANAGEMENT)
+           ═══════════════════════════════════════════════════════════════════ */}
+        {activeNav === "projects" && (
+          <div>
+            {/* Header */}
             <div
               style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                minHeight: "60vh",
-                color: "rgba(0,0,0,0.40)",
-              }}
-            >
-              <div style={{ fontSize: 52, marginBottom: 16, lineHeight: 1 }}>
-                🚧
-              </div>
-              <div
-                style={{
-                  fontSize: 20,
-                  fontWeight: 700,
-                  color: "rgba(0,0,0,0.65)",
-                  marginBottom: 6,
-                }}
-              >
-                Đang phát triển
-              </div>
-              <div style={{ fontSize: 14 }}>Tính năng này sẽ sớm ra mắt.</div>
-            </div>
-          )}
-      </main>
-
-      {/* ── Project Detail Modal ───────────────────────────────────────── */}
-      {projectDetail && (
-        <div
-          style={{
-            position: "fixed",
-            inset: 0,
-            background: "rgba(0,0,0,0.55)",
-            zIndex: 50,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: 16,
-          }}
-          onClick={(e) => {
-            if (e.target === e.currentTarget) setProjectDetail(null)
-          }}
-        >
-          <div
-            style={{
-              background: "#fff",
-              borderRadius: 12,
-              boxShadow: "0 12px 28px rgba(0,0,0,0.14)",
-              width: "100%",
-              maxWidth: 672,
-              maxHeight: "90vh",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <div
-              style={{
-                padding: "20px 24px",
-                borderBottom: "1px solid rgba(0,0,0,0.08)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
-                flexShrink: 0,
+                marginBottom: 20,
               }}
             >
-              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <span
+              <div>
+                <h1
                   style={{
-                    fontSize: 17,
-                    fontWeight: 700,
+                    fontSize: 24,
+                    fontWeight: 800,
                     color: "rgba(0,0,0,0.90)",
+                    letterSpacing: "-0.02em",
+                    marginBottom: 4,
                   }}
                 >
-                  {projectDetail.title}
-                </span>
-                <span
-                  style={{
-                    background:
-                      projectDetail.status === "Đang tuyển"
-                        ? "#EAF1FA"
-                        : projectDetail.status === "Đang thực hiện"
-                          ? "#E6F4EA"
-                          : "#F4F2EE",
-                    color:
-                      projectDetail.status === "Đang tuyển"
-                        ? "#0A66C2"
-                        : projectDetail.status === "Đang thực hiện"
-                          ? "#137333"
-                          : "rgba(0,0,0,0.50)",
-                    fontSize: 12,
-                    fontWeight: 600,
-                    padding: "2px 10px",
-                    borderRadius: 9999,
-                  }}
-                >
-                  {projectDetail.status}
-                </span>
+                  Quản lý dự án
+                </h1>
+                <p style={{ fontSize: 14, color: "rgba(0,0,0,0.60)" }}>
+                  Kiểm duyệt dự án đăng tuyển, kiểm tra danh sách người tham gia và loại bỏ các dự án vi phạm chính sách
+                </p>
               </div>
-              <button
-                onClick={() => setProjectDetail(null)}
-                style={{
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  color: "rgba(0,0,0,0.55)",
-                  display: "flex",
-                  padding: 4,
-                  borderRadius: 4,
-                }}
-                onMouseEnter={(e) => {
-                  ; (e.currentTarget as HTMLElement).style.color =
-                    "rgba(0,0,0,0.90)"
-                }}
-                onMouseLeave={(e) => {
-                  ; (e.currentTarget as HTMLElement).style.color =
-                    "rgba(0,0,0,0.55)"
-                }}
-              >
-                <X size={18} />
-              </button>
             </div>
-            <div style={{ padding: 24, overflowY: "auto", flex: 1 }}>
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: 16,
-                  marginBottom: 20,
-                }}
-              >
-                {[
-                  {
-                    label: "Ngân sách",
-                    value: `${projectDetail.budget} (${projectDetail.budgetType})`,
-                  },
-                  { label: "Lĩnh vực", value: projectDetail.field },
-                  { label: "Ngày đăng", value: projectDetail.date },
-                  { label: "Người đăng", value: projectDetail.owner.name },
-                ].map(({ label, value }) => (
-                  <div
-                    key={label}
+
+            {/* Quick Filter Tabs */}
+            <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+              {[
+                { key: "Tất cả", label: "Tất cả", count: projects.length },
+                { key: "Đang tuyển", label: "Đang tuyển", count: hiringProjectsCount },
+                { key: "Đang thực hiện", label: "Đang thực hiện", count: inProgressProjectsCount },
+                { key: "Đã đóng", label: "Đã đóng", count: closedProjectsCount },
+              ].map((tab) => {
+                const isSelected = projectStatusFilter === tab.key
+                return (
+                  <button
+                    key={tab.key}
+                    onClick={() => setProjectStatusFilter(tab.key)}
                     style={{
-                      background: "#FAFAF8",
-                      padding: "12px 16px",
-                      borderRadius: 6,
+                      padding: "7px 16px",
+                      borderRadius: 9999,
+                      border: isSelected ? "none" : "1px solid rgba(0,0,0,0.12)",
+                      background: isSelected ? "#0A66C2" : "#fff",
+                      color: isSelected ? "#fff" : "rgba(0,0,0,0.70)",
+                      fontSize: 13,
+                      fontWeight: isSelected ? 700 : 600,
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 6,
                     }}
                   >
-                    <div
+                    <span>{tab.label}</span>
+                    <span
                       style={{
+                        background: isSelected ? "rgba(255,255,255,0.25)" : "#F4F2EE",
+                        color: isSelected ? "#fff" : "rgba(0,0,0,0.60)",
+                        padding: "1px 6px",
+                        borderRadius: 8,
                         fontSize: 11,
                         fontWeight: 700,
-                        textTransform: "uppercase",
-                        letterSpacing: 0.5,
-                        color: "rgba(0,0,0,0.45)",
-                        marginBottom: 4,
                       }}
                     >
-                      {label}
-                    </div>
-                    <div
-                      style={{
-                        fontSize: 14,
-                        fontWeight: 600,
-                        color: "rgba(0,0,0,0.85)",
-                      }}
-                    >
-                      {value}
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div style={{ marginBottom: 20 }}>
-                <div
-                  style={{
-                    fontSize: 12,
-                    fontWeight: 700,
-                    textTransform: "uppercase",
-                    letterSpacing: 0.5,
-                    color: "rgba(0,0,0,0.45)",
-                    marginBottom: 8,
-                  }}
-                >
-                  Mô tả dự án
-                </div>
-                <div
-                  style={{
-                    background: "#FAFAF8",
-                    padding: 16,
-                    borderRadius: 6,
-                    fontSize: 14,
-                    color: "rgba(0,0,0,0.85)",
-                    lineHeight: 1.65,
-                  }}
-                >
-                  {projectDetail.description}
-                </div>
-              </div>
-              <div style={{ marginBottom: 20 }}>
-                <div
-                  style={{
-                    fontSize: 12,
-                    fontWeight: 700,
-                    textTransform: "uppercase",
-                    letterSpacing: 0.5,
-                    color: "rgba(0,0,0,0.45)",
-                    marginBottom: 8,
-                  }}
-                >
-                  Kỹ năng yêu cầu
-                </div>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                  {projectDetail.skills.map((s) => (
-                    <span
-                      key={s}
-                      style={{
-                        background: "#EAF1FA",
-                        color: "#0A66C2",
-                        padding: "4px 10px",
-                        borderRadius: 4,
-                        fontSize: 12,
-                        fontWeight: 600,
-                      }}
-                    >
-                      {s}
+                      {tab.count}
                     </span>
-                  ))}
-                </div>
+                  </button>
+                )
+              })}
+            </div>
+
+            {/* Search Bar */}
+            <div
+              style={{
+                background: "#fff",
+                padding: "12px 16px",
+                borderRadius: 8,
+                boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+                marginBottom: 16,
+              }}
+            >
+              <div style={{ position: "relative", maxWidth: 440 }}>
+                <MagnifyingGlass
+                  size={15}
+                  color="rgba(0,0,0,0.40)"
+                  style={{
+                    position: "absolute",
+                    left: 12,
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    pointerEvents: "none",
+                  }}
+                />
+                <input
+                  value={projectSearch}
+                  onChange={(e) => setProjectSearch(e.target.value)}
+                  placeholder="Tìm theo tên dự án hoặc chủ dự án..."
+                  style={{
+                    width: "100%",
+                    background: "#F4F2EE",
+                    border: "1px solid transparent",
+                    borderRadius: 6,
+                    padding: "8px 12px 8px 34px",
+                    fontSize: 13.5,
+                    outline: "none",
+                    fontFamily: "inherit",
+                  }}
+                />
               </div>
-              {projectDetail.applicantList.length > 0 && (
-                <div>
-                  <div
-                    style={{
-                      fontSize: 12,
-                      fontWeight: 700,
-                      textTransform: "uppercase",
-                      letterSpacing: 0.5,
-                      color: "rgba(0,0,0,0.45)",
-                      marginBottom: 8,
-                    }}
-                  >
-                    Danh sách ứng viên ({projectDetail.applicantList.length})
-                  </div>
-                  <div
-                    style={{ display: "flex", flexDirection: "column", gap: 8 }}
-                  >
-                    {projectDetail.applicantList.map((a, i) => (
-                      <div
-                        key={i}
+            </div>
+
+            {/* Table */}
+            <div
+              style={{
+                background: "#fff",
+                borderRadius: 8,
+                boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+                overflow: "hidden",
+              }}
+            >
+              <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                <thead>
+                  <tr style={{ background: "#FAFAF8", borderBottom: "1px solid rgba(0,0,0,0.08)" }}>
+                    {[
+                      "Tên dự án",
+                      "Chủ dự án",
+                      "Ngân sách",
+                      "Lĩnh vực",
+                      "Người tham gia",
+                      "Trạng thái",
+                      "Ngày đăng",
+                      "Thao tác",
+                    ].map((h) => (
+                      <th
+                        key={h}
                         style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 12,
-                          padding: "10px 14px",
-                          background: "#FAFAF8",
-                          borderRadius: 6,
-                          border: "1px solid rgba(0,0,0,0.06)",
+                          padding: "12px 18px",
+                          textAlign: "left",
+                          fontSize: 11.5,
+                          fontWeight: 700,
+                          textTransform: "uppercase",
+                          letterSpacing: 0.6,
+                          color: "rgba(0,0,0,0.50)",
                         }}
                       >
+                        {h}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredProjects.map((p) => (
+                    <tr
+                      key={p.id}
+                      style={{
+                        borderBottom: "1px solid rgba(0,0,0,0.05)",
+                        transition: "background 120ms",
+                      }}
+                      onMouseEnter={(e) => {
+                        ;(e.currentTarget as HTMLElement).style.background = "#FAFAF8"
+                      }}
+                      onMouseLeave={(e) => {
+                        ;(e.currentTarget as HTMLElement).style.background = "transparent"
+                      }}
+                    >
+                      <td style={{ padding: "12px 18px", maxWidth: 280 }}>
                         <div
                           style={{
-                            width: 34,
-                            height: 34,
-                            borderRadius: "50%",
-                            background: a.color,
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            flexShrink: 0,
+                            fontWeight: 700,
+                            fontSize: 13.5,
+                            color: "rgba(0,0,0,0.90)",
+                            lineHeight: 1.4,
                           }}
                         >
-                          <span
+                          {p.title}
+                        </div>
+                      </td>
+                      <td style={{ padding: "12px 18px" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                          <div
                             style={{
-                              fontSize: 11,
-                              fontWeight: 800,
+                              width: 28,
+                              height: 28,
+                              borderRadius: "50%",
+                              background: p.owner.color,
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
                               color: "#fff",
+                              fontSize: 10.5,
+                              fontWeight: 800,
                             }}
                           >
-                            {a.initials}
-                          </span>
+                            {p.owner.initials}
+                          </div>
+                          <span style={{ fontSize: 13, fontWeight: 600 }}>{p.owner.name}</span>
                         </div>
-                        <div style={{ flex: 1 }}>
+                      </td>
+                      <td style={{ padding: "12px 18px" }}>
+                        <div style={{ fontWeight: 700, fontSize: 13.5, color: "#057642" }}>
+                          {p.budget}
+                        </div>
+                        <div style={{ fontSize: 11, color: "rgba(0,0,0,0.45)" }}>
+                          {p.budgetType}
+                        </div>
+                      </td>
+                      <td style={{ padding: "12px 18px", fontSize: 13, color: "rgba(0,0,0,0.70)" }}>
+                        {p.field}
+                      </td>
+                      <td style={{ padding: "12px 18px" }}>
+                        <span
+                          style={{
+                            background: "#EAF1FA",
+                            color: "#0A66C2",
+                            padding: "3px 8px",
+                            borderRadius: 6,
+                            fontWeight: 700,
+                            fontSize: 12,
+                          }}
+                        >
+                          {p.applicants} người
+                        </span>
+                      </td>
+                      <td style={{ padding: "12px 18px" }}>
+                        {renderStatusBadge(p.status)}
+                      </td>
+                      <td style={{ padding: "12px 18px", fontSize: 13, color: "rgba(0,0,0,0.50)" }}>
+                        {p.date}
+                      </td>
+                      <td style={{ padding: "12px 18px" }}>
+                        {/* Only 'Chi tiết' button in table, 'Gỡ bỏ' is moved inside popup */}
+                        <button
+                          onClick={() => setProjectDetail(p)}
+                          style={{
+                            background: "none",
+                            border: "none",
+                            cursor: "pointer",
+                            fontSize: 13,
+                            fontWeight: 700,
+                            color: "#0A66C2",
+                            padding: "4px 8px",
+                            borderRadius: 4,
+                          }}
+                        >
+                          Chi tiết
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* ═══════════════════════════════════════════════════════════════════
+            TAB 3: QUẢN LÝ HỢP ĐỒNG (CONTRACTS MANAGEMENT)
+           ═══════════════════════════════════════════════════════════════════ */}
+        {activeNav === "contracts" && (
+          <div>
+            {/* Header */}
+            <div style={{ marginBottom: 20 }}>
+              <h1
+                style={{
+                  fontSize: 24,
+                  fontWeight: 800,
+                  color: "rgba(0,0,0,0.90)",
+                  letterSpacing: "-0.02em",
+                  marginBottom: 4,
+                }}
+              >
+                Quản lý hợp đồng
+              </h1>
+              <p style={{ fontSize: 14, color: "rgba(0,0,0,0.60)" }}>
+                Giám sát hợp đồng điện tử pháp lý và tiến độ bàn giao giữa các bên
+              </p>
+            </div>
+
+            {/* Quick Metrics Cards */}
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(3, 1fr)",
+                gap: 16,
+                marginBottom: 20,
+              }}
+            >
+              <div
+                style={{
+                  background: "#fff",
+                  borderRadius: 8,
+                  boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+                  padding: "16px 20px",
+                }}
+              >
+                <div style={{ fontSize: 12, fontWeight: 700, color: "rgba(0,0,0,0.50)", textTransform: "uppercase" }}>
+                  Tổng số hợp đồng
+                </div>
+                <div style={{ fontSize: 26, fontWeight: 800, color: "#0A66C2", marginTop: 4 }}>
+                  {contracts.length}
+                </div>
+              </div>
+              <div
+                style={{
+                  background: "#fff",
+                  borderRadius: 8,
+                  boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+                  padding: "16px 20px",
+                }}
+              >
+                <div style={{ fontSize: 12, fontWeight: 700, color: "rgba(0,0,0,0.50)", textTransform: "uppercase" }}>
+                  Đang thực hiện
+                </div>
+                <div style={{ fontSize: 26, fontWeight: 800, color: "#057642", marginTop: 4 }}>
+                  {contracts.filter((c) => c.status === "Đang thực hiện").length}
+                </div>
+              </div>
+              <div
+                style={{
+                  background: "#fff",
+                  borderRadius: 8,
+                  boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+                  padding: "16px 20px",
+                }}
+              >
+                <div style={{ fontSize: 12, fontWeight: 700, color: "rgba(0,0,0,0.50)", textTransform: "uppercase" }}>
+                  Hoàn thành giải ngân
+                </div>
+                <div style={{ fontSize: 26, fontWeight: 800, color: "#137333", marginTop: 4 }}>
+                  {contracts.filter((c) => c.status === "Hoàn thành").length}
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Status Filter Tabs */}
+            <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+              {["Tất cả", "Đang thực hiện", "Hoàn thành", "Đã hủy / Thất bại"].map((st) => {
+                const isSelected = contractStatusFilter === st
+                return (
+                  <button
+                    key={st}
+                    onClick={() => setContractStatusFilter(st)}
+                    style={{
+                      padding: "7px 16px",
+                      borderRadius: 9999,
+                      border: isSelected ? "none" : "1px solid rgba(0,0,0,0.12)",
+                      background: isSelected ? "#0A66C2" : "#fff",
+                      color: isSelected ? "#fff" : "rgba(0,0,0,0.70)",
+                      fontSize: 13,
+                      fontWeight: isSelected ? 700 : 600,
+                      cursor: "pointer",
+                    }}
+                  >
+                    {st}
+                  </button>
+                )
+              })}
+            </div>
+
+            {/* Search Input */}
+            <div
+              style={{
+                background: "#fff",
+                padding: "12px 16px",
+                borderRadius: 8,
+                boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+                marginBottom: 16,
+              }}
+            >
+              <div style={{ position: "relative", maxWidth: 440 }}>
+                <MagnifyingGlass
+                  size={15}
+                  color="rgba(0,0,0,0.40)"
+                  style={{
+                    position: "absolute",
+                    left: 12,
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    pointerEvents: "none",
+                  }}
+                />
+                <input
+                  value={contractSearch}
+                  onChange={(e) => setContractSearch(e.target.value)}
+                  placeholder="Tìm theo mã HĐ, tên dự án, Client hoặc Freelancer..."
+                  style={{
+                    width: "100%",
+                    background: "#F4F2EE",
+                    border: "1px solid transparent",
+                    borderRadius: 6,
+                    padding: "8px 12px 8px 34px",
+                    fontSize: 13.5,
+                    outline: "none",
+                    fontFamily: "inherit",
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* Table */}
+            <div
+              style={{
+                background: "#fff",
+                borderRadius: 8,
+                boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+                overflow: "hidden",
+              }}
+            >
+              <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                <thead>
+                  <tr style={{ background: "#FAFAF8", borderBottom: "1px solid rgba(0,0,0,0.08)" }}>
+                    {[
+                      "Mã HĐ & Dự án",
+                      "Bên thuê (Client)",
+                      "Freelancer thực hiện",
+                      "Giá trị hợp đồng",
+                      "Thời hạn",
+                      "Trạng thái",
+                      "Thao tác",
+                    ].map((h) => (
+                      <th
+                        key={h}
+                        style={{
+                          padding: "12px 18px",
+                          textAlign: "left",
+                          fontSize: 11.5,
+                          fontWeight: 700,
+                          textTransform: "uppercase",
+                          letterSpacing: 0.6,
+                          color: "rgba(0,0,0,0.50)",
+                        }}
+                      >
+                        {h}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredContracts.map((c) => (
+                    <tr
+                      key={c.id}
+                      style={{
+                        borderBottom: "1px solid rgba(0,0,0,0.05)",
+                        transition: "background 120ms",
+                      }}
+                      onMouseEnter={(e) => {
+                        ;(e.currentTarget as HTMLElement).style.background = "#FAFAF8"
+                      }}
+                      onMouseLeave={(e) => {
+                        ;(e.currentTarget as HTMLElement).style.background = "transparent"
+                      }}
+                    >
+                      <td style={{ padding: "12px 18px" }}>
+                        <span
+                          style={{
+                            fontFamily: "monospace",
+                            fontWeight: 700,
+                            color: "#0A66C2",
+                            background: "#EAF1FA",
+                            padding: "2px 6px",
+                            borderRadius: 4,
+                            fontSize: 12,
+                          }}
+                        >
+                          {c.id}
+                        </span>
+                        <div style={{ fontWeight: 700, fontSize: 13.5, marginTop: 4 }}>
+                          {c.project}
+                        </div>
+                      </td>
+                      <td style={{ padding: "12px 18px" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                           <div
                             style={{
-                              fontSize: 14,
-                              fontWeight: 700,
-                              color: "rgba(0,0,0,0.85)",
+                              width: 26,
+                              height: 26,
+                              borderRadius: "50%",
+                              background: c.client.color,
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              color: "#fff",
+                              fontSize: 10,
+                              fontWeight: 800,
                             }}
                           >
-                            {a.name}
+                            {c.client.initials}
                           </div>
-                          <div
-                            style={{ fontSize: 12, color: "rgba(0,0,0,0.50)" }}
-                          >
-                            Ứng tuyển ngày {a.date}
-                          </div>
+                          <span style={{ fontSize: 13, fontWeight: 600 }}>{c.client.name}</span>
                         </div>
-                        <div
+                      </td>
+                      <td style={{ padding: "12px 18px" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                          <div
+                            style={{
+                              width: 26,
+                              height: 26,
+                              borderRadius: "50%",
+                              background: c.freelancer.color,
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              color: "#fff",
+                              fontSize: 10,
+                              fontWeight: 800,
+                            }}
+                          >
+                            {c.freelancer.initials}
+                          </div>
+                          <span style={{ fontSize: 13, fontWeight: 600 }}>{c.freelancer.name}</span>
+                        </div>
+                      </td>
+                      <td style={{ padding: "12px 18px", fontWeight: 700, fontSize: 13.5, color: "#057642" }}>
+                        {c.payment}
+                      </td>
+                      <td style={{ padding: "12px 18px", fontSize: 12.5, color: "rgba(0,0,0,0.55)" }}>
+                        {c.dateRange}
+                      </td>
+                      <td style={{ padding: "12px 18px" }}>
+                        {renderStatusBadge(c.status)}
+                      </td>
+                      <td style={{ padding: "12px 18px" }}>
+                        <button
+                          onClick={() => setSelectedContractDetail(c)}
                           style={{
-                            fontSize: 14,
+                            background: "none",
+                            border: "none",
+                            cursor: "pointer",
+                            fontSize: 13,
                             fontWeight: 700,
                             color: "#0A66C2",
                           }}
                         >
-                          {a.bid}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-            <div
-              style={{
-                padding: "14px 20px",
-                borderTop: "1px solid rgba(0,0,0,0.08)",
-                background: "#FAFAF8",
-                display: "flex",
-                justifyContent: "flex-end",
-                gap: 10,
-                borderRadius: "0 0 12px 12px",
-                flexShrink: 0,
-              }}
-            >
-              <button
-                onClick={() => setProjectDetail(null)}
-                style={{
-                  padding: "8px 20px",
-                  borderRadius: 9999,
-                  border: "1px solid rgba(0,0,0,0.15)",
-                  background: "none",
-                  color: "rgba(0,0,0,0.60)",
-                  fontSize: 14,
-                  fontWeight: 600,
-                  cursor: "pointer",
-                  fontFamily: "inherit",
-                }}
-                onMouseEnter={(e) => {
-                  ; (e.currentTarget as HTMLElement).style.background = "#fff"
-                }}
-                onMouseLeave={(e) => {
-                  ; (e.currentTarget as HTMLElement).style.background = "none"
-                }}
-              >
-                Đóng
-              </button>
+                          Chi tiết
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* ── Project Delete Modal ───────────────────────────────────────── */}
-      {projectDeleteTarget && (
+        {/* ═══════════════════════════════════════════════════════════════════
+            TAB 4: BÁO CÁO VI PHẠM (VIOLATION REPORTS)
+           ═══════════════════════════════════════════════════════════════════ */}
+        {activeNav === "violations" && (
+          <div>
+            {/* Header */}
+            <div style={{ marginBottom: 20 }}>
+              <h1
+                style={{
+                  fontSize: 24,
+                  fontWeight: 800,
+                  color: "rgba(0,0,0,0.90)",
+                  letterSpacing: "-0.02em",
+                  marginBottom: 4,
+                }}
+              >
+                Báo cáo vi phạm
+              </h1>
+              <p style={{ fontSize: 14, color: "rgba(0,0,0,0.60)" }}>
+                Kiểm duyệt báo cáo vi phạm chính sách cộng đồng và bảo đảm tính minh bạch trên nền tảng
+              </p>
+            </div>
+
+            {/* Search & Filters */}
+            <div
+              style={{
+                background: "#fff",
+                padding: "12px 16px",
+                borderRadius: 8,
+                boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+                marginBottom: 16,
+                display: "flex",
+                gap: 12,
+                alignItems: "center",
+                flexWrap: "wrap",
+              }}
+            >
+              <div style={{ position: "relative", flex: "1 1 260px", maxWidth: 360 }}>
+                <MagnifyingGlass
+                  size={15}
+                  color="rgba(0,0,0,0.40)"
+                  style={{
+                    position: "absolute",
+                    left: 12,
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    pointerEvents: "none",
+                  }}
+                />
+                <input
+                  value={violationSearch}
+                  onChange={(e) => setViolationSearch(e.target.value)}
+                  placeholder="Tìm theo người báo cáo, đối tượng..."
+                  style={{
+                    width: "100%",
+                    background: "#F4F2EE",
+                    border: "1px solid transparent",
+                    borderRadius: 6,
+                    padding: "8px 12px 8px 34px",
+                    fontSize: 13.5,
+                    outline: "none",
+                    fontFamily: "inherit",
+                  }}
+                />
+              </div>
+
+              {/* Category filter: Không có 'Bài viết' */}
+              <select
+                value={violationCategoryFilter}
+                onChange={(e) => setViolationCategoryFilter(e.target.value)}
+                style={{
+                  padding: "7px 12px",
+                  borderRadius: 6,
+                  border: "1px solid rgba(0,0,0,0.15)",
+                  fontSize: 13,
+                  fontFamily: "inherit",
+                  background: "#fff",
+                  cursor: "pointer",
+                }}
+              >
+                <option>Tất cả</option>
+                <option>Tài khoản</option>
+                <option>Dự án</option>
+              </select>
+
+              <select
+                value={violationStatusFilter}
+                onChange={(e) => setViolationStatusFilter(e.target.value)}
+                style={{
+                  padding: "7px 12px",
+                  borderRadius: 6,
+                  border: "1px solid rgba(0,0,0,0.15)",
+                  fontSize: 13,
+                  fontFamily: "inherit",
+                  background: "#fff",
+                  cursor: "pointer",
+                }}
+              >
+                <option>Tất cả</option>
+                <option>Chờ xử lý</option>
+                <option>Đã giải quyết</option>
+                <option>Đã bác bỏ</option>
+              </select>
+            </div>
+
+            {/* Table */}
+            <div
+              style={{
+                background: "#fff",
+                borderRadius: 8,
+                boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+                overflow: "hidden",
+              }}
+            >
+              <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                <thead>
+                  <tr style={{ background: "#FAFAF8", borderBottom: "1px solid rgba(0,0,0,0.08)" }}>
+                    {[
+                      "Mã báo cáo",
+                      "Người báo cáo",
+                      "Đối tượng bị báo cáo",
+                      "Phân loại",
+                      "Thời gian",
+                      "Trạng thái",
+                      "Thao tác",
+                    ].map((h) => (
+                      <th
+                        key={h}
+                        style={{
+                          padding: "12px 18px",
+                          textAlign: "left",
+                          fontSize: 11.5,
+                          fontWeight: 700,
+                          textTransform: "uppercase",
+                          letterSpacing: 0.6,
+                          color: "rgba(0,0,0,0.50)",
+                        }}
+                      >
+                        {h}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredViolations.map((v) => (
+                    <tr
+                      key={v.id}
+                      style={{
+                        borderBottom: "1px solid rgba(0,0,0,0.05)",
+                        transition: "background 120ms",
+                      }}
+                      onMouseEnter={(e) => {
+                        ;(e.currentTarget as HTMLElement).style.background = "#FAFAF8"
+                      }}
+                      onMouseLeave={(e) => {
+                        ;(e.currentTarget as HTMLElement).style.background = "transparent"
+                      }}
+                    >
+                      <td style={{ padding: "12px 18px" }}>
+                        <span
+                          style={{
+                            fontFamily: "monospace",
+                            fontWeight: 700,
+                            background: "#F4F2EE",
+                            padding: "2px 6px",
+                            borderRadius: 4,
+                            fontSize: 12,
+                          }}
+                        >
+                          {v.id}
+                        </span>
+                      </td>
+                      <td style={{ padding: "12px 18px" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                          <div
+                            style={{
+                              width: 28,
+                              height: 28,
+                              borderRadius: "50%",
+                              background: v.reporter.color,
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              color: "#fff",
+                              fontSize: 10,
+                              fontWeight: 800,
+                            }}
+                          >
+                            {v.reporter.initials}
+                          </div>
+                          <span style={{ fontSize: 13, fontWeight: 600 }}>{v.reporter.name}</span>
+                        </div>
+                      </td>
+                      <td style={{ padding: "12px 18px", fontSize: 13.5, fontWeight: 600, maxWidth: 220 }}>
+                        {v.target}
+                      </td>
+                      <td style={{ padding: "12px 18px" }}>
+                        <span
+                          style={{
+                            background: "#FAFAF8",
+                            border: "1px solid rgba(0,0,0,0.08)",
+                            color: "rgba(0,0,0,0.80)",
+                            fontSize: 12,
+                            fontWeight: 600,
+                            padding: "3px 8px",
+                            borderRadius: 4,
+                          }}
+                        >
+                          {v.category}
+                        </span>
+                      </td>
+                      <td style={{ padding: "12px 18px", fontSize: 12.5, color: "rgba(0,0,0,0.55)" }}>
+                        {v.time}
+                      </td>
+                      <td style={{ padding: "12px 18px" }}>
+                        {renderStatusBadge(v.status)}
+                      </td>
+                      <td style={{ padding: "12px 18px" }}>
+                        {/* Đổi tên từ 'Xem bằng chứng' thành 'Chi tiết' theo yêu cầu */}
+                        <button
+                          onClick={() => setEvidenceTarget(v)}
+                          style={{
+                            background: "none",
+                            border: "none",
+                            cursor: "pointer",
+                            fontSize: 13,
+                            fontWeight: 700,
+                            color: "#0A66C2",
+                          }}
+                        >
+                          Chi tiết
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+      </main>
+
+      {/* ═══════════════════════════════════════════════════════════════════
+          MODALS
+         ═══════════════════════════════════════════════════════════════════ */}
+
+      {/* ── User Detail Modal ────────────────────────────────────────────── */}
+      {userDetailModal && (
         <div
           style={{
             position: "fixed",
@@ -18360,7 +17172,7 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
             padding: 16,
           }}
           onClick={(e) => {
-            if (e.target === e.currentTarget) setProjectDeleteTarget(null)
+            if (e.target === e.currentTarget) setUserDetailModal(null)
           }}
         >
           <div
@@ -18369,717 +17181,150 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
               borderRadius: 12,
               boxShadow: "0 12px 28px rgba(0,0,0,0.14)",
               width: "100%",
-              maxWidth: 448,
+              maxWidth: 520,
               padding: 24,
             }}
           >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "flex-start",
-                gap: 14,
-                marginBottom: 18,
-              }}
-            >
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
+              <span style={{ fontSize: 18, fontWeight: 700, color: "rgba(0,0,0,0.90)" }}>
+                Hồ sơ người dùng
+              </span>
+              <button
+                onClick={() => setUserDetailModal(null)}
+                style={{ background: "none", border: "none", cursor: "pointer", color: "rgba(0,0,0,0.50)" }}
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 20 }}>
               <div
                 style={{
-                  width: 44,
-                  height: 44,
+                  width: 52,
+                  height: 52,
                   borderRadius: "50%",
-                  background: "#FCE8E6",
+                  background: userDetailModal.color,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  flexShrink: 0,
-                  marginTop: 1,
-                }}
-              >
-                <Warning size={22} color="#C03A2B" weight="fill" />
-              </div>
-              <div style={{ paddingTop: 2 }}>
-                <h3
-                  style={{
-                    fontSize: 18,
-                    fontWeight: 600,
-                    color: "rgba(0,0,0,0.90)",
-                    marginBottom: 5,
-                  }}
-                >
-                  Xác nhận xóa dự án
-                </h3>
-                <p
-                  style={{
-                    fontSize: 13.5,
-                    color: "rgba(0,0,0,0.60)",
-                    lineHeight: 1.65,
-                  }}
-                >
-                  Bạn đang xóa dự án{" "}
-                  <strong style={{ color: "rgba(0,0,0,0.85)" }}>
-                    "{projectDeleteTarget.title}"
-                  </strong>
-                  . Hành động này không thể hoàn tác. Các ứng viên và chủ sở hữu
-                  sẽ nhận được thông báo.
-                </p>
-              </div>
-            </div>
-            <label
-              style={{
-                display: "block",
-                fontSize: 12,
-                fontWeight: 700,
-                color: "rgba(0,0,0,0.90)",
-                marginBottom: 6,
-              }}
-            >
-              Lý do xóa dự án <span style={{ color: "#C03A2B" }}>*</span>
-            </label>
-            <textarea
-              value={projectDeleteReason}
-              onChange={(e) => setProjectDeleteReason(e.target.value)}
-              placeholder="Nhập lý do vi phạm chính sách..."
-              style={{
-                width: "100%",
-                border: "1px solid rgba(0,0,0,0.15)",
-                borderRadius: 4,
-                padding: 10,
-                fontSize: 14,
-                minHeight: 90,
-                fontFamily: "inherit",
-                resize: "vertical",
-                outline: "none",
-                boxSizing: "border-box",
-                color: "rgba(0,0,0,0.90)",
-                lineHeight: 1.5,
-              }}
-              onFocus={(e) => {
-                ; (e.currentTarget as HTMLElement).style.borderColor = "#C03A2B"
-              }}
-              onBlur={(e) => {
-                ; (e.currentTarget as HTMLElement).style.borderColor =
-                  "rgba(0,0,0,0.15)"
-              }}
-            />
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "flex-end",
-                gap: 10,
-                marginTop: 20,
-              }}
-            >
-              <button
-                onClick={() => setProjectDeleteTarget(null)}
-                style={{
-                  padding: "8px 20px",
-                  borderRadius: 9999,
-                  border: "1px solid rgba(0,0,0,0.15)",
-                  background: "none",
-                  color: "rgba(0,0,0,0.60)",
-                  fontSize: 14,
-                  fontWeight: 600,
-                  cursor: "pointer",
-                  fontFamily: "inherit",
-                }}
-                onMouseEnter={(e) => {
-                  ; (e.currentTarget as HTMLElement).style.background = "#FAFAF8"
-                }}
-                onMouseLeave={(e) => {
-                  ; (e.currentTarget as HTMLElement).style.background = "none"
-                }}
-              >
-                Hủy bỏ
-              </button>
-              <button
-                disabled={!projectDeleteReason.trim()}
-                onClick={() => {
-                  setProjects((prev) =>
-                    prev.filter((p) => p.id !== projectDeleteTarget.id),
-                  )
-                  setProjectDeleteTarget(null)
-                  setProjectDeleteReason("")
-                }}
-                style={{
-                  padding: "8px 24px",
-                  borderRadius: 9999,
-                  border: "none",
-                  background: projectDeleteReason.trim()
-                    ? "#C03A2B"
-                    : "rgba(192,58,43,0.30)",
                   color: "#fff",
-                  fontSize: 14,
-                  fontWeight: 600,
-                  cursor: projectDeleteReason.trim() ? "pointer" : "default",
-                  fontFamily: "inherit",
-                }}
-                onMouseEnter={(e) => {
-                  if (projectDeleteReason.trim())
-                    (e.currentTarget as HTMLElement).style.background =
-                      "#A93226"
-                }}
-                onMouseLeave={(e) => {
-                  if (projectDeleteReason.trim())
-                    (e.currentTarget as HTMLElement).style.background =
-                      "#C03A2B"
-                }}
-              >
-                Xác nhận xóa
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ── Evidence Modal ─────────────────────────────────────────────── */}
-      {evidenceTarget && (
-        <div
-          style={{
-            position: "fixed",
-            inset: 0,
-            background: "rgba(0,0,0,0.55)",
-            zIndex: 50,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: 16,
-          }}
-          onClick={(e) => {
-            if (e.target === e.currentTarget) setEvidenceTarget(null)
-          }}
-        >
-          <div
-            style={{
-              background: "#fff",
-              borderRadius: 12,
-              boxShadow: "0 12px 28px rgba(0,0,0,0.14)",
-              width: "100%",
-              maxWidth: 576,
-              maxHeight: "90vh",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <div
-              style={{
-                padding: "20px 24px",
-                borderBottom: "1px solid rgba(0,0,0,0.08)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                flexShrink: 0,
-              }}
-            >
-              <span
-                style={{
                   fontSize: 18,
-                  fontWeight: 600,
-                  color: "rgba(0,0,0,0.90)",
+                  fontWeight: 800,
                 }}
               >
-                Chi tiết báo cáo vi phạm
-              </span>
-              <button
-                onClick={() => setEvidenceTarget(null)}
-                style={{
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  color: "rgba(0,0,0,0.55)",
-                  display: "flex",
-                  padding: 4,
-                  borderRadius: 4,
-                }}
-                onMouseEnter={(e) => {
-                  ; (e.currentTarget as HTMLElement).style.color =
-                    "rgba(0,0,0,0.90)"
-                }}
-                onMouseLeave={(e) => {
-                  ; (e.currentTarget as HTMLElement).style.color =
-                    "rgba(0,0,0,0.55)"
-                }}
-              >
-                <X size={18} />
-              </button>
-            </div>
-            <div
-              style={{
-                padding: 24,
-                overflowY: "auto",
-                flex: 1,
-                display: "flex",
-                flexDirection: "column",
-                gap: 16,
-              }}
-            >
-              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                <div
-                  style={{
-                    width: 40,
-                    height: 40,
-                    borderRadius: "50%",
-                    background: evidenceTarget.reporter.color,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexShrink: 0,
-                  }}
-                >
-                  <span
-                    style={{ fontSize: 13, fontWeight: 800, color: "#fff" }}
-                  >
-                    {evidenceTarget.reporter.initials}
-                  </span>
-                </div>
-                <div>
-                  <div
-                    style={{
-                      fontSize: 14,
-                      fontWeight: 700,
-                      color: "rgba(0,0,0,0.90)",
-                    }}
-                  >
-                    {evidenceTarget.reporter.name}
-                  </div>
-                  <div style={{ fontSize: 12, color: "rgba(0,0,0,0.50)" }}>
-                    Gửi lúc {evidenceTarget.time} · Mã: {evidenceTarget.id}
-                  </div>
-                </div>
+                {userDetailModal.initials}
               </div>
               <div>
-                <div
-                  style={{
-                    fontSize: 11,
-                    fontWeight: 700,
-                    textTransform: "uppercase",
-                    letterSpacing: 0.5,
-                    color: "rgba(0,0,0,0.45)",
-                    marginBottom: 6,
-                  }}
-                >
-                  Lý do tố cáo
+                <div style={{ fontSize: 17, fontWeight: 700, color: "rgba(0,0,0,0.90)" }}>
+                  {userDetailModal.name}
                 </div>
-                <div
-                  style={{
-                    background: "rgba(254,247,224,0.5)",
-                    border: "1px solid #FEF7E0",
-                    padding: 12,
-                    borderRadius: 6,
-                    fontSize: 14,
-                    color: "rgba(0,0,0,0.85)",
-                    fontWeight: 500,
-                    lineHeight: 1.6,
-                  }}
-                >
-                  {evidenceTarget.reason}
-                </div>
-              </div>
-              <div>
-                <div
-                  style={{
-                    fontSize: 11,
-                    fontWeight: 700,
-                    textTransform: "uppercase",
-                    letterSpacing: 0.5,
-                    color: "rgba(0,0,0,0.45)",
-                    marginBottom: 6,
-                  }}
-                >
-                  Đối tượng bị báo cáo
-                </div>
-                <div
-                  style={{
-                    background: "#FAFAF8",
-                    border: "1px solid rgba(0,0,0,0.08)",
-                    padding: 16,
-                    borderRadius: 6,
-                    fontSize: 14,
-                    color: "rgba(0,0,0,0.80)",
-                    lineHeight: 1.65,
-                  }}
-                >
-                  <div
-                    style={{
-                      fontWeight: 700,
-                      color: "#0A66C2",
-                      marginBottom: 6,
-                    }}
-                  >
-                    {evidenceTarget.target}
-                  </div>
-                  <div>{evidenceTarget.evidence}</div>
+                <div style={{ fontSize: 13, color: "rgba(0,0,0,0.55)", marginTop: 2 }}>
+                  {userDetailModal.email}
                 </div>
               </div>
             </div>
+
             <div
               style={{
-                padding: "14px 20px",
-                borderTop: "1px solid rgba(0,0,0,0.08)",
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: 12,
                 background: "#FAFAF8",
-                display: "flex",
-                justifyContent: "flex-end",
-                gap: 10,
-                borderRadius: "0 0 12px 12px",
-                flexShrink: 0,
+                padding: 16,
+                borderRadius: 8,
+                marginBottom: 20,
               }}
             >
-              <button
-                onClick={() => {
-                  setViolations((prev) =>
-                    prev.map((v) =>
-                      v.id === evidenceTarget.id
-                        ? { ...v, status: "Đã bác bỏ" }
-                        : v,
-                    ),
-                  )
-                  setEvidenceTarget(null)
-                }}
-                style={{
-                  padding: "8px 20px",
-                  borderRadius: 9999,
-                  border: "1px solid rgba(0,0,0,0.15)",
-                  background: "none",
-                  color: "rgba(0,0,0,0.60)",
-                  fontSize: 14,
-                  fontWeight: 600,
-                  cursor: "pointer",
-                  fontFamily: "inherit",
-                }}
-                onMouseEnter={(e) => {
-                  ; (e.currentTarget as HTMLElement).style.background = "#fff"
-                }}
-                onMouseLeave={(e) => {
-                  ; (e.currentTarget as HTMLElement).style.background = "none"
-                }}
-              >
-                Bác bỏ báo cáo
-              </button>
-              <button
-                onClick={() => {
-                  setViolations((prev) =>
-                    prev.map((v) =>
-                      v.id === evidenceTarget.id
-                        ? { ...v, status: "Đã giải quyết" }
-                        : v,
-                    ),
-                  )
-                  setEvidenceTarget(null)
-                }}
-                style={{
-                  padding: "8px 20px",
-                  borderRadius: 9999,
-                  border: "none",
-                  background: "#C03A2B",
-                  color: "#fff",
-                  fontSize: 14,
-                  fontWeight: 600,
-                  cursor: "pointer",
-                  fontFamily: "inherit",
-                }}
-                onMouseEnter={(e) => {
-                  ; (e.currentTarget as HTMLElement).style.background = "#A93226"
-                }}
-                onMouseLeave={(e) => {
-                  ; (e.currentTarget as HTMLElement).style.background = "#C03A2B"
-                }}
-              >
-                Xử lý vi phạm
-              </button>
+              <div>
+                <div style={{ fontSize: 11, color: "rgba(0,0,0,0.45)", fontWeight: 700, textTransform: "uppercase" }}>
+                  Vai trò
+                </div>
+                <div style={{ fontWeight: 700, fontSize: 14, marginTop: 4 }}>
+                  {userDetailModal.role}
+                </div>
+              </div>
+              <div>
+                <div style={{ fontSize: 11, color: "rgba(0,0,0,0.45)", fontWeight: 700, textTransform: "uppercase" }}>
+                  Trạng thái
+                </div>
+                <div style={{ marginTop: 4 }}>{renderStatusBadge(userDetailModal.status)}</div>
+              </div>
+              <div>
+                <div style={{ fontSize: 11, color: "rgba(0,0,0,0.45)", fontWeight: 700, textTransform: "uppercase" }}>
+                  Ngày tham gia
+                </div>
+                <div style={{ fontWeight: 600, fontSize: 13.5, marginTop: 4 }}>
+                  {userDetailModal.joined}
+                </div>
+              </div>
+              <div>
+                <div style={{ fontSize: 11, color: "rgba(0,0,0,0.45)", fontWeight: 700, textTransform: "uppercase" }}>
+                  Mã tài khoản
+                </div>
+                <div style={{ fontWeight: 600, fontSize: 13.5, marginTop: 4, fontFamily: "monospace" }}>
+                  #USR-{userDetailModal.id.toString().padStart(4, "0")}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
 
-      {/* ── Dispute Detail Modal ───────────────────────────────────────── */}
-      {disputeDetail && (
-        <div
-          style={{
-            position: "fixed",
-            inset: 0,
-            background: "rgba(0,0,0,0.55)",
-            zIndex: 50,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: 16,
-          }}
-          onClick={(e) => {
-            if (e.target === e.currentTarget) setDisputeDetail(null)
-          }}
-        >
-          <div
-            style={{
-              background: "#fff",
-              borderRadius: 12,
-              boxShadow: "0 12px 28px rgba(0,0,0,0.14)",
-              width: "100%",
-              maxWidth: 576,
-              maxHeight: "90vh",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <div
-              style={{
-                padding: "20px 24px",
-                borderBottom: "1px solid rgba(0,0,0,0.08)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                flexShrink: 0,
-              }}
-            >
-              <span
-                style={{
-                  fontSize: 18,
-                  fontWeight: 600,
-                  color: "rgba(0,0,0,0.90)",
-                }}
-              >
-                Chi tiết khiếu nại
-              </span>
+            {/* Actions in User Detail */}
+            <div style={{ display: "flex", gap: 10, justifyContent: "space-between", alignItems: "center" }}>
               <button
-                onClick={() => setDisputeDetail(null)}
+                onClick={() => {
+                  setDeleteTarget(userDetailModal)
+                  setDeleteReason("")
+                  setUserDetailModal(null)
+                }}
                 style={{
-                  background: "none",
-                  border: "none",
+                  padding: "8px 16px",
+                  borderRadius: 9999,
+                  border: "1px solid #FCE8E6",
+                  background: "#FCE8E6",
+                  color: "#C03A2B",
+                  fontSize: 13,
+                  fontWeight: 700,
                   cursor: "pointer",
-                  color: "rgba(0,0,0,0.55)",
-                  display: "flex",
-                  padding: 4,
-                  borderRadius: 4,
-                }}
-                onMouseEnter={(e) => {
-                  ; (e.currentTarget as HTMLElement).style.color =
-                    "rgba(0,0,0,0.90)"
-                }}
-                onMouseLeave={(e) => {
-                  ; (e.currentTarget as HTMLElement).style.color =
-                    "rgba(0,0,0,0.55)"
                 }}
               >
-                <X size={18} />
+                Xóa tài khoản
               </button>
-            </div>
-            <div
-              style={{
-                padding: 24,
-                overflowY: "auto",
-                flex: 1,
-                display: "flex",
-                flexDirection: "column",
-                gap: 16,
-              }}
-            >
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: 12,
-                }}
-              >
-                {[
-                  {
-                    label: "Người khiếu nại",
-                    value: disputeDetail.complainant.name,
-                  },
-                  { label: "Email", value: disputeDetail.email },
-                  { label: "Ngày gửi", value: disputeDetail.date },
-                  { label: "Trạng thái", value: disputeDetail.status },
-                ].map(({ label, value }) => (
-                  <div key={label}>
-                    <div
-                      style={{
-                        fontSize: 11,
-                        fontWeight: 700,
-                        textTransform: "uppercase",
-                        letterSpacing: 0.5,
-                        color: "rgba(0,0,0,0.40)",
-                        marginBottom: 3,
-                      }}
-                    >
-                      {label}
-                    </div>
-                    <div
-                      style={{
-                        fontSize: 13.5,
-                        fontWeight: 600,
-                        color: "rgba(0,0,0,0.85)",
-                      }}
-                    >
-                      {value}
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div>
-                <div
+              <div style={{ display: "flex", gap: 10 }}>
+                <button
+                  onClick={() => handleToggleFlag(userDetailModal.id)}
                   style={{
-                    fontSize: 11,
-                    fontWeight: 700,
-                    textTransform: "uppercase",
-                    letterSpacing: 0.5,
-                    color: "rgba(0,0,0,0.40)",
-                    marginBottom: 6,
-                  }}
-                >
-                  Tiêu đề khiếu nại
-                </div>
-                <div
-                  style={{
-                    fontSize: 14,
-                    fontWeight: 700,
-                    color: "rgba(0,0,0,0.90)",
-                  }}
-                >
-                  {disputeDetail.title}
-                </div>
-              </div>
-              <div>
-                <div
-                  style={{
-                    fontSize: 11,
-                    fontWeight: 700,
-                    textTransform: "uppercase",
-                    letterSpacing: 0.5,
-                    color: "rgba(0,0,0,0.40)",
-                    marginBottom: 6,
-                  }}
-                >
-                  Nội dung khiếu nại
-                </div>
-                <div
-                  style={{
-                    background: "#FAFAF8",
-                    border: "1px solid rgba(0,0,0,0.08)",
-                    padding: 16,
-                    borderRadius: 6,
-                    fontSize: 14,
-                    color: "rgba(0,0,0,0.85)",
-                    lineHeight: 1.7,
-                    whiteSpace: "pre-line",
-                  }}
-                >
-                  {disputeDetail.content}
-                </div>
-              </div>
-              <label
-                style={{
-                  display: "flex",
-                  alignItems: "flex-start",
-                  gap: 10,
-                  cursor: "pointer",
-                  padding: "12px 14px",
-                  background: "#EAF1FA",
-                  borderRadius: 6,
-                  border: "1px solid rgba(10,102,194,0.15)",
-                }}
-              >
-                <input
-                  type="checkbox"
-                  checked={restoreRating}
-                  onChange={(e) => setRestoreRating(e.target.checked)}
-                  style={{
-                    accentColor: "#0A66C2",
-                    width: 16,
-                    height: 16,
-                    cursor: "pointer",
-                    flexShrink: 0,
-                    marginTop: 1,
-                  }}
-                />
-                <span
-                  style={{
+                    padding: "8px 16px",
+                    borderRadius: 9999,
+                    border: "1px solid rgba(0,0,0,0.15)",
+                    background: "#fff",
                     fontSize: 13,
-                    fontWeight: 500,
-                    color: "rgba(0,0,0,0.85)",
-                    lineHeight: 1.5,
+                    fontWeight: 600,
+                    cursor: "pointer",
                   }}
                 >
-                  Tự động tính toán lại điểm trung bình và gỡ bỏ tác động của
-                  đánh giá này cho người dùng
-                </span>
-              </label>
-            </div>
-            <div
-              style={{
-                padding: "14px 20px",
-                borderTop: "1px solid rgba(0,0,0,0.08)",
-                background: "#FAFAF8",
-                display: "flex",
-                justifyContent: "flex-end",
-                gap: 10,
-                borderRadius: "0 0 12px 12px",
-                flexShrink: 0,
-              }}
-            >
-              <button
-                onClick={() => {
-                  setDisputes((prev) =>
-                    prev.map((d) =>
-                      d.id === disputeDetail.id
-                        ? { ...d, status: "Đã bác bỏ" }
-                        : d,
-                    ),
-                  )
-                  setDisputeDetail(null)
-                }}
-                style={{
-                  padding: "8px 20px",
-                  borderRadius: 9999,
-                  border: "1px solid rgba(0,0,0,0.15)",
-                  background: "none",
-                  color: "rgba(0,0,0,0.60)",
-                  fontSize: 14,
-                  fontWeight: 600,
-                  cursor: "pointer",
-                  fontFamily: "inherit",
-                }}
-                onMouseEnter={(e) => {
-                  ; (e.currentTarget as HTMLElement).style.background = "#fff"
-                }}
-                onMouseLeave={(e) => {
-                  ; (e.currentTarget as HTMLElement).style.background = "none"
-                }}
-              >
-                Từ chối khiếu nại
-              </button>
-              <button
-                onClick={() => {
-                  setDisputes((prev) =>
-                    prev.map((d) =>
-                      d.id === disputeDetail.id
-                        ? { ...d, status: "Đã chấp nhận" }
-                        : d,
-                    ),
-                  )
-                  setDisputeDetail(null)
-                }}
-                style={{
-                  padding: "8px 20px",
-                  borderRadius: 9999,
-                  border: "none",
-                  background: "#0A66C2",
-                  color: "#fff",
-                  fontSize: 14,
-                  fontWeight: 600,
-                  cursor: "pointer",
-                  fontFamily: "inherit",
-                }}
-                onMouseEnter={(e) => {
-                  ; (e.currentTarget as HTMLElement).style.background = "#084FA0"
-                }}
-                onMouseLeave={(e) => {
-                  ; (e.currentTarget as HTMLElement).style.background = "#0A66C2"
-                }}
-              >
-                Chấp nhận khiếu nại & Gỡ đánh giá
-              </button>
+                  {userDetailModal.status === "Bị gắn cờ" ? "Gỡ cờ cảnh báo" : "Gắn cờ cảnh báo"}
+                </button>
+                <button
+                  onClick={() => handleToggleLock(userDetailModal.id)}
+                  style={{
+                    padding: "8px 16px",
+                    borderRadius: 9999,
+                    border: "none",
+                    background: userDetailModal.status === "Bị khóa" ? "#057642" : "#B06000",
+                    color: "#fff",
+                    fontSize: 13,
+                    fontWeight: 700,
+                    cursor: "pointer",
+                  }}
+                >
+                  {userDetailModal.status === "Bị khóa" ? "Mở khóa tài khoản" : "Khóa tài khoản"}
+                </button>
+              </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* ── Destructive action modal ───────────────────────────────────── */}
+      {/* ── User Delete Modal ────────────────────────────────────────────── */}
       {deleteTarget && (
         <div
           style={{
@@ -19106,15 +17351,7 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
               padding: 24,
             }}
           >
-            {/* Header */}
-            <div
-              style={{
-                display: "flex",
-                alignItems: "flex-start",
-                gap: 14,
-                marginBottom: 18,
-              }}
-            >
+            <div style={{ display: "flex", alignItems: "flex-start", gap: 14, marginBottom: 18 }}>
               <div
                 style={{
                   width: 44,
@@ -19125,41 +17362,21 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                   alignItems: "center",
                   justifyContent: "center",
                   flexShrink: 0,
-                  marginTop: 1,
                 }}
               >
                 <Warning size={22} color="#C03A2B" weight="fill" />
               </div>
-              <div style={{ paddingTop: 2 }}>
-                <h3
-                  style={{
-                    fontSize: 18,
-                    fontWeight: 600,
-                    color: "rgba(0,0,0,0.90)",
-                    marginBottom: 5,
-                    lineHeight: 1.3,
-                  }}
-                >
+              <div>
+                <h3 style={{ fontSize: 18, fontWeight: 700, color: "rgba(0,0,0,0.90)", marginBottom: 4 }}>
                   Xác nhận xóa tài khoản
                 </h3>
-                <p
-                  style={{
-                    fontSize: 13.5,
-                    color: "rgba(0,0,0,0.60)",
-                    lineHeight: 1.65,
-                  }}
-                >
-                  Bạn đang xóa tài khoản của{" "}
-                  <strong style={{ color: "rgba(0,0,0,0.85)" }}>
-                    {deleteTarget.name}
-                  </strong>
-                  . Hành động này không thể hoàn tác. Người dùng liên quan sẽ
-                  nhận được thông báo về quyết định này.
+                <p style={{ fontSize: 13.5, color: "rgba(0,0,0,0.60)", lineHeight: 1.5 }}>
+                  Bạn đang xóa vĩnh viễn tài khoản của{" "}
+                  <strong style={{ color: "rgba(0,0,0,0.90)" }}>{deleteTarget.name}</strong>. Hành động này không thể hoàn tác.
                 </p>
               </div>
             </div>
 
-            {/* Reason textarea */}
             <label
               style={{
                 display: "block",
@@ -19169,64 +17386,37 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                 marginBottom: 6,
               }}
             >
-              Lý do xử lý vi phạm <span style={{ color: "#C03A2B" }}>*</span>
+              Lý do xóa vi phạm chính sách <span style={{ color: "#C03A2B" }}>*</span>
             </label>
             <textarea
               value={deleteReason}
               onChange={(e) => setDeleteReason(e.target.value)}
-              placeholder="Nhập chi tiết lý do vi phạm chính sách..."
+              placeholder="Nhập lý do cụ thể..."
               style={{
                 width: "100%",
                 border: "1px solid rgba(0,0,0,0.15)",
-                borderRadius: 4,
+                borderRadius: 6,
                 padding: 10,
-                fontSize: 14,
-                minHeight: 90,
+                fontSize: 13.5,
+                minHeight: 80,
                 fontFamily: "inherit",
                 resize: "vertical",
                 outline: "none",
-                boxSizing: "border-box",
-                transition: "border-color 150ms",
-                color: "rgba(0,0,0,0.90)",
-                lineHeight: 1.5,
-              }}
-              onFocus={(e) => {
-                ; (e.currentTarget as HTMLElement).style.borderColor = "#C03A2B"
-              }}
-              onBlur={(e) => {
-                ; (e.currentTarget as HTMLElement).style.borderColor =
-                  "rgba(0,0,0,0.15)"
+                marginBottom: 16,
               }}
             />
 
-            {/* Footer actions */}
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "flex-end",
-                gap: 10,
-                marginTop: 20,
-              }}
-            >
+            <div style={{ display: "flex", justifyContent: "flex-end", gap: 10 }}>
               <button
                 onClick={() => setDeleteTarget(null)}
                 style={{
-                  padding: "8px 20px",
+                  padding: "8px 18px",
                   borderRadius: 9999,
                   border: "1px solid rgba(0,0,0,0.15)",
-                  background: "none",
-                  color: "rgba(0,0,0,0.60)",
-                  fontSize: 14,
+                  background: "#fff",
+                  fontSize: 13,
                   fontWeight: 600,
                   cursor: "pointer",
-                  fontFamily: "inherit",
-                  transition: "background 150ms",
-                }}
-                onMouseEnter={(e) => {
-                  ; (e.currentTarget as HTMLElement).style.background = "#FAFAF8"
-                }}
-                onMouseLeave={(e) => {
-                  ; (e.currentTarget as HTMLElement).style.background = "none"
                 }}
               >
                 Hủy bỏ
@@ -19234,35 +17424,20 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
               <button
                 disabled={!deleteReason.trim()}
                 onClick={() => {
-                  setUsers((prev) =>
-                    prev.filter((u) => u.id !== deleteTarget.id),
-                  )
+                  setUsers((prev) => prev.filter((u) => u.id !== deleteTarget.id))
                   setDeleteTarget(null)
                   setDeleteReason("")
+                  setToast("Đã xóa tài khoản thành công!")
                 }}
                 style={{
-                  padding: "8px 24px",
+                  padding: "8px 20px",
                   borderRadius: 9999,
                   border: "none",
-                  background: deleteReason.trim()
-                    ? "#C03A2B"
-                    : "rgba(192,58,43,0.30)",
+                  background: deleteReason.trim() ? "#C03A2B" : "rgba(192,58,43,0.35)",
                   color: "#fff",
-                  fontSize: 14,
-                  fontWeight: 600,
+                  fontSize: 13,
+                  fontWeight: 700,
                   cursor: deleteReason.trim() ? "pointer" : "default",
-                  fontFamily: "inherit",
-                  transition: "background 150ms",
-                }}
-                onMouseEnter={(e) => {
-                  if (deleteReason.trim())
-                    (e.currentTarget as HTMLElement).style.background =
-                      "#A93226"
-                }}
-                onMouseLeave={(e) => {
-                  if (deleteReason.trim())
-                    (e.currentTarget as HTMLElement).style.background =
-                      "#C03A2B"
                 }}
               >
                 Xác nhận xóa
@@ -19271,10 +17446,661 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
           </div>
         </div>
       )}
+
+      {/* ── Project Detail Modal ─────────────────────────────────────────── */}
+      {projectDetail && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.55)",
+            zIndex: 50,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 16,
+          }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setProjectDetail(null)
+          }}
+        >
+          <div
+            style={{
+              background: "#fff",
+              borderRadius: 12,
+              boxShadow: "0 12px 28px rgba(0,0,0,0.14)",
+              width: "100%",
+              maxWidth: 640,
+              maxHeight: "90vh",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <div
+              style={{
+                padding: "20px 24px",
+                borderBottom: "1px solid rgba(0,0,0,0.08)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <span style={{ fontSize: 18, fontWeight: 700, color: "rgba(0,0,0,0.90)" }}>
+                Chi tiết dự án
+              </span>
+              <button
+                onClick={() => setProjectDetail(null)}
+                style={{ background: "none", border: "none", cursor: "pointer", color: "rgba(0,0,0,0.50)" }}
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <div style={{ padding: 24, overflowY: "auto", display: "flex", flexDirection: "column", gap: 16 }}>
+              <div>
+                <h3 style={{ fontSize: 18, fontWeight: 800, color: "rgba(0,0,0,0.90)", marginBottom: 6 }}>
+                  {projectDetail.title}
+                </h3>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  {renderStatusBadge(projectDetail.status)}
+                  <span style={{ fontSize: 13, color: "rgba(0,0,0,0.50)" }}>Đăng ngày {projectDetail.date}</span>
+                </div>
+              </div>
+
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: 12,
+                  background: "#FAFAF8",
+                  padding: 16,
+                  borderRadius: 8,
+                }}
+              >
+                <div>
+                  <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", color: "rgba(0,0,0,0.45)" }}>
+                    Chủ dự án
+                  </div>
+                  <div style={{ fontWeight: 700, fontSize: 14, marginTop: 4 }}>
+                    {projectDetail.owner.name}
+                  </div>
+                </div>
+                <div>
+                  <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", color: "rgba(0,0,0,0.45)" }}>
+                    Ngân sách
+                  </div>
+                  <div style={{ fontWeight: 800, fontSize: 14, color: "#057642", marginTop: 4 }}>
+                    {projectDetail.budget} ({projectDetail.budgetType})
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase", color: "rgba(0,0,0,0.45)", marginBottom: 6 }}>
+                  Mô tả dự án
+                </div>
+                <p style={{ fontSize: 14, color: "rgba(0,0,0,0.80)", lineHeight: 1.6 }}>
+                  {projectDetail.description}
+                </p>
+              </div>
+
+              <div>
+                <div style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase", color: "rgba(0,0,0,0.45)", marginBottom: 8 }}>
+                  Kỹ năng yêu cầu
+                </div>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                  {projectDetail.skills.map((s) => (
+                    <span
+                      key={s}
+                      style={{
+                        background: "#EAF1FA",
+                        color: "#0A66C2",
+                        padding: "3px 10px",
+                        borderRadius: 6,
+                        fontSize: 12,
+                        fontWeight: 600,
+                      }}
+                    >
+                      {s}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                {/* Đổi tên từ 'Danh sách ứng viên nộp hồ sơ' thành 'Người tham gia' theo yêu cầu */}
+                <div style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase", color: "rgba(0,0,0,0.45)", marginBottom: 8 }}>
+                  Người tham gia ({projectDetail.applicantList.length})
+                </div>
+                {projectDetail.applicantList.length === 0 ? (
+                  <div style={{ fontSize: 13, color: "rgba(0,0,0,0.40)", fontStyle: "italic" }}>
+                    Chưa có người tham gia chào giá.
+                  </div>
+                ) : (
+                  <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                    {projectDetail.applicantList.map((app) => (
+                      <div
+                        key={app.name}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          background: "#FAFAF8",
+                          padding: "10px 14px",
+                          borderRadius: 6,
+                        }}
+                      >
+                        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                          <div
+                            style={{
+                              width: 28,
+                              height: 28,
+                              borderRadius: "50%",
+                              background: app.color,
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              color: "#fff",
+                              fontSize: 10.5,
+                              fontWeight: 800,
+                            }}
+                          >
+                            {app.initials}
+                          </div>
+                          <span style={{ fontSize: 13.5, fontWeight: 700 }}>{app.name}</span>
+                        </div>
+                        <div style={{ fontSize: 13, fontWeight: 700, color: "#057642" }}>
+                          {app.bid}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Footer with 'Gỡ bỏ dự án' moved inside popup, next to 'Đóng' */}
+            <div
+              style={{
+                padding: "14px 24px",
+                borderTop: "1px solid rgba(0,0,0,0.08)",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <button
+                onClick={() => {
+                  setProjectDeleteTarget(projectDetail)
+                  setProjectDeleteReason("")
+                  setProjectDetail(null)
+                }}
+                style={{
+                  padding: "8px 18px",
+                  borderRadius: 9999,
+                  border: "1px solid #FCE8E6",
+                  background: "#FCE8E6",
+                  color: "#C03A2B",
+                  fontSize: 13,
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  transition: "background 150ms",
+                }}
+                onMouseEnter={(e) => {
+                  ;(e.currentTarget as HTMLElement).style.background = "#fad2cf"
+                }}
+                onMouseLeave={(e) => {
+                  ;(e.currentTarget as HTMLElement).style.background = "#FCE8E6"
+                }}
+              >
+                Gỡ bỏ dự án
+              </button>
+
+              <button
+                onClick={() => setProjectDetail(null)}
+                style={{
+                  padding: "8px 20px",
+                  borderRadius: 9999,
+                  border: "1px solid rgba(0,0,0,0.15)",
+                  background: "#fff",
+                  fontSize: 13,
+                  fontWeight: 600,
+                  cursor: "pointer",
+                }}
+              >
+                Đóng
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Project Delete Modal ─────────────────────────────────────────── */}
+      {projectDeleteTarget && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.55)",
+            zIndex: 50,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 16,
+          }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setProjectDeleteTarget(null)
+          }}
+        >
+          <div
+            style={{
+              background: "#fff",
+              borderRadius: 12,
+              boxShadow: "0 12px 28px rgba(0,0,0,0.14)",
+              width: "100%",
+              maxWidth: 448,
+              padding: 24,
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "flex-start", gap: 14, marginBottom: 18 }}>
+              <div
+                style={{
+                  width: 44,
+                  height: 44,
+                  borderRadius: "50%",
+                  background: "#FCE8E6",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexShrink: 0,
+                }}
+              >
+                <Warning size={22} color="#C03A2B" weight="fill" />
+              </div>
+              <div>
+                <h3 style={{ fontSize: 18, fontWeight: 700, color: "rgba(0,0,0,0.90)", marginBottom: 4 }}>
+                  Xác nhận gỡ bỏ dự án
+                </h3>
+                <p style={{ fontSize: 13.5, color: "rgba(0,0,0,0.60)", lineHeight: 1.5 }}>
+                  Bạn đang gỡ dự án{" "}
+                  <strong style={{ color: "rgba(0,0,0,0.90)" }}>"{projectDeleteTarget.title}"</strong> khỏi nền tảng do vi phạm.
+                </p>
+              </div>
+            </div>
+
+            <label
+              style={{
+                display: "block",
+                fontSize: 12,
+                fontWeight: 700,
+                color: "rgba(0,0,0,0.90)",
+                marginBottom: 6,
+              }}
+            >
+              Lý do xử lý dự án <span style={{ color: "#C03A2B" }}>*</span>
+            </label>
+            <textarea
+              value={projectDeleteReason}
+              onChange={(e) => setProjectDeleteReason(e.target.value)}
+              placeholder="Nhập lý do cụ thể..."
+              style={{
+                width: "100%",
+                border: "1px solid rgba(0,0,0,0.15)",
+                borderRadius: 6,
+                padding: 10,
+                fontSize: 13.5,
+                minHeight: 80,
+                fontFamily: "inherit",
+                resize: "vertical",
+                outline: "none",
+                marginBottom: 16,
+              }}
+            />
+
+            <div style={{ display: "flex", justifyContent: "flex-end", gap: 10 }}>
+              <button
+                onClick={() => setProjectDeleteTarget(null)}
+                style={{
+                  padding: "8px 18px",
+                  borderRadius: 9999,
+                  border: "1px solid rgba(0,0,0,0.15)",
+                  background: "#fff",
+                  fontSize: 13,
+                  fontWeight: 600,
+                  cursor: "pointer",
+                }}
+              >
+                Hủy bỏ
+              </button>
+              <button
+                disabled={!projectDeleteReason.trim()}
+                onClick={() => {
+                  setProjects((prev) => prev.filter((p) => p.id !== projectDeleteTarget.id))
+                  setProjectDeleteTarget(null)
+                  setProjectDeleteReason("")
+                  setToast("Đã gỡ dự án thành công!")
+                }}
+                style={{
+                  padding: "8px 20px",
+                  borderRadius: 9999,
+                  border: "none",
+                  background: projectDeleteReason.trim() ? "#C03A2B" : "rgba(192,58,43,0.35)",
+                  color: "#fff",
+                  fontSize: 13,
+                  fontWeight: 700,
+                  cursor: projectDeleteReason.trim() ? "pointer" : "default",
+                }}
+              >
+                Xác nhận gỡ
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Contract Detail Modal (No Escrow Banner) ──────────────────────── */}
+      {selectedContractDetail && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.55)",
+            zIndex: 50,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 16,
+          }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setSelectedContractDetail(null)
+          }}
+        >
+          <div
+            style={{
+              background: "#fff",
+              borderRadius: 12,
+              boxShadow: "0 12px 28px rgba(0,0,0,0.14)",
+              width: "100%",
+              maxWidth: 580,
+              padding: 24,
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
+              <div>
+                <span
+                  style={{
+                    fontFamily: "monospace",
+                    background: "#EAF1FA",
+                    color: "#0A66C2",
+                    padding: "3px 8px",
+                    borderRadius: 4,
+                    fontSize: 13,
+                    fontWeight: 700,
+                  }}
+                >
+                  {selectedContractDetail.id}
+                </span>
+                <h3 style={{ fontSize: 17, fontWeight: 700, color: "rgba(0,0,0,0.90)", marginTop: 6 }}>
+                  {selectedContractDetail.project}
+                </h3>
+              </div>
+              <button
+                onClick={() => setSelectedContractDetail(null)}
+                style={{ background: "none", border: "none", cursor: "pointer", color: "rgba(0,0,0,0.50)" }}
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: 12,
+                background: "#FAFAF8",
+                padding: 16,
+                borderRadius: 8,
+                marginBottom: 20,
+              }}
+            >
+              <div>
+                <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", color: "rgba(0,0,0,0.45)" }}>
+                  Bên thuê (Client)
+                </div>
+                <div style={{ fontWeight: 700, fontSize: 14, marginTop: 4 }}>
+                  {selectedContractDetail.client.name}
+                </div>
+              </div>
+              <div>
+                <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", color: "rgba(0,0,0,0.45)" }}>
+                  Freelancer
+                </div>
+                <div style={{ fontWeight: 700, fontSize: 14, marginTop: 4 }}>
+                  {selectedContractDetail.freelancer.name}
+                </div>
+              </div>
+              <div>
+                <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", color: "rgba(0,0,0,0.45)" }}>
+                  Mức phí hợp đồng
+                </div>
+                <div style={{ fontWeight: 800, fontSize: 14, color: "#057642", marginTop: 4 }}>
+                  {selectedContractDetail.payment}
+                </div>
+              </div>
+              <div>
+                <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", color: "rgba(0,0,0,0.45)" }}>
+                  Trạng thái
+                </div>
+                <div style={{ marginTop: 4 }}>
+                  {renderStatusBadge(selectedContractDetail.status)}
+                </div>
+              </div>
+            </div>
+
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+              <button
+                onClick={() => setSelectedContractDetail(null)}
+                style={{
+                  padding: "8px 20px",
+                  borderRadius: 9999,
+                  border: "1px solid rgba(0,0,0,0.15)",
+                  background: "#fff",
+                  fontSize: 13,
+                  fontWeight: 600,
+                  cursor: "pointer",
+                }}
+              >
+                Đóng
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Evidence / Violation Detail Modal ─────────────────────────────── */}
+      {evidenceTarget && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.55)",
+            zIndex: 50,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 16,
+          }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setEvidenceTarget(null)
+          }}
+        >
+          <div
+            style={{
+              background: "#fff",
+              borderRadius: 12,
+              boxShadow: "0 12px 28px rgba(0,0,0,0.14)",
+              width: "100%",
+              maxWidth: 560,
+              maxHeight: "90vh",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <div
+              style={{
+                padding: "18px 24px",
+                borderBottom: "1px solid rgba(0,0,0,0.08)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <span style={{ fontSize: 17, fontWeight: 700, color: "rgba(0,0,0,0.90)" }}>
+                Chi tiết báo cáo vi phạm
+              </span>
+              <button
+                onClick={() => setEvidenceTarget(null)}
+                style={{ background: "none", border: "none", cursor: "pointer", color: "rgba(0,0,0,0.50)" }}
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <div style={{ padding: 24, overflowY: "auto", display: "flex", flexDirection: "column", gap: 16 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <div
+                  style={{
+                    width: 36,
+                    height: 36,
+                    borderRadius: "50%",
+                    background: evidenceTarget.reporter.color,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "#fff",
+                    fontSize: 12,
+                    fontWeight: 800,
+                  }}
+                >
+                  {evidenceTarget.reporter.initials}
+                </div>
+                <div>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: "rgba(0,0,0,0.90)" }}>
+                    {evidenceTarget.reporter.name}
+                  </div>
+                  <div style={{ fontSize: 12, color: "rgba(0,0,0,0.50)" }}>
+                    Gửi lúc {evidenceTarget.time} · Mã: {evidenceTarget.id}
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", color: "rgba(0,0,0,0.45)", marginBottom: 4 }}>
+                  Đối tượng bị báo cáo ({evidenceTarget.category})
+                </div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: "#0A66C2" }}>
+                  {evidenceTarget.target}
+                </div>
+              </div>
+
+              <div>
+                <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", color: "rgba(0,0,0,0.45)", marginBottom: 4 }}>
+                  Lý do tố cáo
+                </div>
+                <div
+                  style={{
+                    background: "#FFF4D6",
+                    color: "#915907",
+                    padding: "10px 14px",
+                    borderRadius: 6,
+                    fontSize: 13.5,
+                    lineHeight: 1.5,
+                  }}
+                >
+                  {evidenceTarget.reason}
+                </div>
+              </div>
+
+              <div>
+                <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", color: "rgba(0,0,0,0.45)", marginBottom: 4 }}>
+                  Nội dung bằng chứng
+                </div>
+                <div
+                  style={{
+                    background: "#FAFAF8",
+                    border: "1px solid rgba(0,0,0,0.08)",
+                    padding: 14,
+                    borderRadius: 6,
+                    fontSize: 13.5,
+                    color: "rgba(0,0,0,0.85)",
+                    lineHeight: 1.6,
+                  }}
+                >
+                  {evidenceTarget.evidence}
+                </div>
+              </div>
+            </div>
+
+            <div
+              style={{
+                padding: "14px 24px",
+                borderTop: "1px solid rgba(0,0,0,0.08)",
+                display: "flex",
+                justifyContent: "flex-end",
+                gap: 10,
+              }}
+            >
+              <button
+                onClick={() => {
+                  setViolations((prev) =>
+                    prev.map((v) => (v.id === evidenceTarget.id ? { ...v, status: "Đã bác bỏ" } : v))
+                  )
+                  setEvidenceTarget(null)
+                  setToast("Đã bác bỏ báo cáo vi phạm!")
+                }}
+                style={{
+                  padding: "8px 18px",
+                  borderRadius: 9999,
+                  border: "1px solid rgba(0,0,0,0.15)",
+                  background: "#fff",
+                  fontSize: 13,
+                  fontWeight: 600,
+                  cursor: "pointer",
+                }}
+              >
+                Bác bỏ báo cáo
+              </button>
+              <button
+                onClick={() => {
+                  setViolations((prev) =>
+                    prev.map((v) => (v.id === evidenceTarget.id ? { ...v, status: "Đã giải quyết" } : v))
+                  )
+                  setEvidenceTarget(null)
+                  setToast("Đã xử lý vi phạm thành công!")
+                }}
+                style={{
+                  padding: "8px 20px",
+                  borderRadius: 9999,
+                  border: "none",
+                  background: "#C03A2B",
+                  color: "#fff",
+                  fontSize: 13,
+                  fontWeight: 700,
+                  cursor: "pointer",
+                }}
+              >
+                Xử lý vi phạm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Toast feedback */}
+      {toast && <Toast message={toast} onDone={() => setToast(null)} />}
     </div>
   )
 }
-
 export default function App() {
   const [authState, setAuthState] =
     useState<"landing" | "login" | "signup" | "app" | "admin">("landing")
