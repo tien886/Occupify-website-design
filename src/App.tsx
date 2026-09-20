@@ -1015,6 +1015,7 @@ function ActionCard({
 interface JobListing {
   id: number
   title: string
+  clientName: string
   company: string
   companyInitials: string
   companyColor: string
@@ -1031,6 +1032,7 @@ const JOB_LISTINGS: JobListing[] = [
   {
     id: 1,
     title: "Senior UI/UX Designer – Fintech App Redesign",
+    clientName: "Trần Thị Mai Phương",
     company: "VNPAY Corporation",
     companyInitials: "VNP",
     companyColor: "#0A66C2",
@@ -1046,6 +1048,7 @@ const JOB_LISTINGS: JobListing[] = [
   {
     id: 2,
     title: "Product Designer – Consumer Super App",
+    clientName: "Lê Hoàng Nam",
     company: "Zalo / VNG",
     companyInitials: "VNG",
     companyColor: "#06407F",
@@ -1067,6 +1070,7 @@ const JOB_LISTINGS: JobListing[] = [
   {
     id: 3,
     title: "Lead UX Designer – E-Commerce Platform",
+    clientName: "Phạm Quốc Tuấn",
     company: "Tiki Corporation",
     companyInitials: "TKI",
     companyColor: "#C03A2B",
@@ -1088,6 +1092,7 @@ const JOB_LISTINGS: JobListing[] = [
   {
     id: 4,
     title: "UX/UI Designer – Mobile Banking App",
+    clientName: "Đặng Thùy Dung",
     company: "Techcombank",
     companyInitials: "TCB",
     companyColor: "#915907",
@@ -1103,6 +1108,7 @@ const JOB_LISTINGS: JobListing[] = [
   {
     id: 5,
     title: "Freelance Product Designer – Startup MVP",
+    clientName: "Nguyễn Minh Trí",
     company: "NextGen Ventures",
     companyInitials: "NGV",
     companyColor: "#44712E",
@@ -1124,6 +1130,7 @@ const JOB_LISTINGS: JobListing[] = [
   {
     id: 6,
     title: "Design System Engineer – SaaS Platform",
+    clientName: "Vũ Hải Đăng",
     company: "Base.vn",
     companyInitials: "BSE",
     companyColor: "#3675BD",
@@ -1145,6 +1152,7 @@ const JOB_LISTINGS: JobListing[] = [
   {
     id: 7,
     title: "Junior Graphic & Banner Designer – Chiến dịch Marketing",
+    clientName: "Hoàng Gia Bảo",
     company: "FPT Telecom",
     companyInitials: "FPT",
     companyColor: "#F59E0B",
@@ -1160,6 +1168,7 @@ const JOB_LISTINGS: JobListing[] = [
   {
     id: 8,
     title: "Content & SEO Copywriter Freelance",
+    clientName: "Ngô Bích Thảo",
     company: "Sendo Group",
     companyInitials: "SND",
     companyColor: "#C03A2B",
@@ -1608,12 +1617,14 @@ function JobCard({
   isSaved,
   onToggleSave,
   onApply,
+  onViewProfile,
 }: {
   job: JobListing
   onClick?: () => void
   isSaved?: boolean
   onToggleSave?: () => void
   onApply?: () => void
+  onViewProfile?: (name?: string) => void
 }) {
   const [localSaved, setLocalSaved] = useState(false)
   const saved = isSaved !== undefined ? isSaved : localSaved
@@ -1642,25 +1653,16 @@ function JobCard({
     >
       {/* Header row */}
       <div style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
-        {/* Company logo */}
+        {/* User Avatar */}
         <div
-          style={{
-            width: 48,
-            height: 48,
-            borderRadius: 4,
-            flexShrink: 0,
-            background: job.companyColor + "18",
-            border: `1px solid ${job.companyColor}30`,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontWeight: 700,
-            fontSize: 13,
-            color: job.companyColor,
-            letterSpacing: "-0.02em",
+          onClick={(e) => {
+            e.stopPropagation()
+            onViewProfile?.(job.clientName)
           }}
+          title={`Xem hồ sơ & báo cáo người dùng ${job.clientName}`}
+          style={{ cursor: "pointer", flexShrink: 0 }}
         >
-          {job.companyInitials}
+          <Avatar name={job.clientName || job.company} size={46} />
         </div>
 
         {/* Main info */}
@@ -1702,9 +1704,37 @@ function JobCard({
             )}
           </div>
           <div
-            style={{ fontSize: 14, color: "rgba(0,0,0,0.75)", fontWeight: 600 }}
+            onClick={(e) => {
+              e.stopPropagation()
+              onViewProfile?.(job.clientName)
+            }}
+            title={`Xem hồ sơ & báo cáo người dùng ${job.clientName}`}
+            style={{
+              fontSize: 14,
+              color: "rgba(0,0,0,0.85)",
+              fontWeight: 600,
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+              cursor: "pointer",
+              transition: "color 150ms ease",
+            }}
+            onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#0A66C2")}
+            onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.85)")}
           >
-            {job.company}
+            <span>{job.clientName || job.company}</span>
+            <span
+              style={{
+                fontSize: 11,
+                color: "#057642",
+                background: "#E5F6E8",
+                padding: "2px 7px",
+                borderRadius: 4,
+                fontWeight: 700,
+              }}
+            >
+              Khách hàng
+            </span>
           </div>
           <div
             style={{
@@ -1718,6 +1748,9 @@ function JobCard({
           >
             <Clock size={13} color="rgba(0,0,0,0.45)" />
             {job.postedAgo}
+            <span style={{ color: "rgba(0,0,0,0.25)" }}>·</span>
+            <MapPin size={13} color="rgba(0,0,0,0.45)" />
+            {job.location}
           </div>
         </div>
 
@@ -7379,6 +7412,7 @@ function CreateContractPage({
 
 function NewHomePage({
   onSelectContract,
+  onSelectJob,
   onViewProfile,
   onOpenFinancialHistory,
   onNavigateProjects,
@@ -7387,6 +7421,7 @@ function NewHomePage({
   onOpenWallet,
 }: {
   onSelectContract?: (c: Contract) => void
+  onSelectJob?: (job: JobListing) => void
   onViewProfile?: (name?: string) => void
   onOpenFinancialHistory?: () => void
   onNavigateProjects?: () => void
@@ -7397,10 +7432,9 @@ function NewHomePage({
   const [subPage, setSubPage] = useState<string | null>(null)
   const [toast, setToast] = useState<string | null>(null)
   const [searchKeyword, setSearchKeyword] = useState("")
-  const [activeTab, setActiveTab] = useState<"jobs" | "contracts">("jobs")
   const [sortBy, setSortBy] = useState<"latest" | "recommended" | "budget-desc">("latest")
   const [timeFilter, setTimeFilter] = useState<"all" | "this-month" | "last-month" | "last-30-days">("all")
-  const [salaryRange, setSalaryRange] = useState<"all" | "under-15" | "15-30" | "30-50" | "above-50">("all")
+  const [minSalarySlider, setMinSalarySlider] = useState<number>(0)
 
   if (subPage === "search")
     return (
@@ -7447,10 +7481,7 @@ function NewHomePage({
     }
 
     const budgetVal = parseBudgetNum(job.budget)
-    if (salaryRange === "under-15" && budgetVal >= 15000000) return false
-    if (salaryRange === "15-30" && (budgetVal < 15000000 || budgetVal > 30000000)) return false
-    if (salaryRange === "30-50" && (budgetVal < 30000000 || budgetVal > 50000000)) return false
-    if (salaryRange === "above-50" && budgetVal <= 50000000) return false
+    if (minSalarySlider > 0 && budgetVal < minSalarySlider * 1000000) return false
 
     if (timeFilter === "this-month" || timeFilter === "last-30-days") {
       if (job.postedAgo.includes("1 tháng") || job.postedAgo.includes("tháng trước")) return false
@@ -7469,28 +7500,14 @@ function NewHomePage({
     displayJobs.sort((a, b) => parseBudgetNum(b.budget) - parseBudgetNum(a.budget))
   }
 
-  // Filter contracts
-  const filteredContracts = OTHER_CONTRACTS.filter((contract) => {
-    if (searchKeyword.trim()) {
-      const q = searchKeyword.toLowerCase()
-      const matchTitle = contract.title.toLowerCase().includes(q)
-      const matchClient = contract.client.toLowerCase().includes(q)
-      if (!matchTitle && !matchClient) return false
-    }
-    const budgetVal = parseBudgetNum(contract.value)
-    if (salaryRange === "under-15" && budgetVal >= 15000000) return false
-    if (salaryRange === "15-30" && (budgetVal < 15000000 || budgetVal > 30000000)) return false
-    if (salaryRange === "30-50" && (budgetVal < 30000000 || budgetVal > 50000000)) return false
-    if (salaryRange === "above-50" && budgetVal <= 50000000) return false
-    return true
-  })
 
-  const hasActiveFilters = sortBy !== "latest" || timeFilter !== "all" || salaryRange !== "all" || searchKeyword !== ""
+
+  const hasActiveFilters = sortBy !== "latest" || timeFilter !== "all" || minSalarySlider > 0 || searchKeyword !== ""
 
   const handleResetFilters = () => {
     setSortBy("latest")
     setTimeFilter("all")
-    setSalaryRange("all")
+    setMinSalarySlider(0)
     setSearchKeyword("")
   }
 
@@ -7675,7 +7692,7 @@ function NewHomePage({
               gap: 12,
             }}
           >
-            {/* Top row: Tab Switcher (Việc làm & Dự án vs Hợp đồng mở tuyển) + Reset */}
+            {/* Top row: Section Header & Reset */}
             <div
               style={{
                 display: "flex",
@@ -7687,71 +7704,23 @@ function NewHomePage({
                 paddingBottom: 10,
               }}
             >
-              <div style={{ display: "flex", gap: 6 }}>
-                <button
-                  onClick={() => setActiveTab("jobs")}
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <BriefcaseMetal size={18} weight="fill" color="#0A66C2" />
+                <span style={{ fontSize: 15, fontWeight: 800, color: "rgba(0,0,0,0.90)" }}>
+                  Việc làm & Dự án
+                </span>
+                <span
                   style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 6,
-                    padding: "6px 14px",
-                    borderRadius: 9999,
-                    border: "none",
-                    background: activeTab === "jobs" ? "#0A66C2" : "transparent",
-                    color: activeTab === "jobs" ? "#fff" : "rgba(0,0,0,0.65)",
-                    fontSize: 13,
+                    background: "#EAF1FA",
+                    color: "#0A66C2",
+                    fontSize: 12,
                     fontWeight: 700,
-                    cursor: "pointer",
-                    transition: "all 120ms",
+                    padding: "2px 8px",
+                    borderRadius: 9999,
                   }}
                 >
-                  <BriefcaseMetal size={15} weight={activeTab === "jobs" ? "fill" : "bold"} />
-                  <span>Việc làm & Dự án</span>
-                  <span
-                    style={{
-                      background: activeTab === "jobs" ? "rgba(255,255,255,0.25)" : "#F4F2EE",
-                      color: activeTab === "jobs" ? "#fff" : "rgba(0,0,0,0.65)",
-                      fontSize: 11,
-                      fontWeight: 700,
-                      padding: "1px 6px",
-                      borderRadius: 8,
-                    }}
-                  >
-                    {filteredJobs.length}
-                  </span>
-                </button>
-                <button
-                  onClick={() => setActiveTab("contracts")}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 6,
-                    padding: "6px 14px",
-                    borderRadius: 9999,
-                    border: "none",
-                    background: activeTab === "contracts" ? "#0A66C2" : "transparent",
-                    color: activeTab === "contracts" ? "#fff" : "rgba(0,0,0,0.65)",
-                    fontSize: 13,
-                    fontWeight: 700,
-                    cursor: "pointer",
-                    transition: "all 120ms",
-                  }}
-                >
-                  <FileText size={15} weight={activeTab === "contracts" ? "fill" : "bold"} />
-                  <span>Hợp đồng mở tuyển</span>
-                  <span
-                    style={{
-                      background: activeTab === "contracts" ? "rgba(255,255,255,0.25)" : "#F4F2EE",
-                      color: activeTab === "contracts" ? "#fff" : "rgba(0,0,0,0.65)",
-                      fontSize: 11,
-                      fontWeight: 700,
-                      padding: "1px 6px",
-                      borderRadius: 8,
-                    }}
-                  >
-                    {filteredContracts.length}
-                  </span>
-                </button>
+                  {filteredJobs.length} dự án
+                </span>
               </div>
 
               {hasActiveFilters && (
@@ -7837,32 +7806,61 @@ function NewHomePage({
                 </select>
               </div>
 
-              {/* 3. Range Lương */}
-              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <Wallet size={15} color="#B06000" />
-                <span style={{ fontSize: 13, fontWeight: 600, color: "rgba(0,0,0,0.60)" }}>Mức lương:</span>
-                <select
-                  value={salaryRange}
-                  onChange={(e) => setSalaryRange(e.target.value as any)}
+              {/* 3. Thanh trượt Mức lương */}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 10,
+                  flexWrap: "wrap",
+                  padding: "4px 12px",
+                  background: "#F8FAFC",
+                  borderRadius: 8,
+                  border: "1px solid rgba(0,0,0,0.08)",
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                  <Wallet size={16} color="#0A66C2" weight="bold" />
+                  <span style={{ fontSize: 13, fontWeight: 700, color: "rgba(0,0,0,0.70)" }}>
+                    Lương tối thiểu:
+                  </span>
+                </div>
+                <input
+                  type="range"
+                  min={0}
+                  max={100}
+                  step={5}
+                  value={minSalarySlider}
+                  onChange={(e) => setMinSalarySlider(Number(e.target.value))}
+                  style={{ width: 130, accentColor: "#0A66C2", cursor: "pointer" }}
+                />
+                <span
                   style={{
-                    padding: "6px 12px",
-                    borderRadius: 6,
-                    border: "1px solid rgba(0,0,0,0.15)",
                     fontSize: 13,
-                    fontFamily: "inherit",
-                    background: "#fff",
-                    fontWeight: 600,
-                    color: "rgba(0,0,0,0.85)",
-                    cursor: "pointer",
-                    outline: "none",
+                    fontWeight: 700,
+                    color: minSalarySlider > 0 ? "#0A66C2" : "rgba(0,0,0,0.55)",
+                    minWidth: 105,
                   }}
                 >
-                  <option value="all">Tất cả mức lương</option>
-                  <option value="under-15">Dưới 15 triệu</option>
-                  <option value="15-30">15 - 30 triệu</option>
-                  <option value="30-50">30 - 50 triệu</option>
-                  <option value="above-50">Trên 50 triệu</option>
-                </select>
+                  {minSalarySlider === 0 ? "Tất cả mức lương" : `≥ ${minSalarySlider} triệu ₫`}
+                </span>
+                {minSalarySlider > 0 && (
+                  <button
+                    onClick={() => setMinSalarySlider(0)}
+                    style={{
+                      background: "none",
+                      border: "none",
+                      color: "#C03A2B",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      padding: 2,
+                    }}
+                    title="Đặt lại mức lương"
+                  >
+                    <X size={13} weight="bold" />
+                  </button>
+                )}
               </div>
             </div>
           </div>
@@ -7878,23 +7876,11 @@ function NewHomePage({
             }}
           >
             <div style={{ fontSize: 13, color: "rgba(0,0,0,0.60)" }}>
-              {activeTab === "contracts" ? (
-                <>
-                  Tìm thấy{" "}
-                  <strong style={{ color: "rgba(0,0,0,0.90)" }}>
-                    {filteredContracts.length}
-                  </strong>{" "}
-                  hợp đồng mở tuyển
-                </>
-              ) : (
-                <>
-                  Tìm thấy{" "}
-                  <strong style={{ color: "rgba(0,0,0,0.90)" }}>
-                    {displayJobs.length}
-                  </strong>{" "}
-                  cơ hội phù hợp
-                </>
-              )}
+              Tìm thấy{" "}
+              <strong style={{ color: "rgba(0,0,0,0.90)" }}>
+                {displayJobs.length}
+              </strong>{" "}
+              dự án phù hợp
               {searchKeyword && (
                 <span
                   style={{
@@ -7918,32 +7904,26 @@ function NewHomePage({
                   />
                 </span>
               )}
-              {salaryRange !== "all" && (
+              {minSalarySlider > 0 && (
                 <span
                   style={{
                     marginLeft: 8,
                     display: "inline-flex",
                     alignItems: "center",
                     gap: 4,
-                    background: "#FEF7E0",
-                    color: "#B06000",
+                    background: "#EAF1FA",
+                    color: "#0A66C2",
                     padding: "2px 8px",
                     borderRadius: 9999,
                     fontSize: 12,
                     fontWeight: 600,
                   }}
                 >
-                  {salaryRange === "under-15"
-                    ? "< 15 triệu"
-                    : salaryRange === "15-30"
-                      ? "15 - 30 triệu"
-                      : salaryRange === "30-50"
-                        ? "30 - 50 triệu"
-                        : "> 50 triệu"}
+                  Lương ≥ {minSalarySlider} triệu ₫
                   <X
                     size={12}
                     style={{ cursor: "pointer" }}
-                    onClick={() => setSalaryRange("all")}
+                    onClick={() => setMinSalarySlider(0)}
                   />
                 </span>
               )}
@@ -7977,159 +7957,8 @@ function NewHomePage({
             </div>
           </div>
 
-          {/* Tab = 'contracts' Content */}
-          {activeTab === "contracts" && (
-            <div>
-              {filteredContracts.length === 0 ? (
-                <div
-                  style={{
-                    background: "#fff",
-                    borderRadius: 8,
-                    boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-                    padding: "48px 24px",
-                    textAlign: "center",
-                  }}
-                >
-                  <FileText size={40} color="rgba(0,0,0,0.25)" style={{ margin: "0 auto 12px" }} />
-                  <div style={{ fontSize: 16, fontWeight: 700, color: "rgba(0,0,0,0.90)", marginBottom: 6 }}>
-                    Không tìm thấy hợp đồng phù hợp
-                  </div>
-                  <p style={{ fontSize: 14, color: "rgba(0,0,0,0.60)", maxWidth: 380, margin: "0 auto 16px" }}>
-                    Hãy thử điều chỉnh lại mức ngân sách hoặc từ khóa tìm kiếm.
-                  </p>
-                  <button
-                    onClick={handleResetFilters}
-                    style={{
-                      background: "#0A66C2",
-                      color: "#fff",
-                      border: "none",
-                      borderRadius: 9999,
-                      padding: "8px 20px",
-                      fontSize: 13,
-                      fontWeight: 600,
-                      cursor: "pointer",
-                    }}
-                  >
-                    Xóa tất cả bộ lọc
-                  </button>
-                </div>
-              ) : (
-                filteredContracts.map((contract) => (
-                  <div
-                    key={contract.id}
-                    onClick={() => onSelectContract?.(contract)}
-                    style={{
-                      background: "#fff",
-                      borderRadius: 8,
-                      boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-                      padding: "18px 20px",
-                      marginBottom: 10,
-                      cursor: "pointer",
-                      transition: "all 150ms ease",
-                    }}
-                    onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLElement).style.background =
-                        "#FAFAF8"
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLElement).style.background = "#fff"
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "flex-start",
-                        justifyContent: "space-between",
-                        gap: 12,
-                        marginBottom: 8,
-                      }}
-                    >
-                      <div>
-                        <div
-                          style={{
-                            fontSize: 16,
-                            fontWeight: 700,
-                            color: "rgba(0,0,0,0.90)",
-                            marginBottom: 4,
-                          }}
-                        >
-                          {contract.title}
-                        </div>
-                        <div
-                          style={{
-                            fontSize: 13,
-                            color: "rgba(0,0,0,0.60)",
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 6,
-                          }}
-                        >
-                          <Buildings size={14} />
-                          <span>{contract.client}</span>
-                          <span>•</span>
-                          <Clock size={14} />
-                          <span>Hạn chót: {contract.deadline}</span>
-                        </div>
-                      </div>
-                      <div
-                        style={{
-                          background: "#E5F6E8",
-                          color: "#057642",
-                          fontWeight: 800,
-                          fontSize: 15,
-                          padding: "6px 14px",
-                          borderRadius: 6,
-                          whiteSpace: "nowrap",
-                        }}
-                      >
-                        {contract.value}
-                      </div>
-                    </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        paddingTop: 10,
-                        borderTop: "1px solid rgba(0,0,0,0.05)",
-                        marginTop: 10,
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 6,
-                          fontSize: 12,
-                          color: "#057642",
-                          fontWeight: 600,
-                        }}
-                      >
-                        <SealCheck size={16} weight="fill" />
-                        <span>Bảo đảm thanh toán 100% bởi Occupify</span>
-                      </div>
-                      <span
-                        style={{
-                          fontSize: 13,
-                          fontWeight: 600,
-                          color: "#0A66C2",
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 4,
-                        }}
-                      >
-                        Xem chi tiết hợp đồng
-                        <ArrowRight size={13} weight="bold" />
-                      </span>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-          )}
-
-          {/* Tab = 'jobs' Content */}
-          {activeTab === "jobs" && (
+          {/* Jobs Feed */}
+          <div>
             <div>
               {displayJobs.map((job) => (
                 <JobCard
@@ -8137,16 +7966,8 @@ function NewHomePage({
                   job={job}
                   isSaved={savedJobIds.includes(job.id)}
                   onToggleSave={() => onToggleSaveJob?.(job.id)}
-                  onApply={() =>
-                    onSelectContract?.({
-                      id: job.id,
-                      title: job.title,
-                      client: job.company,
-                      value: job.budget,
-                      deadline: "30 thg 12, 2026",
-                      status: "pending",
-                    })
-                  }
+                  onClick={() => onSelectJob?.(job)}
+                  onViewProfile={onViewProfile}
                 />
               ))}
 
@@ -8199,7 +8020,7 @@ function NewHomePage({
                 </div>
               )}
             </div>
-          )}
+          </div>
         </div>
         {/* Right Column: Widgets */}
         <div>
@@ -9836,6 +9657,533 @@ function ApplyModal({
 
 // ─── Contract Details Page ────────────────────────────────────────────────────
 
+
+// ─── Project Details Page (Full Page View) ───────────────────────────────────
+
+function ProjectDetailsPage({
+  job,
+  onBack,
+  onViewProfile,
+  isSaved,
+  onToggleSave,
+}: {
+  job: JobListing
+  onBack: () => void
+  onViewProfile?: (name?: string) => void
+  isSaved?: boolean
+  onToggleSave?: () => void
+}) {
+  const [applyModalOpen, setApplyModalOpen] = useState(false)
+  const [bidPrice, setBidPrice] = useState(job.budget)
+  const [deliveryDays, setDeliveryDays] = useState("14")
+  const [coverLetter, setCoverLetter] = useState("")
+  const [applied, setApplied] = useState(false)
+  const [reportModalOpen, setReportModalOpen] = useState(false)
+  const [reportReason, setReportReason] = useState("Nội dung vi phạm / Lừa đảo")
+  const [reportDetail, setReportDetail] = useState("")
+  const [reportImage, setReportImage] = useState("")
+  const [toastMessage, setToastMessage] = useState<string | null>(null)
+
+  const cardStyle: React.CSSProperties = {
+    background: "#fff",
+    borderRadius: 8,
+    boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+  }
+
+  const handleApply = (e: React.FormEvent) => {
+    e.preventDefault()
+    setApplied(true)
+    setApplyModalOpen(false)
+    setToastMessage("Đã nộp hồ sơ ứng tuyển thành công! Khách hàng sẽ sớm liên hệ với bạn.")
+  }
+
+  const handleReport = () => {
+    if (!reportDetail.trim()) return
+    setReportModalOpen(false)
+    setReportDetail("")
+    setReportImage("")
+    setToastMessage("Đã gửi báo cáo vi phạm thành công! Ban quản trị Occupify sẽ xử lý trong 24h.")
+  }
+
+  return (
+    <div style={{ background: "#F4F2EE", minHeight: "100%", paddingBottom: 60 }}>
+      {toastMessage && <Toast message={toastMessage} onDone={() => setToastMessage(null)} />}
+
+      <div style={{ maxWidth: 1128, margin: "0 auto", padding: "24px 16px" }}>
+        {/* Back Button */}
+        <button
+          onClick={onBack}
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 8,
+            background: "#fff",
+            border: "1px solid rgba(0,0,0,0.15)",
+            borderRadius: 9999,
+            padding: "8px 18px",
+            fontSize: 13.5,
+            fontWeight: 700,
+            color: "#0A66C2",
+            cursor: "pointer",
+            fontFamily: "inherit",
+            marginBottom: 20,
+            boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
+            transition: "all 150ms ease",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = "#EAF1FA"
+            e.currentTarget.style.borderColor = "#0A66C2"
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "#fff"
+            e.currentTarget.style.borderColor = "rgba(0,0,0,0.15)"
+          }}
+        >
+          <ArrowLeft size={16} weight="bold" />
+          <span>Quay lại trang chủ</span>
+        </button>
+
+        {/* 2-Column Grid */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 340px",
+            gap: 24,
+            alignItems: "start",
+          }}
+        >
+          {/* Left Column: Project Details */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            {/* Header Card */}
+            <div style={{ ...cardStyle, padding: "24px 28px" }}>
+              <h1
+                style={{
+                  fontSize: 22,
+                  fontWeight: 800,
+                  color: "rgba(0,0,0,0.90)",
+                  lineHeight: 1.35,
+                  marginBottom: 12,
+                  letterSpacing: "-0.01em",
+                }}
+              >
+                {job.title}
+              </h1>
+
+              {/* Badge 'Đang mở tuyển' và 'Thời gian' nằm bên dưới tiêu đề */}
+              <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+                <span
+                  style={{
+                    background: "#E5F6E8",
+                    color: "#057642",
+                    borderRadius: 9999,
+                    padding: "4px 12px",
+                    fontSize: 12,
+                    fontWeight: 700,
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 4,
+                  }}
+                >
+                  <CheckCircle size={13} weight="fill" />
+                  Đang mở tuyển
+                </span>
+                <span style={{ fontSize: 13, color: "rgba(0,0,0,0.50)", display: "flex", alignItems: "center", gap: 4 }}>
+                  <Clock size={13} />
+                  {job.postedAgo}
+                </span>
+              </div>
+            </div>
+
+            {/* Description Card */}
+            <div style={{ ...cardStyle, padding: 28 }}>
+              <h2 style={{ fontSize: 17, fontWeight: 700, color: "rgba(0,0,0,0.90)", marginBottom: 14 }}>
+                Mô tả chi tiết công việc & dự án
+              </h2>
+              <p style={{ fontSize: 14.5, color: "rgba(0,0,0,0.80)", lineHeight: 1.75, marginBottom: 16 }}>
+                {job.description}
+              </p>
+              <p style={{ fontSize: 14.5, color: "rgba(0,0,0,0.80)", lineHeight: 1.75, marginBottom: 20 }}>
+                Yêu cầu ứng viên có tinh thần trách nhiệm, chủ động cập nhật tiến độ theo từng mốc công việc và phối hợp chặt chẽ với khách hàng trong suốt quá trình triển khai dự án.
+              </p>
+
+              <div style={{ borderTop: "1px solid rgba(0,0,0,0.08)", paddingTop: 18 }}>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "rgba(0,0,0,0.60)", marginBottom: 10, textTransform: "uppercase" }}>
+                  Kỹ năng chuyên môn yêu cầu
+                </div>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                  {job.skills.map((skill) => (
+                    <span
+                      key={skill}
+                      style={{
+                        background: "#EAF1FA",
+                        color: "#0A66C2",
+                        padding: "5px 14px",
+                        borderRadius: 9999,
+                        fontSize: 13,
+                        fontWeight: 600,
+                      }}
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Section Ngân sách dự án & 2 button Lưu tin và Ứng tuyển đưa xuống dưới */}
+            <div
+              style={{
+                ...cardStyle,
+                padding: "20px 24px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                background: "#F8FAFC",
+                border: "1px solid rgba(0,0,0,0.08)",
+                flexWrap: "wrap",
+                gap: 16,
+              }}
+            >
+              <div>
+                <div style={{ fontSize: 12, fontWeight: 700, color: "rgba(0,0,0,0.50)", textTransform: "uppercase", letterSpacing: 0.5 }}>
+                  Ngân sách dự án
+                </div>
+                <div style={{ fontSize: 24, fontWeight: 800, color: "#0A66C2", marginTop: 2 }}>
+                  {job.budget}
+                </div>
+                <div style={{ fontSize: 12.5, color: "rgba(0,0,0,0.50)", marginTop: 2 }}>
+                  {job.avgBid}
+                </div>
+              </div>
+
+              <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                <button
+                  onClick={onToggleSave}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                    padding: "10px 18px",
+                    borderRadius: 9999,
+                    border: "1px solid rgba(0,0,0,0.20)",
+                    background: "#fff",
+                    color: isSaved ? "#0A66C2" : "rgba(0,0,0,0.70)",
+                    fontWeight: 700,
+                    fontSize: 13.5,
+                    cursor: "pointer",
+                    fontFamily: "inherit",
+                    transition: "all 150ms ease",
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = "#F4F2EE")}
+                  onMouseLeave={(e) => (e.currentTarget.style.background = "#fff")}
+                >
+                  <Bookmark size={16} weight={isSaved ? "fill" : "regular"} />
+                  <span>{isSaved ? "Đã lưu" : "Lưu tin"}</span>
+                </button>
+
+                <button
+                  onClick={() => setApplyModalOpen(true)}
+                  disabled={applied}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                    padding: "10px 24px",
+                    borderRadius: 9999,
+                    border: "none",
+                    background: applied ? "#057642" : "#0A66C2",
+                    color: "#fff",
+                    fontWeight: 700,
+                    fontSize: 14,
+                    cursor: applied ? "default" : "pointer",
+                    boxShadow: "0 2px 8px rgba(10,102,194,0.25)",
+                    fontFamily: "inherit",
+                    transition: "all 150ms ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!applied) e.currentTarget.style.background = "#084FA0"
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!applied) e.currentTarget.style.background = "#0A66C2"
+                  }}
+                >
+                  <PaperPlaneTilt size={16} weight="bold" />
+                  <span>{applied ? "Đã nộp hồ sơ" : "Ứng tuyển ngay"}</span>
+                </button>
+              </div>
+            </div>
+
+            {applied && (
+              <div style={{ ...cardStyle, padding: 18, background: "#E5F6E8", border: "1px solid #86EFAC", display: "flex", alignItems: "center", gap: 12 }}>
+                <CheckCircle size={22} weight="fill" color="#057642" />
+                <div>
+                  <div style={{ fontWeight: 700, fontSize: 13.5, color: "#057642" }}>
+                    Bạn đã nộp hồ sơ ứng tuyển dự án này thành công!
+                  </div>
+                  <div style={{ fontSize: 12.5, color: "rgba(0,0,0,0.65)", marginTop: 2 }}>
+                    Khách hàng {job.clientName} sẽ phản hồi qua hệ thống thông báo hoặc tin nhắn.
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Right Column: Poster / Client Info */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            {/* Poster Info Card */}
+            <div style={{ ...cardStyle, padding: 22 }}>
+              <div style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase", color: "rgba(0,0,0,0.45)", marginBottom: 14 }}>
+                Thông tin người đăng dự án
+              </div>
+
+              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
+                <Avatar name={job.clientName || job.company} size={56} />
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ fontSize: 16, fontWeight: 800, color: "rgba(0,0,0,0.90)" }}>
+                    {job.clientName || job.company}
+                  </div>
+                  <div style={{ fontSize: 12.5, color: "#057642", fontWeight: 700, display: "flex", alignItems: "center", gap: 4, marginTop: 2 }}>
+                    <SealCheck size={14} weight="fill" />
+                    Khách hàng xác thực
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 16, borderTop: "1px solid rgba(0,0,0,0.06)", paddingTop: 14 }}>
+                <button
+                  onClick={() => onViewProfile?.(job.clientName)}
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 6,
+                    padding: "9px 14px",
+                    borderRadius: 9999,
+                    border: "1px solid #0A66C2",
+                    background: "#EAF1FA",
+                    color: "#0A66C2",
+                    fontSize: 13.5,
+                    fontWeight: 700,
+                    cursor: "pointer",
+                    fontFamily: "inherit",
+                    transition: "all 120ms",
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = "#d6e6f9")}
+                  onMouseLeave={(e) => (e.currentTarget.style.background = "#EAF1FA")}
+                >
+                  <User size={15} weight="bold" />
+                  <span>Xem hồ sơ người dùng</span>
+                </button>
+
+                <button
+                  onClick={() => setReportModalOpen(true)}
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 6,
+                    padding: "9px 14px",
+                    borderRadius: 9999,
+                    border: "1px solid #C03A2B",
+                    background: "#fff",
+                    color: "#C03A2B",
+                    fontSize: 13,
+                    fontWeight: 700,
+                    cursor: "pointer",
+                    fontFamily: "inherit",
+                    transition: "all 120ms",
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = "#FCE8E6")}
+                  onMouseLeave={(e) => (e.currentTarget.style.background = "#fff")}
+                >
+                  <Warning size={15} weight="bold" />
+                  <span>Báo cáo người dùng / dự án</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Apply Modal */}
+      {applyModalOpen && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}>
+          <div style={{ background: "#fff", borderRadius: 12, width: "100%", maxWidth: 520, padding: 24, boxShadow: "0 10px 40px rgba(0,0,0,0.2)" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
+              <h3 style={{ fontSize: 18, fontWeight: 800, color: "rgba(0,0,0,0.90)" }}>
+                Ứng tuyển dự án
+              </h3>
+              <button onClick={() => setApplyModalOpen(false)} style={{ background: "none", border: "none", cursor: "pointer", padding: 4 }}>
+                <X size={18} />
+              </button>
+            </div>
+
+            <div style={{ fontSize: 13, color: "rgba(0,0,0,0.60)", marginBottom: 16 }}>
+              Dự án: <strong style={{ color: "rgba(0,0,0,0.85)" }}>{job.title}</strong> · Khách hàng: <strong style={{ color: "rgba(0,0,0,0.85)" }}>{job.clientName}</strong>
+            </div>
+
+            <form onSubmit={handleApply} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+              <div>
+                <label style={{ display: "block", fontSize: 12.5, fontWeight: 700, marginBottom: 6, color: "rgba(0,0,0,0.75)" }}>
+                  Mức giá đề xuất của bạn (VNĐ) <span style={{ color: "#C03A2B" }}>*</span>
+                </label>
+                <input
+                  type="text"
+                  value={bidPrice}
+                  onChange={(e) => setBidPrice(e.target.value)}
+                  style={{ width: "100%", padding: "9px 12px", borderRadius: 6, border: "1px solid rgba(0,0,0,0.2)", fontSize: 14, outline: "none", fontFamily: "inherit" }}
+                  required
+                />
+              </div>
+
+              <div>
+                <label style={{ display: "block", fontSize: 12.5, fontWeight: 700, marginBottom: 6, color: "rgba(0,0,0,0.75)" }}>
+                  Thời gian hoàn thành dự kiến (ngày) <span style={{ color: "#C03A2B" }}>*</span>
+                </label>
+                <input
+                  type="number"
+                  value={deliveryDays}
+                  onChange={(e) => setDeliveryDays(e.target.value)}
+                  style={{ width: "100%", padding: "9px 12px", borderRadius: 6, border: "1px solid rgba(0,0,0,0.2)", fontSize: 14, outline: "none", fontFamily: "inherit" }}
+                  required
+                />
+              </div>
+
+              <div>
+                <label style={{ display: "block", fontSize: 12.5, fontWeight: 700, marginBottom: 6, color: "rgba(0,0,0,0.75)" }}>
+                  Thư đề xuất / Giải pháp thực hiện <span style={{ color: "#C03A2B" }}>*</span>
+                </label>
+                <textarea
+                  value={coverLetter}
+                  onChange={(e) => setCoverLetter(e.target.value)}
+                  rows={4}
+                  placeholder="Giới thiệu kinh nghiệm phù hợp và phương án thực hiện dự án này..."
+                  style={{ width: "100%", padding: "9px 12px", borderRadius: 6, border: "1px solid rgba(0,0,0,0.2)", fontSize: 13.5, outline: "none", fontFamily: "inherit", resize: "vertical" }}
+                  required
+                />
+              </div>
+
+              <div style={{ display: "flex", justifyContent: "flex-end", gap: 10, marginTop: 8 }}>
+                <button
+                  type="button"
+                  onClick={() => setApplyModalOpen(false)}
+                  style={{ padding: "8px 18px", borderRadius: 9999, border: "1px solid rgba(0,0,0,0.15)", background: "#fff", cursor: "pointer", fontSize: 13.5, fontWeight: 600, fontFamily: "inherit" }}
+                >
+                  Hủy
+                </button>
+                <button
+                  type="submit"
+                  style={{ padding: "8px 24px", borderRadius: 9999, border: "none", background: "#0A66C2", color: "#fff", cursor: "pointer", fontSize: 13.5, fontWeight: 700, fontFamily: "inherit" }}
+                >
+                  Gửi đề xuất ứng tuyển
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Report Modal */}
+      {reportModalOpen && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}>
+          <div style={{ background: "#fff", borderRadius: 12, width: "100%", maxWidth: 480, padding: 24, boxShadow: "0 10px 40px rgba(0,0,0,0.2)" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <Warning size={20} color="#C03A2B" weight="fill" />
+                <h3 style={{ fontSize: 17, fontWeight: 800, color: "#C03A2B" }}>
+                  Báo cáo người dùng / dự án
+                </h3>
+              </div>
+              <button onClick={() => setReportModalOpen(false)} style={{ background: "none", border: "none", cursor: "pointer", padding: 4 }}>
+                <X size={18} />
+              </button>
+            </div>
+
+            <div style={{ fontSize: 13, color: "rgba(0,0,0,0.60)", marginBottom: 14 }}>
+              Đối tượng bị báo cáo: <strong>{job.clientName}</strong> (Dự án: {job.title})
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+              <div>
+                <label style={{ display: "block", fontSize: 12.5, fontWeight: 700, marginBottom: 6, color: "rgba(0,0,0,0.75)" }}>
+                  Lý do báo cáo <span style={{ color: "#C03A2B" }}>*</span>
+                </label>
+                <select
+                  value={reportReason}
+                  onChange={(e) => setReportReason(e.target.value)}
+                  style={{ width: "100%", padding: "9px 12px", borderRadius: 6, border: "1px solid rgba(0,0,0,0.2)", fontSize: 13.5, outline: "none", fontFamily: "inherit" }}
+                >
+                  <option value="Nội dung vi phạm / Lừa đảo">Nội dung vi phạm / Lừa đảo</option>
+                  <option value="Yêu cầu thanh toán ngoài hệ thống">Yêu cầu thanh toán ngoài hệ thống</option>
+                  <option value="Thông tin dự án giả mạo hoặc sai sự thật">Thông tin dự án giả mạo hoặc sai sự thật</option>
+                  <option value="Spam / Quấy rối / Ngôn từ không phù hợp">Spam / Quấy rối / Ngôn từ không phù hợp</option>
+                  <option value="Khác">Lý do khác</option>
+                </select>
+              </div>
+
+              <div>
+                <label style={{ display: "block", fontSize: 12.5, fontWeight: 700, marginBottom: 6, color: "rgba(0,0,0,0.75)" }}>
+                  Mô tả chi tiết vi phạm <span style={{ color: "#C03A2B" }}>*</span>
+                </label>
+                <textarea
+                  value={reportDetail}
+                  onChange={(e) => setReportDetail(e.target.value)}
+                  rows={4}
+                  placeholder="Vui lòng cung cấp chi tiết hành vi vi phạm để ban quản trị đối soát nhanh chóng..."
+                  style={{ width: "100%", padding: "9px 12px", borderRadius: 6, border: "1px solid rgba(0,0,0,0.2)", fontSize: 13.5, outline: "none", fontFamily: "inherit", resize: "vertical" }}
+                />
+              </div>
+
+              <div>
+                <label style={{ display: "block", fontSize: 12.5, fontWeight: 700, marginBottom: 6, color: "rgba(0,0,0,0.75)" }}>
+                  Ảnh chụp bằng chứng (tùy chọn)
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setReportImage(e.target.files?.[0]?.name ?? "")}
+                  style={{ fontSize: 13 }}
+                />
+                {reportImage && <span style={{ fontSize: 12, color: "#057642", display: "block", marginTop: 4 }}>Đã chọn: {reportImage}</span>}
+              </div>
+
+              <div style={{ display: "flex", justifyContent: "flex-end", gap: 10, marginTop: 8 }}>
+                <button
+                  type="button"
+                  onClick={() => setReportModalOpen(false)}
+                  style={{ padding: "8px 18px", borderRadius: 9999, border: "1px solid rgba(0,0,0,0.15)", background: "#fff", cursor: "pointer", fontSize: 13.5, fontWeight: 600, fontFamily: "inherit" }}
+                >
+                  Hủy
+                </button>
+                <button
+                  type="button"
+                  onClick={handleReport}
+                  disabled={!reportDetail.trim()}
+                  style={{
+                    padding: "8px 24px",
+                    borderRadius: 9999,
+                    border: "none",
+                    background: reportDetail.trim() ? "#C03A2B" : "#F87171",
+                    color: "#fff",
+                    cursor: reportDetail.trim() ? "pointer" : "not-allowed",
+                    fontSize: 13.5,
+                    fontWeight: 700,
+                    fontFamily: "inherit",
+                  }}
+                >
+                  Gửi báo cáo
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
 function ContractDetailsPage({
   contract,
   onBack,
@@ -11166,11 +11514,17 @@ function StarRating({ rating, size = 14 }: { rating: number; size?: number }) {
 function MyProfilePage({
   onBack,
   isOwnProfile = true,
+  userName,
 }: {
   onBack: () => void
   isOwnProfile?: boolean
+  userName?: string
 }) {
-  const p = MY_PROFILE_DATA
+  const p = {
+    ...MY_PROFILE_DATA,
+    name: (!isOwnProfile && userName) ? userName : MY_PROFILE_DATA.name,
+    headline: (!isOwnProfile && userName) ? `Khách hàng đối tác · ${userName}` : MY_PROFILE_DATA.headline,
+  }
   const [connectedSet, setConnectedSet] = useState<Set<string>>(new Set())
   const [starFilter, setStarFilter] = useState<number | null>(null)
   const [cvFileName, setCvFileName] = useState("")
@@ -16617,6 +16971,7 @@ function MainApp({ onLogout }: { onLogout?: () => void }) {
   const [selectedContract, setSelectedContract] = useState<Contract | null>(
     null,
   )
+  const [selectedJob, setSelectedJob] = useState<JobListing | null>(null)
   const [myProfileOpen, setMyProfileOpen] = useState(false)
   const [financialHistoryOpen, setFinancialHistoryOpen] = useState(false)
   const [walletOpen, setWalletOpen] = useState(false)
@@ -16825,7 +17180,38 @@ function MainApp({ onLogout }: { onLogout?: () => void }) {
           onOpenFinancialHistory={() => setFinancialHistoryOpen(true)}
           onLogout={onLogout}
         />
-        <MyProfilePage onBack={closeMyProfile} isOwnProfile={!viewingUser} />
+        <MyProfilePage onBack={closeMyProfile} isOwnProfile={!viewingUser} userName={viewingUser ?? undefined} />
+      </>
+    )
+  }
+
+  if (selectedJob) {
+    return (
+      <>
+        <Navbar
+          active={activeNav}
+          setActive={(v) => {
+            setSelectedJob(null)
+            setActiveNav(v)
+          }}
+          onOpenMyProfile={openMyProfile}
+          onOpenWallet={() => {
+            setSelectedJob(null)
+            openWallet()
+          }}
+          onOpenFinancialHistory={() => setFinancialHistoryOpen(true)}
+          onLogout={onLogout}
+        />
+        <ProjectDetailsPage
+          job={selectedJob}
+          onBack={() => setSelectedJob(null)}
+          onViewProfile={(name) => {
+            setSelectedJob(null)
+            openOtherProfile(name)
+          }}
+          isSaved={savedJobIds.includes(selectedJob.id)}
+          onToggleSave={() => toggleSaveJob(selectedJob.id)}
+        />
       </>
     )
   }
@@ -16887,6 +17273,7 @@ function MainApp({ onLogout }: { onLogout?: () => void }) {
           savedJobIds={savedJobIds}
           onToggleSaveJob={toggleSaveJob}
           onSelectContract={setSelectedContract}
+          onSelectJob={setSelectedJob}
           onViewProfile={openOtherProfile}
           onOpenFinancialHistory={() => setFinancialHistoryOpen(true)}
           onOpenWallet={openWallet}
@@ -17417,9 +17804,7 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
       u.email.toLowerCase().includes(userSearch.toLowerCase())
     const matchStatus =
       userStatusFilter === "Tất cả" || u.status === userStatusFilter
-    const matchRole =
-      userRoleFilter === "Tất cả" || u.role === userRoleFilter
-    return matchSearch && matchStatus && matchRole
+    return matchSearch && matchStatus
   })
 
   const userTotalPages = Math.max(
@@ -17822,26 +18207,7 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                 </p>
               </div>
 
-              <div style={{ display: "flex", gap: 10 }}>
-                {flaggedUsersCount > 0 && (
-                  <div
-                    style={{
-                      background: "#FEF7E0",
-                      color: "#B06000",
-                      padding: "6px 14px",
-                      borderRadius: 9999,
-                      fontSize: 13,
-                      fontWeight: 700,
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 6,
-                    }}
-                  >
-                    <Warning size={15} weight="fill" />
-                    <span>{flaggedUsersCount} tài khoản cần xem xét</span>
-                  </div>
-                )}
-              </div>
+
             </div>
 
             {/* Quick Status Filter Tabs */}
@@ -17961,33 +18327,7 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                 />
               </div>
 
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={{ fontSize: 13, color: "rgba(0,0,0,0.55)", fontWeight: 600 }}>
-                  Vai trò:
-                </span>
-                <select
-                  value={userRoleFilter}
-                  onChange={(e) => {
-                    setUserRoleFilter(e.target.value)
-                    setUserCurrentPage(1)
-                  }}
-                  style={{
-                    padding: "7px 12px",
-                    borderRadius: 6,
-                    border: "1px solid rgba(0,0,0,0.15)",
-                    fontSize: 13,
-                    fontFamily: "inherit",
-                    color: "rgba(0,0,0,0.80)",
-                    background: "#fff",
-                    cursor: "pointer",
-                    outline: "none",
-                  }}
-                >
-                  <option>Tất cả</option>
-                  <option>Client</option>
-                  <option>Freelancer</option>
-                </select>
-              </div>
+
             </div>
 
             {/* Table */}
@@ -18005,7 +18345,6 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                     {[
                       "Người dùng",
                       "Email",
-                      "Vai trò",
                       "Trạng thái",
                       "Ngày tham gia",
                       "Thao tác",
@@ -18031,7 +18370,7 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                   {paginatedUsers.length === 0 ? (
                     <tr>
                       <td
-                        colSpan={6}
+                        colSpan={5}
                         style={{
                           padding: "50px 20px",
                           textAlign: "center",
@@ -18091,20 +18430,6 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                         </td>
                         <td style={{ padding: "12px 18px", fontSize: 13, color: "rgba(0,0,0,0.60)" }}>
                           {u.email}
-                        </td>
-                        <td style={{ padding: "12px 18px" }}>
-                          <span
-                            style={{
-                              fontSize: 12,
-                              fontWeight: 700,
-                              color: u.role === "Freelancer" ? "#0A66C2" : "#057642",
-                              background: u.role === "Freelancer" ? "#EAF1FA" : "#E6F4EA",
-                              padding: "3px 10px",
-                              borderRadius: 9999,
-                            }}
-                          >
-                            {u.role}
-                          </span>
                         </td>
                         <td style={{ padding: "12px 18px" }}>
                           {renderStatusBadge(u.status)}
