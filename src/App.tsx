@@ -4516,6 +4516,7 @@ interface ProjectMember {
   email: string
   price: string
   dueDate?: string
+  salaryDueDate?: string
   status?: string
 }
 interface PendingProject {
@@ -4528,6 +4529,7 @@ interface PendingProject {
 interface MyProject {
   id: number
   name: string
+  owner?: string
   members: ProjectMember[]
   dueDate: string
   period: string
@@ -4537,6 +4539,7 @@ const MY_PROJECTS_DATA: MyProject[] = [
   {
     id: 1,
     name: "Redesign Mobile App",
+    owner: "Tôi (Chủ dự án)",
     period: "Hàng tháng",
     dueDate: "2026-12-31",
     members: [
@@ -4545,18 +4548,21 @@ const MY_PROJECTS_DATA: MyProject[] = [
         email: "hung.le@gmail.com",
         price: "12.000.000 ₫",
         dueDate: "2026-12-31",
+        salaryDueDate: "Ngày 05 hàng tháng",
       },
       {
         name: "Nguyễn Thị Thu",
         email: "thu.nguyen@gmail.com",
         price: "10.000.000 ₫",
         dueDate: "2026-11-30",
+        salaryDueDate: "Ngày 05 hàng tháng",
       },
     ],
   },
   {
     id: 2,
     name: "Xây dựng Design System SaaS",
+    owner: "Tôi (Chủ dự án)",
     period: "Hàng quý",
     dueDate: "2027-03-31",
     members: [
@@ -4565,6 +4571,7 @@ const MY_PROJECTS_DATA: MyProject[] = [
         email: "duc.anh@gmail.com",
         price: "15.000.000 ₫",
         dueDate: "2027-03-31",
+        salaryDueDate: "Ngày 15 hàng quý",
       },
     ],
   },
@@ -4574,6 +4581,7 @@ const EMPLOYEE_PROJECTS_DATA: MyProject[] = [
   {
     id: 10,
     name: "Thiết kế landing page chiến dịch Marketing",
+    owner: "Trần Minh Khoa",
     period: "Cố định",
     dueDate: "2026-08-20",
     members: [
@@ -4581,12 +4589,14 @@ const EMPLOYEE_PROJECTS_DATA: MyProject[] = [
         name: "Nguyễn Minh Khoa",
         email: "khoa@gmail.com",
         price: "12.000.000 ₫",
+        salaryDueDate: "Hoàn thành nghiệm thu",
       },
     ],
   },
   {
     id: 11,
     name: "Prototyping & User Testing Dashboard",
+    owner: "Công ty Công nghệ Nova",
     period: "Hàng tháng",
     dueDate: "2026-07-10",
     members: [
@@ -4594,6 +4604,7 @@ const EMPLOYEE_PROJECTS_DATA: MyProject[] = [
         name: "Nguyễn Minh Khoa",
         email: "khoa@gmail.com",
         price: "32.000.000 ₫",
+        salaryDueDate: "Ngày 05 hàng tháng",
       },
     ],
   },
@@ -5432,7 +5443,7 @@ function MyProjectDetailPage({
                             marginBottom: 3,
                           }}
                         >
-                          Hạn
+                          Hạn hoàn thành
                         </div>
                         <div
                           style={{ fontSize: 14, color: "rgba(0,0,0,0.75)" }}
@@ -5440,36 +5451,28 @@ function MyProjectDetailPage({
                           {m.dueDate ?? project.dueDate ?? "—"}
                         </div>
                       </div>
+                      <div>
+                        <div
+                          style={{
+                            fontSize: 11,
+                            fontWeight: 700,
+                            color: "rgba(0,0,0,0.40)",
+                            textTransform: "uppercase",
+                            letterSpacing: 0.4,
+                            marginBottom: 3,
+                          }}
+                        >
+                          Hạn trả lương
+                        </div>
+                        <div
+                          style={{ fontSize: 14, fontWeight: 700, color: "#0A66C2" }}
+                        >
+                          {m.salaryDueDate ?? (project.period === "Hàng tháng" ? "Ngày 05 hàng tháng" : project.period === "Hàng tuần" ? "Thứ 6 hàng tuần" : project.dueDate ? `Trước ${project.dueDate}` : "Theo thỏa thuận")}
+                        </div>
+                      </div>
                     </div>
                     {/* Actions */}
                     <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                      <button
-                        onClick={() =>
-                          setToast(`Đã gửi yêu cầu thanh toán cho ${m.name}.`)
-                        }
-                        style={{
-                          padding: "6px 18px",
-                          borderRadius: 9999,
-                          border: "none",
-                          background: "#0A66C2",
-                          color: "#fff",
-                          fontSize: 13,
-                          fontWeight: 600,
-                          cursor: "pointer",
-                          fontFamily: "inherit",
-                          transition: "background 150ms",
-                        }}
-                        onMouseEnter={(e) => {
-                          ; (e.currentTarget as HTMLElement).style.background =
-                            "#084FA0"
-                        }}
-                        onMouseLeave={(e) => {
-                          ; (e.currentTarget as HTMLElement).style.background =
-                            "#0A66C2"
-                        }}
-                      >
-                        Thanh toán
-                      </button>
                       <button
                         onClick={() => setRatingModal(m.email)}
                         style={{
@@ -5820,7 +5823,7 @@ function MyProjectDetailPage({
                 </div>
 
                 <div style={{ marginBottom: 4 }}>
-                  <label style={{ fontSize: 13, fontWeight: 700, color: "rgba(0,0,0,0.70)", display: "block", marginBottom: 6 }}>Chi tiết & Điều khoản đính kèm *</label>
+                  <label style={{ fontSize: 13, fontWeight: 700, color: "rgba(0,0,0,0.70)", display: "block", marginBottom: 6 }}>Tài liệu hợp đồng đính kèm (File) *</label>
                   <label
                     style={{
                       border: "1.5px dashed rgba(0,0,0,0.18)",
@@ -5849,13 +5852,24 @@ function MyProjectDetailPage({
             ) : (
               <div style={{ display: "flex", flexDirection: "column", gap: 12, fontSize: 15 }}>
                 <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Tiêu đề hợp đồng: </span>Hợp đồng thiết kế - {project.name}</div>
+                <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Chủ dự án: </span><span style={{ fontWeight: 700, color: "rgba(0,0,0,0.90)" }}>{project.owner ?? "Tôi (Chủ dự án)"}</span></div>
+                <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Thông tin Freelancer: </span>{contractDetailMember.name} ({contractDetailMember.email})</div>
                 <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Giá trị hợp đồng: </span>{contractDetailMember.price}</div>
                 <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Chu kỳ: </span>Theo dự án (1 lần)</div>
+                <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Hạn trả lương: </span><span style={{ color: "#0A66C2", fontWeight: 700 }}>{contractDetailMember.salaryDueDate ?? (project.period === "Hàng tháng" ? "Ngày 05 hàng tháng" : "Theo thỏa thuận")}</span></div>
                 <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Ngày bắt đầu: </span>01/10/2026</div>
                 <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Ngày kết thúc: </span>{contractDetailMember.dueDate ?? project.dueDate ?? "—"}</div>
-                <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Chi tiết & Điều khoản: </span>Các bên tuân thủ đúng tiến độ đề ra...</div>
-                <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Tài liệu điều khoản: </span><a href="#" style={{ color: "#0A66C2", textDecoration: "none" }}>DieuKhoan_HopDong.pdf</a></div>
-                <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Thông tin Freelancer: </span>{contractDetailMember.name} ({contractDetailMember.email})</div>
+                <div>
+                  <span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>File hợp đồng: </span>
+                  <a
+                    href="#"
+                    onClick={(e) => { e.preventDefault(); alert("Mở file tài liệu: DieuKhoan_HopDong.pdf"); }}
+                    style={{ color: "#0A66C2", textDecoration: "none", fontWeight: 700, display: "inline-flex", alignItems: "center", gap: 6, background: "#EAF1FA", padding: "4px 12px", borderRadius: 4 }}
+                  >
+                    <FileText size={15} />
+                    <span>DieuKhoan_HopDong.pdf</span>
+                  </a>
+                </div>
                 <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Trạng thái hợp đồng: </span><span style={{ padding: "2px 8px", borderRadius: 4, background: "#F4F2EE", fontWeight: 700, color: "#0A66C2" }}>{(contractDetailMember as any).contractStatus ?? "Đang làm"}</span></div>
               </div>
             )}
@@ -6057,12 +6071,29 @@ function EmployeeProjectDetailPage({
               <p style={{ fontSize: 14, fontWeight: 700, color: "rgba(0,0,0,0.90)", marginBottom: 12 }}>Chi tiết hợp đồng</p>
               <div style={{ display: "flex", flexDirection: "column", gap: 10, fontSize: 14 }}>
                 <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Tiêu đề hợp đồng: </span>Hợp đồng {project.name}</div>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Chủ dự án: </span>
+                  <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+                    <Avatar name={project.owner ?? "Trần Minh Khoa"} size={26} />
+                    <span style={{ fontWeight: 700, color: "rgba(0,0,0,0.90)" }}>{project.owner ?? "Trần Minh Khoa"}</span>
+                  </span>
+                </div>
                 <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Giá trị hợp đồng: </span>{myContract?.price ?? "—"}</div>
                 <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Chu kỳ: </span>{project.period}</div>
+                <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Hạn trả lương: </span><span style={{ color: "#0A66C2", fontWeight: 700 }}>{myContract?.salaryDueDate ?? (project.period === "Hàng tháng" ? "Ngày 05 hàng tháng" : project.period === "Hàng tuần" ? "Thứ 6 hàng tuần" : "Theo thỏa thuận")}</span></div>
                 <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Ngày bắt đầu: </span>01/10/2026</div>
                 <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Ngày kết thúc: </span>{project.dueDate ?? "—"}</div>
-                <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Chi tiết & Điều khoản: </span>Tuân thủ đúng yêu cầu chất lượng</div>
-                <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Tài liệu điều khoản: </span><a href="#" style={{ color: "#0A66C2", textDecoration: "none" }}>HopDong_{project.id}.pdf</a></div>
+                <div>
+                  <span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>File hợp đồng: </span>
+                  <a
+                    href="#"
+                    onClick={(e) => { e.preventDefault(); alert(`Mở tài liệu: HopDong_${project.id}.pdf`); }}
+                    style={{ color: "#0A66C2", textDecoration: "none", fontWeight: 700, display: "inline-flex", alignItems: "center", gap: 6, background: "#EAF1FA", padding: "4px 12px", borderRadius: 4 }}
+                  >
+                    <FileText size={15} />
+                    <span>HopDong_{project.id}.pdf</span>
+                  </a>
+                </div>
                 <div><span style={{ fontWeight: 600, color: "rgba(0,0,0,0.65)", width: 160, display: "inline-block" }}>Trạng thái hợp đồng: </span><span style={{ padding: "2px 8px", borderRadius: 4, background: "#F4F2EE", fontWeight: 700, color: "#0A66C2" }}>{myContract?.status ?? "Đang làm"}</span></div>
               </div>
             </div>
@@ -7062,7 +7093,7 @@ function CreateContractPage({
               </div>
 
               <div>
-                <label style={labelStyle}>Chi tiết & Điều khoản *</label>
+                <label style={labelStyle}>Tài liệu hợp đồng đính kèm (File) *</label>
                 <input
                   ref={termsFileRef}
                   type="file"
@@ -7124,7 +7155,7 @@ function CreateContractPage({
                           color: "rgba(0,0,0,0.65)",
                         }}
                       >
-                        Tải lên tài liệu điều khoản
+                        Tải lên file hợp đồng đính kèm
                       </span>
                       <span style={{ fontSize: 12, color: "rgba(0,0,0,0.40)" }}>
                         PDF, DOC, DOCX, TXT
@@ -12430,127 +12461,9 @@ function MyProfilePage({
           lại
         </button>
 
-        {isOwnProfile ? (
+        <div style={{ maxWidth: 860, margin: "0 auto" }}>
           <MainContent />
-        ) : (
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 300px",
-              gap: 20,
-              alignItems: "start",
-            }}
-          >
-            <MainContent />
-            <div>
-              <div
-                style={{
-                  background: "#fff",
-                  borderRadius: 8,
-                  boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-                  padding: 20,
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: 15,
-                    fontWeight: 700,
-                    color: "rgba(0,0,0,0.90)",
-                    marginBottom: 14,
-                  }}
-                >
-                  Danh sách các connection có thể biết
-                </div>
-                <div
-                  style={{ display: "flex", flexDirection: "column", gap: 14 }}
-                >
-                  {MY_PROFILE_SUGGESTIONS.map((s) => (
-                    <div
-                      key={s.name}
-                      style={{ display: "flex", alignItems: "center", gap: 10 }}
-                    >
-                      <Avatar name={s.name} size={44} />
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <div
-                          style={{
-                            fontWeight: 700,
-                            fontSize: 13,
-                            color: "rgba(0,0,0,0.90)",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            whiteSpace: "nowrap",
-                          }}
-                        >
-                          {s.name}
-                        </div>
-                        <div
-                          style={{
-                            fontSize: 12,
-                            color: "rgba(0,0,0,0.50)",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            whiteSpace: "nowrap",
-                          }}
-                        >
-                          {s.gmail}
-                        </div>
-                      </div>
-                      <button
-                        onClick={() =>
-                          setConnectedSet((prev) => {
-                            const next = new Set(prev)
-                            next.has(s.name)
-                              ? next.delete(s.name)
-                              : next.add(s.name)
-                            return next
-                          })
-                        }
-                        style={{
-                          borderRadius: 9999,
-                          flexShrink: 0,
-                          border: `1px solid ${connectedSet.has(s.name) ? "#057642" : "#0A66C2"}`,
-                          background: connectedSet.has(s.name) ? "#E5F6E8" : "none",
-                          color: connectedSet.has(s.name)
-                            ? "#057642"
-                            : "#0A66C2",
-                          padding: "4px 12px",
-                          fontSize: 12,
-                          fontWeight: 700,
-                          cursor: "pointer",
-                          fontFamily: "inherit",
-                          display: "inline-flex",
-                          alignItems: "center",
-                          gap: 4,
-                          transition: "all 150ms ease",
-                        }}
-                        onMouseEnter={(e) => {
-                          if (!connectedSet.has(s.name))
-                            (e.currentTarget as HTMLElement).style.background = "#EAF1FA"
-                        }}
-                        onMouseLeave={(e) => {
-                          if (!connectedSet.has(s.name))
-                            (e.currentTarget as HTMLElement).style.background = "none"
-                        }}
-                      >
-                        {connectedSet.has(s.name) ? (
-                          <>
-                            <CheckCircle size={13} weight="fill" />
-                            Đã kết nối
-                          </>
-                        ) : (
-                          <>
-                            <UserPlus size={13} />
-                            Kết nối
-                          </>
-                        )}
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+        </div>
       </div>
     </div>
   )
