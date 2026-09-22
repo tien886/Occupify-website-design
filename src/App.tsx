@@ -11486,7 +11486,7 @@ const MY_PROFILE_DATA = {
       owner: "VNPAY Corporation",
       name: "Redesign hệ thống UI cho ứng dụng Fintech",
       detail:
-        "Thiết kế lại toàn bộ giao diện ứng dụng thanh toán, xây dựng design system và prototype hoàn chỉnh cho iOS & Android.",
+        "Làm tốt",
       rating: 5,
     },
     {
@@ -11494,7 +11494,7 @@ const MY_PROFILE_DATA = {
       owner: "Base.vn",
       name: "Xây dựng Design System cho nền tảng SaaS",
       detail:
-        "Tạo thư viện component chuẩn hóa giúp tăng tốc phát triển giao diện, bao gồm hơn 120 component và token hệ thống.",
+        "Không nghe lời",
       rating: 4,
     },
     {
@@ -11502,7 +11502,7 @@ const MY_PROFILE_DATA = {
       owner: "Momo",
       name: "UX Research & Audit cho mobile app",
       detail:
-        "Thực hiện phỏng vấn người dùng, phân tích hành vi và đề xuất cải tiến luồng trải nghiệm cho ứng dụng ví điện tử.",
+        "Cũng làm tốt",
       rating: 5,
     },
     {
@@ -11510,8 +11510,8 @@ const MY_PROFILE_DATA = {
       owner: "Shopee Vietnam",
       name: "Thiết kế landing page chiến dịch Marketing",
       detail:
-        "Thiết kế giao diện landing page cho campaign 11.11, tối ưu conversion với A/B testing trên 3 biến thể design.",
-      rating: 5,
+        "Làm cũng được",
+      rating: 4,
     },
   ],
 }
