@@ -6400,6 +6400,19 @@ function PendingProjectCard({
 
 // ─── Create Project Page ──────────────────────────────────────────────────────
 
+const PREDEFINED_PROJECT_FIELDS = [
+  "Thiết kế UI/UX",
+  "Phát triển Web",
+  "Ứng dụng Di động",
+  "Backend / API",
+  "AI & Machine Learning",
+  "Đồ họa & Thương hiệu",
+  "Marketing & Content",
+  "Data & Phân tích",
+  "DevOps & Cloud",
+  "Blockchain / Web3",
+]
+
 function CreateProjectPage({
   onBack,
   onSubmit,
@@ -6409,11 +6422,27 @@ function CreateProjectPage({
 }) {
   const [rTitle, setRTitle] = useState("")
   const [rDesc, setRDesc] = useState("")
+  const [selectedFields, setSelectedFields] = useState<string[]>([])
+  const [customTagInput, setCustomTagInput] = useState("")
   const [rStartPrice, setRStartPrice] = useState("")
   const [rPeriod, setRPeriod] = useState(CY_PERIODS[1])
   const [rDueDate, setRDueDate] = useState("")
   const [rBidClose, setRBidClose] = useState("")
   const [rPublish, setRPublish] = useState<"co" | "khong">("co")
+
+  const toggleField = (field: string) => {
+    setSelectedFields((prev) =>
+      prev.includes(field) ? prev.filter((f) => f !== field) : [...prev, field]
+    )
+  }
+
+  const addCustomTag = () => {
+    const trimmed = customTagInput.trim()
+    if (trimmed && !selectedFields.includes(trimmed)) {
+      setSelectedFields((prev) => [...prev, trimmed])
+      setCustomTagInput("")
+    }
+  }
 
   const canSubmit = rTitle.trim() && rDesc.trim()
 
@@ -6573,6 +6602,123 @@ function CreateProjectPage({
                 onFocus={focus}
                 onBlur={blur}
               />
+            </div>
+
+            {/* Tags chọn lĩnh vực */}
+            <div style={sec}>
+              <label style={labelStyle}>
+                Lĩnh vực dự án {selectedFields.length > 0 && (
+                  <span style={{ color: "#0A66C2", fontWeight: 700, marginLeft: 4 }}>
+                    ({selectedFields.length} đã chọn)
+                  </span>
+                )}
+              </label>
+              <p style={{ fontSize: 13, color: "rgba(0,0,0,0.50)", marginBottom: 12 }}>
+                Chọn các lĩnh vực chuyên môn phù hợp với dự án (không giới hạn):
+              </p>
+
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 12 }}>
+                {PREDEFINED_PROJECT_FIELDS.map((f) => {
+                  const isSelected = selectedFields.includes(f)
+                  return (
+                    <button
+                      type="button"
+                      key={f}
+                      onClick={() => toggleField(f)}
+                      style={{
+                        padding: "6px 14px",
+                        borderRadius: 9999,
+                        border: `1.5px solid ${isSelected ? "#0A66C2" : "rgba(0,0,0,0.15)"}`,
+                        background: isSelected ? "#EAF1FA" : "#fff",
+                        color: isSelected ? "#0A66C2" : "rgba(0,0,0,0.75)",
+                        fontSize: 13,
+                        fontWeight: isSelected ? 700 : 500,
+                        cursor: "pointer",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 6,
+                        fontFamily: "inherit",
+                        transition: "all 120ms ease",
+                      }}
+                      onMouseEnter={(e) => {
+                        if (!isSelected) (e.currentTarget as HTMLElement).style.background = "#F4F2EE"
+                      }}
+                      onMouseLeave={(e) => {
+                        if (!isSelected) (e.currentTarget as HTMLElement).style.background = "#fff"
+                      }}
+                    >
+                      {isSelected && <Check size={14} weight="bold" />}
+                      <span>{f}</span>
+                    </button>
+                  )
+                })}
+
+                {/* Custom tags added by user */}
+                {selectedFields
+                  .filter((f) => !PREDEFINED_PROJECT_FIELDS.includes(f))
+                  .map((f) => (
+                    <button
+                      type="button"
+                      key={f}
+                      onClick={() => toggleField(f)}
+                      style={{
+                        padding: "6px 14px",
+                        borderRadius: 9999,
+                        border: "1.5px solid #0A66C2",
+                        background: "#EAF1FA",
+                        color: "#0A66C2",
+                        fontSize: 13,
+                        fontWeight: 700,
+                        cursor: "pointer",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 6,
+                        fontFamily: "inherit",
+                      }}
+                    >
+                      <Check size={14} weight="bold" />
+                      <span>{f}</span>
+                      <X size={12} />
+                    </button>
+                  ))}
+              </div>
+
+              {/* Ô thêm lĩnh vực khác */}
+              <div style={{ display: "flex", gap: 8, maxWidth: 380, marginTop: 4 }}>
+                <input
+                  type="text"
+                  value={customTagInput}
+                  onChange={(e) => setCustomTagInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault()
+                      addCustomTag()
+                    }
+                  }}
+                  placeholder="Thêm lĩnh vực khác..."
+                  style={{ ...inputStyle, padding: "7px 12px", fontSize: 13 }}
+                  onFocus={focus}
+                  onBlur={blur}
+                />
+                <button
+                  type="button"
+                  onClick={addCustomTag}
+                  style={{
+                    background: "#0A66C2",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: 4,
+                    padding: "0 16px",
+                    fontSize: 13,
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    whiteSpace: "nowrap",
+                    fontFamily: "inherit",
+                  }}
+                >
+                  + Thêm
+                </button>
+              </div>
             </div>
 
             <div style={{ ...sec, display: "flex", gap: 16 }}>
@@ -8476,6 +8622,35 @@ function ProjectsManagementPage({
   const [activeTab, setActiveTab] = useState<
     "all" | "owner" | "participant" | "pending"
   >("all")
+  const [searchKeyword, setSearchKeyword] = useState("")
+
+  const filteredMyProjects = myProjects.filter((p) => {
+    if (!searchKeyword.trim()) return true
+    const kw = searchKeyword.toLowerCase()
+    return (
+      p.name.toLowerCase().includes(kw) ||
+      p.members.some((m) => m.name.toLowerCase().includes(kw) || m.email.toLowerCase().includes(kw))
+    )
+  })
+
+  const filteredEmpProjects = employeeProjects.filter((p) => {
+    if (!searchKeyword.trim()) return true
+    const kw = searchKeyword.toLowerCase()
+    return (
+      p.name.toLowerCase().includes(kw) ||
+      (p.owner && p.owner.toLowerCase().includes(kw)) ||
+      p.members.some((m) => m.name.toLowerCase().includes(kw))
+    )
+  })
+
+  const filteredPending = pending.filter((p) => {
+    if (!searchKeyword.trim()) return true
+    const kw = searchKeyword.toLowerCase()
+    return (
+      p.name.toLowerCase().includes(kw) ||
+      p.owner.toLowerCase().includes(kw)
+    )
+  })
 
   if (subPage === "search")
     return (
@@ -8823,6 +8998,53 @@ function ProjectsManagementPage({
         </div>
       </div>
 
+      {/* Search Bar */}
+      <div
+        style={{
+          marginBottom: 18,
+          background: "#fff",
+          borderRadius: 8,
+          boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+          padding: "10px 16px",
+          display: "flex",
+          alignItems: "center",
+          gap: 12,
+        }}
+      >
+        <MagnifyingGlass size={18} color="rgba(0,0,0,0.45)" />
+        <input
+          type="text"
+          value={searchKeyword}
+          onChange={(e) => setSearchKeyword(e.target.value)}
+          placeholder="Tìm kiếm dự án theo tên dự án, thành viên hoặc chủ dự án..."
+          style={{
+            border: "none",
+            outline: "none",
+            fontSize: 14,
+            fontFamily: "inherit",
+            color: "rgba(0,0,0,0.90)",
+            width: "100%",
+            background: "transparent",
+          }}
+        />
+        {searchKeyword && (
+          <button
+            onClick={() => setSearchKeyword("")}
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              padding: 4,
+              display: "flex",
+              alignItems: "center",
+              color: "rgba(0,0,0,0.40)",
+            }}
+          >
+            <X size={16} />
+          </button>
+        )}
+      </div>
+
       {/* Filter Tabs Bar */}
       <div
         style={{
@@ -8835,13 +9057,13 @@ function ProjectsManagementPage({
         }}
       >
         {[
-          { id: "all", label: `Tất cả (${totalAll})` },
-          { id: "owner", label: `Dự án của tôi (${myProjects.length})` },
+          { id: "all", label: `Tất cả (${filteredMyProjects.length + filteredEmpProjects.length + filteredPending.length})` },
+          { id: "owner", label: `Dự án của tôi (${filteredMyProjects.length})` },
           {
             id: "participant",
-            label: `Dự án tham gia (${employeeProjects.length})`,
+            label: `Dự án tham gia (${filteredEmpProjects.length})`,
           },
-          { id: "pending", label: `Chờ xử lý (${pending.length})` },
+          { id: "pending", label: `Chờ xử lý (${filteredPending.length})` },
         ].map(({ id, label }) => {
           const isActive = activeTab === id
           return (
@@ -8889,21 +9111,21 @@ function ProjectsManagementPage({
           <div>
             <ProjectListCard
               title="Các dự án của tôi"
-              projects={myProjects}
-              emptyText="Bạn chưa có dự án nào do bạn làm chủ."
+              projects={filteredMyProjects}
+              emptyText={searchKeyword ? "Không tìm thấy dự án của tôi khớp với từ khóa." : "Bạn chưa có dự án nào do bạn làm chủ."}
               onSelect={setViewingMyProject}
             />
             <ProjectListCard
               title="Các dự án tôi đang thực hiện"
-              projects={employeeProjects}
-              emptyText="Bạn chưa tham gia dự án nào."
+              projects={filteredEmpProjects}
+              emptyText={searchKeyword ? "Không tìm thấy dự án tham gia khớp với từ khóa." : "Bạn chưa tham gia dự án nào."}
               onSelect={setViewingEmpProject}
             />
           </div>
 
           {/* Right Column: Pending & Quick shortcuts */}
           <div>
-            <PendingProjectCard pending={pending} setPending={setPending} />
+            <PendingProjectCard pending={filteredPending} setPending={setPending} />
 
             {/* Quick Action Shortcuts Card */}
             <div
@@ -8957,8 +9179,8 @@ function ProjectsManagementPage({
         <div style={{ maxWidth: 800 }}>
           <ProjectListCard
             title="Các dự án của tôi"
-            projects={myProjects}
-            emptyText="Bạn chưa có dự án nào."
+            projects={filteredMyProjects}
+            emptyText={searchKeyword ? "Không tìm thấy dự án khớp với từ khóa tìm kiếm." : "Bạn chưa có dự án nào."}
             onSelect={setViewingMyProject}
           />
         </div>
@@ -8968,8 +9190,8 @@ function ProjectsManagementPage({
         <div style={{ maxWidth: 800 }}>
           <ProjectListCard
             title="Các dự án tôi đang thực hiện"
-            projects={employeeProjects}
-            emptyText="Bạn chưa tham gia dự án nào."
+            projects={filteredEmpProjects}
+            emptyText={searchKeyword ? "Không tìm thấy dự án khớp với từ khóa tìm kiếm." : "Bạn chưa tham gia dự án nào."}
             onSelect={setViewingEmpProject}
           />
         </div>
@@ -8977,8 +9199,8 @@ function ProjectsManagementPage({
 
       {activeTab === "pending" && (
         <div style={{ maxWidth: 800 }}>
-          <PendingProjectCard pending={pending} setPending={setPending} />
-          {pending.length === 0 && (
+          <PendingProjectCard pending={filteredPending} setPending={setPending} />
+          {filteredPending.length === 0 && (
             <div
               style={{
                 background: "#fff",
@@ -8990,7 +9212,7 @@ function ProjectsManagementPage({
                 fontSize: 14,
               }}
             >
-              Hiện tại không có lời mời hoặc đề xuất nào đang chờ duyệt.
+              {searchKeyword ? "Không tìm thấy lời mời hoặc đề xuất nào khớp với từ khóa." : "Hiện tại không có lời mời hoặc đề xuất nào đang chờ duyệt."}
             </div>
           )}
         </div>
@@ -9079,47 +9301,15 @@ function SavedItemsPage({
           </p>
         </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <button
-            onClick={onExploreJobs}
-            style={{
-              background: "#0A66C2",
-              color: "#fff",
-              border: "none",
-              borderRadius: 9999,
-              padding: "8px 20px",
-              fontSize: 13,
-              fontWeight: 700,
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: 6,
-              transition: "background 150ms",
-              boxShadow: "0 2px 8px rgba(10,102,194,0.25)",
-            }}
-            onMouseEnter={(e) =>
-              ((e.currentTarget as HTMLElement).style.background = "#084fa0")
-            }
-            onMouseLeave={(e) =>
-              ((e.currentTarget as HTMLElement).style.background = "#0A66C2")
-            }
-          >
-            <MagnifyingGlass size={16} weight="bold" />
-            <span>Khám phá thêm việc làm</span>
-          </button>
-        </div>
       </div>
 
-      {/* Main Layout 2-Column */}
+      {/* Main Layout Centered */}
       <div
         style={{
-          display: "grid",
-          gridTemplateColumns: "minmax(0, 1fr) 340px",
-          gap: 20,
-          alignItems: "start",
+          maxWidth: 860,
+          margin: "0 auto",
         }}
       >
-        {/* Left: Saved list */}
         <div>
           {/* Summary / Search inside saved */}
           {savedJobs.length > 0 && (
@@ -9242,27 +9432,12 @@ function SavedItemsPage({
                   fontSize: 14,
                   color: "rgba(0,0,0,0.60)",
                   maxWidth: 420,
-                  margin: "0 auto 20px",
+                  margin: "0 auto",
                   lineHeight: 1.5,
                 }}
               >
                 Khi bạn bắt gặp các cơ hội việc làm hoặc dự án phù hợp trên Trang chủ, hãy bấm biểu tượng Lưu để gom vào danh sách này và ứng tuyển bất cứ lúc nào.
               </p>
-              <button
-                onClick={onExploreJobs}
-                style={{
-                  background: "#0A66C2",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: 9999,
-                  padding: "9px 24px",
-                  fontSize: 14,
-                  fontWeight: 700,
-                  cursor: "pointer",
-                }}
-              >
-                Khám phá việc làm ngay
-              </button>
             </div>
           )}
 
@@ -9301,56 +9476,6 @@ function SavedItemsPage({
           )}
         </div>
 
-        {/* Right Sidebar Widgets */}
-        <div>
-          {/* Quick Stats Card */}
-          <div
-            style={{
-              background: "#fff",
-              borderRadius: 8,
-              boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-              padding: "18px 20px",
-            }}
-          >
-            <div
-              style={{
-                fontSize: 14,
-                fontWeight: 700,
-                color: "rgba(0,0,0,0.90)",
-                marginBottom: 10,
-              }}
-            >
-              Hành động nhanh
-            </div>
-            <button
-              onClick={onExploreJobs}
-              style={{
-                width: "100%",
-                background: "#F4F2EE",
-                border: "none",
-                borderRadius: 8,
-                padding: "10px 14px",
-                fontSize: 13,
-                fontWeight: 600,
-                color: "rgba(0,0,0,0.85)",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                transition: "background 150ms",
-              }}
-              onMouseEnter={(e) =>
-                ((e.currentTarget as HTMLElement).style.background = "#EAF1FA")
-              }
-              onMouseLeave={(e) =>
-                ((e.currentTarget as HTMLElement).style.background = "#F4F2EE")
-              }
-            >
-              <span>Tìm kiếm cơ hội mới</span>
-              <ArrowRight size={14} />
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   )
@@ -10925,11 +11050,11 @@ function ContractDetailsPage({
 // NOTIFICATIONS PAGE
 // ═══════════════════════════════════════════════════════════════════════════════
 
-type NotifCategory = "all" | "contracts" | "jobs" | "system"
+type NotifTab = "all" | "unread"
 
 interface Notif {
   id: number
-  category: Exclude<NotifCategory, "all">
+  category: "contracts" | "jobs" | "system"
   actor: string
   text: string
   time: string
@@ -11035,11 +11160,9 @@ const NOTIFICATIONS: Notif[] = [
   },
 ]
 
-const NOTIF_TABS: { id: NotifCategory; label: string }[] = [
+const NOTIF_TABS: { id: NotifTab; label: string }[] = [
   { id: "all", label: "Tất cả" },
-  { id: "contracts", label: "Hợp đồng gần đây" },
-  { id: "jobs", label: "Công việc của tôi" },
-  { id: "system", label: "Hệ thống" },
+  { id: "unread", label: "Chưa đọc" },
 ]
 
 function NotifBadge({ type }: { type: Notif["badgeIcon"] }) {
@@ -11089,13 +11212,14 @@ function NotifBadge({ type }: { type: Notif["badgeIcon"] }) {
 }
 
 function NotificationsPage() {
-  const [activeTab, setActiveTab] = useState<NotifCategory>("all")
+  const [activeTab, setActiveTab] = useState<NotifTab>("all")
   const [notifs, setNotifs] = useState<Notif[]>(NOTIFICATIONS)
 
   const visible =
     activeTab === "all"
       ? notifs
-      : notifs.filter((n) => n.category === activeTab)
+      : notifs.filter((n) => !n.read)
+
   const markAllRead = () =>
     setNotifs((prev) => prev.map((n) => ({ ...n, read: true })))
 
@@ -11139,10 +11263,7 @@ function NotificationsPage() {
           </div>
           {NOTIF_TABS.map((tab) => {
             const isActive = tab.id === activeTab
-            const count =
-              tab.id === "all"
-                ? notifs.filter((n) => !n.read).length
-                : notifs.filter((n) => n.category === tab.id && !n.read).length
+            const count = notifs.filter((n) => !n.read).length
             return (
               <button
                 key={tab.id}
@@ -17240,6 +17361,23 @@ const ADMIN_USERS_DATA = [
     joined: "12/01/2024",
     initials: "NK",
     color: "#0A66C2",
+    phone: "0912 345 678",
+    joinedProjects: 14,
+    createdProjects: 2,
+    completionRate: "98%",
+    moneyIn: "+ 86.500.000 ₫",
+    moneyOut: "- 12.000.000 ₫",
+    rating: 4.9,
+    ratingCount: 28,
+    reportsCount: 0,
+    lastLogin: "Hôm nay, 14:15",
+    projectHistory: [
+      { id: 101, title: "Xây dựng hệ thống CRM nội bộ bằng Next.js & Tailwind", date: "01/2024 - 03/2024", amount: "+ 28.000.000 ₫", status: "Hoàn thành" },
+      { id: 102, title: "Tích hợp cổng thanh toán VNPay & MoMo API", date: "04/2024 - 05/2024", amount: "+ 18.500.000 ₫", status: "Hoàn thành" },
+      { id: 103, title: "Tối ưu hóa hiệu năng & bảo mật PostgreSQL", date: "06/2024 - 07/2024", amount: "+ 15.000.000 ₫", status: "Hoàn thành" },
+      { id: 104, title: "Thuê thiết kế Logo & Branding cho dự án cá nhân", date: "07/2024 - 08/2024", amount: "- 12.000.000 ₫", status: "Hoàn thành" },
+      { id: 105, title: "Phát triển Microservices cho sàn thương mại điện tử", date: "08/2024 - Hiện tại", amount: "+ 25.000.000 ₫", status: "Đang thực hiện" },
+    ],
   },
   {
     id: 2,
@@ -17250,6 +17388,23 @@ const ADMIN_USERS_DATA = [
     joined: "08/03/2024",
     initials: "TH",
     color: "#057642",
+    phone: "0983 214 567",
+    joinedProjects: 3,
+    createdProjects: 9,
+    completionRate: "100%",
+    moneyIn: "+ 25.000.000 ₫",
+    moneyOut: "- 142.000.000 ₫",
+    rating: 5.0,
+    ratingCount: 15,
+    reportsCount: 0,
+    lastLogin: "Hôm qua, 18:30",
+    projectHistory: [
+      { id: 201, title: "Thiết kế App mua sắm nông sản sạch EcoFarm", date: "03/2024 - 04/2024", amount: "- 35.000.000 ₫", status: "Hoàn thành" },
+      { id: 202, title: "Chiến dịch Content Marketing & SEO đa kênh Q2", date: "05/2024 - 06/2024", amount: "- 42.000.000 ₫", status: "Hoàn thành" },
+      { id: 203, title: "Tư vấn cấu trúc Product Roadmap cho Startup B2B", date: "06/2024 - 07/2024", amount: "+ 25.000.000 ₫", status: "Hoàn thành" },
+      { id: 204, title: "Hệ thống Dashboard phân tích doanh số thời gian thực", date: "07/2024 - 08/2024", amount: "- 35.000.000 ₫", status: "Hoàn thành" },
+      { id: 205, title: "Xây dựng cổng tra cứu bảo hành điện tử khách hàng", date: "09/2024 - Hiện tại", amount: "- 30.000.000 ₫", status: "Đang thực hiện" },
+    ],
   },
   {
     id: 3,
@@ -17260,6 +17415,22 @@ const ADMIN_USERS_DATA = [
     joined: "22/11/2023",
     initials: "LĐ",
     color: "#B06000",
+    phone: "0904 889 123",
+    joinedProjects: 5,
+    createdProjects: 1,
+    completionRate: "65%",
+    moneyIn: "+ 18.200.000 ₫",
+    moneyOut: "- 4.500.000 ₫",
+    rating: 3.4,
+    ratingCount: 7,
+    reportsCount: 2,
+    lastLogin: "3 ngày trước",
+    projectHistory: [
+      { id: 301, title: "Lập trình REST API quản lý kho hàng logistics", date: "12/2023 - 01/2024", amount: "+ 10.200.000 ₫", status: "Hoàn thành" },
+      { id: 302, title: "Tích hợp Webhook đồng bộ đơn hàng Shopee & TikTok Shop", date: "02/2024 - 03/2024", amount: "+ 8.000.000 ₫", status: "Hoàn thành" },
+      { id: 303, title: "Thuê viết kịch bản Test tự động API", date: "04/2024 - 04/2024", amount: "- 4.500.000 ₫", status: "Hoàn thành" },
+      { id: 304, title: "Nâng cấp bảo mật máy chủ Ubuntu & Docker", date: "05/2024 - Hiện tại", amount: "+ 6.000.000 ₫", status: "Đang thực hiện" },
+    ],
   },
   {
     id: 4,
@@ -17270,6 +17441,23 @@ const ADMIN_USERS_DATA = [
     joined: "05/06/2024",
     initials: "QA",
     color: "#8B5CF6",
+    phone: "0936 781 234",
+    joinedProjects: 2,
+    createdProjects: 11,
+    completionRate: "100%",
+    moneyIn: "+ 18.000.000 ₫",
+    moneyOut: "- 215.000.000 ₫",
+    rating: 4.9,
+    ratingCount: 22,
+    reportsCount: 0,
+    lastLogin: "Hôm nay, 09:40",
+    projectHistory: [
+      { id: 401, title: "Thiết kế Bộ nhận diện thương hiệu Shopee Mart", date: "06/2024 - 07/2024", amount: "- 65.000.000 ₫", status: "Hoàn thành" },
+      { id: 402, title: "Gói Motion Graphic Video Quảng cáo Mega Sale", date: "07/2024 - 08/2024", amount: "- 85.000.000 ₫", status: "Hoàn thành" },
+      { id: 403, title: "Cố vấn thẩm định Design System cho đối tác", date: "08/2024 - 08/2024", amount: "+ 18.000.000 ₫", status: "Hoàn thành" },
+      { id: 404, title: "Redesign UI/UX Mobile App Shopee Express", date: "08/2024 - Hiện tại", amount: "- 45.000.000 ₫", status: "Đang thực hiện" },
+      { id: 405, title: "Bộ Banner Digital Marketing 3D Isometric", date: "09/2024 - Hiện tại", amount: "- 20.000.000 ₫", status: "Đang thực hiện" },
+    ],
   },
   {
     id: 5,
@@ -17280,6 +17468,21 @@ const ADMIN_USERS_DATA = [
     joined: "17/09/2023",
     initials: "VD",
     color: "#C03A2B",
+    phone: "0977 654 321",
+    joinedProjects: 3,
+    createdProjects: 1,
+    completionRate: "33%",
+    moneyIn: "+ 6.500.000 ₫",
+    moneyOut: "- 1.200.000 ₫",
+    rating: 2.1,
+    ratingCount: 4,
+    reportsCount: 4,
+    lastLogin: "15 ngày trước",
+    projectHistory: [
+      { id: 501, title: "Cắt HTML/CSS từ bản vẽ Figma responsive", date: "10/2023 - 11/2023", amount: "+ 3.500.000 ₫", status: "Hoàn thành" },
+      { id: 502, title: "Sửa lỗi CSS tương thích trình duyệt Safari", date: "12/2023 - 12/2023", amount: "+ 3.000.000 ₫", status: "Hoàn thành" },
+      { id: 503, title: "Mua tài khoản thư viện bản quyền UI Kit", date: "01/2024 - 01/2024", amount: "- 1.200.000 ₫", status: "Hoàn thành" },
+    ],
   },
   {
     id: 6,
@@ -17290,6 +17493,22 @@ const ADMIN_USERS_DATA = [
     joined: "30/04/2024",
     initials: "LA",
     color: "#0891B2",
+    phone: "0962 112 334",
+    joinedProjects: 3,
+    createdProjects: 7,
+    completionRate: "95%",
+    moneyIn: "+ 20.000.000 ₫",
+    moneyOut: "- 94.000.000 ₫",
+    rating: 4.8,
+    ratingCount: 12,
+    reportsCount: 0,
+    lastLogin: "Hôm nay, 11:20",
+    projectHistory: [
+      { id: 601, title: "Phát triển Module chấm điểm tín dụng AI", date: "05/2024 - 06/2024", amount: "- 48.000.000 ₫", status: "Hoàn thành" },
+      { id: 602, title: "Nghiên cứu hành vi người dùng Ví điện tử", date: "06/2024 - 07/2024", amount: "+ 20.000.000 ₫", status: "Hoàn thành" },
+      { id: 603, title: "Xây dựng ETL Pipeline xử lý dữ liệu lớn", date: "07/2024 - 08/2024", amount: "- 28.000.000 ₫", status: "Hoàn thành" },
+      { id: 604, title: "Kiểm thử bảo mật Penetration Testing ứng dụng", date: "08/2024 - Hiện tại", amount: "- 18.000.000 ₫", status: "Đang thực hiện" },
+    ],
   },
   {
     id: 7,
@@ -17300,6 +17519,22 @@ const ADMIN_USERS_DATA = [
     joined: "14/02/2024",
     initials: "MT",
     color: "#D97706",
+    phone: "0915 882 991",
+    joinedProjects: 6,
+    createdProjects: 1,
+    completionRate: "70%",
+    moneyIn: "+ 24.000.000 ₫",
+    moneyOut: "- 6.000.000 ₫",
+    rating: 3.6,
+    ratingCount: 9,
+    reportsCount: 1,
+    lastLogin: "Hôm qua, 22:10",
+    projectHistory: [
+      { id: 701, title: "Landing Page giới thiệu khu nghỉ dưỡng Phú Quốc", date: "03/2024 - 04/2024", amount: "+ 9.000.000 ₫", status: "Hoàn thành" },
+      { id: 702, title: "Phát triển Game Web 2D tương tác sự kiện hè", date: "05/2024 - 06/2024", amount: "+ 15.000.000 ₫", status: "Hoàn thành" },
+      { id: 703, title: "Thuê dịch thuật nội dung song ngữ Anh - Việt", date: "06/2024 - 06/2024", amount: "- 6.000.000 ₫", status: "Hoàn thành" },
+      { id: 704, title: "Tối ưu tốc độ tải trang Core Web Vitals cho blog", date: "07/2024 - Hiện tại", amount: "+ 6.000.000 ₫", status: "Đang thực hiện" },
+    ],
   },
   {
     id: 8,
@@ -17310,6 +17545,22 @@ const ADMIN_USERS_DATA = [
     joined: "20/07/2024",
     initials: "BN",
     color: "#059669",
+    phone: "0945 332 119",
+    joinedProjects: 2,
+    createdProjects: 8,
+    completionRate: "100%",
+    moneyIn: "+ 12.500.000 ₫",
+    moneyOut: "- 68.000.000 ₫",
+    rating: 4.9,
+    ratingCount: 14,
+    reportsCount: 0,
+    lastLogin: "2 giờ trước",
+    projectHistory: [
+      { id: 801, title: "Nghiên cứu thị trường Giáo dục trực tuyến EdTech", date: "08/2024 - 08/2024", amount: "- 28.000.000 ₫", status: "Hoàn thành" },
+      { id: 802, title: "Tập huấn phương pháp sư phạm cho giảng viên trẻ", date: "08/2024 - 09/2024", amount: "+ 12.500.000 ₫", status: "Hoàn thành" },
+      { id: 803, title: "Hệ thống quản lý điểm thi trực tuyến sinh viên", date: "09/2024 - 09/2024", amount: "- 22.000.000 ₫", status: "Hoàn thành" },
+      { id: 804, title: "Số hóa giáo trình chuyên ngành Trí tuệ nhân tạo", date: "09/2024 - Hiện tại", amount: "- 18.000.000 ₫", status: "Đang thực hiện" },
+    ],
   },
   {
     id: 9,
@@ -17320,6 +17571,23 @@ const ADMIN_USERS_DATA = [
     joined: "03/12/2023",
     initials: "NH",
     color: "#6366F1",
+    phone: "0909 443 221",
+    joinedProjects: 16,
+    createdProjects: 3,
+    completionRate: "96%",
+    moneyIn: "+ 112.500.000 ₫",
+    moneyOut: "- 28.000.000 ₫",
+    rating: 4.9,
+    ratingCount: 31,
+    reportsCount: 0,
+    lastLogin: "Hôm nay, 08:05",
+    projectHistory: [
+      { id: 901, title: "Chiến lược SEO tổng thể website Bất động sản cao cấp", date: "01/2024 - 03/2024", amount: "+ 36.000.000 ₫", status: "Hoàn thành" },
+      { id: 902, title: "Tối ưu hóa On-page & Audit kỹ thuật 500 URLs", date: "04/2024 - 05/2024", amount: "+ 24.500.000 ₫", status: "Hoàn thành" },
+      { id: 903, title: "Triển khai chiến dịch Backlink Báo điện tử chất lượng", date: "05/2024 - 06/2024", amount: "- 28.000.000 ₫", status: "Hoàn thành" },
+      { id: 904, title: "Quản trị & Tăng trưởng Organic Traffic quý 3", date: "06/2024 - 08/2024", amount: "+ 32.000.000 ₫", status: "Hoàn thành" },
+      { id: 905, title: "Chiến dịch Content SEO theo từ khóa chuyển đổi cao", date: "08/2024 - Hiện tại", amount: "+ 20.000.000 ₫", status: "Đang thực hiện" },
+    ],
   },
   {
     id: 10,
@@ -17330,6 +17598,20 @@ const ADMIN_USERS_DATA = [
     joined: "28/08/2023",
     initials: "DT",
     color: "#EC4899",
+    phone: "0988 776 554",
+    joinedProjects: 1,
+    createdProjects: 2,
+    completionRate: "0%",
+    moneyIn: "+ 4.000.000 ₫",
+    moneyOut: "- 15.000.000 ₫",
+    rating: 1.5,
+    ratingCount: 2,
+    reportsCount: 5,
+    lastLogin: "28 ngày trước",
+    projectHistory: [
+      { id: 1001, title: "Tư vấn thiết kế mẫu tuyển dụng nhân sự nội bộ", date: "08/2023 - 08/2023", amount: "+ 4.000.000 ₫", status: "Hoàn thành" },
+      { id: 1002, title: "Xây dựng landing page tuyển dụng chiến dịch mùa thu", date: "09/2023 - 09/2023", amount: "- 15.000.000 ₫", status: "Đang thực hiện" },
+    ],
   },
   {
     id: 11,
@@ -17340,6 +17622,23 @@ const ADMIN_USERS_DATA = [
     joined: "11/05/2024",
     initials: "CK",
     color: "#16A34A",
+    phone: "0932 667 889",
+    joinedProjects: 12,
+    createdProjects: 2,
+    completionRate: "94%",
+    moneyIn: "+ 135.000.000 ₫",
+    moneyOut: "- 18.500.000 ₫",
+    rating: 4.8,
+    ratingCount: 20,
+    reportsCount: 0,
+    lastLogin: "30 phút trước",
+    projectHistory: [
+      { id: 1101, title: "Phát triển ứng dụng tài xế công nghệ iOS & Android", date: "05/2024 - 07/2024", amount: "+ 55.000.000 ₫", status: "Hoàn thành" },
+      { id: 1102, title: "Tích hợp định vị thời gian thực & bản đồ Mapbox API", date: "07/2024 - 08/2024", amount: "+ 38.000.000 ₫", status: "Hoàn thành" },
+      { id: 1103, title: "Thuê kiểm thử bảo mật mã nguồn ứng dụng di động", date: "08/2024 - 08/2024", amount: "- 18.500.000 ₫", status: "Hoàn thành" },
+      { id: 1104, title: "Bảo trì và nâng cấp giao diện ứng dụng Flutter 3.0", date: "08/2024 - Hiện tại", amount: "+ 25.000.000 ₫", status: "Đang thực hiện" },
+      { id: 1105, title: "Tối ưu hóa thời gian khởi động & pin cho app", date: "09/2024 - Hiện tại", amount: "+ 17.000.000 ₫", status: "Đang thực hiện" },
+    ],
   },
   {
     id: 12,
@@ -17350,6 +17649,21 @@ const ADMIN_USERS_DATA = [
     joined: "07/10/2023",
     initials: "LH",
     color: "#9333EA",
+    phone: "0971 223 344",
+    joinedProjects: 2,
+    createdProjects: 4,
+    completionRate: "75%",
+    moneyIn: "+ 16.000.000 ₫",
+    moneyOut: "- 52.000.000 ₫",
+    rating: 3.8,
+    ratingCount: 6,
+    reportsCount: 1,
+    lastLogin: "4 ngày trước",
+    projectHistory: [
+      { id: 1201, title: "Huấn luyện mô hình xử lý ngôn ngữ tự nhiên tiếng Việt", date: "11/2023 - 01/2024", amount: "- 25.000.000 ₫", status: "Hoàn thành" },
+      { id: 1202, title: "Chia sẻ chuyên môn tại hội thảo AI for Good 2024", date: "01/2024 - 02/2024", amount: "+ 16.000.000 ₫", status: "Hoàn thành" },
+      { id: 1203, title: "Gán nhãn tập dữ liệu âm thanh giọng nói 1000 giờ", date: "02/2024 - Hiện tại", amount: "- 27.000.000 ₫", status: "Đang thực hiện" },
+    ],
   },
 ]
 
@@ -19224,7 +19538,7 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
           MODALS
          ═══════════════════════════════════════════════════════════════════ */}
 
-      {/* ── User Detail Modal ────────────────────────────────────────────── */}
+      {/* ── User Detail Modal (Thông tin tài khoản) ────────────────────────── */}
       {userDetailModal && (
         <div
           style={{
@@ -19244,97 +19558,344 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
           <div
             style={{
               background: "#fff",
-              borderRadius: 12,
-              boxShadow: "0 12px 28px rgba(0,0,0,0.14)",
+              borderRadius: 14,
+              boxShadow: "0 20px 45px rgba(0,0,0,0.18)",
               width: "100%",
-              maxWidth: 520,
-              padding: 24,
+              maxWidth: 900,
+              minHeight: 620,
+              maxHeight: "92vh",
+              overflowY: "auto",
+              padding: 26,
+              display: "flex",
+              flexDirection: "column",
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
-              <span style={{ fontSize: 18, fontWeight: 700, color: "rgba(0,0,0,0.90)" }}>
-                Hồ sơ người dùng
-              </span>
+            {/* Modal Header */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginBottom: 20,
+                paddingBottom: 14,
+                borderBottom: "1px solid rgba(0,0,0,0.08)",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <UserCircle size={22} color="#0A66C2" weight="bold" />
+                <span style={{ fontSize: 18, fontWeight: 700, color: "rgba(0,0,0,0.90)" }}>
+                  Thông tin tài khoản
+                </span>
+              </div>
               <button
                 onClick={() => setUserDetailModal(null)}
-                style={{ background: "none", border: "none", cursor: "pointer", color: "rgba(0,0,0,0.50)" }}
+                style={{
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  color: "rgba(0,0,0,0.50)",
+                  padding: 4,
+                  display: "flex",
+                }}
               >
-                <X size={18} />
+                <X size={20} />
               </button>
             </div>
 
-            <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 20 }}>
-              <div
-                style={{
-                  width: 52,
-                  height: 52,
-                  borderRadius: "50%",
-                  background: userDetailModal.color,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "#fff",
-                  fontSize: 18,
-                  fontWeight: 800,
-                }}
-              >
-                {userDetailModal.initials}
-              </div>
-              <div>
-                <div style={{ fontSize: 17, fontWeight: 700, color: "rgba(0,0,0,0.90)" }}>
-                  {userDetailModal.name}
-                </div>
-                <div style={{ fontSize: 13, color: "rgba(0,0,0,0.55)", marginTop: 2 }}>
-                  {userDetailModal.email}
-                </div>
-              </div>
-            </div>
-
+            {/* Modal Body: 2 Columns */}
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: 12,
-                background: "#FAFAF8",
-                padding: 16,
-                borderRadius: 8,
-                marginBottom: 20,
+                gridTemplateColumns: "1.05fr 1fr",
+                gap: 22,
+                alignItems: "start",
+                flex: 1,
               }}
             >
+              {/* Left Column: Thông tin cá nhân & Hoạt động */}
               <div>
-                <div style={{ fontSize: 11, color: "rgba(0,0,0,0.45)", fontWeight: 700, textTransform: "uppercase" }}>
-                  Vai trò
+                {/* Profile Overview Banner */}
+                <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 16 }}>
+                  <div
+                    style={{
+                      width: 52,
+                      height: 52,
+                      borderRadius: "50%",
+                      background: userDetailModal.color,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: "#fff",
+                      fontSize: 18,
+                      fontWeight: 800,
+                      flexShrink: 0,
+                      boxShadow: "0 2px 8px rgba(0,0,0,0.12)",
+                    }}
+                  >
+                    {userDetailModal.initials}
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+                      <span style={{ fontSize: 17, fontWeight: 700, color: "rgba(0,0,0,0.90)" }}>
+                        {userDetailModal.name}
+                      </span>
+                      {renderStatusBadge(userDetailModal.status)}
+                    </div>
+
+                    {/* Contact information line */}
+                    <div
+                      style={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        gap: 12,
+                        marginTop: 4,
+                        fontSize: 12.5,
+                        color: "rgba(0,0,0,0.65)",
+                      }}
+                    >
+                      <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                        <Envelope size={14} color="rgba(0,0,0,0.45)" />
+                        <span>{userDetailModal.email}</span>
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                        <Phone size={14} color="rgba(0,0,0,0.45)" />
+                        <span>{userDetailModal.phone}</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div style={{ fontWeight: 700, fontSize: 14, marginTop: 4 }}>
-                  {userDetailModal.role}
+
+                {/* Block 1: Ngày tham gia & Đăng nhập */}
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gap: 12,
+                    background: "#FAFAF8",
+                    padding: 12,
+                    borderRadius: 8,
+                    marginBottom: 14,
+                    border: "1px solid rgba(0,0,0,0.06)",
+                  }}
+                >
+                  <div>
+                    <div style={{ fontSize: 10.5, color: "rgba(0,0,0,0.45)", fontWeight: 700, textTransform: "uppercase" }}>
+                      Ngày tham gia
+                    </div>
+                    <div style={{ fontWeight: 600, fontSize: 13, marginTop: 3, color: "rgba(0,0,0,0.85)" }}>
+                      {userDetailModal.joined}
+                    </div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 10.5, color: "rgba(0,0,0,0.45)", fontWeight: 700, textTransform: "uppercase" }}>
+                      Đăng nhập gần nhất
+                    </div>
+                    <div style={{ fontWeight: 600, fontSize: 13, marginTop: 3, color: "rgba(0,0,0,0.85)" }}>
+                      {userDetailModal.lastLogin}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Block 2: Hoạt động & Giao dịch */}
+                <div
+                  style={{
+                    background: "#fff",
+                    border: "1px solid rgba(0,0,0,0.08)",
+                    borderRadius: 8,
+                    padding: 14,
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: 11.5,
+                      fontWeight: 700,
+                      color: "rgba(0,0,0,0.50)",
+                      textTransform: "uppercase",
+                      marginBottom: 10,
+                    }}
+                  >
+                    Hoạt động & Giao dịch trên sàn
+                  </div>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10, textAlign: "center", marginBottom: 10 }}>
+                    <div style={{ background: "#F9FAFB", padding: "8px 6px", borderRadius: 6 }}>
+                      <div style={{ fontSize: 10.5, color: "rgba(0,0,0,0.50)", fontWeight: 600 }}>Dự án đã tham gia</div>
+                      <div style={{ fontSize: 15, fontWeight: 800, color: "rgba(0,0,0,0.90)", marginTop: 3 }}>
+                        {userDetailModal.joinedProjects}
+                      </div>
+                    </div>
+                    <div style={{ background: "#F9FAFB", padding: "8px 6px", borderRadius: 6 }}>
+                      <div style={{ fontSize: 10.5, color: "rgba(0,0,0,0.50)", fontWeight: 600 }}>Dự án đã tạo</div>
+                      <div style={{ fontSize: 15, fontWeight: 800, color: "#0A66C2", marginTop: 3 }}>
+                        {userDetailModal.createdProjects}
+                      </div>
+                    </div>
+                    <div style={{ background: "#F9FAFB", padding: "8px 6px", borderRadius: 6 }}>
+                      <div style={{ fontSize: 10.5, color: "rgba(0,0,0,0.50)", fontWeight: 600 }}>Tỷ lệ hoàn thành</div>
+                      <div style={{ fontSize: 15, fontWeight: 800, color: "#057642", marginTop: 3 }}>
+                        {userDetailModal.completionRate}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Dòng tiền: Tiền vào & Tiền ra */}
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, textAlign: "center", marginBottom: 10 }}>
+                    <div style={{ background: "#F0FDF4", border: "1px solid #DCFCE7", padding: "8px 6px", borderRadius: 6 }}>
+                      <div style={{ fontSize: 10.5, color: "#166534", fontWeight: 700, textTransform: "uppercase" }}>Tiền vào</div>
+                      <div style={{ fontSize: 14, fontWeight: 800, color: "#15803D", marginTop: 3 }}>
+                        {userDetailModal.moneyIn}
+                      </div>
+                    </div>
+                    <div style={{ background: "#FEF2F2", border: "1px solid #FEE2E2", padding: "8px 6px", borderRadius: 6 }}>
+                      <div style={{ fontSize: 10.5, color: "#991B1B", fontWeight: 700, textTransform: "uppercase" }}>Tiền ra</div>
+                      <div style={{ fontSize: 14, fontWeight: 800, color: "#B91C1C", marginTop: 3 }}>
+                        {userDetailModal.moneyOut}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Rating */}
+                  <div
+                    style={{
+                      paddingTop: 8,
+                      borderTop: "1px solid rgba(0,0,0,0.06)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <span style={{ fontSize: 12.5, color: "rgba(0,0,0,0.60)", fontWeight: 600 }}>Đánh giá uy tín:</span>
+                    <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
+                      <Star size={15} weight="fill" color="#EAB308" />
+                      <span style={{ fontSize: 13.5, fontWeight: 800, color: "rgba(0,0,0,0.90)" }}>
+                        {userDetailModal.rating}
+                      </span>
+                      <span style={{ fontSize: 11.5, color: "rgba(0,0,0,0.45)" }}>
+                        ({userDetailModal.ratingCount} lượt đánh giá)
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div>
-                <div style={{ fontSize: 11, color: "rgba(0,0,0,0.45)", fontWeight: 700, textTransform: "uppercase" }}>
-                  Trạng thái
+
+              {/* Right Column: Lịch sử dự án tham gia & Số tiền giao dịch */}
+              <div
+                style={{
+                  background: "#FAFAF8",
+                  borderRadius: 10,
+                  border: "1px solid rgba(0,0,0,0.08)",
+                  padding: "16px 18px",
+                  display: "flex",
+                  flexDirection: "column",
+                  height: "100%",
+                  boxSizing: "border-box",
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
+                    <BriefcaseMetal size={18} color="#0A66C2" weight="bold" />
+                    <span style={{ fontSize: 13.5, fontWeight: 700, color: "rgba(0,0,0,0.85)" }}>
+                      Lịch sử dự án tham gia
+                    </span>
+                  </div>
+                  <span
+                    style={{
+                      background: "#EAF1FA",
+                      color: "#0A66C2",
+                      fontSize: 11,
+                      fontWeight: 700,
+                      padding: "2px 8px",
+                      borderRadius: 10,
+                    }}
+                  >
+                    {userDetailModal.projectHistory ? userDetailModal.projectHistory.length : 0} dự án
+                  </span>
                 </div>
-                <div style={{ marginTop: 4 }}>{renderStatusBadge(userDetailModal.status)}</div>
-              </div>
-              <div>
-                <div style={{ fontSize: 11, color: "rgba(0,0,0,0.45)", fontWeight: 700, textTransform: "uppercase" }}>
-                  Ngày tham gia
-                </div>
-                <div style={{ fontWeight: 600, fontSize: 13.5, marginTop: 4 }}>
-                  {userDetailModal.joined}
-                </div>
-              </div>
-              <div>
-                <div style={{ fontSize: 11, color: "rgba(0,0,0,0.45)", fontWeight: 700, textTransform: "uppercase" }}>
-                  Mã tài khoản
-                </div>
-                <div style={{ fontWeight: 600, fontSize: 13.5, marginTop: 4, fontFamily: "monospace" }}>
-                  #USR-{userDetailModal.id.toString().padStart(4, "0")}
+
+                {/* Project History List */}
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 10,
+                    maxHeight: 420,
+                    overflowY: "auto",
+                    paddingRight: 4,
+                  }}
+                >
+                  {(!userDetailModal.projectHistory || userDetailModal.projectHistory.length === 0) ? (
+                    <div style={{ textAlign: "center", padding: "40px 10px", color: "rgba(0,0,0,0.40)", fontSize: 13 }}>
+                      Chưa có lịch sử dự án tham gia nào.
+                    </div>
+                  ) : (
+                    userDetailModal.projectHistory.map((item) => (
+                      <div
+                        key={item.id}
+                        style={{
+                          background: "#fff",
+                          border: "1px solid rgba(0,0,0,0.07)",
+                          borderRadius: 8,
+                          padding: "10px 12px",
+                          boxShadow: "0 1px 3px rgba(0,0,0,0.02)",
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: 6,
+                        }}
+                      >
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 }}>
+                          <span style={{ fontSize: 13, fontWeight: 700, color: "rgba(0,0,0,0.90)", lineHeight: 1.35 }}>
+                            {item.title}
+                          </span>
+                          <span
+                            style={{
+                              fontSize: 12.5,
+                              fontWeight: 800,
+                              whiteSpace: "nowrap",
+                              color: item.amount.startsWith("+")
+                                ? "#057642"
+                                : item.amount.startsWith("-")
+                                ? "#C03A2B"
+                                : "rgba(0,0,0,0.80)",
+                            }}
+                          >
+                            {item.amount}
+                          </span>
+                        </div>
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 2 }}>
+                          <span style={{ fontSize: 11.5, color: "rgba(0,0,0,0.50)" }}>
+                            {item.date}
+                          </span>
+                          <span
+                            style={{
+                              fontSize: 10.5,
+                              fontWeight: 700,
+                              padding: "2px 7px",
+                              borderRadius: 4,
+                              background: item.status === "Hoàn thành" ? "#E8F5E9" : "#EAF1FA",
+                              color: item.status === "Hoàn thành" ? "#057642" : "#0A66C2",
+                            }}
+                          >
+                            {item.status}
+                          </span>
+                        </div>
+                      </div>
+                    ))
+                  )}
                 </div>
               </div>
             </div>
 
-            {/* Actions in User Detail */}
-            <div style={{ display: "flex", gap: 10, justifyContent: "space-between", alignItems: "center" }}>
+            {/* Actions Footer */}
+            <div
+              style={{
+                display: "flex",
+                gap: 10,
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginTop: 20,
+                paddingTop: 14,
+                borderTop: "1px solid rgba(0,0,0,0.08)",
+              }}
+            >
               <button
                 onClick={() => {
                   setDeleteTarget(userDetailModal)
@@ -19356,20 +19917,6 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
               </button>
               <div style={{ display: "flex", gap: 10 }}>
                 <button
-                  onClick={() => handleToggleFlag(userDetailModal.id)}
-                  style={{
-                    padding: "8px 16px",
-                    borderRadius: 9999,
-                    border: "1px solid rgba(0,0,0,0.15)",
-                    background: "#fff",
-                    fontSize: 13,
-                    fontWeight: 600,
-                    cursor: "pointer",
-                  }}
-                >
-                  {userDetailModal.status === "Bị gắn cờ" ? "Gỡ cờ cảnh báo" : "Gắn cờ cảnh báo"}
-                </button>
-                <button
                   onClick={() => handleToggleLock(userDetailModal.id)}
                   style={{
                     padding: "8px 16px",
@@ -19383,6 +19930,21 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                   }}
                 >
                   {userDetailModal.status === "Bị khóa" ? "Mở khóa tài khoản" : "Khóa tài khoản"}
+                </button>
+                <button
+                  onClick={() => setUserDetailModal(null)}
+                  style={{
+                    padding: "8px 16px",
+                    borderRadius: 9999,
+                    border: "1px solid rgba(0,0,0,0.15)",
+                    background: "#F4F2EE",
+                    color: "rgba(0,0,0,0.75)",
+                    fontSize: 13,
+                    fontWeight: 600,
+                    cursor: "pointer",
+                  }}
+                >
+                  Đóng
                 </button>
               </div>
             </div>
