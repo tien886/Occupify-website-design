@@ -79,6 +79,11 @@ import {
   Check,
   QrCode,
   ArrowDownLeft,
+  SlidersHorizontal,
+  FilePdf,
+  UploadSimple,
+  DownloadSimple,
+  FileArrowUp,
 } from "@phosphor-icons/react"
 
 function nameToGmail(name: string): string {
@@ -578,6 +583,7 @@ interface Contract {
   value: string
   deadline: string
   status: "in-progress" | "pending" | "opening" | "overdue"
+  role?: string
 }
 
 const MY_CONTRACTS: Contract[] = [
@@ -588,6 +594,7 @@ const MY_CONTRACTS: Contract[] = [
     value: "45.000.000 ₫",
     deadline: "30 thg 9, 2026",
     status: "in-progress",
+    role: "UI/UX Designer",
   },
   {
     id: 2,
@@ -596,6 +603,7 @@ const MY_CONTRACTS: Contract[] = [
     value: "28.000.000 ₫",
     deadline: "15 thg 10, 2026",
     status: "in-progress",
+    role: "Frontend Developer",
   },
   {
     id: 3,
@@ -604,6 +612,7 @@ const MY_CONTRACTS: Contract[] = [
     value: "18.500.000 ₫",
     deadline: "5 thg 10, 2026",
     status: "pending",
+    role: "UX Researcher",
   },
 ]
 
@@ -615,6 +624,7 @@ const OTHER_CONTRACTS: Contract[] = [
     value: "12.000.000 ₫",
     deadline: "20 thg 8, 2026",
     status: "opening",
+    role: "UI/UX Designer",
   },
   {
     id: 5,
@@ -623,6 +633,7 @@ const OTHER_CONTRACTS: Contract[] = [
     value: "32.000.000 ₫",
     deadline: "10 thg 7, 2026",
     status: "opening",
+    role: "Frontend Developer",
   },
   {
     id: 6,
@@ -631,6 +642,7 @@ const OTHER_CONTRACTS: Contract[] = [
     value: "22.000.000 ₫",
     deadline: "1 thg 9, 2026",
     status: "overdue",
+    role: "Motion Designer",
   },
 ]
 
@@ -749,6 +761,26 @@ function ContractItem({
           >
             {contract.title}
           </div>
+          {contract.role && (
+            <div style={{ marginBottom: 4 }}>
+              <span
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 4,
+                  fontSize: 11,
+                  fontWeight: 700,
+                  color: "#0A66C2",
+                  background: "#EAF1FA",
+                  padding: "1px 7px",
+                  borderRadius: 4,
+                }}
+              >
+                <Briefcase size={11} weight="bold" />
+                {contract.role}
+              </span>
+            </div>
+          )}
           <div
             style={{
               fontSize: 12,
@@ -1012,6 +1044,22 @@ function ActionCard({
 // JOB SEARCH PAGE
 // ═══════════════════════════════════════════════════════════════════════════════
 
+export interface JobRoleItem {
+  id: string
+  title: string
+  minBudget: number
+  maxBudget: number
+  budgetDisplay: string
+  salaryType: "fixed" | "hourly" | "weekly" | "monthly"
+  salaryTypeLabel: string
+  jd: string
+  requirements: string[]
+  skills: string[]
+  slotsTotal: number
+  slotsFilled: number
+  status: "recruiting" | "filled"
+}
+
 interface JobListing {
   id: number
   title: string
@@ -1019,13 +1067,16 @@ interface JobListing {
   company: string
   companyInitials: string
   companyColor: string
-  location: string
+  location?: string
   postedAgo: string
   budget: string
   avgBid: string
+  salaryType: "fixed" | "hourly" | "weekly" | "monthly"
+  salaryValue: number
   description: string
   skills: string[]
   hiring: boolean
+  roles?: JobRoleItem[]
 }
 
 const JOB_LISTINGS: JobListing[] = [
@@ -1036,14 +1087,74 @@ const JOB_LISTINGS: JobListing[] = [
     company: "VNPAY Corporation",
     companyInitials: "VNP",
     companyColor: "#0A66C2",
-    location: "Hà Nội · Remote",
+    location: "Hà Nội",
     postedAgo: "3 giờ trước",
-    budget: "45.000.000 ₫",
+    budget: "45.000.000 ₫ / tháng",
     avgBid: "Avg 38.200.000 ₫",
+    salaryType: "monthly",
+    salaryValue: 45000000,
     description:
       "Chúng tôi đang tìm kiếm một Senior UI/UX Designer có kinh nghiệm trong lĩnh vực Fintech để dẫn dắt việc tái thiết kế toàn bộ giao diện ứng dụng thanh toán di động. Ứng viên cần có khả năng phân tích người dùng, xây dựng Design System và làm việc chặt chẽ với đội Engineering.",
     skills: ["Figma", "Design System", "UX Research", "Prototyping", "Fintech"],
     hiring: true,
+    roles: [
+      {
+        id: "r1-1",
+        title: "Senior UI/UX Lead Designer",
+        minBudget: 40000000,
+        maxBudget: 55000000,
+        budgetDisplay: "40.000.000 – 55.000.000 ₫",
+        salaryType: "monthly",
+        salaryTypeLabel: "/ tháng",
+        slotsTotal: 1,
+        slotsFilled: 0,
+        status: "recruiting",
+        jd: "Chủ trì kiến trúc trải nghiệm người dùng cho app thanh toán di động thế hệ mới. Trực tiếp xây dựng Design System, User Flows và quản lý bàn giao giao diện cho đội Mobile Engineering.",
+        requirements: [
+          "Tối thiểu 4 năm kinh nghiệm thiết kế sản phẩm số (Fintech/Banking là lợi thế lớn)",
+          "Thành thạo sâu Figma, Design Tokens, Variables và Interactive Components",
+          "Kinh nghiệm phối hợp trực tiếp với lập trình viên iOS/Android qua Zeplin hoặc Figma Dev Mode",
+        ],
+        skills: ["Figma", "Design System", "Fintech", "User Flow"],
+      },
+      {
+        id: "r1-2",
+        title: "Mobile Interaction & Motion Specialist",
+        minBudget: 30000000,
+        maxBudget: 42000000,
+        budgetDisplay: "30.000.000 – 42.000.000 ₫",
+        salaryType: "monthly",
+        salaryTypeLabel: "/ tháng",
+        slotsTotal: 2,
+        slotsFilled: 1,
+        status: "recruiting",
+        jd: "Thiết kế các micro-interactions, hiệu ứng chuyển cảnh mượt mà cho các tác vụ thanh toán, chuyển tiền nhanh và quét QR code trong app.",
+        requirements: [
+          "Ít nhất 2 năm kinh nghiệm thiết kế Motion & Interaction cho ứng dụng di động",
+          "Sử dụng thành thạo ProtoPie, After Effects, Lottie hoặc Rive",
+          "Am hiểu sâu Human Interface Guidelines (iOS) và Material Design 3 (Android)",
+        ],
+        skills: ["Micro-interactions", "ProtoPie", "Lottie", "Mobile UX"],
+      },
+      {
+        id: "r1-3",
+        title: "UX Researcher & Usability Tester",
+        minBudget: 25000000,
+        maxBudget: 35000000,
+        budgetDisplay: "25.000.000 – 35.000.000 ₫",
+        salaryType: "monthly",
+        salaryTypeLabel: "/ tháng",
+        slotsTotal: 1,
+        slotsFilled: 0,
+        status: "recruiting",
+        jd: "Tổ chức các buổi phỏng vấn người dùng, thử nghiệm khả năng sử dụng (Usability Test) và phân tích các nút thắt chuyển đổi trong phễu thanh toán.",
+        requirements: [
+          "Có kinh nghiệm thực hiện kiểm thử định lượng và định tính với người dùng thực",
+          "Kỹ năng tổng hợp insight và đề xuất giải pháp cải tiến UX khả thi",
+        ],
+        skills: ["UX Research", "Usability Testing", "Customer Journey", "Data Analysis"],
+      },
+    ],
   },
   {
     id: 2,
@@ -1052,10 +1163,12 @@ const JOB_LISTINGS: JobListing[] = [
     company: "Zalo / VNG",
     companyInitials: "VNG",
     companyColor: "#06407F",
-    location: "TP.HCM · Hybrid",
+    location: "TP.HCM",
     postedAgo: "5 giờ trước",
-    budget: "55.000.000 ₫",
+    budget: "55.000.000 ₫ / dự án",
     avgBid: "Avg 48.000.000 ₫",
+    salaryType: "fixed",
+    salaryValue: 55000000,
     description:
       "Vị trí Product Designer tại Zalo, nền tảng nhắn tin và mạng xã hội hàng đầu Việt Nam với hơn 75 triệu người dùng. Bạn sẽ thiết kế các tính năng mới cho ứng dụng di động, cộng tác với Product Manager và Data Analyst để đưa ra quyết định dựa trên dữ liệu.",
     skills: [
@@ -1066,6 +1179,44 @@ const JOB_LISTINGS: JobListing[] = [
       "Zeplin",
     ],
     hiring: true,
+    roles: [
+      {
+        id: "r2-1",
+        title: "Principal Product Designer",
+        minBudget: 50000000,
+        maxBudget: 70000000,
+        budgetDisplay: "50.000.000 – 70.000.000 ₫",
+        salaryType: "fixed",
+        salaryTypeLabel: "/ dự án",
+        slotsTotal: 1,
+        slotsFilled: 0,
+        status: "recruiting",
+        jd: "Chịu trách nhiệm thiết kế toàn diện tính năng cộng đồng và miniapp mới trên Super App, phối hợp mật thiết với Product Director.",
+        requirements: [
+          "5+ năm kinh nghiệm thiết kế sản phẩm quy mô người dùng hàng chục triệu",
+          "Kỹ năng lãnh đạo thiết kế và định hình chiến lược sản phẩm xuất sắc",
+        ],
+        skills: ["Product Strategy", "Figma", "High-scale UX", "Design Leadership"],
+      },
+      {
+        id: "r2-2",
+        title: "Design QA & Delivery Specialist",
+        minBudget: 28000000,
+        maxBudget: 38000000,
+        budgetDisplay: "28.000.000 – 38.000.000 ₫",
+        salaryType: "fixed",
+        salaryTypeLabel: "/ dự án",
+        slotsTotal: 1,
+        slotsFilled: 0,
+        status: "recruiting",
+        jd: "Đối soát pixel-perfect giữa thiết kế Figma và bản build thực tế của engineering, xây dựng tài liệu handoff chuẩn chỉnh.",
+        requirements: [
+          "Hiểu biết tốt về responsive design, layout engine của React Native / iOS / Android",
+          "Tỉ mỉ, cẩn thận và có mắt thẩm mỹ sắc sảo",
+        ],
+        skills: ["Design QA", "Figma", "Mobile UI", "Handoff"],
+      },
+    ],
   },
   {
     id: 3,
@@ -1074,12 +1225,14 @@ const JOB_LISTINGS: JobListing[] = [
     company: "Tiki Corporation",
     companyInitials: "TKI",
     companyColor: "#C03A2B",
-    location: "TP.HCM · Toàn thời gian",
+    location: "TP.HCM",
     postedAgo: "1 ngày trước",
-    budget: "60.000.000 ₫",
+    budget: "60.000.000 ₫ / tháng",
     avgBid: "Avg 52.500.000 ₫",
+    salaryType: "monthly",
+    salaryValue: 60000000,
     description:
-      "Tiki đang tìm Lead UX Designer để dẫn dắt đội thiết kế 8 người trong việc nâng cấp trải nghiệm mua sắm trên web và app. Bạn sẽ là người đề ra chiến lược UX, xây dựng quy trình nghiên cứu người dùng và đảm bảo tính nhất quán của sản phẩm trên mọi nền tảng.",
+      "Tiki đang tìm Lead UX Designer để dẫn dắt đội thiết kế trong việc nâng cấp trải nghiệm mua sắm trên web và app. Bạn sẽ là người đề ra chiến lược UX, xây dựng quy trình nghiên cứu người dùng và đảm bảo tính nhất quán của sản phẩm trên mọi nền tảng.",
     skills: [
       "Leadership",
       "UX Strategy",
@@ -1088,6 +1241,44 @@ const JOB_LISTINGS: JobListing[] = [
       "A/B Testing",
     ],
     hiring: true,
+    roles: [
+      {
+        id: "r3-1",
+        title: "Senior UX Architect (E-Commerce Checkout)",
+        minBudget: 55000000,
+        maxBudget: 75000000,
+        budgetDisplay: "55.000.000 – 75.000.000 ₫",
+        salaryType: "monthly",
+        salaryTypeLabel: "/ tháng",
+        slotsTotal: 1,
+        slotsFilled: 0,
+        status: "recruiting",
+        jd: "Tái cấu trúc luồng Checkout giỏ hàng, tối ưu hóa các phương thức giao vận và tích hợp ví điện tử giảm tỷ lệ bỏ giỏ hàng (Cart Abandonment).",
+        requirements: [
+          "Ít nhất 4 năm thiết kế các sàn thương mại điện tử lớn hoặc nền tảng booking",
+          "Kinh nghiệm chạy A/B Testing và theo dõi chỉ số conversion rate",
+        ],
+        skills: ["E-Commerce UX", "A/B Testing", "Checkout Flow", "Conversion Rate"],
+      },
+      {
+        id: "r3-2",
+        title: "Visual Designer (Mega Campaign & Flash Sale)",
+        minBudget: 32000000,
+        maxBudget: 45000000,
+        budgetDisplay: "32.000.000 – 45.000.000 ₫",
+        salaryType: "monthly",
+        salaryTypeLabel: "/ tháng",
+        slotsTotal: 2,
+        slotsFilled: 1,
+        status: "recruiting",
+        jd: "Sáng tạo giao diện landing page, banner động và các thành phần visual hấp dẫn cho các ngày hội mua sắm Mega Sale hàng tháng.",
+        requirements: [
+          "Gu thẩm mỹ hiện đại, bắt mắt, xử lý tốt phong cách visual thương mại điện tử",
+          "Tốc độ thiết kế nhanh, phối hợp tốt dưới áp lực thời gian chiến dịch",
+        ],
+        skills: ["Campaign Design", "Figma", "Visual Hierarchy", "Photoshop"],
+      },
+    ],
   },
   {
     id: 4,
@@ -1096,14 +1287,54 @@ const JOB_LISTINGS: JobListing[] = [
     company: "Techcombank",
     companyInitials: "TCB",
     companyColor: "#915907",
-    location: "Hà Nội · Tại văn phòng",
+    location: "Hà Nội",
     postedAgo: "2 ngày trước",
-    budget: "40.000.000 ₫",
-    avgBid: "Avg 35.000.000 ₫",
+    budget: "450.000 ₫ / giờ",
+    avgBid: "Avg 400.000 ₫",
+    salaryType: "hourly",
+    salaryValue: 450000,
     description:
       "Techcombank tuyển UX/UI Designer cho dự án nâng cấp ứng dụng ngân hàng di động TCB. Vị trí yêu cầu tư duy thiết kế lấy người dùng làm trung tâm, kinh nghiệm với giao diện tài chính và khả năng làm việc với các tiêu chuẩn bảo mật và compliance trong ngành ngân hàng.",
     skills: ["Mobile UI", "Banking UX", "Figma", "Accessibility", "User Flow"],
-    hiring: false,
+    hiring: true,
+    roles: [
+      {
+        id: "r4-1",
+        title: "Senior Banking UX Consultant",
+        minBudget: 400000,
+        maxBudget: 600000,
+        budgetDisplay: "400.000 – 600.000 ₫",
+        salaryType: "hourly",
+        salaryTypeLabel: "/ giờ",
+        slotsTotal: 1,
+        slotsFilled: 0,
+        status: "recruiting",
+        jd: "Tư vấn và thiết kế giao diện các tính năng mở sổ tiết kiệm online, vay thấu chi tự động và quản lý danh mục đầu tư cá nhân.",
+        requirements: [
+          "Có ít nhất 3 năm làm việc trong lĩnh vực Ngân hàng số / FinTech",
+          "Hiểu biết về bảo mật ngân hàng, OTP và xác thực sinh trắc học",
+        ],
+        skills: ["Banking UX", "Compliance", "Security UX", "Figma"],
+      },
+      {
+        id: "r4-2",
+        title: "Accessibility (a11y) & Usability Specialist",
+        minBudget: 350000,
+        maxBudget: 500000,
+        budgetDisplay: "350.000 – 500.000 ₫",
+        salaryType: "hourly",
+        salaryTypeLabel: "/ giờ",
+        slotsTotal: 1,
+        slotsFilled: 0,
+        status: "recruiting",
+        jd: "Audit và tối ưu độ tương phản, kích thước nút bấm, font size và hỗ trợ VoiceOver cho người cao tuổi sử dụng app ngân hàng.",
+        requirements: [
+          "Nắm vững chuẩn tiếp cận WCAG 2.1 AA",
+          "Kinh nghiệm audit accessibility cho mobile app",
+        ],
+        skills: ["Accessibility", "WCAG 2.1", "VoiceOver", "Usability Audit"],
+      },
+    ],
   },
   {
     id: 5,
@@ -1112,10 +1343,12 @@ const JOB_LISTINGS: JobListing[] = [
     company: "NextGen Ventures",
     companyInitials: "NGV",
     companyColor: "#44712E",
-    location: "Remote · Toàn quốc",
+    location: "Toàn quốc",
     postedAgo: "3 ngày trước",
-    budget: "25.000.000 ₫",
+    budget: "25.000.000 ₫ / dự án",
     avgBid: "Avg 20.000.000 ₫",
+    salaryType: "fixed",
+    salaryValue: 25000000,
     description:
       "Startup công nghệ giai đoạn Seed đang tìm Freelance Product Designer để thiết kế MVP cho nền tảng kết nối doanh nghiệp B2B. Dự án kéo dài 2–3 tháng, yêu cầu thiết kế từ wireframe đến high-fidelity prototype và tham gia vào quá trình user testing với khách hàng doanh nghiệp.",
     skills: [
@@ -1126,6 +1359,26 @@ const JOB_LISTINGS: JobListing[] = [
       "Rapid Prototyping",
     ],
     hiring: true,
+    roles: [
+      {
+        id: "r5-1",
+        title: "End-to-End Product Designer (MVP)",
+        minBudget: 22000000,
+        maxBudget: 32000000,
+        budgetDisplay: "22.000.000 – 32.000.000 ₫",
+        salaryType: "fixed",
+        salaryTypeLabel: "/ dự án",
+        slotsTotal: 1,
+        slotsFilled: 0,
+        status: "recruiting",
+        jd: "Thiết kế toàn bộ từ Wireframe, Mockup, UI Kit đến Prototype cho phiên bản MVP B2B SaaS đầu tiên của startup.",
+        requirements: [
+          "Đã có sản phẩm MVP từng ra mắt thị trường",
+          "Khả năng triển khai nhanh và giải quyết vấn đề linh hoạt",
+        ],
+        skills: ["MVP Design", "Wireframing", "Figma", "B2B SaaS"],
+      },
+    ],
   },
   {
     id: 6,
@@ -1134,10 +1387,12 @@ const JOB_LISTINGS: JobListing[] = [
     company: "Base.vn",
     companyInitials: "BSE",
     companyColor: "#3675BD",
-    location: "Hà Nội · Remote-first",
+    location: "Hà Nội",
     postedAgo: "4 ngày trước",
-    budget: "50.000.000 ₫",
-    avgBid: "Avg 44.000.000 ₫",
+    budget: "12.500.000 ₫ / tuần",
+    avgBid: "Avg 11.000.000 ₫",
+    salaryType: "weekly",
+    salaryValue: 12500000,
     description:
       "Base.vn tìm Design System Engineer có kinh nghiệm xây dựng và duy trì Design System quy mô lớn cho sản phẩm SaaS phục vụ hơn 10.000 doanh nghiệp. Bạn sẽ cộng tác chặt chẽ với frontend engineers và product designers để đảm bảo tính nhất quán trên toàn hệ thống.",
     skills: [
@@ -1148,6 +1403,26 @@ const JOB_LISTINGS: JobListing[] = [
       "Documentation",
     ],
     hiring: true,
+    roles: [
+      {
+        id: "r6-1",
+        title: "Design System Specialist (React & Figma Tokens)",
+        minBudget: 10000000,
+        maxBudget: 15000000,
+        budgetDisplay: "10.000.000 – 15.000.000 ₫",
+        salaryType: "weekly",
+        salaryTypeLabel: "/ tuần",
+        slotsTotal: 1,
+        slotsFilled: 0,
+        status: "recruiting",
+        jd: "Đồng bộ hóa Figma Variables với React Component Library, viết documentation và guidelines cho đội ngũ 30+ kỹ sư.",
+        requirements: [
+          "Thành thạo Figma Tokens, Style Dictionary và React Storybook",
+          "Hiểu rõ component architecture và accessibility standards",
+        ],
+        skills: ["Tokens", "React", "Storybook", "Design System"],
+      },
+    ],
   },
   {
     id: 7,
@@ -1156,14 +1431,36 @@ const JOB_LISTINGS: JobListing[] = [
     company: "FPT Telecom",
     companyInitials: "FPT",
     companyColor: "#F59E0B",
-    location: "Hà Nội · Hybrid",
+    location: "Hà Nội",
     postedAgo: "1 tháng trước",
-    budget: "12.000.000 ₫",
-    avgBid: "Avg 10.500.000 ₫",
+    budget: "3.500.000 ₫ / tuần",
+    avgBid: "Avg 3.000.000 ₫",
+    salaryType: "weekly",
+    salaryValue: 3500000,
     description:
       "Tuyển thiết kế đồ họa hỗ trợ các chiến dịch truyền thông và marketing số. Yêu cầu thành thạo Photoshop, Illustrator, có gu thẩm mỹ hiện đại và khả năng làm việc theo tiến độ nhanh.",
     skills: ["Photoshop", "Illustrator", "Social Media", "Graphic Design"],
     hiring: true,
+    roles: [
+      {
+        id: "r7-1",
+        title: "Banner & Social Media Content Designer",
+        minBudget: 3000000,
+        maxBudget: 4500000,
+        budgetDisplay: "3.000.000 – 4.500.000 ₫",
+        salaryType: "weekly",
+        salaryTypeLabel: "/ tuần",
+        slotsTotal: 2,
+        slotsFilled: 1,
+        status: "recruiting",
+        jd: "Thiết kế các bộ banner quảng cáo Google GDN, bài đăng Facebook/TikTok theo định dạng chuẩn và màu sắc thương hiệu FPT.",
+        requirements: [
+          "Kỹ năng Photoshop, Illustrator tốt",
+          "Có trách nhiệm và đảm bảo tiến độ bàn giao hàng tuần",
+        ],
+        skills: ["Photoshop", "Illustrator", "Social Media", "Banner Ads"],
+      },
+    ],
   },
   {
     id: 8,
@@ -1172,14 +1469,36 @@ const JOB_LISTINGS: JobListing[] = [
     company: "Sendo Group",
     companyInitials: "SND",
     companyColor: "#C03A2B",
-    location: "Remote · Toàn quốc",
+    location: "Toàn quốc",
     postedAgo: "5 ngày trước",
-    budget: "8.500.000 ₫",
-    avgBid: "Avg 7.800.000 ₫",
+    budget: "250.000 ₫ / giờ",
+    avgBid: "Avg 220.000 ₫",
+    salaryType: "hourly",
+    salaryValue: 250000,
     description:
       "Tìm kiếm Content Writer phụ trách viết bài chuẩn SEO, bài giới thiệu sản phẩm và nội dung fanpage theo chủ đề công nghệ và đời sống số.",
     skills: ["SEO", "Content Writing", "Copywriting", "Creative Writing"],
     hiring: true,
+    roles: [
+      {
+        id: "r8-1",
+        title: "SEO Tech & Lifestyle Copywriter",
+        minBudget: 200000,
+        maxBudget: 350000,
+        budgetDisplay: "200.000 – 350.000 ₫",
+        salaryType: "hourly",
+        salaryTypeLabel: "/ giờ",
+        slotsTotal: 1,
+        slotsFilled: 0,
+        status: "recruiting",
+        jd: "Viết bài chuẩn SEO theo bộ từ khóa được giao, biên tập bài đánh giá công nghệ và tối ưu thẻ meta onpage.",
+        requirements: [
+          "Khả năng nghiên cứu thông tin nhanh, viết văn lưu loát, không đạo văn",
+          "Hiểu biết cơ bản về SEO Onpage",
+        ],
+        skills: ["SEO Writing", "Copywriting", "Keyword Research"],
+      },
+    ],
   },
 ]
 
@@ -1686,20 +2005,21 @@ function JobCard({
             >
               {job.title}
             </span>
-            {job.hiring && (
+            {job.roles && job.roles.length > 0 && (
               <span
                 style={{
-                  background: "#E5F6E8",
-                  color: "#057642",
+                  background: "#F0FDF4",
+                  color: "#166534",
                   borderRadius: 4,
                   padding: "2px 8px",
                   fontSize: 11,
                   fontWeight: 700,
                   lineHeight: 1.5,
                   flexShrink: 0,
+                  border: "1px solid #BBF7D0",
                 }}
               >
-                Đang tuyển
+                {job.roles.length} vị trí tuyển dụng
               </span>
             )}
           </div>
@@ -1747,10 +2067,7 @@ function JobCard({
             }}
           >
             <Clock size={13} color="rgba(0,0,0,0.45)" />
-            {job.postedAgo}
-            <span style={{ color: "rgba(0,0,0,0.25)" }}>·</span>
-            <MapPin size={13} color="rgba(0,0,0,0.45)" />
-            {job.location}
+            <span>Đăng {job.postedAgo}</span>
           </div>
         </div>
 
@@ -4511,6 +4828,16 @@ function PostIdeaPage({
 
 const CY_PERIODS = ["Hàng tuần", "Hàng tháng", "Hàng quý", "Cố định"]
 
+interface ProjectRole {
+  id: string
+  title: string
+  skills?: string[]
+  salaryRange?: string
+  slotsTotal: number
+  slotsFilled: number
+  status?: "recruiting" | "filled"
+}
+
 interface ProjectMember {
   name: string
   email: string
@@ -4518,30 +4845,91 @@ interface ProjectMember {
   dueDate?: string
   salaryDueDate?: string
   status?: string
+  role?: string
 }
+
 interface PendingProject {
   id: number
   name: string
+  description?: string
   owner: string
+  ownerRole?: string
+  ownerAvatar?: string
+  ownerRating?: number
+  ownerCompletedProjects?: number
+  ownerCompany?: string
   price: string
   period: string
+  dueDate?: string
+  invitedRole: string
+  inviteMessage?: string
+  recruitingRoles: ProjectRole[]
+  tags?: string[]
 }
+
 interface MyProject {
   id: number
   name: string
+  description?: string
   owner?: string
+  ownerRole?: string
+  ownerAvatar?: string
+  ownerRating?: number
+  ownerCompany?: string
   members: ProjectMember[]
   dueDate: string
   period: string
+  recruitingRoles?: ProjectRole[]
+  tags?: string[]
 }
 
 const MY_PROJECTS_DATA: MyProject[] = [
   {
     id: 1,
     name: "Redesign Mobile App",
+    description: "Tái thiết kế toàn bộ trải nghiệm người dùng, luồng thanh toán và giao diện ứng dụng di động cho hơn 200.000 người dùng hàng ngày.",
     owner: "Tôi (Chủ dự án)",
     period: "Hàng tháng",
     dueDate: "2026-12-31",
+    tags: ["Mobile App", "React Native", "UI/UX", "Fintech"],
+    recruitingRoles: [
+      {
+        id: "mr1",
+        title: "Backend Developer",
+        skills: ["Node.js", "NestJS", "PostgreSQL", "Redis"],
+        salaryRange: "18.000.000 - 25.000.000 ₫",
+        slotsTotal: 2,
+        slotsFilled: 1,
+        status: "recruiting",
+      },
+      {
+        id: "mr2",
+        title: "Frontend Developer",
+        skills: ["React Native", "TypeScript", "Tailwind"],
+        salaryRange: "15.000.000 - 22.000.000 ₫",
+        slotsTotal: 2,
+        slotsFilled: 2,
+        status: "filled",
+      },
+      {
+        id: "mr3",
+        title: "UI/UX Designer",
+        skills: ["Figma", "Design System", "User Testing"],
+        salaryRange: "12.000.000 - 18.000.000 ₫",
+        slotsTotal: 1,
+        slotsFilled: 1,
+        status: "filled",
+      },
+      {
+        id: "mr4",
+        title: "QA / Tester Lead",
+        skills: ["Appium", "Postman", "Automation Testing"],
+        salaryRange: "10.000.000 - 15.000.000 ₫",
+        slotsTotal: 1,
+        slotsFilled: 0,
+        status: "recruiting",
+      },
+    ],
     members: [
       {
         name: "Lê Văn Hùng",
@@ -4549,6 +4937,8 @@ const MY_PROJECTS_DATA: MyProject[] = [
         price: "12.000.000 ₫",
         dueDate: "2026-12-31",
         salaryDueDate: "Ngày 05 hàng tháng",
+        role: "UI/UX Designer",
+        status: "Đang làm",
       },
       {
         name: "Nguyễn Thị Thu",
@@ -4556,15 +4946,48 @@ const MY_PROJECTS_DATA: MyProject[] = [
         price: "10.000.000 ₫",
         dueDate: "2026-11-30",
         salaryDueDate: "Ngày 05 hàng tháng",
+        role: "Frontend Developer",
+        status: "Đang làm",
       },
     ],
   },
   {
     id: 2,
     name: "Xây dựng Design System SaaS",
+    description: "Quy chuẩn hóa toàn bộ thư viện component, token màu sắc, typography và micro-interactions cho hệ sinh thái sản phẩm SaaS B2B.",
     owner: "Tôi (Chủ dự án)",
     period: "Hàng quý",
     dueDate: "2027-03-31",
+    tags: ["Design System", "Storybook", "React", "SaaS"],
+    recruitingRoles: [
+      {
+        id: "mr5",
+        title: "Frontend Engineer",
+        skills: ["React", "Storybook", "Tailwind CSS", "Accessibility"],
+        salaryRange: "20.000.000 - 28.000.000 ₫",
+        slotsTotal: 2,
+        slotsFilled: 1,
+        status: "recruiting",
+      },
+      {
+        id: "mr6",
+        title: "UI/UX Lead",
+        skills: ["Figma Tokens", "Design Architecture", "Guidelines"],
+        salaryRange: "25.000.000 - 35.000.000 ₫",
+        slotsTotal: 1,
+        slotsFilled: 1,
+        status: "filled",
+      },
+      {
+        id: "mr7",
+        title: "Fullstack Developer",
+        skills: ["Next.js", "Node.js", "PostgreSQL"],
+        salaryRange: "22.000.000 - 30.000.000 ₫",
+        slotsTotal: 1,
+        slotsFilled: 0,
+        status: "recruiting",
+      },
+    ],
     members: [
       {
         name: "Phạm Đức Anh",
@@ -4572,6 +4995,8 @@ const MY_PROJECTS_DATA: MyProject[] = [
         price: "15.000.000 ₫",
         dueDate: "2027-03-31",
         salaryDueDate: "Ngày 15 hàng quý",
+        role: "UI/UX Lead",
+        status: "Đang làm",
       },
     ],
   },
@@ -4581,30 +5006,42 @@ const EMPLOYEE_PROJECTS_DATA: MyProject[] = [
   {
     id: 10,
     name: "Thiết kế landing page chiến dịch Marketing",
+    description: "Xây dựng landing page tối ưu chuyển đổi và animation mượt mà phục vụ chiến dịch mở bán sản phẩm Q3/2026.",
     owner: "Trần Minh Khoa",
+    ownerCompany: "Alpha Media & Tech",
+    ownerRating: 4.9,
     period: "Cố định",
     dueDate: "2026-08-20",
+    tags: ["Landing Page", "Animation", "Framer", "Marketing"],
     members: [
       {
-        name: "Nguyễn Minh Khoa",
+        name: "Nguyễn Minh Khoa (Tôi)",
         email: "khoa@gmail.com",
         price: "12.000.000 ₫",
         salaryDueDate: "Hoàn thành nghiệm thu",
+        role: "Frontend Developer",
+        status: "Đang làm",
       },
     ],
   },
   {
     id: 11,
     name: "Prototyping & User Testing Dashboard",
+    description: "Thực hiện interactive prototype độ trung thực cao và tổ chức chuỗi 15 buổi kiểm thử người dùng cho dashboard giám sát AI.",
     owner: "Công ty Công nghệ Nova",
+    ownerCompany: "Nova AI Systems",
+    ownerRating: 5.0,
     period: "Hàng tháng",
     dueDate: "2026-07-10",
+    tags: ["Dashboard", "AI Monitoring", "Usability Testing"],
     members: [
       {
-        name: "Nguyễn Minh Khoa",
+        name: "Nguyễn Minh Khoa (Tôi)",
         email: "khoa@gmail.com",
         price: "32.000.000 ₫",
         salaryDueDate: "Ngày 05 hàng tháng",
+        role: "UX Researcher & Prototyper",
+        status: "Đang làm",
       },
     ],
   },
@@ -4614,23 +5051,140 @@ const PENDING_PROJECTS_DATA: PendingProject[] = [
   {
     id: 1,
     name: "Thiết kế UI cho app Fintech",
+    description: "Dự án phát triển ứng dụng ngân hàng số và ví điện tử thế hệ mới cho người dùng trẻ tại Việt Nam, tích hợp quản lý tài chính thông minh và thanh toán bảo mật đa lớp.",
     owner: "Trần Minh Khoa",
+    ownerRole: "Product Director",
+    ownerCompany: "Fintech Horizon Labs",
+    ownerAvatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150",
+    ownerRating: 4.9,
+    ownerCompletedProjects: 24,
     price: "25.000.000 ₫",
     period: "Hàng tháng",
+    dueDate: "2026-11-30",
+    invitedRole: "Backend Developer",
+    inviteMessage: "Chào bạn, qua hồ sơ ấn tượng của bạn trên Occupify, chúng tôi nhận thấy kinh nghiệm kiến trúc microservice và tối ưu cơ sở dữ liệu của bạn rất phù hợp với vị trí Backend Developer cho module thanh toán lõi của dự án. Rất mong được hợp tác cùng bạn!",
+    tags: ["Fintech", "Mobile Banking", "Microservices", "High Security"],
+    recruitingRoles: [
+      {
+        id: "pr1_1",
+        title: "Backend Developer",
+        skills: ["Golang / Node.js", "PostgreSQL", "Redis", "Kafka"],
+        salaryRange: "22.000.000 - 30.000.000 ₫",
+        slotsTotal: 2,
+        slotsFilled: 1,
+        status: "recruiting",
+      },
+      {
+        id: "pr1_2",
+        title: "Frontend Developer",
+        skills: ["React Native", "TypeScript", "Redux Toolkit"],
+        salaryRange: "18.000.000 - 25.000.000 ₫",
+        slotsTotal: 2,
+        slotsFilled: 2,
+        status: "filled",
+      },
+      {
+        id: "pr1_3",
+        title: "UI/UX Designer",
+        skills: ["Figma", "Design System", "Fintech UX"],
+        salaryRange: "15.000.000 - 22.000.000 ₫",
+        slotsTotal: 1,
+        slotsFilled: 1,
+        status: "filled",
+      },
+      {
+        id: "pr1_4",
+        title: "DevOps Engineer",
+        skills: ["Kubernetes", "AWS", "CI/CD", "Terraform"],
+        salaryRange: "25.000.000 - 35.000.000 ₫",
+        slotsTotal: 1,
+        slotsFilled: 0,
+        status: "recruiting",
+      },
+    ],
   },
   {
     id: 2,
     name: "Xây dựng API REST cho hệ thống ERP",
+    description: "Tái cấu trúc và xây dựng bộ API RESTful toàn diện kết nối các phân hệ nhân sự, chuỗi cung ứng, kho vận và kế toán doanh nghiệp cho đối tác quốc tế.",
     owner: "Lê Thị Hoa",
+    ownerRole: "Head of Engineering",
+    ownerCompany: "SmartLog ERP Solutions",
+    ownerAvatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150",
+    ownerRating: 5.0,
+    ownerCompletedProjects: 31,
     price: "40.000.000 ₫",
     period: "Cố định",
+    dueDate: "2027-01-15",
+    invitedRole: "Backend Developer",
+    inviteMessage: "Đội ngũ kỹ thuật của SmartLog đang mở rộng dự án ERP thế hệ mới. Với kỹ năng backend API vững vàng của bạn, chúng tôi muốn mời bạn phụ trách phân hệ cốt lõi API REST & Data Gateway.",
+    tags: ["ERP", "RESTful API", "Database Optimization", "Enterprise"],
+    recruitingRoles: [
+      {
+        id: "pr2_1",
+        title: "Backend Developer",
+        skills: ["Node.js / Express", "PostgreSQL", "Swagger", "Docker"],
+        salaryRange: "35.000.000 - 45.000.000 ₫",
+        slotsTotal: 3,
+        slotsFilled: 2,
+        status: "recruiting",
+      },
+      {
+        id: "pr2_2",
+        title: "Frontend Developer",
+        skills: ["Vue 3", "Vite", "Tailwind CSS"],
+        salaryRange: "18.000.000 - 26.000.000 ₫",
+        slotsTotal: 2,
+        slotsFilled: 1,
+        status: "recruiting",
+      },
+      {
+        id: "pr2_3",
+        title: "QA / Tester Lead",
+        skills: ["API Testing", "Postman", "JMeter", "Selenium"],
+        salaryRange: "16.000.000 - 22.000.000 ₫",
+        slotsTotal: 1,
+        slotsFilled: 0,
+        status: "recruiting",
+      },
+    ],
   },
   {
     id: 3,
     name: "Phân tích dữ liệu người dùng Q4",
+    description: "Nghiên cứu hành vi khách hàng, xây dựng dashboard phân tích chỉ số chuyển đổi, phễu mua hàng và dự báo churn rate cho sàn thương mại điện tử hàng đầu.",
     owner: "Phạm Văn Dũng",
+    ownerRole: "Data Lead & Founder",
+    ownerCompany: "InsightMetrics Co.",
+    ownerAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150",
+    ownerRating: 4.8,
+    ownerCompletedProjects: 14,
     price: "18.000.000 ₫",
     period: "Hàng quý",
+    dueDate: "2026-12-25",
+    invitedRole: "Data & BI Analyst",
+    inviteMessage: "Chào bạn, InsightMetrics cần một chuyên gia phân tích dữ liệu có kinh nghiệm với SQL và PowerBI/Tableau để hoàn thành báo cáo tăng trưởng người dùng Q4. Rất mong bạn xem qua đề xuất và hợp tác cùng team!",
+    tags: ["Data Analysis", "SQL", "Dashboard", "E-commerce"],
+    recruitingRoles: [
+      {
+        id: "pr3_1",
+        title: "Data & BI Analyst",
+        skills: ["Python", "SQL", "PowerBI", "Data Cleaning"],
+        salaryRange: "16.000.000 - 22.000.000 ₫",
+        slotsTotal: 1,
+        slotsFilled: 0,
+        status: "recruiting",
+      },
+      {
+        id: "pr3_2",
+        title: "Backend Data Engineer",
+        skills: ["ETL Pipelines", "Airflow", "BigQuery"],
+        salaryRange: "24.000.000 - 32.000.000 ₫",
+        slotsTotal: 1,
+        slotsFilled: 1,
+        status: "filled",
+      },
+    ],
   },
 ]
 
@@ -5116,6 +5670,31 @@ function RatingModal({
   )
 }
 
+// ─── Applicant Proposal Interface ────────────────────────────────────────────
+
+interface ApplicantProposal {
+  id: number
+  name: string
+  bid: string
+  salaryCycle: string
+  salaryCycleType: "monthly" | "hourly" | "weekly" | "fixed"
+  rawBidValue: string
+  rating: number
+  ratingCount: number
+  occupation: string
+  roleApplied: string
+  commitment: string
+  cvFileName: string
+  cvFileSize: string
+  portfolioUrl?: string
+  status: "pending" | "accepted" | "rejected"
+  comment: string
+  email: string
+  phone: string
+  location: string
+  appliedDate: string
+}
+
 // ─── My-Project detail page (owner view) ─────────────────────────────────────
 
 function MyProjectDetailPage({
@@ -5125,7 +5704,12 @@ function MyProjectDetailPage({
 }: {
   project: MyProject
   onBack: () => void
-  onCreateContract?: () => void
+  onCreateContract?: (
+    roleTitle?: string,
+    candidateName?: string,
+    bidValue?: string,
+    candidateEmail?: string
+  ) => void
 }) {
   const [members, setMembers] = useState(project.members)
   // cancelTarget: "project" | member email
@@ -5139,6 +5723,105 @@ function MyProjectDetailPage({
   const [recruitmentClosed, setRecruitmentClosed] = useState(false)
   const [contractDetailMember, setContractDetailMember] = useState<ProjectMember | null>(null)
   const [isEditingContract, setIsEditingContract] = useState(false)
+
+  // Applicants state and modal
+  const [applicants, setApplicants] = useState<ApplicantProposal[]>([
+    {
+      id: 1,
+      name: "Trần Minh Khoa",
+      bid: "38.000.000 ₫",
+      salaryCycle: "Theo tháng",
+      salaryCycleType: "monthly",
+      rawBidValue: "38000000",
+      rating: 4.9,
+      ratingCount: 27,
+      occupation: "Senior UI/UX Designer · Fintech Specialist",
+      roleApplied: project.recruitingRoles?.[0]?.title || "Lead UI/UX Designer",
+      commitment: "Dài hạn (> 6 tháng) · Bắt đầu ngay",
+      cvFileName: "CV_TranMinhKhoa_SeniorUX.pdf",
+      cvFileSize: "2.4 MB",
+      portfolioUrl: "https://behance.net/minhkhoa_ux",
+      status: "pending",
+      comment:
+        "Tôi có hơn 5 năm kinh nghiệm trong lĩnh vực UI/UX Design cho các sản phẩm Fintech & Banking. Đã từng lead thiết kế ứng dụng cho VNPAY và Momo. Tôi hiểu sâu về design system, quy trình thanh toán và tối ưu hóa trải nghiệm người dùng.",
+      email: "khoa.tran@gmail.com",
+      phone: "0912 345 678",
+      location: "Hà Nội, Việt Nam",
+      appliedDate: "Hôm nay, 14:30",
+    },
+    {
+      id: 2,
+      name: "Lê Thị Bảo Châu",
+      bid: "42.000.000 ₫",
+      salaryCycle: "Theo tháng",
+      salaryCycleType: "monthly",
+      rawBidValue: "42000000",
+      rating: 4.7,
+      ratingCount: 19,
+      occupation: "Product Designer · Mobile App Expert",
+      roleApplied: project.recruitingRoles?.[1]?.title || "Product Designer",
+      commitment: "Dài hạn (> 6 tháng) · Bắt đầu ngay",
+      cvFileName: "CV_LeThiBaoChau_ProductDesigner.pdf",
+      cvFileSize: "3.1 MB",
+      portfolioUrl: "https://dribbble.com/baochau_design",
+      status: "pending",
+      comment:
+        "Portfolio của tôi bao gồm hơn 30 dự án mobile app và web app tại Đông Nam Á. Tôi chú trọng vào trải nghiệm người dùng, accessibility chuẩn WCAG và giao diện trực quan, hiện đại.",
+      email: "baochau.le@gmail.com",
+      phone: "0988 765 432",
+      location: "TP. Hồ Chí Minh",
+      appliedDate: "Hôm qua, 09:15",
+    },
+    {
+      id: 3,
+      name: "Nguyễn Đức Hùng",
+      bid: "450.000 ₫",
+      salaryCycle: "Theo giờ",
+      salaryCycleType: "hourly",
+      rawBidValue: "450000",
+      rating: 4.5,
+      ratingCount: 11,
+      occupation: "UX Researcher · Design System Specialist",
+      roleApplied: project.recruitingRoles?.[0]?.title || "UX Researcher",
+      commitment: "Linh hoạt (~30h / tuần) · Bắt đầu ngay",
+      cvFileName: "CV_NguyenDucHung_UXResearcher.pdf",
+      cvFileSize: "1.9 MB",
+      portfolioUrl: "https://linkedin.com/in/duchung-ux",
+      status: "pending",
+      comment:
+        "Chào anh/chị! Với nền tảng UX Research và từng xây dựng Design System quy mô lớn tại VNG Corporation, tôi tự tin giúp dự án chuẩn hóa luồng người dùng và giảm thiểu sai sót giao diện.",
+      email: "duchung.ux@gmail.com",
+      phone: "0903 889 901",
+      location: "Đà Nẵng, Việt Nam",
+      appliedDate: "2 ngày trước",
+    },
+  ])
+  const [selectedApplicant, setSelectedApplicant] = useState<ApplicantProposal | null>(null)
+
+  const handleRejectApplicant = (applicantId: number) => {
+    setApplicants((prev) =>
+      prev.map((a) => (a.id === applicantId ? { ...a, status: "rejected" as const } : a))
+    )
+    if (selectedApplicant?.id === applicantId) {
+      setSelectedApplicant((prev) => (prev ? { ...prev, status: "rejected" as const } : null))
+    }
+    const target = applicants.find((a) => a.id === applicantId)
+    setToast(`Đã từ chối đơn ứng tuyển của ${target?.name || "ứng viên"}.`)
+  }
+
+  const handleAcceptApplicant = (applicant: ApplicantProposal) => {
+    setApplicants((prev) =>
+      prev.map((a) => (a.id === applicant.id ? { ...a, status: "accepted" as const } : a))
+    )
+    setSelectedApplicant(null)
+    setToast(`Đã chấp nhận ${applicant.name}! Đang chuyển sang soạn thảo hợp đồng...`)
+    onCreateContract?.(
+      applicant.roleApplied,
+      applicant.name,
+      applicant.rawBidValue,
+      applicant.email
+    )
+  }
 
   const cancelMember =
     cancelTarget && cancelTarget !== "project"
@@ -5238,7 +5921,6 @@ function MyProjectDetailPage({
             </div>
 
             <div style={{ display: "flex", gap: 10, flexShrink: 0 }}>
-
               <button
                 onClick={() => setCloseRecruitConfirm(true)}
                 style={{
@@ -5263,31 +5945,228 @@ function MyProjectDetailPage({
                 {recruitmentClosed ? "Đã đóng tuyển dụng" : "Đóng tuyển dụng"}
               </button>
 
-              <button
-                onClick={() => setRatingModal("project-cancel")}
-                style={{
-                  padding: "8px 20px",
-                  borderRadius: 9999,
-                  border: "1px solid #C03A2B",
-                  background: "none",
-                  color: "#C03A2B",
-                  fontSize: 14,
-                  fontWeight: 600,
-                  cursor: "pointer",
-                  fontFamily: "inherit",
-                  transition: "background 150ms",
-                }}
-                onMouseEnter={(e) => {
-                  ; (e.currentTarget as HTMLElement).style.background = "#FBE2E2"
-                }}
-                onMouseLeave={(e) => {
-                  ; (e.currentTarget as HTMLElement).style.background = "none"
-                }}
-              >
-                Hủy dự án
-              </button>
+              {(!members || members.length === 0) ? (
+                <button
+                  onClick={() => setRatingModal("project-cancel")}
+                  style={{
+                    padding: "8px 20px",
+                    borderRadius: 9999,
+                    border: "1px solid #C03A2B",
+                    background: "none",
+                    color: "#C03A2B",
+                    fontSize: 14,
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    fontFamily: "inherit",
+                    transition: "background 150ms",
+                  }}
+                  onMouseEnter={(e) => {
+                    ; (e.currentTarget as HTMLElement).style.background = "#FBE2E2"
+                  }}
+                  onMouseLeave={(e) => {
+                    ; (e.currentTarget as HTMLElement).style.background = "none"
+                  }}
+                >
+                  Hủy dự án
+                </button>
+              ) : (
+                <div
+                  title="Cần hủy tất cả hợp đồng với nhân sự trong dự án trước khi có thể hủy dự án này"
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 6,
+                    padding: "7px 14px",
+                    borderRadius: 9999,
+                    background: "#F3F4F6",
+                    border: "1px solid #E5E7EB",
+                    color: "rgba(0,0,0,0.55)",
+                    fontSize: 13,
+                    fontWeight: 600,
+                  }}
+                >
+                  <Lock size={14} />
+                  <span>Không thể hủy khi còn nhân sự ({members.length})</span>
+                </div>
+              )}
             </div>
           </div>
+
+          {/* Vị trí tuyển dụng trong dự án */}
+          {project.recruitingRoles && project.recruitingRoles.length > 0 && (
+            <div
+              style={{
+                padding: "20px 28px",
+                borderBottom: "1px solid rgba(0,0,0,0.08)",
+                background: "#FAFAF8",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  marginBottom: 14,
+                }}
+              >
+                <div>
+                  <div
+                    style={{
+                      fontSize: 15,
+                      fontWeight: 700,
+                      color: "rgba(0,0,0,0.90)",
+                    }}
+                  >
+                    Vị trí tuyển dụng trong dự án ({project.recruitingRoles.length} vai trò)
+                  </div>
+                  <div style={{ fontSize: 13, color: "rgba(0,0,0,0.55)", marginTop: 2 }}>
+                    Các role cần thiết lập hợp đồng và chiêu mộ nhân sự
+                  </div>
+                </div>
+              </div>
+
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+                  gap: 12,
+                }}
+              >
+                {project.recruitingRoles.map((r) => {
+                  const isRecruiting = r.status === "recruiting"
+                  return (
+                    <div
+                      key={r.id}
+                      style={{
+                        background: "#fff",
+                        border: isRecruiting
+                          ? "1.5px solid rgba(10,102,194,0.3)"
+                          : "1px solid rgba(0,0,0,0.08)",
+                        borderRadius: 8,
+                        padding: "14px 16px",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "space-between",
+                        boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
+                      }}
+                    >
+                      <div>
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            marginBottom: 6,
+                          }}
+                        >
+                          <span
+                            style={{
+                              fontWeight: 700,
+                              fontSize: 14,
+                              color: "rgba(0,0,0,0.90)",
+                            }}
+                          >
+                            {r.title}
+                          </span>
+                          <span
+                            style={{
+                              fontSize: 11,
+                              fontWeight: 700,
+                              padding: "2px 8px",
+                              borderRadius: 9999,
+                              background: isRecruiting ? "#E5F6E8" : "#F4F2EE",
+                              color: isRecruiting ? "#057642" : "rgba(0,0,0,0.55)",
+                            }}
+                          >
+                            {isRecruiting
+                              ? `Đang tuyển (${r.slotsFilled}/${r.slotsTotal})`
+                              : `Đủ người (${r.slotsFilled}/${r.slotsTotal})`}
+                          </span>
+                        </div>
+                        {r.salaryRange && (
+                          <div
+                            style={{
+                              fontSize: 12,
+                              color: "rgba(0,0,0,0.60)",
+                              marginBottom: 8,
+                            }}
+                          >
+                            Ngân sách:{" "}
+                            <span style={{ fontWeight: 600, color: "#0A66C2" }}>
+                              {r.salaryRange}
+                            </span>
+                          </div>
+                        )}
+                        {r.skills && r.skills.length > 0 && (
+                          <div
+                            style={{
+                              display: "flex",
+                              flexWrap: "wrap",
+                              gap: 4,
+                              marginBottom: 12,
+                            }}
+                          >
+                            {r.skills.map((s) => (
+                              <span
+                                key={s}
+                                style={{
+                                  fontSize: 11,
+                                  background: "#F4F2EE",
+                                  color: "rgba(0,0,0,0.70)",
+                                  padding: "2px 6px",
+                                  borderRadius: 4,
+                                }}
+                              >
+                                {s}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+
+                      {isRecruiting && (
+                        <button
+                          type="button"
+                          onClick={() => onCreateContract?.(r.title)}
+                          style={{
+                            width: "100%",
+                            padding: "7px 12px",
+                            borderRadius: 6,
+                            border: "1px solid #0A66C2",
+                            background: "#EAF1FA",
+                            color: "#0A66C2",
+                            fontSize: 12,
+                            fontWeight: 700,
+                            cursor: "pointer",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: 6,
+                            transition: "all 150ms",
+                            marginTop: 4,
+                          }}
+                          onMouseEnter={(e) => {
+                            ;(e.currentTarget as HTMLElement).style.background =
+                              "#0A66C2"
+                            ;(e.currentTarget as HTMLElement).style.color = "#fff"
+                          }}
+                          onMouseLeave={(e) => {
+                            ;(e.currentTarget as HTMLElement).style.background =
+                              "#EAF1FA"
+                            ;(e.currentTarget as HTMLElement).style.color =
+                              "#0A66C2"
+                          }}
+                        >
+                          <UserPlusIcon size={14} weight="bold" />
+                          <span>Mời hợp đồng cho vai trò này</span>
+                        </button>
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )}
 
           {/* Member list */}
           <div
@@ -5314,7 +6193,7 @@ function MyProjectDetailPage({
                 Danh sách thành viên
               </span>
               <button
-                onClick={onCreateContract}
+                onClick={() => onCreateContract?.()}
                 style={{
                   padding: "6px 16px",
                   borderRadius: 9999,
@@ -5368,9 +6247,29 @@ function MyProjectDetailPage({
                         marginBottom: 10,
                         display: "flex",
                         alignItems: "center",
+                        flexWrap: "wrap",
+                        gap: 8,
                       }}
                     >
-                      {m.name}
+                      <span>{m.name}</span>
+                      {m.role && (
+                        <span
+                          style={{
+                            background: "#EAF1FA",
+                            color: "#0A66C2",
+                            fontSize: 12,
+                            fontWeight: 700,
+                            padding: "2px 8px",
+                            borderRadius: 4,
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: 4,
+                          }}
+                        >
+                          <Briefcase size={12} weight="bold" />
+                          {m.role}
+                        </span>
+                      )}
                       {(() => {
                         const cs = (m as any).contractStatus ?? "Đang làm";
                         const csStyle = cs === "Chờ phản hồi"
@@ -5378,7 +6277,7 @@ function MyProjectDetailPage({
                           : cs === "Hoàn thành"
                             ? { background: "#E6F4EA", color: "#137333" }
                             : { background: "#EAF1FA", color: "#0A66C2" };
-                        return <span style={{ ...csStyle, borderRadius: 99, padding: "2px 10px", fontSize: 12, fontWeight: 600, marginLeft: 8 }}>{cs}</span>;
+                        return <span style={{ ...csStyle, borderRadius: 99, padding: "2px 10px", fontSize: 12, fontWeight: 600 }}>{cs}</span>;
                       })()}
                     </div>
                     {/* Info grid */}
@@ -5576,35 +6475,64 @@ function MyProjectDetailPage({
                 marginBottom: 16,
               }}
             >
-              <span
-                style={{
-                  fontSize: 15,
-                  fontWeight: 700,
-                  color: "rgba(0,0,0,0.90)",
-                }}
-              >
-                Danh sách ứng viên
-              </span>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span
+                  style={{
+                    fontSize: 15,
+                    fontWeight: 700,
+                    color: "rgba(0,0,0,0.90)",
+                  }}
+                >
+                  Danh sách ứng viên
+                </span>
+                <span
+                  style={{
+                    background: "#EAF1FA",
+                    color: "#0A66C2",
+                    fontSize: 12,
+                    fontWeight: 700,
+                    padding: "1px 8px",
+                    borderRadius: 9999,
+                  }}
+                >
+                  {applicants.length} đơn
+                </span>
+              </div>
               <span style={{ fontSize: 13, color: "rgba(0,0,0,0.55)" }}>
-                {CONTRACT_PROPOSALS.length} đề xuất
+                Bấm vào ứng viên để xem chi tiết hồ sơ, CV và xét duyệt
               </span>
             </div>
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              {CONTRACT_PROPOSALS.map((proposal, idx) => (
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              {applicants.map((proposal, idx) => (
                 <div
                   key={proposal.id}
+                  onClick={() => setSelectedApplicant(proposal)}
                   style={{
-                    padding: "16px 0",
-                    borderBottom:
-                      idx < CONTRACT_PROPOSALS.length - 1
-                        ? "1px solid rgba(0,0,0,0.06)"
-                        : "none",
+                    padding: "16px 18px",
+                    background: selectedApplicant?.id === proposal.id ? "#F0F9FF" : "#FAFAFA",
+                    borderRadius: 8,
+                    border: selectedApplicant?.id === proposal.id ? "1.5px solid #0A66C2" : "1px solid rgba(0,0,0,0.08)",
                     display: "flex",
                     gap: 14,
                     alignItems: "flex-start",
+                    cursor: "pointer",
+                    transition: "all 150ms ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (selectedApplicant?.id !== proposal.id) {
+                      e.currentTarget.style.background = "#F8FAFC"
+                      e.currentTarget.style.borderColor = "rgba(10,102,194,0.3)"
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (selectedApplicant?.id !== proposal.id) {
+                      e.currentTarget.style.background = "#FAFAFA"
+                      e.currentTarget.style.borderColor = "rgba(0,0,0,0.08)"
+                    }
                   }}
                 >
-                  <Avatar name={proposal.name} size={44} />
+                  <Avatar name={proposal.name} size={46} />
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div
                       style={{
@@ -5612,75 +6540,164 @@ function MyProjectDetailPage({
                         alignItems: "center",
                         justifyContent: "space-between",
                         gap: 8,
-                        marginBottom: 2,
-                      }}
-                    >
-                      <span
-                        style={{
-                          fontSize: 14,
-                          fontWeight: 700,
-                          color: "rgba(0,0,0,0.90)",
-                        }}
-                      >
-                        {proposal.name}
-                      </span>
-                      <span
-                        style={{
-                          fontSize: 14,
-                          fontWeight: 700,
-                          color: "#0A66C2",
-                          flexShrink: 0,
-                        }}
-                      >
-                        {proposal.bid}
-                      </span>
-                    </div>
-                    <div
-                      style={{
-                        fontSize: 12,
-                        color: "rgba(0,0,0,0.55)",
+                        flexWrap: "wrap",
                         marginBottom: 4,
                       }}
                     >
-                      {proposal.occupation}
+                      <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+                        <span
+                          style={{
+                            fontSize: 14.5,
+                            fontWeight: 700,
+                            color: "rgba(0,0,0,0.90)",
+                          }}
+                        >
+                          {proposal.name}
+                        </span>
+                        <span
+                          style={{
+                            fontSize: 11.5,
+                            fontWeight: 700,
+                            padding: "2px 8px",
+                            borderRadius: 9999,
+                            background: "#EAF1FA",
+                            color: "#0A66C2",
+                          }}
+                        >
+                          {proposal.roleApplied}
+                        </span>
+                        {proposal.status === "accepted" && (
+                          <span
+                            style={{
+                              fontSize: 11,
+                              fontWeight: 700,
+                              padding: "2px 8px",
+                              borderRadius: 9999,
+                              background: "#DCFCE7",
+                              color: "#15803D",
+                            }}
+                          >
+                            Đã chấp nhận
+                          </span>
+                        )}
+                        {proposal.status === "rejected" && (
+                          <span
+                            style={{
+                              fontSize: 11,
+                              fontWeight: 700,
+                              padding: "2px 8px",
+                              borderRadius: 9999,
+                              background: "#FEE2E2",
+                              color: "#B91C1C",
+                            }}
+                          >
+                            Đã từ chối
+                          </span>
+                        )}
+                        {proposal.status === "pending" && (
+                          <span
+                            style={{
+                              fontSize: 11,
+                              fontWeight: 700,
+                              padding: "2px 8px",
+                              borderRadius: 9999,
+                              background: "#FEF3C7",
+                              color: "#B45309",
+                            }}
+                          >
+                            Chờ xét duyệt
+                          </span>
+                        )}
+                      </div>
+                      <span
+                        style={{
+                          fontSize: 14.5,
+                          fontWeight: 800,
+                          color: "#057642",
+                          flexShrink: 0,
+                        }}
+                      >
+                        {proposal.bid} <span style={{ fontSize: 12, fontWeight: 600, color: "rgba(0,0,0,0.50)" }}>/ {proposal.salaryCycle.toLowerCase()}</span>
+                      </span>
                     </div>
+
+                    <div
+                      style={{
+                        fontSize: 12.5,
+                        color: "rgba(0,0,0,0.60)",
+                        marginBottom: 6,
+                      }}
+                    >
+                      {proposal.occupation} · {proposal.location}
+                    </div>
+
                     <div
                       style={{
                         display: "flex",
                         alignItems: "center",
-                        gap: 4,
-                        marginBottom: 6,
+                        gap: 12,
+                        flexWrap: "wrap",
+                        marginBottom: 8,
                       }}
                     >
-                      {[1, 2, 3, 4, 5].map((s) => (
+                      <div style={{ display: "flex", alignItems: "center", gap: 3 }}>
+                        {[1, 2, 3, 4, 5].map((s) => (
+                          <span
+                            key={s}
+                            style={{
+                              color:
+                                s <= Math.round(proposal.rating)
+                                  ? "#F5A623"
+                                  : "#D1D5DB",
+                              fontSize: 12,
+                            }}
+                          >
+                            ★
+                          </span>
+                        ))}
                         <span
-                          key={s}
                           style={{
-                            color:
-                              s <= Math.round(proposal.rating)
-                                ? "#F5A623"
-                                : "#D1D5DB",
                             fontSize: 12,
+                            color: "rgba(0,0,0,0.55)",
+                            marginLeft: 3,
                           }}
                         >
-                          ★
+                          {proposal.rating} ({proposal.ratingCount})
                         </span>
-                      ))}
+                      </div>
+
+                      <span style={{ fontSize: 12, color: "rgba(0,0,0,0.40)" }}>•</span>
+
+                      <span style={{ fontSize: 12, color: "rgba(0,0,0,0.65)", fontWeight: 500 }}>
+                        Cam kết: <strong>{proposal.commitment}</strong>
+                      </span>
+
+                      <span style={{ fontSize: 12, color: "rgba(0,0,0,0.40)" }}>•</span>
+
                       <span
                         style={{
-                          fontSize: 12,
-                          color: "rgba(0,0,0,0.55)",
-                          marginLeft: 2,
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: 4,
+                          fontSize: 11.5,
+                          color: "#DC2626",
+                          background: "#FEF2F2",
+                          padding: "2px 8px",
+                          borderRadius: 4,
+                          border: "1px solid #FECACA",
+                          fontWeight: 600,
                         }}
                       >
-                        {proposal.rating} ({proposal.ratingCount} đánh giá)
+                        <FilePdf size={13} weight="fill" />
+                        {proposal.cvFileName} ({proposal.cvFileSize})
                       </span>
                     </div>
+
                     <p
                       style={{
                         fontSize: 13,
                         color: "rgba(0,0,0,0.60)",
-                        lineHeight: 1.6,
+                        lineHeight: 1.5,
                         margin: 0,
                         display: "-webkit-box",
                         WebkitLineClamp: 2,
@@ -5690,29 +6707,42 @@ function MyProjectDetailPage({
                     >
                       {proposal.comment}
                     </p>
-                    <button
-                      style={{
-                        background: "none",
-                        border: "none",
-                        cursor: "pointer",
-                        padding: 0,
-                        fontSize: 12,
-                        color: "#0A66C2",
-                        fontFamily: "inherit",
-                        marginTop: 4,
-                        fontWeight: 600,
-                      }}
-                      onMouseEnter={(e) =>
-                      ((e.currentTarget as HTMLElement).style.textDecoration =
-                        "underline")
-                      }
-                      onMouseLeave={(e) =>
-                      ((e.currentTarget as HTMLElement).style.textDecoration =
-                        "none")
-                      }
-                    >
-                      Xem thêm →
-                    </button>
+
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 8 }}>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setSelectedApplicant(proposal)
+                        }}
+                        style={{
+                          background: "none",
+                          border: "none",
+                          cursor: "pointer",
+                          padding: 0,
+                          fontSize: 12.5,
+                          color: "#0A66C2",
+                          fontFamily: "inherit",
+                          fontWeight: 700,
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: 4,
+                        }}
+                        onMouseEnter={(e) =>
+                        ((e.currentTarget as HTMLElement).style.textDecoration =
+                          "underline")
+                        }
+                        onMouseLeave={(e) =>
+                        ((e.currentTarget as HTMLElement).style.textDecoration =
+                          "none")
+                        }
+                      >
+                        Xem đơn ứng tuyển & CV →
+                      </button>
+
+                      <span style={{ fontSize: 11.5, color: "rgba(0,0,0,0.45)" }}>
+                        Nộp: {proposal.appliedDate}
+                      </span>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -5720,6 +6750,433 @@ function MyProjectDetailPage({
           </div>
         </div>
       </div>
+
+      {/* ─── Modal Xem Đơn Ứng Tuyển Của Ứng Viên ────────────────────────────── */}
+      {selectedApplicant && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.55)",
+            zIndex: 100,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 16,
+          }}
+          onClick={() => setSelectedApplicant(null)}
+        >
+          <div
+            style={{
+              background: "#fff",
+              borderRadius: 12,
+              width: "100%",
+              maxWidth: 580,
+              boxShadow: "0 12px 40px rgba(0,0,0,0.22)",
+              maxHeight: "92vh",
+              overflowY: "auto",
+              display: "flex",
+              flexDirection: "column",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div
+              style={{
+                padding: "18px 24px",
+                borderBottom: "1px solid rgba(0,0,0,0.08)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                background: "#FAFAFA",
+                borderTopLeftRadius: 12,
+                borderTopRightRadius: 12,
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <div
+                  style={{
+                    width: 36,
+                    height: 36,
+                    borderRadius: 9999,
+                    background: "#EAF1FA",
+                    color: "#0A66C2",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <FileText size={20} weight="bold" />
+                </div>
+                <div>
+                  <h3
+                    style={{
+                      fontSize: 17,
+                      fontWeight: 700,
+                      color: "rgba(0,0,0,0.90)",
+                      margin: 0,
+                    }}
+                  >
+                    Hồ sơ ứng tuyển dự án
+                  </h3>
+                  <div style={{ fontSize: 12.5, color: "rgba(0,0,0,0.55)", marginTop: 2 }}>
+                    Dự án: <strong>{project.name}</strong> · Nộp lúc {selectedApplicant.appliedDate}
+                  </div>
+                </div>
+              </div>
+              <button
+                onClick={() => setSelectedApplicant(null)}
+                style={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: 9999,
+                  border: "1px solid rgba(0,0,0,0.12)",
+                  background: "#fff",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                }}
+              >
+                <X size={16} />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div style={{ padding: "22px 24px", display: "flex", flexDirection: "column", gap: 18 }}>
+              {/* Profile Card */}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: 16,
+                  padding: "14px 16px",
+                  background: "#F8FAFC",
+                  borderRadius: 10,
+                  border: "1px solid rgba(0,0,0,0.06)",
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                  <Avatar name={selectedApplicant.name} size={52} />
+                  <div>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                      <span style={{ fontSize: 16, fontWeight: 700, color: "rgba(0,0,0,0.90)" }}>
+                        {selectedApplicant.name}
+                      </span>
+                      {selectedApplicant.status === "accepted" && (
+                        <span
+                          style={{
+                            fontSize: 11,
+                            fontWeight: 700,
+                            padding: "2px 8px",
+                            borderRadius: 9999,
+                            background: "#DCFCE7",
+                            color: "#15803D",
+                          }}
+                        >
+                          Đã chấp nhận
+                        </span>
+                      )}
+                      {selectedApplicant.status === "rejected" && (
+                        <span
+                          style={{
+                            fontSize: 11,
+                            fontWeight: 700,
+                            padding: "2px 8px",
+                            borderRadius: 9999,
+                            background: "#FEE2E2",
+                            color: "#B91C1C",
+                          }}
+                        >
+                          Đã từ chối
+                        </span>
+                      )}
+                      {selectedApplicant.status === "pending" && (
+                        <span
+                          style={{
+                            fontSize: 11,
+                            fontWeight: 700,
+                            padding: "2px 8px",
+                            borderRadius: 9999,
+                            background: "#FEF3C7",
+                            color: "#B45309",
+                          }}
+                        >
+                          Chờ xét duyệt
+                        </span>
+                      )}
+                    </div>
+                    <div style={{ fontSize: 13, color: "rgba(0,0,0,0.60)", marginTop: 2 }}>
+                      {selectedApplicant.occupation}
+                    </div>
+                    <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 4, fontSize: 12, color: "rgba(0,0,0,0.50)" }}>
+                      <span>★ {selectedApplicant.rating} ({selectedApplicant.ratingCount} đánh giá)</span>
+                      <span>•</span>
+                      <span>{selectedApplicant.location}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Application Details Grid */}
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: 12,
+                }}
+              >
+                <div
+                  style={{
+                    padding: "12px 14px",
+                    borderRadius: 8,
+                    border: "1px solid rgba(0,0,0,0.08)",
+                    background: "#FAFAFA",
+                  }}
+                >
+                  <div style={{ fontSize: 11.5, fontWeight: 700, color: "rgba(0,0,0,0.45)", textTransform: "uppercase", letterSpacing: 0.5 }}>
+                    Vai trò ứng tuyển
+                  </div>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: "#0A66C2", marginTop: 4 }}>
+                    {selectedApplicant.roleApplied}
+                  </div>
+                </div>
+
+                <div
+                  style={{
+                    padding: "12px 14px",
+                    borderRadius: 8,
+                    border: "1px solid rgba(0,0,0,0.08)",
+                    background: "#FAFAFA",
+                  }}
+                >
+                  <div style={{ fontSize: 11.5, fontWeight: 700, color: "rgba(0,0,0,0.45)", textTransform: "uppercase", letterSpacing: 0.5 }}>
+                    Mức lương đề xuất ({selectedApplicant.salaryCycle})
+                  </div>
+                  <div style={{ fontSize: 15, fontWeight: 800, color: "#057642", marginTop: 4 }}>
+                    {selectedApplicant.bid} <span style={{ fontSize: 12, fontWeight: 600, color: "rgba(0,0,0,0.50)" }}>/ {selectedApplicant.salaryCycle.toLowerCase()}</span>
+                  </div>
+                </div>
+
+                <div
+                  style={{
+                    padding: "12px 14px",
+                    borderRadius: 8,
+                    border: "1px solid rgba(0,0,0,0.08)",
+                    background: "#FAFAFA",
+                    gridColumn: "span 2",
+                  }}
+                >
+                  <div style={{ fontSize: 11.5, fontWeight: 700, color: "rgba(0,0,0,0.45)", textTransform: "uppercase", letterSpacing: 0.5 }}>
+                    Thời hạn cam kết hợp tác
+                  </div>
+                  <div style={{ fontSize: 13.5, fontWeight: 600, color: "rgba(0,0,0,0.85)", marginTop: 4 }}>
+                    {selectedApplicant.commitment}
+                  </div>
+                </div>
+              </div>
+
+              {/* CV File Attachment Box */}
+              <div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "rgba(0,0,0,0.80)", marginBottom: 8 }}>
+                  Hồ sơ CV đính kèm
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    padding: "12px 16px",
+                    borderRadius: 8,
+                    border: "1px solid #BAE6FD",
+                    background: "#F0F9FF",
+                  }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                    <div
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 8,
+                        background: "#FEE2E2",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "#DC2626",
+                      }}
+                    >
+                      <FilePdf size={24} weight="fill" />
+                    </div>
+                    <div>
+                      <div style={{ fontSize: 13.5, fontWeight: 700, color: "rgba(0,0,0,0.90)" }}>
+                        {selectedApplicant.cvFileName}
+                      </div>
+                      <div style={{ fontSize: 12, color: "rgba(0,0,0,0.50)", marginTop: 2 }}>
+                        {selectedApplicant.cvFileSize} · Định dạng PDF chính thức
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setToast(`Đang mở file "${selectedApplicant.cvFileName}"...`)}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 6,
+                      padding: "6px 14px",
+                      borderRadius: 9999,
+                      border: "1px solid #0A66C2",
+                      background: "#fff",
+                      color: "#0A66C2",
+                      fontSize: 12.5,
+                      fontWeight: 700,
+                      cursor: "pointer",
+                      fontFamily: "inherit",
+                    }}
+                  >
+                    <DownloadSimple size={14} weight="bold" />
+                    <span>Tải / Xem CV</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Portfolio Link if any */}
+              {selectedApplicant.portfolioUrl && (
+                <div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: "rgba(0,0,0,0.80)", marginBottom: 6 }}>
+                    Liên kết Portfolio / Sản phẩm
+                  </div>
+                  <a
+                    href={selectedApplicant.portfolioUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 6,
+                      fontSize: 13,
+                      color: "#0A66C2",
+                      textDecoration: "none",
+                      fontWeight: 600,
+                    }}
+                  >
+                    <LinkSimple size={15} />
+                    <span>{selectedApplicant.portfolioUrl}</span>
+                  </a>
+                </div>
+              )}
+
+              {/* Candidate Comment / Bio */}
+              <div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "rgba(0,0,0,0.80)", marginBottom: 6 }}>
+                  Lời nhắn & Giới thiệu giải pháp
+                </div>
+                <div
+                  style={{
+                    padding: "12px 14px",
+                    borderRadius: 8,
+                    background: "#F9FAFB",
+                    border: "1px solid rgba(0,0,0,0.08)",
+                    fontSize: 13,
+                    color: "rgba(0,0,0,0.75)",
+                    lineHeight: 1.6,
+                  }}
+                >
+                  {selectedApplicant.comment}
+                </div>
+              </div>
+            </div>
+
+            {/* Modal Actions */}
+            <div
+              style={{
+                padding: "16px 24px",
+                borderTop: "1px solid rgba(0,0,0,0.08)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "flex-end",
+                gap: 12,
+                background: "#FAFAFA",
+                borderBottomLeftRadius: 12,
+                borderBottomRightRadius: 12,
+              }}
+            >
+              {selectedApplicant.status === "pending" ? (
+                <>
+                  <button
+                    onClick={() => handleRejectApplicant(selectedApplicant.id)}
+                    style={{
+                      padding: "9px 22px",
+                      borderRadius: 9999,
+                      border: "1px solid #C03A2B",
+                      background: "#fff",
+                      color: "#C03A2B",
+                      fontSize: 13.5,
+                      fontWeight: 700,
+                      cursor: "pointer",
+                      fontFamily: "inherit",
+                      transition: "background 150ms",
+                    }}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLElement).style.background = "#FEE2E2"
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLElement).style.background = "#fff"
+                    }}
+                  >
+                    Từ chối
+                  </button>
+                  <button
+                    onClick={() => handleAcceptApplicant(selectedApplicant)}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 8,
+                      padding: "9px 24px",
+                      borderRadius: 9999,
+                      border: "none",
+                      background: "#0A66C2",
+                      color: "#fff",
+                      fontSize: 13.5,
+                      fontWeight: 700,
+                      cursor: "pointer",
+                      fontFamily: "inherit",
+                      boxShadow: "0 2px 8px rgba(10,102,194,0.3)",
+                      transition: "background 150ms",
+                    }}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLElement).style.background = "#084FA0"
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLElement).style.background = "#0A66C2"
+                    }}
+                  >
+                    <Handshake size={16} weight="bold" />
+                    <span>Chấp nhận & Soạn hợp đồng</span>
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={() => setSelectedApplicant(null)}
+                  style={{
+                    padding: "9px 22px",
+                    borderRadius: 9999,
+                    border: "1px solid rgba(0,0,0,0.15)",
+                    background: "#fff",
+                    color: "rgba(0,0,0,0.70)",
+                    fontSize: 13.5,
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    fontFamily: "inherit",
+                  }}
+                >
+                  Đóng
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Cancel invite modal */}
       {cancelInviteTarget && (
@@ -5995,10 +7452,12 @@ function EmployeeProjectDetailPage({
               {project.name}
             </div>
             <div
-              style={{ fontSize: 12, color: "rgba(0,0,0,0.50)", marginTop: 3 }}
+              style={{ fontSize: 13, color: "rgba(0,0,0,0.55)", marginTop: 4, display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8 }}
             >
-              {project.period}
-              {project.dueDate ? ` · Hạn: ${project.dueDate}` : ""}
+              <span>{project.period}</span>
+              {project.dueDate ? <span>· Hạn: {project.dueDate}</span> : ""}
+              {project.owner && <span>· Chủ dự án: <b style={{ color: "rgba(0,0,0,0.80)" }}>{project.owner}</b></span>}
+              {project.ownerCompany && <span style={{ color: "#0A66C2" }}>({project.ownerCompany})</span>}
             </div>
           </div>
           <div style={{ padding: "20px 24px" }}>
@@ -6017,29 +7476,48 @@ function EmployeeProjectDetailPage({
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
-                padding: "14px 16px",
+                padding: "16px 18px",
                 background: "#F4F2EE",
                 borderRadius: 8,
               }}
             >
               <div>
-                <div
-                  style={{
-                    fontSize: 14,
-                    fontWeight: 700,
-                    color: "rgba(0,0,0,0.90)",
-                  }}
-                >
-                  {myContract?.price ?? "—"}
+                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
+                  <div
+                    style={{
+                      fontSize: 15,
+                      fontWeight: 700,
+                      color: "rgba(0,0,0,0.90)",
+                    }}
+                  >
+                    {myContract?.price ?? "—"}
+                  </div>
+                  {myContract?.role && (
+                    <span
+                      style={{
+                        background: "#EAF1FA",
+                        color: "#0A66C2",
+                        padding: "2px 8px",
+                        borderRadius: 4,
+                        fontSize: 12,
+                        fontWeight: 700,
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 4,
+                      }}
+                    >
+                      <Briefcase size={12} weight="bold" />
+                      {myContract.role}
+                    </span>
+                  )}
                 </div>
                 <div
                   style={{
                     fontSize: 12,
                     color: "rgba(0,0,0,0.55)",
-                    marginTop: 2,
                   }}
                 >
-                  Chu kỳ: {project.period}
+                  Chu kỳ: {project.period} · Hạn nhận lương: {myContract?.salaryDueDate ?? "Theo thỏa thuận"}
                 </div>
               </div>
               <button
@@ -6242,12 +7720,849 @@ function ProjectListCard({
 
 // ─── Pending project queue card ───────────────────────────────────────────────
 
+// ─── Project Invitation Detail Modal ──────────────────────────────────────────
+
+function ProjectInvitationModal({
+  project,
+  onClose,
+  onAccept,
+  onReject,
+  onOpenChat,
+}: {
+  project: PendingProject
+  onClose: () => void
+  onAccept: (project: PendingProject) => void
+  onReject: (project: PendingProject) => void
+  onOpenChat?: (ownerName: string) => void
+}) {
+  const [rejectReason, setRejectReason] = useState("")
+  const [showRejectForm, setShowRejectForm] = useState(false)
+  const totalSlots = project.recruitingRoles?.reduce((acc, r) => acc + r.slotsTotal, 0) || 0
+  const filledSlots = project.recruitingRoles?.reduce((acc, r) => acc + r.slotsFilled, 0) || 0
+
+  return (
+    <div
+      style={{
+        position: "fixed",
+        inset: 0,
+        background: "rgba(0,0,0,0.60)",
+        backdropFilter: "blur(4px)",
+        zIndex: 9999,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 16,
+        overflowY: "auto",
+      }}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose()
+      }}
+    >
+      <div
+        style={{
+          background: "#fff",
+          borderRadius: 16,
+          width: "100%",
+          maxWidth: 840,
+          maxHeight: "92vh",
+          overflowY: "auto",
+          boxShadow: "0 24px 60px rgba(0,0,0,0.25)",
+          display: "flex",
+          flexDirection: "column",
+          position: "relative",
+        }}
+      >
+        {/* Modal Banner Header */}
+        <div
+          style={{
+            background: "linear-gradient(135deg, #0A66C2 0%, #084FA0 100%)",
+            padding: "24px 28px",
+            color: "#fff",
+            position: "relative",
+            borderTopLeftRadius: 16,
+            borderTopRightRadius: 16,
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginBottom: 12,
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span
+                style={{
+                  background: "rgba(255,255,255,0.20)",
+                  backdropFilter: "blur(8px)",
+                  color: "#fff",
+                  fontSize: 12,
+                  fontWeight: 700,
+                  padding: "4px 12px",
+                  borderRadius: 9999,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 6,
+                }}
+              >
+                <Sparkle size={13} weight="fill" />
+                Lời mời tham gia dự án
+              </span>
+              <span
+                style={{
+                  background: "#FEF3C7",
+                  color: "#B45309",
+                  fontSize: 12,
+                  fontWeight: 700,
+                  padding: "4px 10px",
+                  borderRadius: 9999,
+                }}
+              >
+                Đang chờ bạn xác nhận
+              </span>
+            </div>
+            <button
+              onClick={onClose}
+              style={{
+                background: "rgba(255,255,255,0.20)",
+                border: "none",
+                borderRadius: "50%",
+                width: 32,
+                height: 32,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                color: "#fff",
+                transition: "background 150ms",
+              }}
+              onMouseEnter={(e) =>
+                ((e.currentTarget as HTMLElement).style.background =
+                  "rgba(255,255,255,0.35)")
+              }
+              onMouseLeave={(e) =>
+                ((e.currentTarget as HTMLElement).style.background =
+                  "rgba(255,255,255,0.20)")
+              }
+            >
+              <X size={18} weight="bold" />
+            </button>
+          </div>
+
+          <h2
+            style={{
+              fontSize: 22,
+              fontWeight: 800,
+              lineHeight: 1.3,
+              margin: 0,
+              letterSpacing: "-0.01em",
+            }}
+          >
+            {project.name}
+          </h2>
+
+          {project.tags && project.tags.length > 0 && (
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: 6,
+                marginTop: 10,
+              }}
+            >
+              {project.tags.map((tag) => (
+                <span
+                  key={tag}
+                  style={{
+                    background: "rgba(255,255,255,0.15)",
+                    color: "#fff",
+                    fontSize: 11,
+                    fontWeight: 600,
+                    padding: "2px 8px",
+                    borderRadius: 4,
+                  }}
+                >
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          )}
+
+          {/* Highlighted Invited Role Card */}
+          <div
+            style={{
+              marginTop: 18,
+              background: "rgba(255,255,255,0.98)",
+              borderRadius: 12,
+              padding: "16px 20px",
+              color: "rgba(0,0,0,0.90)",
+              boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+              display: "grid",
+              gridTemplateColumns: "1.4fr 1fr 1fr",
+              gap: 16,
+              alignItems: "center",
+            }}
+          >
+            <div>
+              <div
+                style={{
+                  fontSize: 11,
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  color: "#0A66C2",
+                  letterSpacing: 0.5,
+                  marginBottom: 3,
+                }}
+              >
+                🎯 Vai trò được đề xuất cho bạn
+              </div>
+              <div
+                style={{
+                  fontSize: 18,
+                  fontWeight: 800,
+                  color: "rgba(0,0,0,0.90)",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                }}
+              >
+                <span>{project.invitedRole}</span>
+              </div>
+            </div>
+
+            <div>
+              <div
+                style={{
+                  fontSize: 11,
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  color: "rgba(0,0,0,0.50)",
+                  letterSpacing: 0.5,
+                  marginBottom: 3,
+                }}
+              >
+                Thù lao hợp đồng
+              </div>
+              <div
+                style={{
+                  fontSize: 17,
+                  fontWeight: 800,
+                  color: "#057642",
+                }}
+              >
+                {project.price}
+                <span style={{ fontSize: 12, fontWeight: 500, color: "rgba(0,0,0,0.55)", marginLeft: 4 }}>
+                  / {project.period}
+                </span>
+              </div>
+            </div>
+
+            <div>
+              <div
+                style={{
+                  fontSize: 11,
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  color: "rgba(0,0,0,0.50)",
+                  letterSpacing: 0.5,
+                  marginBottom: 3,
+                }}
+              >
+                Thời hạn dự án
+              </div>
+              <div
+                style={{
+                  fontSize: 14,
+                  fontWeight: 700,
+                  color: "rgba(0,0,0,0.85)",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 6,
+                }}
+              >
+                <CalendarBlank size={14} color="#0A66C2" />
+                <span>{project.dueDate ?? "Theo thỏa thuận"}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Modal Scrollable Body */}
+        <div style={{ padding: "24px 28px", display: "flex", flexDirection: "column", gap: 24 }}>
+          {/* Section 1: Thông tin chủ dự án & Thư mời */}
+          <div
+            style={{
+              background: "#F8FAFC",
+              borderRadius: 12,
+              padding: "20px 22px",
+              border: "1px solid #E2E8F0",
+            }}
+          >
+            <div
+              style={{
+                fontSize: 14,
+                fontWeight: 700,
+                color: "rgba(0,0,0,0.50)",
+                textTransform: "uppercase",
+                letterSpacing: 0.5,
+                marginBottom: 14,
+              }}
+            >
+              1. Thông tin Chủ dự án & Lời nhắn mời
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "240px 1fr", gap: 20 }}>
+              {/* Owner card */}
+              <div
+                style={{
+                  background: "#fff",
+                  borderRadius: 10,
+                  padding: 16,
+                  border: "1px solid rgba(0,0,0,0.08)",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  textAlign: "center",
+                }}
+              >
+                {project.ownerAvatar ? (
+                  <img
+                    src={project.ownerAvatar}
+                    alt={project.owner}
+                    style={{
+                      width: 64,
+                      height: 64,
+                      borderRadius: "50%",
+                      objectFit: "cover",
+                      marginBottom: 10,
+                      border: "2px solid #0A66C2",
+                    }}
+                  />
+                ) : (
+                  <div
+                    style={{
+                      width: 64,
+                      height: 64,
+                      borderRadius: "50%",
+                      background: "#EAF1FA",
+                      color: "#0A66C2",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: 22,
+                      fontWeight: 800,
+                      marginBottom: 10,
+                    }}
+                  >
+                    {project.owner.charAt(0)}
+                  </div>
+                )}
+                <div style={{ fontWeight: 800, fontSize: 15, color: "rgba(0,0,0,0.90)" }}>
+                  {project.owner}
+                </div>
+                <div style={{ fontSize: 12, color: "#0A66C2", fontWeight: 600, marginTop: 2 }}>
+                  {project.ownerRole ?? "Chủ dự án"}
+                </div>
+                <div style={{ fontSize: 12, color: "rgba(0,0,0,0.55)", marginTop: 2 }}>
+                  {project.ownerCompany ?? "Occupify Enterprise Partner"}
+                </div>
+
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 4,
+                    marginTop: 10,
+                    padding: "3px 10px",
+                    background: "#FEF3C7",
+                    borderRadius: 9999,
+                    fontSize: 12,
+                    fontWeight: 700,
+                    color: "#B45309",
+                  }}
+                >
+                  <Star size={13} weight="fill" color="#D97706" />
+                  <span>{project.ownerRating ?? 4.9} / 5.0</span>
+                </div>
+
+                <div
+                  style={{
+                    fontSize: 11,
+                    color: "rgba(0,0,0,0.50)",
+                    marginTop: 8,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 3,
+                  }}
+                >
+                  <span>✓ {project.ownerCompletedProjects ?? 20}+ dự án hoàn thành</span>
+                  <span>✓ 100% thanh toán đúng cam kết</span>
+                </div>
+              </div>
+
+              {/* Invitation message */}
+              <div
+                style={{
+                  background: "#fff",
+                  borderRadius: 10,
+                  padding: 18,
+                  border: "1px solid rgba(0,0,0,0.08)",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                }}
+              >
+                <div>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 8,
+                      marginBottom: 10,
+                      color: "#0A66C2",
+                      fontWeight: 700,
+                      fontSize: 13,
+                    }}
+                  >
+                    <ChatCircle size={16} weight="fill" />
+                    <span>Lời nhắn trực tiếp gửi tới bạn:</span>
+                  </div>
+                  <p
+                    style={{
+                      fontSize: 13.5,
+                      lineHeight: 1.7,
+                      color: "rgba(0,0,0,0.80)",
+                      fontStyle: "italic",
+                      background: "#F8FAFC",
+                      padding: "12px 14px",
+                      borderRadius: 8,
+                      borderLeft: "3px solid #0A66C2",
+                      margin: 0,
+                    }}
+                  >
+                    "{project.inviteMessage ??
+                      "Chào bạn, chúng tôi rất ấn tượng với năng lực và kinh nghiệm của bạn trên nền tảng Occupify. Rất mong bạn sẽ gia nhập dự án với vai trò then chốt này!"}"
+                  </p>
+                </div>
+
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    marginTop: 14,
+                    paddingTop: 12,
+                    borderTop: "1px solid rgba(0,0,0,0.06)",
+                  }}
+                >
+                  <span style={{ fontSize: 12, color: "rgba(0,0,0,0.50)" }}>
+                    Muốn tìm hiểu kỹ hơn trước khi ký hợp đồng?
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => onOpenChat?.(project.owner)}
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 6,
+                      background: "none",
+                      border: "1px solid #0A66C2",
+                      color: "#0A66C2",
+                      borderRadius: 9999,
+                      padding: "5px 14px",
+                      fontSize: 12,
+                      fontWeight: 700,
+                      cursor: "pointer",
+                      transition: "all 150ms",
+                    }}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLElement).style.background = "#EAF1FA"
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLElement).style.background = "none"
+                    }}
+                  >
+                    <ChatDots size={14} />
+                    <span>Nhắn tin với {project.owner}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Section 2: Mô tả & Thông tin dự án */}
+          <div>
+            <div
+              style={{
+                fontSize: 14,
+                fontWeight: 700,
+                color: "rgba(0,0,0,0.50)",
+                textTransform: "uppercase",
+                letterSpacing: 0.5,
+                marginBottom: 10,
+              }}
+            >
+              2. Mô tả & Mục tiêu dự án
+            </div>
+            <div
+              style={{
+                background: "#fff",
+                border: "1px solid rgba(0,0,0,0.08)",
+                borderRadius: 10,
+                padding: "16px 20px",
+                lineHeight: 1.7,
+                fontSize: 14,
+                color: "rgba(0,0,0,0.80)",
+              }}
+            >
+              {project.description ??
+                "Dự án được triển khai trên nền tảng Occupify với yêu cầu chất lượng cao, các mốc thanh toán và tiến độ được bảo vệ bởi Smart Contract & Ký quỹ an toàn."}
+            </div>
+          </div>
+
+          {/* Section 3: Các vai trò / Role đang được tuyển */}
+          <div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginBottom: 10,
+              }}
+            >
+              <div>
+                <div
+                  style={{
+                    fontSize: 14,
+                    fontWeight: 700,
+                    color: "rgba(0,0,0,0.50)",
+                    textTransform: "uppercase",
+                    letterSpacing: 0.5,
+                  }}
+                >
+                  3. Các vai trò đang được tuyển trong dự án ({project.recruitingRoles?.length ?? 0} vị trí)
+                </div>
+                <div style={{ fontSize: 12, color: "rgba(0,0,0,0.55)", marginTop: 2 }}>
+                  Tổng nhân sự dự kiến: {totalSlots} người ({filledSlots}/{totalSlots} vị trí đã được nhận)
+                </div>
+              </div>
+            </div>
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(360px, 1fr))",
+                gap: 12,
+              }}
+            >
+              {project.recruitingRoles?.map((role) => {
+                const isInvited = role.title === project.invitedRole
+                const isRecruiting = role.status === "recruiting"
+
+                return (
+                  <div
+                    key={role.id}
+                    style={{
+                      borderRadius: 10,
+                      border: isInvited
+                        ? "2px solid #0A66C2"
+                        : "1px solid rgba(0,0,0,0.08)",
+                      background: isInvited ? "#F4F8FE" : "#fff",
+                      padding: "16px 18px",
+                      position: "relative",
+                      boxShadow: isInvited
+                        ? "0 4px 16px rgba(10,102,194,0.12)"
+                        : "none",
+                    }}
+                  >
+                    {isInvited && (
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: -10,
+                          right: 14,
+                          background: "#0A66C2",
+                          color: "#fff",
+                          fontSize: 11,
+                          fontWeight: 700,
+                          padding: "2px 10px",
+                          borderRadius: 9999,
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 4,
+                          boxShadow: "0 2px 6px rgba(10,102,194,0.3)",
+                        }}
+                      >
+                        <SealCheck size={13} weight="fill" />
+                        <span>Vị trí bạn được mời</span>
+                      </div>
+                    )}
+
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "flex-start",
+                        justifyContent: "space-between",
+                        gap: 8,
+                        marginBottom: 8,
+                      }}
+                    >
+                      <div>
+                        <div
+                          style={{
+                            fontWeight: 800,
+                            fontSize: 15,
+                            color: isInvited ? "#0A66C2" : "rgba(0,0,0,0.90)",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 6,
+                          }}
+                        >
+                          <Briefcase size={16} />
+                          <span>{role.title}</span>
+                        </div>
+                        {role.salaryRange && (
+                          <div
+                            style={{
+                              fontSize: 13,
+                              fontWeight: 700,
+                              color: "#057642",
+                              marginTop: 3,
+                            }}
+                          >
+                            {role.salaryRange}
+                          </div>
+                        )}
+                      </div>
+
+                      <span
+                        style={{
+                          fontSize: 11,
+                          fontWeight: 700,
+                          padding: "3px 8px",
+                          borderRadius: 9999,
+                          background: isRecruiting ? "#E5F6E8" : "#F4F2EE",
+                          color: isRecruiting ? "#057642" : "rgba(0,0,0,0.55)",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {isRecruiting
+                          ? `Đang tuyển (${role.slotsFilled}/${role.slotsTotal})`
+                          : `Đã đủ người (${role.slotsFilled}/${role.slotsTotal})`}
+                      </span>
+                    </div>
+
+                    {role.skills && role.skills.length > 0 && (
+                      <div
+                        style={{
+                          display: "flex",
+                          flexWrap: "wrap",
+                          gap: 5,
+                          marginTop: 10,
+                        }}
+                      >
+                        {role.skills.map((s) => (
+                          <span
+                            key={s}
+                            style={{
+                              fontSize: 11,
+                              fontWeight: 600,
+                              background: isInvited ? "#EAF1FA" : "#F4F2EE",
+                              color: isInvited ? "#0A66C2" : "rgba(0,0,0,0.70)",
+                              padding: "2px 7px",
+                              borderRadius: 4,
+                            }}
+                          >
+                            {s}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* Form từ chối nếu user click từ chối */}
+          {showRejectForm && (
+            <div
+              style={{
+                background: "#FEF2F2",
+                border: "1px solid #FECACA",
+                borderRadius: 10,
+                padding: "16px 20px",
+              }}
+            >
+              <div style={{ fontWeight: 700, fontSize: 14, color: "#991B1B", marginBottom: 6 }}>
+                Lý do từ chối lời mời (tuỳ chọn)
+              </div>
+              <textarea
+                value={rejectReason}
+                onChange={(e) => setRejectReason(e.target.value)}
+                placeholder="VD: Hiện tại tôi đang bận dự án khác, mức thù lao chưa phù hợp, hoặc định hướng công nghệ khác..."
+                style={{
+                  width: "100%",
+                  minHeight: 70,
+                  padding: "8px 12px",
+                  borderRadius: 6,
+                  border: "1px solid #FCA5A5",
+                  fontSize: 13,
+                  fontFamily: "inherit",
+                  boxSizing: "border-box",
+                  outline: "none",
+                }}
+              />
+              <div style={{ display: "flex", justifyContent: "flex-end", gap: 10, marginTop: 10 }}>
+                <button
+                  type="button"
+                  onClick={() => setShowRejectForm(false)}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    fontSize: 13,
+                    color: "rgba(0,0,0,0.60)",
+                    cursor: "pointer",
+                    fontWeight: 600,
+                  }}
+                >
+                  Quay lại
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    onReject(project)
+                  }}
+                  style={{
+                    background: "#DC2626",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: 9999,
+                    padding: "6px 18px",
+                    fontSize: 13,
+                    fontWeight: 700,
+                    cursor: "pointer",
+                  }}
+                >
+                  Xác nhận từ chối
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Modal Footer Actions */}
+        <div
+          style={{
+            padding: "18px 28px",
+            background: "#F8FAFC",
+            borderTop: "1px solid rgba(0,0,0,0.08)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            borderBottomLeftRadius: 16,
+            borderBottomRightRadius: 16,
+            flexWrap: "wrap",
+            gap: 12,
+          }}
+        >
+          <button
+            type="button"
+            onClick={onClose}
+            style={{
+              padding: "9px 20px",
+              borderRadius: 9999,
+              border: "1px solid rgba(0,0,0,0.20)",
+              background: "#fff",
+              color: "rgba(0,0,0,0.70)",
+              fontSize: 13,
+              fontWeight: 600,
+              cursor: "pointer",
+              fontFamily: "inherit",
+            }}
+          >
+            Đóng
+          </button>
+
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            {!showRejectForm && (
+              <button
+                type="button"
+                onClick={() => setShowRejectForm(true)}
+                style={{
+                  padding: "9px 20px",
+                  borderRadius: 9999,
+                  border: "1px solid #C03A2B",
+                  background: "none",
+                  color: "#C03A2B",
+                  fontSize: 13,
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  fontFamily: "inherit",
+                  transition: "background 150ms",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.background = "#FBE2E2"
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.background = "none"
+                }}
+              >
+                Từ chối lời mời
+              </button>
+            )}
+
+            <button
+              type="button"
+              onClick={() => onAccept(project)}
+              style={{
+                padding: "9px 28px",
+                borderRadius: 9999,
+                border: "none",
+                background: "#0A66C2",
+                color: "#fff",
+                fontSize: 13,
+                fontWeight: 700,
+                cursor: "pointer",
+                fontFamily: "inherit",
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                boxShadow: "0 2px 10px rgba(10,102,194,0.3)",
+                transition: "background 150ms",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.background = "#084FA0"
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.background = "#0A66C2"
+              }}
+            >
+              <CheckFat size={16} weight="fill" />
+              <span>Chấp nhận lời mời & Tham gia dự án</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ─── Pending Project Card ─────────────────────────────────────────────────────
+
 function PendingProjectCard({
   pending,
   setPending,
+  onAccept,
+  onReject,
+  onViewDetail,
 }: {
   pending: PendingProject[]
   setPending: React.Dispatch<React.SetStateAction<PendingProject[]>>
+  onAccept?: (proj: PendingProject) => void
+  onReject?: (proj: PendingProject) => void
+  onViewDetail?: (proj: PendingProject) => void
 }) {
   if (pending.length === 0) return null
   return (
@@ -6271,12 +8586,19 @@ function PendingProjectCard({
         <span
           style={{ fontWeight: 700, fontSize: 15, color: "rgba(0,0,0,0.90)" }}
         >
-          Dự án trong hàng chờ
+          Lời mời & Dự án trong hàng chờ
         </span>
         <span
-          style={{ fontSize: 12, color: "rgba(0,0,0,0.45)", fontWeight: 600 }}
+          style={{
+            fontSize: 12,
+            background: "#FEF3C7",
+            color: "#B45309",
+            fontWeight: 700,
+            padding: "2px 8px",
+            borderRadius: 9999,
+          }}
         >
-          {pending.length}
+          {pending.length} lời mời
         </span>
       </div>
       {pending.map((proj, idx) => (
@@ -6289,36 +8611,105 @@ function PendingProjectCard({
               display: "flex",
               alignItems: "flex-start",
               gap: 12,
-              padding: "12px 20px",
+              padding: "14px 20px",
+              transition: "background 120ms",
             }}
           >
             <div
               style={{
-                width: 38,
-                height: 38,
+                width: 40,
+                height: 40,
                 borderRadius: 8,
-                background: "#FFF4D6",
+                background: "#EAF1FA",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 flexShrink: 0,
+                color: "#0A66C2",
               }}
             >
-              <Clock size={18} color="#915907" />
+              <Briefcase size={20} weight="fill" />
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div
                 style={{
-                  fontWeight: 700,
-                  fontSize: 14,
-                  color: "rgba(0,0,0,0.90)",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                  flexWrap: "wrap",
+                  marginBottom: 3,
                 }}
               >
-                {proj.name}
+                <div
+                  onClick={() => onViewDetail?.(proj)}
+                  style={{
+                    fontWeight: 700,
+                    fontSize: 14.5,
+                    color: "#0A66C2",
+                    cursor: "pointer",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                  onMouseEnter={(e) =>
+                    ((e.currentTarget as HTMLElement).style.textDecoration =
+                      "underline")
+                  }
+                  onMouseLeave={(e) =>
+                    ((e.currentTarget as HTMLElement).style.textDecoration =
+                      "none")
+                  }
+                >
+                  {proj.name}
+                </div>
+                {proj.invitedRole && (
+                  <span
+                    style={{
+                      background: "#EAF1FA",
+                      color: "#0A66C2",
+                      fontSize: 11,
+                      fontWeight: 700,
+                      padding: "2px 8px",
+                      borderRadius: 4,
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 4,
+                    }}
+                  >
+                    <SealCheck size={12} weight="fill" />
+                    Vai trò: {proj.invitedRole}
+                  </span>
+                )}
               </div>
+
+              <div
+                style={{
+                  fontSize: 12,
+                  color: "rgba(0,0,0,0.60)",
+                  marginTop: 2,
+                  display: "flex",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  gap: 6,
+                }}
+              >
+                <span>Chủ dự án: <b style={{ color: "rgba(0,0,0,0.85)" }}>{proj.owner}</b></span>
+                {proj.ownerCompany && <span>({proj.ownerCompany})</span>}
+                {proj.ownerRating && (
+                  <span
+                    style={{
+                      color: "#B45309",
+                      fontWeight: 700,
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 2,
+                    }}
+                  >
+                    ⭐ {proj.ownerRating}
+                  </span>
+                )}
+              </div>
+
               <div
                 style={{
                   fontSize: 12,
@@ -6326,24 +8717,53 @@ function PendingProjectCard({
                   marginTop: 2,
                 }}
               >
-                Người đăng: {proj.owner}
+                Thù lao: <span style={{ fontWeight: 700, color: "#057642" }}>{proj.price}</span> · {proj.period}
+                {proj.dueDate ? ` · Hạn: ${proj.dueDate}` : ""}
               </div>
-              <div
-                style={{
-                  fontSize: 12,
-                  color: "rgba(0,0,0,0.55)",
-                  marginTop: 1,
-                }}
-              >
-                {proj.price} · {proj.period}
-              </div>
-              <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
+
+              {/* Action buttons */}
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 10, flexWrap: "wrap" }}>
                 <button
-                  onClick={() =>
-                    setPending((p) => p.filter((x) => x.id !== proj.id))
-                  }
+                  type="button"
+                  onClick={() => onViewDetail?.(proj)}
                   style={{
                     padding: "6px 16px",
+                    borderRadius: 9999,
+                    border: "none",
+                    background: "#0A66C2",
+                    fontSize: 12.5,
+                    fontWeight: 700,
+                    cursor: "pointer",
+                    color: "#fff",
+                    fontFamily: "inherit",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 6,
+                    boxShadow: "0 1px 3px rgba(10,102,194,0.25)",
+                    transition: "all 120ms",
+                  }}
+                  onMouseEnter={(e) => {
+                    ;(e.currentTarget as HTMLElement).style.background = "#084fa0"
+                  }}
+                  onMouseLeave={(e) => {
+                    ;(e.currentTarget as HTMLElement).style.background = "#0A66C2"
+                  }}
+                >
+                  <Eye size={14} weight="bold" />
+                  <span>Xem chi tiết dự án</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (onReject) {
+                      onReject(proj)
+                    } else {
+                      setPending((p) => p.filter((x) => x.id !== proj.id))
+                    }
+                  }}
+                  style={{
+                    padding: "6px 14px",
                     borderRadius: 9999,
                     border: "1px solid rgba(0,0,0,0.20)",
                     background: "none",
@@ -6352,42 +8772,16 @@ function PendingProjectCard({
                     cursor: "pointer",
                     color: "rgba(0,0,0,0.60)",
                     fontFamily: "inherit",
+                    transition: "all 120ms",
                   }}
                   onMouseEnter={(e) => {
-                    ; (e.currentTarget as HTMLElement).style.background =
-                      "#F4F2EE"
+                    ;(e.currentTarget as HTMLElement).style.background = "#F4F2EE"
                   }}
                   onMouseLeave={(e) => {
-                    ; (e.currentTarget as HTMLElement).style.background = "none"
+                    ;(e.currentTarget as HTMLElement).style.background = "none"
                   }}
                 >
                   Từ chối
-                </button>
-                <button
-                  onClick={() =>
-                    setPending((p) => p.filter((x) => x.id !== proj.id))
-                  }
-                  style={{
-                    padding: "6px 16px",
-                    borderRadius: 9999,
-                    border: "none",
-                    background: "#0A66C2",
-                    fontSize: 12,
-                    fontWeight: 700,
-                    cursor: "pointer",
-                    color: "#fff",
-                    fontFamily: "inherit",
-                  }}
-                  onMouseEnter={(e) => {
-                    ; (e.currentTarget as HTMLElement).style.background =
-                      "#084FA0"
-                  }}
-                  onMouseLeave={(e) => {
-                    ; (e.currentTarget as HTMLElement).style.background =
-                      "#0A66C2"
-                  }}
-                >
-                  Chấp nhận
                 </button>
               </div>
             </div>
@@ -6876,27 +9270,76 @@ function CreateProjectPage({
 function CreateContractPage({
   onBack,
   onSubmit,
+  initialProject,
+  initialRole,
+  initialCandidateName,
+  initialCandidateEmail,
+  initialBidValue,
+  projects = MY_PROJECTS_DATA,
 }: {
   onBack: () => void
-  onSubmit: () => void
+  onSubmit: (contractData?: any) => void
+  initialProject?: string
+  initialRole?: string
+  initialCandidateName?: string
+  initialCandidateEmail?: string
+  initialBidValue?: string
+  projects?: MyProject[]
 }) {
-  const [title, setTitle] = useState("")
-  const [value, setValue] = useState("")
+  const [title, setTitle] = useState(
+    initialProject && initialRole
+      ? `Hợp đồng ${initialRole} — ${initialProject}`
+      : initialProject
+        ? `Hợp đồng dịch vụ — ${initialProject}`
+        : ""
+  )
+  const [value, setValue] = useState(
+    initialBidValue ? initialBidValue.replace(/[^0-9]/g, "") : ""
+  )
   const [period, setPeriod] = useState(CY_PERIODS[1])
   const [startDate, setStartDate] = useState("")
   const [endDate, setEndDate] = useState("")
   const [termsFileName, setTermsFileName] = useState("")
-  const [freelancerEmail, setFreelancerEmail] = useState("")
-  const [inviteMsg, setInviteMsg] = useState("")
-  const [selectedProject, setSelectedProject] = useState<string | null>(null)
+  const [freelancerEmail, setFreelancerEmail] = useState(
+    initialCandidateEmail ?? (initialCandidateName ? nameToGmail(initialCandidateName) : "")
+  )
+  const [inviteMsg, setInviteMsg] = useState(
+    initialCandidateName
+      ? `Chào ${initialCandidateName}, chúng tôi rất ấn tượng với hồ sơ ứng tuyển của bạn cho vị trí ${initialRole || "chuyên môn"} và trân trọng gửi bạn dự thảo hợp đồng này.`
+      : ""
+  )
+  const [selectedProject, setSelectedProject] = useState<string | null>(initialProject ?? null)
+  const [selectedRole, setSelectedRole] = useState<string>(initialRole ?? "")
+  const [customRoleInput, setCustomRoleInput] = useState("")
+  const [isCustomRole, setIsCustomRole] = useState(false)
   const [showProjectModal, setShowProjectModal] = useState(false)
   const termsFileRef = useRef<HTMLInputElement>(null)
+
+  const STANDARD_TECH_ROLES = [
+    "Backend Developer",
+    "Frontend Developer",
+    "Fullstack Developer",
+    "UI/UX Designer",
+    "Mobile App Developer",
+    "DevOps Engineer",
+    "QA / QC Tester",
+    "Data / BI Analyst",
+    "Project Manager / PO",
+  ]
+
+  const currentProjectObj = selectedProject
+    ? projects.find((p) => p.name === selectedProject)
+    : null
+  const projectRecruitingRoles = currentProjectObj?.recruitingRoles ?? []
+
+  const activeRole = isCustomRole ? customRoleInput.trim() : selectedRole.trim()
 
   const canSubmit =
     title.trim() &&
     value.trim() &&
     freelancerEmail.trim() &&
-    termsFileName.trim()
+    termsFileName.trim() &&
+    activeRole.length > 0
 
   const inputStyle: React.CSSProperties = {
     width: "100%",
@@ -6923,7 +9366,7 @@ function CreateContractPage({
     borderBottom: "1px solid rgba(0,0,0,0.08)",
   }
 
-  const projectNames = MY_PROJECTS_DATA.map((p) => p.name)
+  const projectNames = projects.map((p) => p.name)
 
   return (
     <div style={{ background: "#F4F2EE", minHeight: "100%" }}>
@@ -6931,7 +9374,7 @@ function CreateContractPage({
         <div style={{ maxWidth: 1128, margin: "0 auto", padding: "0 24px" }}>
           <HeaderBackButton onClick={onBack} />
           <h1 style={{ color: "#fff", fontWeight: 700, fontSize: 28, margin: 0 }}>Tạo hợp đồng mới</h1>
-          <p style={{ color: "rgba(255,255,255,0.80)", marginTop: 8, fontSize: 15 }}>Điền thông tin để tạo hợp đồng với freelancer</p>
+          <p style={{ color: "rgba(255,255,255,0.80)", marginTop: 8, fontSize: 15 }}>Điền thông tin và chỉ định vai trò để mời freelancer tham gia</p>
         </div>
       </div>
       <div
@@ -7018,7 +9461,7 @@ function CreateContractPage({
                     marginTop: 2,
                   }}
                 >
-                  Điền thông tin và mời freelancer tham gia hợp đồng
+                  Thiết lập hợp đồng và chọn vai trò chuyên môn cho freelancer
                 </p>
               </div>
             </div>
@@ -7033,7 +9476,7 @@ function CreateContractPage({
                   marginBottom: 16,
                 }}
               >
-                Hợp đồng này dành cho dự án nào?
+                1. Hợp đồng này dành cho dự án nào?
               </div>
               {selectedProject && (
                 <div
@@ -7059,7 +9502,10 @@ function CreateContractPage({
                     {selectedProject}
                   </span>
                   <button
-                    onClick={() => setSelectedProject(null)}
+                    onClick={() => {
+                      setSelectedProject(null)
+                      if (!isCustomRole) setSelectedRole("")
+                    }}
                     style={{
                       background: "none",
                       border: "none",
@@ -7102,12 +9548,243 @@ function CreateContractPage({
                     ; (e.currentTarget as HTMLElement).style.background = "none"
                   }}
                 >
-                  Chọn dự án
+                  {selectedProject ? "Đổi dự án khác" : "Chọn dự án"}
                 </button>
               </div>
             </div>
 
-            {/* Section 2 — Contract details */}
+            {/* Section 2 — Role Selection (Vị trí / Vai trò trong dự án) */}
+            <div style={sec}>
+              <div
+                style={{
+                  fontSize: 15,
+                  fontWeight: 700,
+                  color: "rgba(0,0,0,0.90)",
+                  marginBottom: 4,
+                }}
+              >
+                2. Vai trò (Role) trong hợp đồng *
+              </div>
+              <p
+                style={{
+                  fontSize: 13,
+                  color: "rgba(0,0,0,0.55)",
+                  marginBottom: 16,
+                }}
+              >
+                Chọn vị trí chuyên môn phù hợp mà freelancer sẽ đảm nhiệm trong dự án
+              </p>
+
+              {/* Roles from selected project if available */}
+              {projectRecruitingRoles.length > 0 && (
+                <div style={{ marginBottom: 18 }}>
+                  <label
+                    style={{
+                      ...labelStyle,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 6,
+                    }}
+                  >
+                    <span style={{ color: "#0A66C2" }}>🎯 Các vị trí đang tuyển của dự án "{selectedProject}"</span>
+                    <span
+                      style={{
+                        fontSize: 11,
+                        background: "#EAF1FA",
+                        color: "#0A66C2",
+                        padding: "1px 6px",
+                        borderRadius: 9999,
+                        fontWeight: 700,
+                      }}
+                    >
+                      {projectRecruitingRoles.length} vị trí
+                    </span>
+                  </label>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                    {projectRecruitingRoles.map((r) => {
+                      const isSelected = !isCustomRole && selectedRole === r.title
+                      return (
+                        <button
+                          key={r.id}
+                          type="button"
+                          onClick={() => {
+                            setSelectedRole(r.title)
+                            setIsCustomRole(false)
+                          }}
+                          style={{
+                            padding: "8px 14px",
+                            borderRadius: 8,
+                            border: isSelected
+                              ? "2px solid #0A66C2"
+                              : "1.5px solid rgba(0,0,0,0.12)",
+                            background: isSelected ? "#EAF1FA" : "#fff",
+                            color: isSelected ? "#0A66C2" : "rgba(0,0,0,0.85)",
+                            fontSize: 13,
+                            fontWeight: isSelected ? 700 : 500,
+                            cursor: "pointer",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: 8,
+                            fontFamily: "inherit",
+                            transition: "all 150ms",
+                          }}
+                        >
+                          <Briefcase
+                            size={15}
+                            weight={isSelected ? "fill" : "regular"}
+                            color={isSelected ? "#0A66C2" : "rgba(0,0,0,0.50)"}
+                          />
+                          <span>{r.title}</span>
+                          {r.status === "recruiting" ? (
+                            <span
+                              style={{
+                                fontSize: 11,
+                                background: isSelected ? "#0A66C2" : "#E5F6E8",
+                                color: isSelected ? "#fff" : "#057642",
+                                padding: "1px 6px",
+                                borderRadius: 4,
+                                fontWeight: 700,
+                              }}
+                            >
+                              Đang tuyển
+                            </span>
+                          ) : (
+                            <span
+                              style={{
+                                fontSize: 11,
+                                background: "#F4F2EE",
+                                color: "rgba(0,0,0,0.50)",
+                                padding: "1px 6px",
+                                borderRadius: 4,
+                              }}
+                            >
+                              Đã có người
+                            </span>
+                          )}
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Standard popular roles */}
+              <div style={{ marginBottom: 16 }}>
+                <label style={labelStyle}>
+                  {projectRecruitingRoles.length > 0 ? "Hoặc chọn vai trò công nghệ phổ biến" : "Gợi ý vai trò phổ biến"}
+                </label>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                  {STANDARD_TECH_ROLES.map((roleName) => {
+                    const isSelected = !isCustomRole && selectedRole === roleName
+                    return (
+                      <button
+                        key={roleName}
+                        type="button"
+                        onClick={() => {
+                          setSelectedRole(roleName)
+                          setIsCustomRole(false)
+                        }}
+                        style={{
+                          padding: "6px 14px",
+                          borderRadius: 9999,
+                          border: isSelected
+                            ? "1.5px solid #0A66C2"
+                            : "1px solid rgba(0,0,0,0.15)",
+                          background: isSelected ? "#0A66C2" : "#fff",
+                          color: isSelected ? "#fff" : "rgba(0,0,0,0.75)",
+                          fontSize: 13,
+                          fontWeight: isSelected ? 700 : 500,
+                          cursor: "pointer",
+                          fontFamily: "inherit",
+                          transition: "all 120ms",
+                        }}
+                      >
+                        {roleName}
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+
+              {/* Custom role input */}
+              <div style={{ marginTop: 12 }}>
+                <label style={labelStyle}>Hoặc tự nhập vai trò khác</label>
+                <div style={{ display: "flex", gap: 8, maxWidth: 440 }}>
+                  <input
+                    type="text"
+                    value={customRoleInput}
+                    onChange={(e) => {
+                      setCustomRoleInput(e.target.value)
+                      if (e.target.value.trim()) {
+                        setIsCustomRole(true)
+                      }
+                    }}
+                    onFocus={() => {
+                      if (customRoleInput.trim()) setIsCustomRole(true)
+                    }}
+                    placeholder="VD: Smart Contract Engineer, Security Auditor..."
+                    style={{
+                      ...inputStyle,
+                      border: isCustomRole
+                        ? "2px solid #0A66C2"
+                        : "1px solid rgba(0,0,0,0.15)",
+                    }}
+                  />
+                  {customRoleInput.trim() && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsCustomRole(true)
+                      }}
+                      style={{
+                        padding: "0 16px",
+                        borderRadius: 4,
+                        border: "none",
+                        background: isCustomRole ? "#0A66C2" : "#FAFAF8",
+                        color: isCustomRole ? "#fff" : "rgba(0,0,0,0.70)",
+                        fontWeight: 600,
+                        fontSize: 13,
+                        cursor: "pointer",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      Áp dụng
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Active role indicator preview */}
+              {activeRole && (
+                <div
+                  style={{
+                    marginTop: 14,
+                    padding: "10px 14px",
+                    background: "#EAF1FA",
+                    borderRadius: 6,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 10,
+                  }}
+                >
+                  <SealCheck size={18} color="#0A66C2" weight="fill" />
+                  <span style={{ fontSize: 13, color: "rgba(0,0,0,0.70)" }}>
+                    Vai trò đã chọn cho hợp đồng:
+                  </span>
+                  <span
+                    style={{
+                      fontSize: 14,
+                      fontWeight: 700,
+                      color: "#0A66C2",
+                    }}
+                  >
+                    {activeRole}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            {/* Section 3 — Contract details */}
             <div style={sec}>
               <div
                 style={{
@@ -7419,7 +10096,18 @@ function CreateContractPage({
               </button>
               <button
                 onClick={() => {
-                  if (canSubmit) onSubmit()
+                  if (canSubmit) {
+                    onSubmit({
+                      title,
+                      value,
+                      period,
+                      startDate,
+                      endDate,
+                      role: activeRole,
+                      freelancerEmail,
+                      project: selectedProject,
+                    })
+                  }
                 }}
                 disabled={!canSubmit}
                 style={{
@@ -7611,6 +10299,7 @@ function NewHomePage({
   const [searchKeyword, setSearchKeyword] = useState("")
   const [sortBy, setSortBy] = useState<"latest" | "recommended" | "budget-desc">("latest")
   const [timeFilter, setTimeFilter] = useState<"all" | "this-month" | "last-month" | "last-30-days">("all")
+  const [salaryTypeFilter, setSalaryTypeFilter] = useState<"all" | "fixed" | "hourly" | "weekly" | "monthly">("all")
   const [minSalarySlider, setMinSalarySlider] = useState<number>(0)
 
   if (subPage === "search")
@@ -7641,11 +10330,6 @@ function NewHomePage({
       />
     )
 
-  const parseBudgetNum = (bStr: string) => {
-    const num = parseInt(bStr.replace(/[^0-9]/g, ""), 10)
-    return isNaN(num) ? 0 : num
-  }
-
   // Filter jobs
   const filteredJobs = JOB_LISTINGS.filter((job) => {
     if (searchKeyword.trim()) {
@@ -7657,8 +10341,19 @@ function NewHomePage({
       if (!matchTitle && !matchCompany && !matchDesc && !matchSkills) return false
     }
 
-    const budgetVal = parseBudgetNum(job.budget)
-    if (minSalarySlider > 0 && budgetVal < minSalarySlider * 1000000) return false
+    // Filter by salary type
+    if (salaryTypeFilter !== "all" && job.salaryType !== salaryTypeFilter) {
+      return false
+    }
+
+    // Filter by minimum salary threshold
+    if (minSalarySlider > 0) {
+      if (salaryTypeFilter === "hourly") {
+        if (job.salaryValue < minSalarySlider * 1000) return false
+      } else {
+        if (job.salaryValue < minSalarySlider * 1000000) return false
+      }
+    }
 
     if (timeFilter === "this-month" || timeFilter === "last-30-days") {
       if (job.postedAgo.includes("1 tháng") || job.postedAgo.includes("tháng trước")) return false
@@ -7674,16 +10369,20 @@ function NewHomePage({
   if (sortBy === "latest") {
     displayJobs.sort((a, b) => b.id - a.id)
   } else if (sortBy === "budget-desc") {
-    displayJobs.sort((a, b) => parseBudgetNum(b.budget) - parseBudgetNum(a.budget))
+    displayJobs.sort((a, b) => (b.salaryValue || 0) - (a.salaryValue || 0))
   }
 
-
-
-  const hasActiveFilters = sortBy !== "latest" || timeFilter !== "all" || minSalarySlider > 0 || searchKeyword !== ""
+  const hasActiveFilters =
+    sortBy !== "latest" ||
+    timeFilter !== "all" ||
+    salaryTypeFilter !== "all" ||
+    minSalarySlider > 0 ||
+    searchKeyword !== ""
 
   const handleResetFilters = () => {
     setSortBy("latest")
     setTimeFilter("all")
+    setSalaryTypeFilter("all")
     setMinSalarySlider(0)
     setSearchKeyword("")
   }
@@ -7983,7 +10682,38 @@ function NewHomePage({
                 </select>
               </div>
 
-              {/* 3. Thanh trượt Mức lương */}
+              {/* 3. Dropdown Chọn loại lương (salary_type) */}
+              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <Wallet size={15} color="#0A66C2" />
+                <span style={{ fontSize: 13, fontWeight: 600, color: "rgba(0,0,0,0.60)" }}>Hình thức:</span>
+                <select
+                  value={salaryTypeFilter}
+                  onChange={(e) => {
+                    setSalaryTypeFilter(e.target.value as any)
+                    setMinSalarySlider(0)
+                  }}
+                  style={{
+                    padding: "6px 12px",
+                    borderRadius: 6,
+                    border: "1px solid rgba(0,0,0,0.15)",
+                    fontSize: 13,
+                    fontFamily: "inherit",
+                    background: "#fff",
+                    fontWeight: 600,
+                    color: "rgba(0,0,0,0.85)",
+                    cursor: "pointer",
+                    outline: "none",
+                  }}
+                >
+                  <option value="all">Tất cả loại lương</option>
+                  <option value="fixed">Cố định / Dự án</option>
+                  <option value="hourly">Theo giờ</option>
+                  <option value="weekly">Theo tuần</option>
+                  <option value="monthly">Theo tháng</option>
+                </select>
+              </div>
+
+              {/* 4. Thanh trượt Mức lương tùy biến thích ứng */}
               <div
                 style={{
                   display: "flex",
@@ -7997,29 +10727,59 @@ function NewHomePage({
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                  <Wallet size={16} color="#0A66C2" weight="bold" />
+                  <SlidersHorizontal size={15} color="#0A66C2" weight="bold" />
                   <span style={{ fontSize: 13, fontWeight: 700, color: "rgba(0,0,0,0.70)" }}>
-                    Lương tối thiểu:
+                    {salaryTypeFilter === "hourly"
+                      ? "Lương/giờ:"
+                      : salaryTypeFilter === "weekly"
+                        ? "Lương/tuần:"
+                        : salaryTypeFilter === "monthly"
+                          ? "Lương/tháng:"
+                          : salaryTypeFilter === "fixed"
+                            ? "Lương/dự án:"
+                            : "Lương tối thiểu:"}
                   </span>
                 </div>
                 <input
                   type="range"
                   min={0}
-                  max={100}
-                  step={5}
+                  max={
+                    salaryTypeFilter === "hourly"
+                      ? 1000
+                      : salaryTypeFilter === "weekly"
+                        ? 25
+                        : salaryTypeFilter === "monthly"
+                          ? 80
+                          : 100
+                  }
+                  step={
+                    salaryTypeFilter === "hourly"
+                      ? 50
+                      : salaryTypeFilter === "weekly"
+                        ? 1
+                        : 5
+                  }
                   value={minSalarySlider}
                   onChange={(e) => setMinSalarySlider(Number(e.target.value))}
-                  style={{ width: 130, accentColor: "#0A66C2", cursor: "pointer" }}
+                  style={{ width: 120, accentColor: "#0A66C2", cursor: "pointer" }}
                 />
                 <span
                   style={{
                     fontSize: 13,
                     fontWeight: 700,
                     color: minSalarySlider > 0 ? "#0A66C2" : "rgba(0,0,0,0.55)",
-                    minWidth: 105,
+                    minWidth: 110,
                   }}
                 >
-                  {minSalarySlider === 0 ? "Tất cả mức lương" : `≥ ${minSalarySlider} triệu ₫`}
+                  {minSalarySlider === 0
+                    ? "Tất cả mức"
+                    : salaryTypeFilter === "hourly"
+                      ? `≥ ${(minSalarySlider * 1000).toLocaleString("vi-VN")} ₫/h`
+                      : salaryTypeFilter === "weekly"
+                        ? `≥ ${minSalarySlider} triệu ₫/tuần`
+                        : salaryTypeFilter === "monthly"
+                          ? `≥ ${minSalarySlider} triệu ₫/tháng`
+                          : `≥ ${minSalarySlider} triệu ₫`}
                 </span>
                 {minSalarySlider > 0 && (
                   <button
@@ -8081,6 +10841,38 @@ function NewHomePage({
                   />
                 </span>
               )}
+              {salaryTypeFilter !== "all" && (
+                <span
+                  style={{
+                    marginLeft: 8,
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 4,
+                    background: "#FEF3C7",
+                    color: "#92400E",
+                    padding: "2px 8px",
+                    borderRadius: 9999,
+                    fontSize: 12,
+                    fontWeight: 600,
+                  }}
+                >
+                  {salaryTypeFilter === "fixed"
+                    ? "Cố định / Dự án"
+                    : salaryTypeFilter === "hourly"
+                      ? "Theo giờ"
+                      : salaryTypeFilter === "weekly"
+                        ? "Theo tuần"
+                        : "Theo tháng"}
+                  <X
+                    size={12}
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      setSalaryTypeFilter("all")
+                      setMinSalarySlider(0)
+                    }}
+                  />
+                </span>
+              )}
               {minSalarySlider > 0 && (
                 <span
                   style={{
@@ -8096,7 +10888,13 @@ function NewHomePage({
                     fontWeight: 600,
                   }}
                 >
-                  Lương ≥ {minSalarySlider} triệu ₫
+                  {salaryTypeFilter === "hourly"
+                    ? `Lương ≥ ${(minSalarySlider * 1000).toLocaleString("vi-VN")} ₫/giờ`
+                    : salaryTypeFilter === "weekly"
+                      ? `Lương ≥ ${minSalarySlider} triệu ₫/tuần`
+                      : salaryTypeFilter === "monthly"
+                        ? `Lương ≥ ${minSalarySlider} triệu ₫/tháng`
+                        : `Lương ≥ ${minSalarySlider} triệu ₫`}
                   <X
                     size={12}
                     style={{ cursor: "pointer" }}
@@ -8609,10 +11407,21 @@ function ProjectsManagementPage({
   const [toast, setToast] = useState<string | null>(null)
   const [subPage, setSubPage] = useState<string | null>(null)
   const [myProjects, setMyProjects] = useState<MyProject[]>(MY_PROJECTS_DATA)
-  const [employeeProjects] = useState<MyProject[]>(EMPLOYEE_PROJECTS_DATA)
+  const [employeeProjects, setEmployeeProjects] = useState<MyProject[]>(
+    EMPLOYEE_PROJECTS_DATA,
+  )
   const [pending, setPending] = useState<PendingProject[]>(
     PENDING_PROJECTS_DATA,
   )
+  const [selectedInvitation, setSelectedInvitation] =
+    useState<PendingProject | null>(null)
+  const [contractContext, setContractContext] = useState<{
+    initialProject?: string
+    initialRole?: string
+    initialCandidateName?: string
+    initialCandidateEmail?: string
+    initialBidValue?: string
+  } | null>(null)
   const [viewingMyProject, setViewingMyProject] = useState<MyProject | null>(
     null,
   )
@@ -8623,6 +11432,50 @@ function ProjectsManagementPage({
     "all" | "owner" | "participant" | "pending"
   >("all")
   const [searchKeyword, setSearchKeyword] = useState("")
+
+  const handleAcceptInvitation = (proj: PendingProject) => {
+    // 1. Remove from pending queue
+    setPending((prev) => prev.filter((p) => p.id !== proj.id))
+    // 2. Add to employeeProjects with the invited role
+    const newProject: MyProject = {
+      id: Date.now(),
+      name: proj.name,
+      description: proj.description,
+      owner: proj.owner,
+      ownerRole: proj.ownerRole,
+      ownerCompany: proj.ownerCompany,
+      ownerRating: proj.ownerRating,
+      period: proj.period,
+      dueDate: proj.dueDate || "2026-12-31",
+      tags: proj.tags,
+      recruitingRoles: proj.recruitingRoles,
+      members: [
+        {
+          name: "Nguyễn Minh Khoa (Tôi)",
+          email: "khoa@gmail.com",
+          price: proj.price,
+          dueDate: proj.dueDate || "2026-12-31",
+          salaryDueDate:
+            proj.period === "Hàng tháng"
+              ? "Ngày 05 hàng tháng"
+              : "Theo tiến độ mốc nghiệm thu",
+          role: proj.invitedRole,
+          status: "Đang làm",
+        },
+      ],
+    }
+    setEmployeeProjects((prev) => [newProject, ...prev])
+    setSelectedInvitation(null)
+    setToast(
+      `Chúc mừng! Bạn đã tham gia dự án "${proj.name}" với vai trò ${proj.invitedRole}.`,
+    )
+  }
+
+  const handleRejectInvitation = (proj: PendingProject) => {
+    setPending((prev) => prev.filter((p) => p.id !== proj.id))
+    setSelectedInvitation(null)
+    setToast(`Đã từ chối lời mời tham gia dự án "${proj.name}".`)
+  }
 
   const filteredMyProjects = myProjects.filter((p) => {
     if (!searchKeyword.trim()) return true
@@ -8648,7 +11501,8 @@ function ProjectsManagementPage({
     const kw = searchKeyword.toLowerCase()
     return (
       p.name.toLowerCase().includes(kw) ||
-      p.owner.toLowerCase().includes(kw)
+      p.owner.toLowerCase().includes(kw) ||
+      (p.invitedRole && p.invitedRole.toLowerCase().includes(kw))
     )
   })
 
@@ -8672,10 +11526,20 @@ function ProjectsManagementPage({
   if (subPage === "create-contract")
     return (
       <CreateContractPage
-        onBack={() => setSubPage(null)}
-        onSubmit={() => {
+        onBack={() => {
           setSubPage(null)
-          setToast("Hợp đồng đã được tạo và gửi lời mời!")
+          setContractContext(null)
+        }}
+        initialProject={contractContext?.initialProject}
+        initialRole={contractContext?.initialRole}
+        initialCandidateName={contractContext?.initialCandidateName}
+        initialCandidateEmail={contractContext?.initialCandidateEmail}
+        initialBidValue={contractContext?.initialBidValue}
+        projects={myProjects}
+        onSubmit={(contractData) => {
+          setSubPage(null)
+          setContractContext(null)
+          setToast("Hợp đồng đã được tạo và gửi lời mời thành công!")
         }}
       />
     )
@@ -8684,8 +11548,15 @@ function ProjectsManagementPage({
       <MyProjectDetailPage
         project={viewingMyProject}
         onBack={() => setViewingMyProject(null)}
-        onCreateContract={() => {
+        onCreateContract={(roleTitle, candidateName, bidValue, candidateEmail) => {
           setViewingMyProject(null)
+          setContractContext({
+            initialProject: viewingMyProject.name,
+            initialRole: roleTitle,
+            initialCandidateName: candidateName,
+            initialCandidateEmail: candidateEmail,
+            initialBidValue: bidValue,
+          })
           setSubPage("create-contract")
         }}
       />
@@ -9125,7 +11996,13 @@ function ProjectsManagementPage({
 
           {/* Right Column: Pending & Quick shortcuts */}
           <div>
-            <PendingProjectCard pending={filteredPending} setPending={setPending} />
+            <PendingProjectCard
+              pending={filteredPending}
+              setPending={setPending}
+              onAccept={handleAcceptInvitation}
+              onReject={handleRejectInvitation}
+              onViewDetail={(p) => setSelectedInvitation(p)}
+            />
 
             {/* Quick Action Shortcuts Card */}
             <div
@@ -9199,7 +12076,13 @@ function ProjectsManagementPage({
 
       {activeTab === "pending" && (
         <div style={{ maxWidth: 800 }}>
-          <PendingProjectCard pending={filteredPending} setPending={setPending} />
+          <PendingProjectCard
+            pending={filteredPending}
+            setPending={setPending}
+            onAccept={handleAcceptInvitation}
+            onReject={handleRejectInvitation}
+            onViewDetail={(p) => setSelectedInvitation(p)}
+          />
           {filteredPending.length === 0 && (
             <div
               style={{
@@ -9216,6 +12099,17 @@ function ProjectsManagementPage({
             </div>
           )}
         </div>
+      )}
+
+      {/* Project Invitation Details Modal */}
+      {selectedInvitation && (
+        <ProjectInvitationModal
+          project={selectedInvitation}
+          onClose={() => setSelectedInvitation(null)}
+          onAccept={handleAcceptInvitation}
+          onReject={handleRejectInvitation}
+          onOpenChat={(owner) => setToast(`Đang mở cửa sổ trò chuyện với ${owner}...`)}
+        />
       )}
 
       {toast && <Toast message={toast} onDone={() => setToast(null)} />}
@@ -9829,28 +12723,100 @@ function ProjectDetailsPage({
   isSaved?: boolean
   onToggleSave?: () => void
 }) {
-  const [applyModalOpen, setApplyModalOpen] = useState(false)
-  const [bidPrice, setBidPrice] = useState(job.budget)
-  const [deliveryDays, setDeliveryDays] = useState("14")
-  const [coverLetter, setCoverLetter] = useState("")
-  const [applied, setApplied] = useState(false)
+  const [selectedRoleForApply, setSelectedRoleForApply] = useState<JobRoleItem | null>(null)
+  const [appliedRoleIds, setAppliedRoleIds] = useState<string[]>([])
+  const [salaryCycle, setSalaryCycle] = useState<"monthly" | "hourly" | "daily" | "weekly" | "fixed">("monthly")
+  const [bidPrice, setBidPrice] = useState("")
+  const [commitment, setCommitment] = useState("Dài hạn (Trên 6 tháng) — Bắt đầu ngay")
+  const [fixedDeliveryDays, setFixedDeliveryDays] = useState("14 ngày")
+  const [weeklyHours, setWeeklyHours] = useState("30 - 40 giờ / tuần (Toàn thời gian)")
+  const [cvFile, setCvFile] = useState<{ name: string; size: string } | null>({
+    name: "CV_NguyenMinhKhoa_LeadDesigner.pdf",
+    size: "2.1 MB",
+  })
+  const [portfolioLink, setPortfolioLink] = useState("https://behance.net/minhkhoa_profile")
   const [reportModalOpen, setReportModalOpen] = useState(false)
   const [reportReason, setReportReason] = useState("Nội dung vi phạm / Lừa đảo")
   const [reportDetail, setReportDetail] = useState("")
   const [reportImage, setReportImage] = useState("")
   const [toastMessage, setToastMessage] = useState<string | null>(null)
+  const cvFileInputRef = useRef<HTMLInputElement>(null)
 
   const cardStyle: React.CSSProperties = {
     background: "#fff",
-    borderRadius: 8,
+    borderRadius: 10,
     boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+  }
+
+  // Ensure project has at least 1 role
+  const roles: JobRoleItem[] =
+    job.roles && job.roles.length > 0
+      ? job.roles
+      : [
+          {
+            id: `def-${job.id}`,
+            title: job.title,
+            minBudget: job.salaryValue ? Math.round(job.salaryValue * 0.85) : 20000000,
+            maxBudget: job.salaryValue ? Math.round(job.salaryValue * 1.15) : 35000000,
+            budgetDisplay: job.budget,
+            salaryType: job.salaryType || "fixed",
+            salaryTypeLabel:
+              job.salaryType === "hourly"
+                ? "/ giờ"
+                : job.salaryType === "weekly"
+                  ? "/ tuần"
+                  : job.salaryType === "monthly"
+                    ? "/ tháng"
+                    : "/ dự án",
+            jd: job.description,
+            requirements: [
+              "Tối thiểu 2 năm kinh nghiệm thực chiến trong các dự án tương đương",
+              "Khả năng làm việc độc lập và báo cáo tiến độ đúng hạn",
+              "Cam kết chất lượng đầu ra đạt tiêu chuẩn sản phẩm",
+            ],
+            skills: job.skills,
+            slotsTotal: 1,
+            slotsFilled: 0,
+            status: "recruiting",
+          },
+        ]
+
+  const handleOpenApplyModal = (role: JobRoleItem) => {
+    setSelectedRoleForApply(role)
+    const initialCycle: "monthly" | "hourly" | "daily" | "weekly" | "fixed" =
+      role.salaryType === "hourly"
+        ? "hourly"
+        : role.salaryType === "weekly"
+          ? "weekly"
+          : role.salaryType === "monthly"
+            ? "monthly"
+            : role.salaryType === "fixed"
+              ? "fixed"
+              : "monthly"
+    setSalaryCycle(initialCycle)
+    if (initialCycle === "hourly") {
+      setBidPrice(role.minBudget ? `${role.minBudget.toLocaleString("vi-VN")} ₫` : "450.000 ₫")
+      setWeeklyHours("30 - 40 giờ / tuần (Toàn thời gian)")
+      setCommitment("Dài hạn (Trên 6 tháng) — Bắt đầu ngay")
+    } else if (initialCycle === "fixed") {
+      setBidPrice(role.minBudget ? `${(role.minBudget / 1000000).toFixed(0)}.000.000 ₫` : "30.000.000 ₫")
+      setFixedDeliveryDays("14 ngày")
+    } else {
+      setBidPrice(role.minBudget ? `${(role.minBudget / 1000000).toFixed(0)}.000.000 ₫` : "35.000.000 ₫")
+      setCommitment("Dài hạn (Trên 6 tháng) — Bắt đầu ngay")
+    }
+    setPortfolioLink("https://behance.net/minhkhoa_profile")
   }
 
   const handleApply = (e: React.FormEvent) => {
     e.preventDefault()
-    setApplied(true)
-    setApplyModalOpen(false)
-    setToastMessage("Đã nộp hồ sơ ứng tuyển thành công! Khách hàng sẽ sớm liên hệ với bạn.")
+    if (!selectedRoleForApply) return
+    const appliedRole = selectedRoleForApply
+    setAppliedRoleIds((prev) => [...prev, appliedRole.id])
+    setSelectedRoleForApply(null)
+    setToastMessage(
+      `Đã nộp hồ sơ ứng tuyển vai trò "${appliedRole.title}" thành công! Khách hàng sẽ xem xét và phản hồi sớm qua tin nhắn.`
+    )
   }
 
   const handleReport = () => {
@@ -9908,74 +12874,98 @@ function ProjectDetailsPage({
             alignItems: "start",
           }}
         >
-          {/* Left Column: Project Details */}
+          {/* Left Column: Project Details & Role Cards */}
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {/* Header Card */}
             <div style={{ ...cardStyle, padding: "24px 28px" }}>
-              <h1
-                style={{
-                  fontSize: 22,
-                  fontWeight: 800,
-                  color: "rgba(0,0,0,0.90)",
-                  lineHeight: 1.35,
-                  marginBottom: 12,
-                  letterSpacing: "-0.01em",
-                }}
-              >
-                {job.title}
-              </h1>
+              <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 16 }}>
+                <div>
+                  <h1
+                    style={{
+                      fontSize: 23,
+                      fontWeight: 800,
+                      color: "rgba(0,0,0,0.90)",
+                      lineHeight: 1.35,
+                      marginBottom: 10,
+                      letterSpacing: "-0.01em",
+                    }}
+                  >
+                    {job.title}
+                  </h1>
 
-              {/* Badge 'Đang mở tuyển' và 'Thời gian' nằm bên dưới tiêu đề */}
-              <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
-                <span
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+                    <span
+                      style={{
+                        background: "#EAF1FA",
+                        color: "#0A66C2",
+                        borderRadius: 9999,
+                        padding: "4px 12px",
+                        fontSize: 12.5,
+                        fontWeight: 700,
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 5,
+                      }}
+                    >
+                      <BriefcaseMetal size={13} weight="fill" />
+                      Đang mở tuyển {roles.length} vai trò
+                    </span>
+                    <span style={{ fontSize: 13, color: "rgba(0,0,0,0.50)", display: "flex", alignItems: "center", gap: 4 }}>
+                      <Clock size={13} />
+                      Đăng {job.postedAgo}
+                    </span>
+                  </div>
+                </div>
+
+                <button
+                  onClick={onToggleSave}
                   style={{
-                    background: "#E5F6E8",
-                    color: "#057642",
-                    borderRadius: 9999,
-                    padding: "4px 12px",
-                    fontSize: 12,
-                    fontWeight: 700,
-                    display: "inline-flex",
+                    display: "flex",
                     alignItems: "center",
-                    gap: 4,
+                    gap: 6,
+                    padding: "8px 16px",
+                    borderRadius: 9999,
+                    border: "1px solid rgba(0,0,0,0.20)",
+                    background: "#fff",
+                    color: isSaved ? "#0A66C2" : "rgba(0,0,0,0.70)",
+                    fontWeight: 700,
+                    fontSize: 13,
+                    cursor: "pointer",
+                    fontFamily: "inherit",
+                    transition: "all 150ms ease",
+                    flexShrink: 0,
                   }}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = "#F4F2EE")}
+                  onMouseLeave={(e) => (e.currentTarget.style.background = "#fff")}
                 >
-                  <CheckCircle size={13} weight="fill" />
-                  Đang mở tuyển
-                </span>
-                <span style={{ fontSize: 13, color: "rgba(0,0,0,0.50)", display: "flex", alignItems: "center", gap: 4 }}>
-                  <Clock size={13} />
-                  {job.postedAgo}
-                </span>
+                  <Bookmark size={16} weight={isSaved ? "fill" : "regular"} />
+                  <span>{isSaved ? "Đã lưu" : "Lưu tin"}</span>
+                </button>
               </div>
             </div>
 
             {/* Description Card */}
-            <div style={{ ...cardStyle, padding: 28 }}>
-              <h2 style={{ fontSize: 17, fontWeight: 700, color: "rgba(0,0,0,0.90)", marginBottom: 14 }}>
-                Mô tả chi tiết công việc & dự án
+            <div style={{ ...cardStyle, padding: "24px 28px" }}>
+              <h2 style={{ fontSize: 17, fontWeight: 800, color: "rgba(0,0,0,0.90)", marginBottom: 12 }}>
+                Tổng quan dự án & Bối cảnh
               </h2>
               <p style={{ fontSize: 14.5, color: "rgba(0,0,0,0.80)", lineHeight: 1.75, marginBottom: 16 }}>
                 {job.description}
               </p>
-              <p style={{ fontSize: 14.5, color: "rgba(0,0,0,0.80)", lineHeight: 1.75, marginBottom: 20 }}>
-                Yêu cầu ứng viên có tinh thần trách nhiệm, chủ động cập nhật tiến độ theo từng mốc công việc và phối hợp chặt chẽ với khách hàng trong suốt quá trình triển khai dự án.
-              </p>
-
-              <div style={{ borderTop: "1px solid rgba(0,0,0,0.08)", paddingTop: 18 }}>
-                <div style={{ fontSize: 13, fontWeight: 700, color: "rgba(0,0,0,0.60)", marginBottom: 10, textTransform: "uppercase" }}>
-                  Kỹ năng chuyên môn yêu cầu
+              <div style={{ borderTop: "1px solid rgba(0,0,0,0.08)", paddingTop: 14 }}>
+                <div style={{ fontSize: 12, fontWeight: 700, color: "rgba(0,0,0,0.55)", marginBottom: 8, textTransform: "uppercase" }}>
+                  Kỹ năng công nghệ tổng quan của dự án
                 </div>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                   {job.skills.map((skill) => (
                     <span
                       key={skill}
                       style={{
-                        background: "#EAF1FA",
-                        color: "#0A66C2",
-                        padding: "5px 14px",
-                        borderRadius: 9999,
-                        fontSize: 13,
+                        background: "#F1F5F9",
+                        color: "#334155",
+                        padding: "4px 12px",
+                        borderRadius: 6,
+                        fontSize: 12.5,
                         fontWeight: 600,
                       }}
                     >
@@ -9986,102 +12976,232 @@ function ProjectDetailsPage({
               </div>
             </div>
 
-            {/* Section Ngân sách dự án & 2 button Lưu tin và Ứng tuyển đưa xuống dưới */}
-            <div
-              style={{
-                ...cardStyle,
-                padding: "20px 24px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                background: "#F8FAFC",
-                border: "1px solid rgba(0,0,0,0.08)",
-                flexWrap: "wrap",
-                gap: 16,
-              }}
-            >
-              <div>
-                <div style={{ fontSize: 12, fontWeight: 700, color: "rgba(0,0,0,0.50)", textTransform: "uppercase", letterSpacing: 0.5 }}>
-                  Ngân sách dự án
+            {/* ─── Role-Based Hiring Section (Ngân sách & JD theo Role) ──── */}
+            <div style={{ ...cardStyle, padding: "24px 28px" }}>
+              <div style={{ marginBottom: 18 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <BriefcaseMetal size={20} color="#0A66C2" weight="fill" />
+                  <h2 style={{ fontSize: 18, fontWeight: 800, color: "rgba(0,0,0,0.90)", margin: 0 }}>
+                    Các vai trò tuyển dụng trong dự án
+                  </h2>
+                  <span
+                    style={{
+                      background: "#EAF1FA",
+                      color: "#0A66C2",
+                      fontSize: 12,
+                      fontWeight: 700,
+                      padding: "2px 10px",
+                      borderRadius: 9999,
+                    }}
+                  >
+                    {roles.length} vai trò
+                  </span>
                 </div>
-                <div style={{ fontSize: 24, fontWeight: 800, color: "#0A66C2", marginTop: 2 }}>
-                  {job.budget}
-                </div>
-                <div style={{ fontSize: 12.5, color: "rgba(0,0,0,0.50)", marginTop: 2 }}>
-                  {job.avgBid}
-                </div>
+                <p style={{ fontSize: 13.5, color: "rgba(0,0,0,0.55)", marginTop: 6, lineHeight: 1.5, margin: 0 }}>
+                  Mỗi vai trò có bản mô tả công việc (JD), tiêu chí năng lực và khoảng ngân sách min – max riêng biệt.
+                  Hãy lựa chọn vai trò phù hợp nhất với chuyên môn của bạn để nộp hồ sơ.
+                </p>
               </div>
 
-              <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-                <button
-                  onClick={onToggleSave}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 6,
-                    padding: "10px 18px",
-                    borderRadius: 9999,
-                    border: "1px solid rgba(0,0,0,0.20)",
-                    background: "#fff",
-                    color: isSaved ? "#0A66C2" : "rgba(0,0,0,0.70)",
-                    fontWeight: 700,
-                    fontSize: 13.5,
-                    cursor: "pointer",
-                    fontFamily: "inherit",
-                    transition: "all 150ms ease",
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = "#F4F2EE")}
-                  onMouseLeave={(e) => (e.currentTarget.style.background = "#fff")}
-                >
-                  <Bookmark size={16} weight={isSaved ? "fill" : "regular"} />
-                  <span>{isSaved ? "Đã lưu" : "Lưu tin"}</span>
-                </button>
+              {/* Roles Card List */}
+              <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                {roles.map((role) => {
+                  const isApplied = appliedRoleIds.includes(role.id)
+                  return (
+                    <div
+                      key={role.id}
+                      style={{
+                        background: "#fff",
+                        borderRadius: 10,
+                        border: isApplied ? "1.5px solid #86EFAC" : "1px solid rgba(0,0,0,0.12)",
+                        boxShadow: isApplied
+                          ? "0 2px 12px rgba(5,118,66,0.08)"
+                          : "0 1px 4px rgba(0,0,0,0.04)",
+                        padding: "20px 22px",
+                        transition: "all 150ms ease",
+                      }}
+                    >
+                      {/* Top row: Title + Slots status + Budget range */}
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "flex-start",
+                          justifyContent: "space-between",
+                          flexWrap: "wrap",
+                          gap: 12,
+                          paddingBottom: 14,
+                          borderBottom: "1px solid rgba(0,0,0,0.06)",
+                        }}
+                      >
+                        <div>
+                          <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+                            <span
+                              style={{
+                                fontSize: 17,
+                                fontWeight: 800,
+                                color: "#0A66C2",
+                              }}
+                            >
+                              {role.title}
+                            </span>
+                            <span
+                              style={{
+                                background: role.status === "recruiting" ? "#EAF1FA" : "#F4F2EE",
+                                color: role.status === "recruiting" ? "#0A66C2" : "rgba(0,0,0,0.55)",
+                                fontSize: 11.5,
+                                fontWeight: 700,
+                                padding: "2px 8px",
+                                borderRadius: 4,
+                              }}
+                            >
+                              {role.status === "recruiting"
+                                ? `Đang tuyển (${role.slotsFilled}/${role.slotsTotal} chỉ tiêu)`
+                                : "Đã tuyển đủ"}
+                            </span>
+                          </div>
+                        </div>
 
-                <button
-                  onClick={() => setApplyModalOpen(true)}
-                  disabled={applied}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 6,
-                    padding: "10px 24px",
-                    borderRadius: 9999,
-                    border: "none",
-                    background: applied ? "#057642" : "#0A66C2",
-                    color: "#fff",
-                    fontWeight: 700,
-                    fontSize: 14,
-                    cursor: applied ? "default" : "pointer",
-                    boxShadow: "0 2px 8px rgba(10,102,194,0.25)",
-                    fontFamily: "inherit",
-                    transition: "all 150ms ease",
-                  }}
-                  onMouseEnter={(e) => {
-                    if (!applied) e.currentTarget.style.background = "#084FA0"
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!applied) e.currentTarget.style.background = "#0A66C2"
-                  }}
-                >
-                  <PaperPlaneTilt size={16} weight="bold" />
-                  <span>{applied ? "Đã nộp hồ sơ" : "Ứng tuyển ngay"}</span>
-                </button>
+                        {/* Min - Max Budget Tag */}
+                        <div
+                          style={{
+                            background: "#F0FDF4",
+                            border: "1px solid #BBF7D0",
+                            borderRadius: 8,
+                            padding: "6px 14px",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 8,
+                          }}
+                        >
+                          <Wallet size={18} color="#057642" weight="bold" />
+                          <div>
+                            <div style={{ fontSize: 10.5, fontWeight: 700, color: "#166534", textTransform: "uppercase" }}>
+                              Ngân sách đề xuất:
+                            </div>
+                            <div style={{ fontSize: 15, fontWeight: 800, color: "#057642" }}>
+                              {role.budgetDisplay}{" "}
+                              <span style={{ fontSize: 12, fontWeight: 600 }}>{role.salaryTypeLabel}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Role JD (Job Description) */}
+                      <div style={{ marginTop: 14 }}>
+                        <div style={{ fontSize: 12, fontWeight: 700, color: "rgba(0,0,0,0.70)", marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.02em" }}>
+                          📋 Mô tả công việc (JD):
+                        </div>
+                        <p style={{ fontSize: 14, color: "rgba(0,0,0,0.80)", lineHeight: 1.65, margin: 0 }}>
+                          {role.jd}
+                        </p>
+                      </div>
+
+                      {/* Requirements */}
+                      {role.requirements && role.requirements.length > 0 && (
+                        <div style={{ marginTop: 12 }}>
+                          <div style={{ fontSize: 12, fontWeight: 700, color: "rgba(0,0,0,0.70)", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.02em" }}>
+                            🎯 Yêu cầu năng lực & kinh nghiệm:
+                          </div>
+                          <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+                            {role.requirements.map((req, i) => (
+                              <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 6, fontSize: 13.5, color: "rgba(0,0,0,0.75)" }}>
+                                <CheckCircle size={15} color="#057642" weight="fill" style={{ flexShrink: 0, marginTop: 2 }} />
+                                <span>{req}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Skills Tags */}
+                      {role.skills && role.skills.length > 0 && (
+                        <div style={{ marginTop: 14, display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+                          <span style={{ fontSize: 12, fontWeight: 700, color: "rgba(0,0,0,0.50)" }}>Kỹ năng:</span>
+                          {role.skills.map((skill) => (
+                            <span
+                              key={skill}
+                              style={{
+                                background: "#F1F5F9",
+                                color: "#334155",
+                                fontSize: 12,
+                                fontWeight: 600,
+                                padding: "2px 8px",
+                                borderRadius: 4,
+                              }}
+                            >
+                              {skill}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Bottom action row */}
+                      <div
+                        style={{
+                          marginTop: 16,
+                          paddingTop: 14,
+                          borderTop: "1px solid rgba(0,0,0,0.06)",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          flexWrap: "wrap",
+                          gap: 10,
+                        }}
+                      >
+                        <div style={{ fontSize: 12, color: "rgba(0,0,0,0.50)" }}>
+                          Thanh toán an toàn qua ký quỹ bảo chứng Occupify Escrow
+                        </div>
+
+                        {isApplied ? (
+                          <div
+                            style={{
+                              display: "inline-flex",
+                              alignItems: "center",
+                              gap: 6,
+                              padding: "7px 18px",
+                              borderRadius: 9999,
+                              background: "#E5F6E8",
+                              color: "#057642",
+                              fontSize: 13,
+                              fontWeight: 700,
+                            }}
+                          >
+                            <CheckCircle size={16} weight="fill" />
+                            <span>Đã nộp hồ sơ cho vai trò này</span>
+                          </div>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => handleOpenApplyModal(role)}
+                            style={{
+                              display: "inline-flex",
+                              alignItems: "center",
+                              gap: 6,
+                              padding: "8px 20px",
+                              borderRadius: 9999,
+                              border: "none",
+                              background: "#0A66C2",
+                              color: "#fff",
+                              fontSize: 13.5,
+                              fontWeight: 700,
+                              cursor: "pointer",
+                              boxShadow: "0 2px 6px rgba(10,102,194,0.25)",
+                              transition: "background 150ms ease",
+                              fontFamily: "inherit",
+                            }}
+                            onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.background = "#084FA0")}
+                            onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = "#0A66C2")}
+                          >
+                            <PaperPlaneTilt size={14} weight="bold" />
+                            <span>Ứng tuyển vai trò này</span>
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  )
+                })}
               </div>
             </div>
-
-            {applied && (
-              <div style={{ ...cardStyle, padding: 18, background: "#E5F6E8", border: "1px solid #86EFAC", display: "flex", alignItems: "center", gap: 12 }}>
-                <CheckCircle size={22} weight="fill" color="#057642" />
-                <div>
-                  <div style={{ fontWeight: 700, fontSize: 13.5, color: "#057642" }}>
-                    Bạn đã nộp hồ sơ ứng tuyển dự án này thành công!
-                  </div>
-                  <div style={{ fontSize: 12.5, color: "rgba(0,0,0,0.65)", marginTop: 2 }}>
-                    Khách hàng {job.clientName} sẽ phản hồi qua hệ thống thông báo hoặc tin nhắn.
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
 
           {/* Right Column: Poster / Client Info */}
@@ -10163,77 +13283,343 @@ function ProjectDetailsPage({
         </div>
       </div>
 
-      {/* Apply Modal */}
-      {applyModalOpen && (
-        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}>
-          <div style={{ background: "#fff", borderRadius: 12, width: "100%", maxWidth: 520, padding: 24, boxShadow: "0 10px 40px rgba(0,0,0,0.2)" }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
-              <h3 style={{ fontSize: 18, fontWeight: 800, color: "rgba(0,0,0,0.90)" }}>
-                Ứng tuyển dự án
-              </h3>
-              <button onClick={() => setApplyModalOpen(false)} style={{ background: "none", border: "none", cursor: "pointer", padding: 4 }}>
+      {/* Role-Specific Apply Modal */}
+      {selectedRoleForApply && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}>
+          <div style={{ background: "#fff", borderRadius: 12, width: "100%", maxWidth: 560, padding: 24, boxShadow: "0 10px 40px rgba(0,0,0,0.25)", maxHeight: "90vh", overflowY: "auto" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <PaperPlaneTilt size={20} color="#0A66C2" weight="bold" />
+                <h3 style={{ fontSize: 18, fontWeight: 800, color: "rgba(0,0,0,0.90)", margin: 0 }}>
+                  Ứng tuyển vai trò: {selectedRoleForApply.title}
+                </h3>
+              </div>
+              <button
+                onClick={() => setSelectedRoleForApply(null)}
+                style={{ background: "none", border: "none", cursor: "pointer", padding: 4 }}
+              >
                 <X size={18} />
               </button>
             </div>
 
-            <div style={{ fontSize: 13, color: "rgba(0,0,0,0.60)", marginBottom: 16 }}>
-              Dự án: <strong style={{ color: "rgba(0,0,0,0.85)" }}>{job.title}</strong> · Khách hàng: <strong style={{ color: "rgba(0,0,0,0.85)" }}>{job.clientName}</strong>
+            {/* Reference banner */}
+            <div
+              style={{
+                background: "#F8FAFC",
+                border: "1px solid rgba(0,0,0,0.08)",
+                borderRadius: 8,
+                padding: "10px 14px",
+                marginBottom: 16,
+                fontSize: 13,
+                color: "rgba(0,0,0,0.65)",
+              }}
+            >
+              <div>
+                Dự án: <strong style={{ color: "rgba(0,0,0,0.85)" }}>{job.title}</strong>
+              </div>
+              <div style={{ marginTop: 2 }}>
+                Khoảng ngân sách tham chiếu:{" "}
+                <strong style={{ color: "#057642" }}>
+                  {selectedRoleForApply.budgetDisplay} {selectedRoleForApply.salaryTypeLabel}
+                </strong>
+              </div>
             </div>
 
             <form onSubmit={handleApply} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+              {/* Row 1: Chu kỳ & Mức thù lao mong muốn */}
+              <div style={{ display: "grid", gridTemplateColumns: "1.15fr 1fr", gap: 12 }}>
+                <div>
+                  <label style={{ display: "block", fontSize: 12.5, fontWeight: 700, marginBottom: 6, color: "rgba(0,0,0,0.75)" }}>
+                    Chu kỳ nhận lương mong muốn <span style={{ color: "#C03A2B" }}>*</span>
+                  </label>
+                  <select
+                    value={salaryCycle}
+                    onChange={(e) => {
+                      const nextCycle = e.target.value as any
+                      setSalaryCycle(nextCycle)
+                      if (nextCycle === "hourly" && !bidPrice.includes("/ giờ")) {
+                        setBidPrice("450.000 ₫")
+                      } else if (nextCycle === "monthly" && !bidPrice.includes(".000.000")) {
+                        setBidPrice("35.000.000 ₫")
+                      }
+                    }}
+                    style={{
+                      width: "100%",
+                      padding: "9px 12px",
+                      borderRadius: 6,
+                      border: "1px solid rgba(0,0,0,0.2)",
+                      fontSize: 13.5,
+                      outline: "none",
+                      fontFamily: "inherit",
+                      background: "#fff",
+                      cursor: "pointer",
+                      fontWeight: 600,
+                      color: "#0A66C2",
+                    }}
+                  >
+                    <option value="monthly">Theo tháng (Hàng tháng · Thuê dài hạn)</option>
+                    <option value="hourly">Theo giờ (Hourly)</option>
+                    <option value="daily">Theo ngày</option>
+                    <option value="weekly">Theo tuần</option>
+                    <option value="fixed">Trọn gói toàn bộ dự án (Cố định)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label style={{ display: "block", fontSize: 12.5, fontWeight: 700, marginBottom: 6, color: "rgba(0,0,0,0.75)" }}>
+                    {salaryCycle === "hourly"
+                      ? "Lương mong muốn (/ giờ)"
+                      : salaryCycle === "monthly"
+                        ? "Lương mong muốn (/ tháng)"
+                        : salaryCycle === "weekly"
+                          ? "Lương mong muốn (/ tuần)"
+                          : salaryCycle === "daily"
+                            ? "Lương mong muốn (/ ngày)"
+                            : "Thù lao khoán trọn gói"}{" "}
+                    <span style={{ color: "#C03A2B" }}>*</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={bidPrice}
+                    onChange={(e) => setBidPrice(e.target.value)}
+                    placeholder={salaryCycle === "hourly" ? "VD: 450.000 ₫" : "VD: 35.000.000 ₫"}
+                    style={{ width: "100%", padding: "9px 12px", borderRadius: 6, border: "1px solid rgba(0,0,0,0.2)", fontSize: 14, outline: "none", fontFamily: "inherit" }}
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Row 2: Thời hạn cam kết hoặc Thời gian hoàn thành */}
+              {salaryCycle === "fixed" ? (
+                <div>
+                  <label style={{ display: "block", fontSize: 12.5, fontWeight: 700, marginBottom: 6, color: "rgba(0,0,0,0.75)" }}>
+                    Thời gian hoàn thành dự án dự kiến <span style={{ color: "#C03A2B" }}>*</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={fixedDeliveryDays}
+                    onChange={(e) => setFixedDeliveryDays(e.target.value)}
+                    placeholder="Ví dụ: 14 ngày hoặc 1 tháng"
+                    style={{ width: "100%", padding: "9px 12px", borderRadius: 6, border: "1px solid rgba(0,0,0,0.2)", fontSize: 14, outline: "none", fontFamily: "inherit" }}
+                    required
+                  />
+                </div>
+              ) : (
+                <div style={{ display: "grid", gridTemplateColumns: salaryCycle === "hourly" ? "1.2fr 1fr" : "1fr", gap: 12 }}>
+                  <div>
+                    <label style={{ display: "block", fontSize: 12.5, fontWeight: 700, marginBottom: 6, color: "rgba(0,0,0,0.75)" }}>
+                      Thời hạn cam kết hợp tác lâu dài <span style={{ color: "#C03A2B" }}>*</span>
+                    </label>
+                    <select
+                      value={commitment}
+                      onChange={(e) => setCommitment(e.target.value)}
+                      style={{
+                        width: "100%",
+                        padding: "9px 12px",
+                        borderRadius: 6,
+                        border: "1px solid rgba(0,0,0,0.2)",
+                        fontSize: 13.5,
+                        outline: "none",
+                        fontFamily: "inherit",
+                        background: "#fff",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <option value="Dài hạn (Trên 6 tháng) — Bắt đầu ngay">Dài hạn (Trên 6 tháng) — Sẵn sàng bắt đầu ngay</option>
+                      <option value="Trung hạn (3 - 6 tháng) — Bắt đầu ngay">Trung hạn (3 - 6 tháng) — Bắt đầu ngay</option>
+                      <option value="Ngắn hạn (1 - 3 tháng) — Bắt đầu ngay">Ngắn hạn (1 - 3 tháng) — Bắt đầu ngay</option>
+                      <option value="Linh hoạt theo nhu cầu dự án">Linh hoạt theo nhu cầu và tiến độ dự án</option>
+                    </select>
+                  </div>
+
+                  {salaryCycle === "hourly" && (
+                    <div>
+                      <label style={{ display: "block", fontSize: 12.5, fontWeight: 700, marginBottom: 6, color: "rgba(0,0,0,0.75)" }}>
+                        Số giờ cam kết làm việc / tuần <span style={{ color: "#C03A2B" }}>*</span>
+                      </label>
+                      <select
+                        value={weeklyHours}
+                        onChange={(e) => setWeeklyHours(e.target.value)}
+                        style={{
+                          width: "100%",
+                          padding: "9px 12px",
+                          borderRadius: 6,
+                          border: "1px solid rgba(0,0,0,0.2)",
+                          fontSize: 13.5,
+                          outline: "none",
+                          fontFamily: "inherit",
+                          background: "#fff",
+                          cursor: "pointer",
+                        }}
+                      >
+                        <option value="30 - 40 giờ / tuần (Toàn thời gian)">30 - 40 giờ / tuần (Toàn thời gian)</option>
+                        <option value="20 - 30 giờ / tuần (Bán thời gian)">20 - 30 giờ / tuần (Bán thời gian)</option>
+                        <option value="10 - 20 giờ / tuần (Linh hoạt)">10 - 20 giờ / tuần (Linh hoạt)</option>
+                        <option value="Linh hoạt theo thỏa thuận">Linh hoạt theo thỏa thuận</option>
+                      </select>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Row 3: Đính kèm File CV (Bỏ thư giới thiệu gõ tay) */}
               <div>
-                <label style={{ display: "block", fontSize: 12.5, fontWeight: 700, marginBottom: 6, color: "rgba(0,0,0,0.75)" }}>
-                  Mức giá đề xuất của bạn (VNĐ) <span style={{ color: "#C03A2B" }}>*</span>
-                </label>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
+                  <label style={{ fontSize: 12.5, fontWeight: 700, color: "rgba(0,0,0,0.75)" }}>
+                    Đính kèm File CV (Curriculum Vitae) <span style={{ color: "#C03A2B" }}>*</span>
+                  </label>
+                  <span style={{ fontSize: 11.5, color: "rgba(0,0,0,0.45)" }}>
+                    Hỗ trợ file .PDF, .DOCX (Tối đa 10MB)
+                  </span>
+                </div>
+
                 <input
-                  type="text"
-                  value={bidPrice}
-                  onChange={(e) => setBidPrice(e.target.value)}
-                  style={{ width: "100%", padding: "9px 12px", borderRadius: 6, border: "1px solid rgba(0,0,0,0.2)", fontSize: 14, outline: "none", fontFamily: "inherit" }}
-                  required
+                  ref={cvFileInputRef}
+                  type="file"
+                  accept=".pdf,.doc,.docx"
+                  style={{ display: "none" }}
+                  onChange={(e) => {
+                    const file = e.target.files?.[0]
+                    if (file) {
+                      const sizeMb = (file.size / (1024 * 1024)).toFixed(1)
+                      setCvFile({ name: file.name, size: `${sizeMb} MB` })
+                    }
+                  }}
                 />
+
+                {cvFile ? (
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      padding: "12px 14px",
+                      borderRadius: 8,
+                      border: "1.5px solid #93C5FD",
+                      background: "#EFF6FF",
+                    }}
+                  >
+                    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                      <div
+                        style={{
+                          width: 36,
+                          height: 36,
+                          borderRadius: 6,
+                          background: "#FEE2E2",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          color: "#DC2626",
+                        }}
+                      >
+                        <FilePdf size={22} weight="fill" />
+                      </div>
+                      <div>
+                        <div style={{ fontSize: 13.5, fontWeight: 700, color: "rgba(0,0,0,0.85)" }}>
+                          {cvFile.name}
+                        </div>
+                        <div style={{ fontSize: 11.5, color: "rgba(0,0,0,0.50)", marginTop: 1 }}>
+                          {cvFile.size} · Đã đính kèm sẵn sàng gửi
+                        </div>
+                      </div>
+                    </div>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                      <button
+                        type="button"
+                        onClick={() => cvFileInputRef.current?.click()}
+                        style={{
+                          background: "#fff",
+                          border: "1px solid rgba(0,0,0,0.15)",
+                          borderRadius: 6,
+                          padding: "4px 10px",
+                          fontSize: 12,
+                          fontWeight: 600,
+                          cursor: "pointer",
+                          fontFamily: "inherit",
+                          color: "#0A66C2",
+                        }}
+                      >
+                        Đổi file
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setCvFile(null)}
+                        style={{
+                          background: "none",
+                          border: "none",
+                          padding: 4,
+                          cursor: "pointer",
+                          color: "#9CA3AF",
+                        }}
+                      >
+                        <X size={16} />
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div
+                    onClick={() => cvFileInputRef.current?.click()}
+                    style={{
+                      border: "1.5px dashed #CBD5E1",
+                      borderRadius: 8,
+                      padding: "16px 14px",
+                      textAlign: "center",
+                      background: "#F8FAFC",
+                      cursor: "pointer",
+                      transition: "all 150ms ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = "#0A66C2"
+                      e.currentTarget.style.background = "#F0F9FF"
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = "#CBD5E1"
+                      e.currentTarget.style.background = "#F8FAFC"
+                    }}
+                  >
+                    <UploadSimple size={26} color="#0A66C2" style={{ margin: "0 auto 6px" }} />
+                    <div style={{ fontSize: 13, fontWeight: 700, color: "#0A66C2" }}>
+                      Bấm để chọn file CV từ máy tính hoặc kéo thả vào đây
+                    </div>
+                    <div style={{ fontSize: 11.5, color: "rgba(0,0,0,0.45)", marginTop: 2 }}>
+                      (Khuyên dùng file PDF để nhà tuyển dụng dễ xem trên mọi thiết bị)
+                    </div>
+                  </div>
+                )}
               </div>
 
+              {/* Row 4: Link Portfolio / GitHub (Tùy chọn) */}
               <div>
                 <label style={{ display: "block", fontSize: 12.5, fontWeight: 700, marginBottom: 6, color: "rgba(0,0,0,0.75)" }}>
-                  Thời gian hoàn thành dự kiến (ngày) <span style={{ color: "#C03A2B" }}>*</span>
+                  Link Portfolio / GitHub / Behance (Tùy chọn)
                 </label>
-                <input
-                  type="number"
-                  value={deliveryDays}
-                  onChange={(e) => setDeliveryDays(e.target.value)}
-                  style={{ width: "100%", padding: "9px 12px", borderRadius: 6, border: "1px solid rgba(0,0,0,0.2)", fontSize: 14, outline: "none", fontFamily: "inherit" }}
-                  required
-                />
+                <div style={{ position: "relative" }}>
+                  <span style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", color: "rgba(0,0,0,0.40)", pointerEvents: "none" }}>
+                    <LinkSimple size={15} />
+                  </span>
+                  <input
+                    type="url"
+                    value={portfolioLink}
+                    onChange={(e) => setPortfolioLink(e.target.value)}
+                    placeholder="https://behance.net/your-profile hoặc https://github.com/..."
+                    style={{ width: "100%", padding: "9px 12px 9px 34px", borderRadius: 6, border: "1px solid rgba(0,0,0,0.2)", fontSize: 13.5, outline: "none", fontFamily: "inherit" }}
+                  />
+                </div>
               </div>
 
-              <div>
-                <label style={{ display: "block", fontSize: 12.5, fontWeight: 700, marginBottom: 6, color: "rgba(0,0,0,0.75)" }}>
-                  Thư đề xuất / Giải pháp thực hiện <span style={{ color: "#C03A2B" }}>*</span>
-                </label>
-                <textarea
-                  value={coverLetter}
-                  onChange={(e) => setCoverLetter(e.target.value)}
-                  rows={4}
-                  placeholder="Giới thiệu kinh nghiệm phù hợp và phương án thực hiện dự án này..."
-                  style={{ width: "100%", padding: "9px 12px", borderRadius: 6, border: "1px solid rgba(0,0,0,0.2)", fontSize: 13.5, outline: "none", fontFamily: "inherit", resize: "vertical" }}
-                  required
-                />
-              </div>
-
-              <div style={{ display: "flex", justifyContent: "flex-end", gap: 10, marginTop: 8 }}>
+              <div style={{ display: "flex", justifyContent: "flex-end", gap: 10, marginTop: 4 }}>
                 <button
                   type="button"
-                  onClick={() => setApplyModalOpen(false)}
+                  onClick={() => setSelectedRoleForApply(null)}
                   style={{ padding: "8px 18px", borderRadius: 9999, border: "1px solid rgba(0,0,0,0.15)", background: "#fff", cursor: "pointer", fontSize: 13.5, fontWeight: 600, fontFamily: "inherit" }}
                 >
                   Hủy
                 </button>
                 <button
                   type="submit"
-                  style={{ padding: "8px 24px", borderRadius: 9999, border: "none", background: "#0A66C2", color: "#fff", cursor: "pointer", fontSize: 13.5, fontWeight: 700, fontFamily: "inherit" }}
+                  style={{ padding: "8px 24px", borderRadius: 9999, border: "none", background: "#0A66C2", color: "#fff", cursor: "pointer", fontSize: 13.5, fontWeight: 700, fontFamily: "inherit", boxShadow: "0 2px 8px rgba(10,102,194,0.3)" }}
                 >
-                  Gửi đề xuất ứng tuyển
+                  Gửi hồ sơ ứng tuyển
                 </button>
               </div>
             </form>
