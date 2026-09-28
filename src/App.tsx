@@ -2579,7 +2579,7 @@ function MyProjectDetailPage({
       rating: 4.5,
       ratingCount: 11,
       occupation: "UX Researcher · Design System Specialist",
-      roleApplied: project.recruitingRoles?.[0]?.title || "UX Researcher",
+      roleApplied: project.recruitingRoles?.[2]?.title || "UX Researcher",
       commitment: "Linh hoạt (~30h / tuần) · Bắt đầu ngay",
       cvFileName: "CV_NguyenDucHung_UXResearcher.pdf",
       cvFileSize: "1.9 MB",
@@ -2594,6 +2594,19 @@ function MyProjectDetailPage({
     },
   ])
   const [selectedApplicant, setSelectedApplicant] = useState<ApplicantProposal | null>(null)
+  const [applicantRoleFilter, setApplicantRoleFilter] = useState("all")
+
+  const availableRoles = Array.from(
+    new Set([
+      ...(project.recruitingRoles?.map((r) => r.title) || []),
+      ...applicants.map((a) => a.roleApplied),
+    ]),
+  ).filter(Boolean)
+
+  const filteredApplicants = applicants.filter((proposal) => {
+    if (applicantRoleFilter === "all") return true
+    return proposal.roleApplied === applicantRoleFilter
+  })
 
   const handleRejectApplicant = (applicantId: number) => {
     setApplicants((prev) =>
@@ -3295,7 +3308,9 @@ function MyProjectDetailPage({
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
-                marginBottom: 16,
+                marginBottom: 10,
+                flexWrap: "wrap",
+                gap: 12,
               }}
             >
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -3318,16 +3333,70 @@ function MyProjectDetailPage({
                     borderRadius: 9999,
                   }}
                 >
-                  {applicants.length} đơn
+                  {filteredApplicants.length} đơn
                 </span>
               </div>
-              <span style={{ fontSize: 13, color: "rgba(0,0,0,0.55)" }}>
-                Bấm vào ứng viên để xem chi tiết hồ sơ, CV và xét duyệt
-              </span>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ fontSize: 13, color: "rgba(0,0,0,0.60)", fontWeight: 500 }}>
+                  Lọc theo vai trò:
+                </span>
+                <select
+                  value={applicantRoleFilter}
+                  onChange={(e) => setApplicantRoleFilter(e.target.value)}
+                  style={{
+                    padding: "6px 12px",
+                    borderRadius: 6,
+                    border: "1.5px solid rgba(0,0,0,0.15)",
+                    background: "#fff",
+                    color: "rgba(0,0,0,0.85)",
+                    fontSize: 13,
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    outline: "none",
+                    fontFamily: "inherit",
+                    transition: "border-color 150ms",
+                  }}
+                  onFocus={(e) => {
+                    ; (e.currentTarget as HTMLElement).style.borderColor = "#0A66C2"
+                  }}
+                  onBlur={(e) => {
+                    ; (e.currentTarget as HTMLElement).style.borderColor = "rgba(0,0,0,0.15)"
+                  }}
+                >
+                  <option value="all">Tất cả vai trò ({applicants.length})</option>
+                  {availableRoles.map((role) => {
+                    const count = applicants.filter((a) => a.roleApplied === role).length
+                    return (
+                      <option key={role} value={role}>
+                        {role} ({count})
+                      </option>
+                    )
+                  })}
+                </select>
+              </div>
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              {applicants.map((proposal, idx) => (
+            <div style={{ fontSize: 13, color: "rgba(0,0,0,0.55)", marginBottom: 16 }}>
+              Bấm vào ứng viên để xem chi tiết hồ sơ, CV và xét duyệt
+            </div>
+
+            {filteredApplicants.length === 0 ? (
+              <div
+                style={{
+                  padding: "36px 20px",
+                  textAlign: "center",
+                  background: "#FAFAFA",
+                  borderRadius: 8,
+                  border: "1px dashed rgba(0,0,0,0.15)",
+                  color: "rgba(0,0,0,0.50)",
+                  fontSize: 13.5,
+                }}
+              >
+                Chưa có ứng viên nào nộp hồ sơ cho vai trò <b>"{applicantRoleFilter}"</b>.
+              </div>
+            ) : (
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                {filteredApplicants.map((proposal, idx) => (
                 <div
                   key={proposal.id}
                   onClick={() => setSelectedApplicant(proposal)}
@@ -3570,6 +3639,7 @@ function MyProjectDetailPage({
                 </div>
               ))}
             </div>
+            )}
           </div>
         </div>
       </div>
@@ -4422,11 +4492,13 @@ function ProjectListCard({
   projects,
   emptyText,
   onSelect,
+  hidePeriod,
 }: {
   title: string
   projects: MyProject[]
   emptyText: string
   onSelect: (p: MyProject) => void
+  hidePeriod?: boolean
 }) {
   return (
     <div
@@ -4511,7 +4583,7 @@ function ProjectListCard({
                     marginTop: 3,
                   }}
                 >
-                  {proj.members.length} thành viên · {proj.period}
+                  {proj.members.length} thành viên{!hidePeriod && proj.period ? ` · ${proj.period}` : ""}
                 </div>
               </div>
               <ArrowRight
@@ -8740,6 +8812,7 @@ function ProjectsManagementPage({
               projects={filteredMyProjects}
               emptyText={searchKeyword ? "Không tìm thấy dự án của tôi khớp với từ khóa." : "Bạn chưa có dự án nào do bạn làm chủ."}
               onSelect={setViewingMyProject}
+              hidePeriod={true}
             />
             <ProjectListCard
               title="Các dự án tôi đang thực hiện"
@@ -8814,6 +8887,7 @@ function ProjectsManagementPage({
             projects={filteredMyProjects}
             emptyText={searchKeyword ? "Không tìm thấy dự án khớp với từ khóa tìm kiếm." : "Bạn chưa có dự án nào."}
             onSelect={setViewingMyProject}
+            hidePeriod={true}
           />
         </div>
       )}
@@ -13695,12 +13769,8 @@ function SignUpFlow({
   // Step 2: school
   const [school, setSchool] = useState("")
   const [schoolSearch, setSchoolSearch] = useState("")
-  // Step 3: interests
-  const [interests, setInterests] = useState<string[]>([])
-  // Step 4: profession
-  const [profession, setProfession] = useState("")
 
-  const TOTAL_STEPS = 6
+  const TOTAL_STEPS = 3
 
   const handleOtpChange = (idx: number, val: string) => {
     if (!/^\d?$/.test(val)) return
@@ -14146,7 +14216,7 @@ function SignUpFlow({
               }}
             >
               <button
-                onClick={() => setStep(3)}
+                onClick={onSuccess}
                 style={{
                   background: "none",
                   border: "none",
@@ -14169,277 +14239,8 @@ function SignUpFlow({
                 Bỏ qua
               </button>
               <div style={{ flex: 1 }}>
-                {primaryBtn("Tiếp tục", () => setStep(3), !school)}
+                {primaryBtn("Hoàn tất", onSuccess, !school)}
               </div>
-            </div>
-          </>
-        )}
-
-        {/* Step 3: Interests */}
-        {step === 3 && (
-          <>
-            <h2
-              style={{
-                fontSize: 22,
-                fontWeight: 800,
-                color: "rgba(0,0,0,0.90)",
-                marginBottom: 4,
-              }}
-            >
-              Sở thích của bạn
-            </h2>
-            <p
-              style={{
-                fontSize: 14,
-                color: "rgba(0,0,0,0.55)",
-                marginBottom: 22,
-              }}
-            >
-              Chọn các lĩnh vực bạn quan tâm để Occupify gợi ý nội dung phù hợp.
-            </p>
-            <div
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: 8,
-                marginBottom: 16,
-              }}
-            >
-              {INTEREST_OPTIONS.map(({ key, label, Icon }) => {
-                const active = interests.includes(key)
-                return (
-                  <button
-                    key={key}
-                    onClick={() =>
-                      setInterests((prev) =>
-                        active ? prev.filter((k) => k !== key) : [...prev, key],
-                      )
-                    }
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 6,
-                      padding: "7px 14px",
-                      borderRadius: 9999,
-                      border: `1.5px solid ${active ? "#0A66C2" : "rgba(0,0,0,0.15)"
-                        }`,
-                      background: active ? "#EAF1FA" : "#fff",
-                      cursor: "pointer",
-                      fontFamily: "inherit",
-                      fontSize: 13,
-                      fontWeight: active ? 700 : 500,
-                      color: active ? "#0A66C2" : "rgba(0,0,0,0.75)",
-                      transition: "all 150ms",
-                    }}
-                  >
-                    <Icon size={14} weight={active ? "fill" : "regular"} />
-                    {label}
-                  </button>
-                )
-              })}
-            </div>
-            <p
-              style={{
-                fontSize: 12,
-                color: "rgba(0,0,0,0.40)",
-                marginBottom: 4,
-              }}
-            >
-              Đã chọn: {interests.length} lĩnh vực
-            </p>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                marginTop: 8,
-                gap: 12,
-              }}
-            >
-              <button
-                onClick={() => setStep(4)}
-                style={{
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  fontSize: 14,
-                  color: "rgba(0,0,0,0.55)",
-                  fontFamily: "inherit",
-                  fontWeight: 500,
-                  padding: "10px 0",
-                }}
-                onMouseEnter={(e) => {
-                  ; (e.currentTarget as HTMLElement).style.color =
-                    "rgba(0,0,0,0.90)"
-                }}
-                onMouseLeave={(e) => {
-                  ; (e.currentTarget as HTMLElement).style.color =
-                    "rgba(0,0,0,0.55)"
-                }}
-              >
-                Bỏ qua
-              </button>
-              <div style={{ flex: 1 }}>
-                {primaryBtn(
-                  "Tiếp tục",
-                  () => setStep(4),
-                  interests.length === 0,
-                )}
-              </div>
-            </div>
-          </>
-        )}
-
-        {/* Step 4: Profession */}
-        {step === 4 && (
-          <>
-            <h2
-              style={{
-                fontSize: 22,
-                fontWeight: 800,
-                color: "rgba(0,0,0,0.90)",
-                marginBottom: 4,
-              }}
-            >
-              Ngành nghề hiện tại
-            </h2>
-            <p
-              style={{
-                fontSize: 14,
-                color: "rgba(0,0,0,0.55)",
-                marginBottom: 22,
-              }}
-            >
-              Chọn ngành nghề hoặc lĩnh vực bạn đang làm việc / học tập.
-            </p>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: 6,
-                maxHeight: 300,
-                overflowY: "auto",
-                marginBottom: 12,
-              }}
-            >
-              {PROFESSION_OPTIONS.map((p) => (
-                <button
-                  key={p}
-                  onClick={() => setProfession(p)}
-                  style={{
-                    padding: "11px 14px",
-                    borderRadius: 8,
-                    border: `1.5px solid ${profession === p ? "#0A66C2" : "rgba(0,0,0,0.10)"
-                      }`,
-                    background: profession === p ? "#EAF1FA" : "#FAFAF8",
-                    textAlign: "left",
-                    cursor: "pointer",
-                    fontSize: 14,
-                    color: profession === p ? "#0A66C2" : "rgba(0,0,0,0.80)",
-                    fontFamily: "inherit",
-                    fontWeight: profession === p ? 700 : 400,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    transition: "all 150ms",
-                  }}
-                >
-                  {p}
-                  {profession === p && (
-                    <CheckFat size={15} color="#0A66C2" weight="fill" />
-                  )}
-                </button>
-              ))}
-            </div>
-            {primaryBtn("Tiếp tục", () => setStep(5), !profession)}
-          </>
-        )}
-
-        {/* Step 5: Complete */}
-        {step === 5 && (
-          <>
-            <div style={{ textAlign: "center", paddingTop: 8 }}>
-              <div
-                style={{
-                  width: 72,
-                  height: 72,
-                  borderRadius: "50%",
-                  background: "#EAF1FA",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  margin: "0 auto 20px",
-                }}
-              >
-                <CheckFat size={36} color="#0A66C2" weight="fill" />
-              </div>
-              <h2
-                style={{
-                  fontSize: 24,
-                  fontWeight: 800,
-                  color: "rgba(0,0,0,0.90)",
-                  marginBottom: 10,
-                }}
-              >
-                Hoàn thành!
-              </h2>
-              <p
-                style={{
-                  fontSize: 14,
-                  color: "rgba(0,0,0,0.55)",
-                  lineHeight: 1.7,
-                  marginBottom: 28,
-                }}
-              >
-                Tài khoản của bạn đã được tạo thành công. Chào mừng bạn đến với
-                Occupify — nơi kết nối và phát triển sự nghiệp chuyên nghiệp.
-              </p>
-              <div
-                style={{
-                  background: "#F4F2EE",
-                  borderRadius: 10,
-                  padding: "16px 20px",
-                  textAlign: "left",
-                  marginBottom: 28,
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: 12,
-                    fontWeight: 700,
-                    color: "rgba(0,0,0,0.45)",
-                    marginBottom: 10,
-                    textTransform: "uppercase",
-                    letterSpacing: 0.5,
-                  }}
-                >
-                  Thông tin của bạn
-                </div>
-                {[
-                  { label: "Tên đăng nhập", value: username },
-                  { label: "Trường", value: school },
-                  { label: "Ngành nghề", value: profession },
-                  { label: "Sở thích", value: `${interests.length} lĩnh vực` },
-                ].map(({ label, value }) => (
-                  <div
-                    key={label}
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      fontSize: 13,
-                      marginBottom: 6,
-                    }}
-                  >
-                    <span style={{ color: "rgba(0,0,0,0.50)" }}>{label}</span>
-                    <span
-                      style={{ fontWeight: 600, color: "rgba(0,0,0,0.80)" }}
-                    >
-                      {value}
-                    </span>
-                  </div>
-                ))}
-              </div>
-              {primaryBtn("Vào Occupify", onSuccess)}
             </div>
           </>
         )}
