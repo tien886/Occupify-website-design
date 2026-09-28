@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useMemo } from "react"
+import React, { useState, useRef, useEffect } from "react"
 import {
   House,
   UsersThree,
@@ -375,13 +375,13 @@ function Navbar({
                 onMouseEnter={(e) => {
                   if (!isActive) {
                     (e.currentTarget as HTMLElement).style.background = "#F1F5F9"
-                      ; (e.currentTarget as HTMLElement).style.color = "#0F172A"
+                    ;(e.currentTarget as HTMLElement).style.color = "#0F172A"
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (!isActive) {
                     (e.currentTarget as HTMLElement).style.background = "transparent"
-                      ; (e.currentTarget as HTMLElement).style.color = "#64748B"
+                    ;(e.currentTarget as HTMLElement).style.color = "#64748B"
                   }
                 }}
               >
@@ -588,9 +588,9 @@ function Navbar({
                     transition: "all 150ms",
                   }}
                   onMouseEnter={(e) =>
-                  ((e.currentTarget as HTMLElement).style.background = destructive
-                    ? "#FEF2F2"
-                    : "#F1F5F9")
+                    ((e.currentTarget as HTMLElement).style.background = destructive
+                      ? "#FEF2F2"
+                      : "#F1F5F9")
                   }
                   onMouseLeave={(e) =>
                     ((e.currentTarget as HTMLElement).style.background = "none")
@@ -2171,11 +2171,11 @@ function JobCard({
             }}
             onMouseEnter={(e) => {
               (e.currentTarget as HTMLElement).style.background = "#F1F5F9"
-                ; (e.currentTarget as HTMLElement).style.color = "#0A66C2"
+              ;(e.currentTarget as HTMLElement).style.color = "#0A66C2"
             }}
             onMouseLeave={(e) => {
               (e.currentTarget as HTMLElement).style.background = saved ? "#EFF6FF" : "#fff"
-                ; (e.currentTarget as HTMLElement).style.color = saved ? "#0A66C2" : "#94A3B8"
+              ;(e.currentTarget as HTMLElement).style.color = saved ? "#0A66C2" : "#94A3B8"
             }}
             title={saved ? "Đã lưu" : "Lưu dự án"}
           >
@@ -5848,24 +5848,6 @@ function MyProjectDetailPage({
     },
   ])
   const [selectedApplicant, setSelectedApplicant] = useState<ApplicantProposal | null>(null)
-  const [selectedRoleFilter, setSelectedRoleFilter] = useState<string>("all")
-  const [roleFilterOpen, setRoleFilterOpen] = useState(false)
-
-  const availableRoles = useMemo(() => {
-    const set = new Set<string>()
-    project.recruitingRoles?.forEach((r) => {
-      if (r.title) set.add(r.title)
-    })
-    applicants.forEach((a) => {
-      if (a.roleApplied) set.add(a.roleApplied)
-    })
-    return Array.from(set)
-  }, [project.recruitingRoles, applicants])
-
-  const filteredApplicants = useMemo(() => {
-    if (selectedRoleFilter === "all") return applicants
-    return applicants.filter((a) => a.roleApplied === selectedRoleFilter)
-  }, [applicants, selectedRoleFilter])
 
   const handleRejectApplicant = (applicantId: number) => {
     setApplicants((prev) =>
@@ -6170,10 +6152,11 @@ function MyProjectDetailPage({
                             <SealCheck size={13} weight="fill" color="#057642" />
                             <span>
                               {r.assignedMemberName ||
-                                project.members?.find((m) => m.role === r.title)?.name
-                                ? `Đã giao: ${r.assignedMemberName ||
-                                project.members?.find((m) => m.role === r.title)?.name
-                                }`
+                              project.members?.find((m) => m.role === r.title)?.name
+                                ? `Đã giao: ${
+                                    r.assignedMemberName ||
+                                    project.members?.find((m) => m.role === r.title)?.name
+                                  }`
                                 : "Đã có nhân sự tiếp nhận"}
                             </span>
                           </div>
@@ -6241,15 +6224,15 @@ function MyProjectDetailPage({
                             marginTop: 4,
                           }}
                           onMouseEnter={(e) => {
-                            ; (e.currentTarget as HTMLElement).style.background =
+                            ;(e.currentTarget as HTMLElement).style.background =
                               "#0A66C2"
-                              ; (e.currentTarget as HTMLElement).style.color = "#fff"
+                            ;(e.currentTarget as HTMLElement).style.color = "#fff"
                           }}
                           onMouseLeave={(e) => {
-                            ; (e.currentTarget as HTMLElement).style.background =
+                            ;(e.currentTarget as HTMLElement).style.background =
                               "#EAF1FA"
-                              ; (e.currentTarget as HTMLElement).style.color =
-                                "#0A66C2"
+                            ;(e.currentTarget as HTMLElement).style.color =
+                              "#0A66C2"
                           }}
                         >
                           <UserPlusIcon size={14} weight="bold" />
@@ -6559,6 +6542,7 @@ function MyProjectDetailPage({
               </div>
             )}
           </div>
+
           {/* Danh sách ứng viên */}
           <div style={{ padding: "24px 28px" }}>
             <div
@@ -6566,529 +6550,284 @@ function MyProjectDetailPage({
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
-                marginBottom: 18,
-                flexWrap: "wrap",
-                gap: 12,
+                marginBottom: 16,
               }}
             >
-              <div>
-                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                  <span
-                    style={{
-                      fontSize: 16,
-                      fontWeight: 800,
-                      color: "rgba(0,0,0,0.90)",
-                    }}
-                  >
-                    Danh sách ứng viên
-                  </span>
-                  <span
-                    style={{
-                      background: "#EAF1FA",
-                      color: "#0A66C2",
-                      fontSize: 12,
-                      fontWeight: 700,
-                      padding: "2px 10px",
-                      borderRadius: 9999,
-                    }}
-                  >
-                    {filteredApplicants.length}{selectedRoleFilter !== "all" ? ` / ${applicants.length}` : ""} đơn
-                  </span>
-                </div>
-                <div style={{ fontSize: 13, color: "rgba(0,0,0,0.55)", marginTop: 2 }}>
-                  Xem xét hồ sơ, CV và xét duyệt ứng viên tham gia dự án
-                </div>
-              </div>
-
-              {/* Role filter button with dropdown */}
-              <div style={{ position: "relative" }}>
-                <button
-                  type="button"
-                  onClick={() => setRoleFilterOpen((prev) => !prev)}
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span
                   style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 8,
-                    padding: "7px 14px",
+                    fontSize: 15,
+                    fontWeight: 700,
+                    color: "rgba(0,0,0,0.90)",
+                  }}
+                >
+                  Danh sách ứng viên
+                </span>
+                <span
+                  style={{
+                    background: "#EAF1FA",
+                    color: "#0A66C2",
+                    fontSize: 12,
+                    fontWeight: 700,
+                    padding: "1px 8px",
+                    borderRadius: 9999,
+                  }}
+                >
+                  {applicants.length} đơn
+                </span>
+              </div>
+              <span style={{ fontSize: 13, color: "rgba(0,0,0,0.55)" }}>
+                Bấm vào ứng viên để xem chi tiết hồ sơ, CV và xét duyệt
+              </span>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              {applicants.map((proposal, idx) => (
+                <div
+                  key={proposal.id}
+                  onClick={() => setSelectedApplicant(proposal)}
+                  style={{
+                    padding: "16px 18px",
+                    background: selectedApplicant?.id === proposal.id ? "#F0F9FF" : "#FAFAFA",
                     borderRadius: 8,
-                    border: selectedRoleFilter !== "all" ? "1.5px solid #0A66C2" : "1px solid rgba(0,0,0,0.15)",
-                    background: selectedRoleFilter !== "all" ? "#F0F7FF" : "#fff",
-                    color: selectedRoleFilter !== "all" ? "#0A66C2" : "rgba(0,0,0,0.75)",
-                    fontSize: 13,
-                    fontWeight: 600,
+                    border: selectedApplicant?.id === proposal.id ? "1.5px solid #0A66C2" : "1px solid rgba(0,0,0,0.08)",
+                    display: "flex",
+                    gap: 14,
+                    alignItems: "flex-start",
                     cursor: "pointer",
-                    boxShadow: "0 1px 2px rgba(0,0,0,0.05)",
                     transition: "all 150ms ease",
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = "#0A66C2"
+                    if (selectedApplicant?.id !== proposal.id) {
+                      e.currentTarget.style.background = "#F8FAFC"
+                      e.currentTarget.style.borderColor = "rgba(10,102,194,0.3)"
+                    }
                   }}
                   onMouseLeave={(e) => {
-                    if (selectedRoleFilter === "all") {
-                      e.currentTarget.style.borderColor = "rgba(0,0,0,0.15)"
+                    if (selectedApplicant?.id !== proposal.id) {
+                      e.currentTarget.style.background = "#FAFAFA"
+                      e.currentTarget.style.borderColor = "rgba(0,0,0,0.08)"
                     }
                   }}
                 >
-                  <Funnel size={15} weight={selectedRoleFilter !== "all" ? "fill" : "bold"} color="#0A66C2" />
-                  <span>{selectedRoleFilter === "all" ? "Lọc theo vai trò" : `Vai trò: ${selectedRoleFilter}`}</span>
-                  <CaretDown size={13} weight="bold" />
-                </button>
-
-                {roleFilterOpen && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: "calc(100% + 6px)",
-                      right: 0,
-                      zIndex: 30,
-                      background: "#fff",
-                      borderRadius: 10,
-                      boxShadow: "0 10px 30px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.08)",
-                      minWidth: 240,
-                      padding: "6px 0",
-                    }}
-                  >
+                  <Avatar name={proposal.name} size={46} />
+                  <div style={{ flex: 1, minWidth: 0 }}>
                     <div
                       style={{
-                        padding: "8px 14px",
-                        fontSize: 11,
-                        fontWeight: 700,
-                        textTransform: "uppercase",
-                        letterSpacing: 0.5,
-                        color: "rgba(0,0,0,0.45)",
-                        borderBottom: "1px solid rgba(0,0,0,0.06)",
-                      }}
-                    >
-                      Chọn vai trò lọc
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSelectedRoleFilter("all")
-                        setRoleFilterOpen(false)
-                      }}
-                      style={{
-                        width: "100%",
-                        padding: "8px 14px",
-                        textAlign: "left",
-                        background: selectedRoleFilter === "all" ? "#EAF1FA" : "none",
-                        color: selectedRoleFilter === "all" ? "#0A66C2" : "rgba(0,0,0,0.85)",
-                        border: "none",
-                        fontSize: 13,
-                        fontWeight: selectedRoleFilter === "all" ? 700 : 500,
-                        cursor: "pointer",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "space-between",
+                        gap: 8,
+                        flexWrap: "wrap",
+                        marginBottom: 4,
                       }}
                     >
-                      <span>Tất cả vai trò</span>
-                      <span
-                        style={{
-                          fontSize: 11,
-                          fontWeight: 700,
-                          background: selectedRoleFilter === "all" ? "#0A66C2" : "#F4F2EE",
-                          color: selectedRoleFilter === "all" ? "#fff" : "rgba(0,0,0,0.60)",
-                          padding: "1px 7px",
-                          borderRadius: 9999,
-                        }}
-                      >
-                        {applicants.length}
-                      </span>
-                    </button>
-                    {availableRoles.map((role) => {
-                      const count = applicants.filter((a) => a.roleApplied === role).length
-                      const isSelected = selectedRoleFilter === role
-                      return (
-                        <button
-                          key={role}
-                          type="button"
-                          onClick={() => {
-                            setSelectedRoleFilter(role)
-                            setRoleFilterOpen(false)
-                          }}
+                      <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+                        <span
                           style={{
-                            width: "100%",
-                            padding: "8px 14px",
-                            textAlign: "left",
-                            background: isSelected ? "#EAF1FA" : "none",
-                            color: isSelected ? "#0A66C2" : "rgba(0,0,0,0.85)",
-                            border: "none",
-                            fontSize: 13,
-                            fontWeight: isSelected ? 700 : 500,
-                            cursor: "pointer",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                            transition: "background 100ms",
-                          }}
-                          onMouseEnter={(e) => {
-                            if (!isSelected) e.currentTarget.style.background = "#F8FAFC"
-                          }}
-                          onMouseLeave={(e) => {
-                            if (!isSelected) e.currentTarget.style.background = "none"
+                            fontSize: 14.5,
+                            fontWeight: 700,
+                            color: "rgba(0,0,0,0.90)",
                           }}
                         >
-                          <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", paddingRight: 8 }}>
-                            {role}
-                          </span>
+                          {proposal.name}
+                        </span>
+                        <span
+                          style={{
+                            fontSize: 11.5,
+                            fontWeight: 700,
+                            padding: "2px 8px",
+                            borderRadius: 9999,
+                            background: "#EAF1FA",
+                            color: "#0A66C2",
+                          }}
+                        >
+                          {proposal.roleApplied}
+                        </span>
+                        {proposal.status === "accepted" && (
                           <span
                             style={{
                               fontSize: 11,
                               fontWeight: 700,
-                              background: isSelected ? "#0A66C2" : "#F4F2EE",
-                              color: isSelected ? "#fff" : "rgba(0,0,0,0.60)",
-                              padding: "1px 7px",
+                              padding: "2px 8px",
                               borderRadius: 9999,
-                              flexShrink: 0,
+                              background: "#DCFCE7",
+                              color: "#15803D",
                             }}
                           >
-                            {count}
+                            Đã chấp nhận
                           </span>
-                        </button>
-                      )
-                    })}
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {filteredApplicants.length === 0 ? (
-              <div
-                style={{
-                  padding: "36px 20px",
-                  textAlign: "center",
-                  background: "#F8FAFC",
-                  borderRadius: 10,
-                  border: "1px dashed rgba(0,0,0,0.15)",
-                }}
-              >
-                <div style={{ fontSize: 14, color: "rgba(0,0,0,0.60)", marginBottom: 12 }}>
-                  Không tìm thấy ứng viên nào cho vai trò <b>"{selectedRoleFilter}"</b>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setSelectedRoleFilter("all")}
-                  style={{
-                    padding: "6px 16px",
-                    borderRadius: 9999,
-                    border: "1px solid #0A66C2",
-                    background: "#fff",
-                    color: "#0A66C2",
-                    fontSize: 13,
-                    fontWeight: 600,
-                    cursor: "pointer",
-                  }}
-                >
-                  Hiển thị tất cả ứng viên
-                </button>
-              </div>
-            ) : (
-              <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-                {filteredApplicants.map((proposal) => (
-                  <div
-                    key={proposal.id}
-                    onClick={() => setSelectedApplicant(proposal)}
-                    style={{
-                      padding: "18px 20px",
-                      background: selectedApplicant?.id === proposal.id ? "#F0F9FF" : "#fff",
-                      borderRadius: 10,
-                      border: selectedApplicant?.id === proposal.id ? "1.5px solid #0A66C2" : "1px solid rgba(0,0,0,0.08)",
-                      display: "flex",
-                      gap: 16,
-                      alignItems: "flex-start",
-                      cursor: "pointer",
-                      transition: "all 150ms ease",
-                      boxShadow: selectedApplicant?.id === proposal.id ? "0 4px 16px rgba(10,102,194,0.10)" : "0 1px 3px rgba(0,0,0,0.03)",
-                    }}
-                    onMouseEnter={(e) => {
-                      if (selectedApplicant?.id !== proposal.id) {
-                        e.currentTarget.style.background = "#F8FAFC"
-                        e.currentTarget.style.borderColor = "rgba(10,102,194,0.3)"
-                        e.currentTarget.style.boxShadow = "0 4px 12px rgba(10,102,194,0.06)"
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (selectedApplicant?.id !== proposal.id) {
-                        e.currentTarget.style.background = "#fff"
-                        e.currentTarget.style.borderColor = "rgba(0,0,0,0.08)"
-                        e.currentTarget.style.boxShadow = "0 1px 3px rgba(0,0,0,0.03)"
-                      }
-                    }}
-                  >
-                    <Avatar name={proposal.name} size={48} />
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                          gap: 10,
-                          flexWrap: "wrap",
-                          marginBottom: 4,
-                        }}
-                      >
-                        <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+                        )}
+                        {proposal.status === "rejected" && (
                           <span
                             style={{
-                              fontSize: 15,
-                              fontWeight: 800,
-                              color: "rgba(0,0,0,0.90)",
-                            }}
-                          >
-                            {proposal.name}
-                          </span>
-                          <span
-                            style={{
-                              fontSize: 12,
+                              fontSize: 11,
                               fontWeight: 700,
-                              padding: "2px 9px",
+                              padding: "2px 8px",
                               borderRadius: 9999,
-                              background: "#EAF1FA",
-                              color: "#0A66C2",
+                              background: "#FEE2E2",
+                              color: "#B91C1C",
                             }}
                           >
-                            {proposal.roleApplied}
+                            Đã từ chối
                           </span>
-                          {proposal.status === "accepted" && (
-                            <span
-                              style={{
-                                fontSize: 11.5,
-                                fontWeight: 700,
-                                padding: "2px 8px",
-                                borderRadius: 9999,
-                                background: "#DCFCE7",
-                                color: "#15803D",
-                              }}
-                            >
-                              Đã chấp nhận
-                            </span>
-                          )}
-                          {proposal.status === "rejected" && (
-                            <span
-                              style={{
-                                fontSize: 11.5,
-                                fontWeight: 700,
-                                padding: "2px 8px",
-                                borderRadius: 9999,
-                                background: "#FEE2E2",
-                                color: "#B91C1C",
-                              }}
-                            >
-                              Đã từ chối
-                            </span>
-                          )}
-                          {proposal.status === "pending" && (
-                            <span
-                              style={{
-                                fontSize: 11.5,
-                                fontWeight: 700,
-                                padding: "2px 8px",
-                                borderRadius: 9999,
-                                background: "#FEF3C7",
-                                color: "#B45309",
-                              }}
-                            >
-                              Chờ xét duyệt
-                            </span>
-                          )}
-                        </div>
-                        <span
-                          style={{
-                            fontSize: 15,
-                            fontWeight: 800,
-                            color: "#057642",
-                            flexShrink: 0,
-                          }}
-                        >
-                          {proposal.bid} <span style={{ fontSize: 12, fontWeight: 600, color: "rgba(0,0,0,0.50)" }}>/ {proposal.salaryCycle.toLowerCase()}</span>
-                        </span>
-                      </div>
-
-                      <div
-                        style={{
-                          fontSize: 13,
-                          color: "rgba(0,0,0,0.60)",
-                          marginBottom: 8,
-                        }}
-                      >
-                        {proposal.occupation} · {proposal.location}
-                      </div>
-
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 12,
-                          flexWrap: "wrap",
-                          marginBottom: 10,
-                        }}
-                      >
-                        <div style={{ display: "flex", alignItems: "center", gap: 3 }}>
-                          {[1, 2, 3, 4, 5].map((s) => (
-                            <span
-                              key={s}
-                              style={{
-                                color:
-                                  s <= Math.round(proposal.rating)
-                                    ? "#F5A623"
-                                    : "#D1D5DB",
-                                fontSize: 12,
-                              }}
-                            >
-                              ★
-                            </span>
-                          ))}
+                        )}
+                        {proposal.status === "pending" && (
                           <span
                             style={{
-                              fontSize: 12,
-                              color: "rgba(0,0,0,0.55)",
-                              marginLeft: 3,
+                              fontSize: 11,
+                              fontWeight: 700,
+                              padding: "2px 8px",
+                              borderRadius: 9999,
+                              background: "#FEF3C7",
+                              color: "#B45309",
                             }}
                           >
-                            {proposal.rating} ({proposal.ratingCount})
+                            Chờ xét duyệt
                           </span>
-                        </div>
+                        )}
+                      </div>
+                      <span
+                        style={{
+                          fontSize: 14.5,
+                          fontWeight: 800,
+                          color: "#057642",
+                          flexShrink: 0,
+                        }}
+                      >
+                        {proposal.bid} <span style={{ fontSize: 12, fontWeight: 600, color: "rgba(0,0,0,0.50)" }}>/ {proposal.salaryCycle.toLowerCase()}</span>
+                      </span>
+                    </div>
 
-                        <span style={{ fontSize: 12, color: "rgba(0,0,0,0.30)" }}>•</span>
+                    <div
+                      style={{
+                        fontSize: 12.5,
+                        color: "rgba(0,0,0,0.60)",
+                        marginBottom: 6,
+                      }}
+                    >
+                      {proposal.occupation} · {proposal.location}
+                    </div>
 
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 12,
+                        flexWrap: "wrap",
+                        marginBottom: 8,
+                      }}
+                    >
+                      <div style={{ display: "flex", alignItems: "center", gap: 3 }}>
+                        {[1, 2, 3, 4, 5].map((s) => (
+                          <span
+                            key={s}
+                            style={{
+                              color:
+                                s <= Math.round(proposal.rating)
+                                  ? "#F5A623"
+                                  : "#D1D5DB",
+                              fontSize: 12,
+                            }}
+                          >
+                            ★
+                          </span>
+                        ))}
                         <span
                           style={{
-                            display: "inline-flex",
-                            alignItems: "center",
-                            gap: 5,
                             fontSize: 12,
-                            color: "#DC2626",
-                            background: "#FEF2F2",
-                            padding: "3px 10px",
-                            borderRadius: 6,
-                            border: "1px solid #FECACA",
-                            fontWeight: 600,
+                            color: "rgba(0,0,0,0.55)",
+                            marginLeft: 3,
                           }}
                         >
-                          <FilePdf size={14} weight="fill" />
-                          {proposal.cvFileName} ({proposal.cvFileSize})
+                          {proposal.rating} ({proposal.ratingCount})
                         </span>
                       </div>
 
-                      <div
+                      <span style={{ fontSize: 12, color: "rgba(0,0,0,0.40)" }}>•</span>
+
+                      <span style={{ fontSize: 12, color: "rgba(0,0,0,0.65)", fontWeight: 500 }}>
+                        Cam kết: <strong>{proposal.commitment}</strong>
+                      </span>
+
+                      <span style={{ fontSize: 12, color: "rgba(0,0,0,0.40)" }}>•</span>
+
+                      <span
                         style={{
-                          fontSize: 13,
-                          color: "rgba(0,0,0,0.70)",
-                          lineHeight: 1.6,
-                          background: "#F8FAFC",
-                          padding: "10px 14px",
-                          borderRadius: 8,
-                          borderLeft: "3px solid #0A66C2",
-                          marginBottom: 10,
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: 4,
+                          fontSize: 11.5,
+                          color: "#DC2626",
+                          background: "#FEF2F2",
+                          padding: "2px 8px",
+                          borderRadius: 4,
+                          border: "1px solid #FECACA",
+                          fontWeight: 600,
                         }}
                       >
-                        "{proposal.comment}"
-                      </div>
+                        <FilePdf size={13} weight="fill" />
+                        {proposal.cvFileName} ({proposal.cvFileSize})
+                      </span>
+                    </div>
 
-                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 8, flexWrap: "wrap", gap: 8 }}>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            setSelectedApplicant(proposal)
-                          }}
-                          style={{
-                            background: "none",
-                            border: "none",
-                            cursor: "pointer",
-                            padding: 0,
-                            fontSize: 13,
-                            color: "#0A66C2",
-                            fontFamily: "inherit",
-                            fontWeight: 700,
-                            display: "inline-flex",
-                            alignItems: "center",
-                            gap: 4,
-                          }}
-                          onMouseEnter={(e) =>
-                            ((e.currentTarget as HTMLElement).style.textDecoration = "underline")
-                          }
-                          onMouseLeave={(e) =>
-                            ((e.currentTarget as HTMLElement).style.textDecoration = "none")
-                          }
-                        >
-                          Xem chi tiết đơn ứng tuyển & CV →
-                        </button>
+                    <p
+                      style={{
+                        fontSize: 13,
+                        color: "rgba(0,0,0,0.60)",
+                        lineHeight: 1.5,
+                        margin: 0,
+                        display: "-webkit-box",
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: "vertical",
+                        overflow: "hidden",
+                      }}
+                    >
+                      {proposal.comment}
+                    </p>
 
-                        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                          {proposal.status === "pending" && (
-                            <>
-                              <button
-                                type="button"
-                                onClick={(e) => {
-                                  e.stopPropagation()
-                                  handleRejectApplicant(proposal.id)
-                                }}
-                                style={{
-                                  padding: "5px 12px",
-                                  borderRadius: 9999,
-                                  border: "1px solid #FECACA",
-                                  background: "#FFF5F5",
-                                  color: "#DC2626",
-                                  fontSize: 12,
-                                  fontWeight: 600,
-                                  cursor: "pointer",
-                                  fontFamily: "inherit",
-                                  transition: "all 120ms ease",
-                                }}
-                                onMouseEnter={(e) => {
-                                  e.currentTarget.style.background = "#FEE2E2"
-                                }}
-                                onMouseLeave={(e) => {
-                                  e.currentTarget.style.background = "#FFF5F5"
-                                }}
-                              >
-                                Từ chối
-                              </button>
-                              <button
-                                type="button"
-                                onClick={(e) => {
-                                  e.stopPropagation()
-                                  handleAcceptApplicant(proposal)
-                                }}
-                                style={{
-                                  padding: "5px 14px",
-                                  borderRadius: 9999,
-                                  border: "none",
-                                  background: "#0A66C2",
-                                  color: "#fff",
-                                  fontSize: 12,
-                                  fontWeight: 700,
-                                  cursor: "pointer",
-                                  fontFamily: "inherit",
-                                  boxShadow: "0 1px 3px rgba(10,102,194,0.25)",
-                                  transition: "all 120ms ease",
-                                }}
-                                onMouseEnter={(e) => {
-                                  e.currentTarget.style.background = "#084FA0"
-                                }}
-                                onMouseLeave={(e) => {
-                                  e.currentTarget.style.background = "#0A66C2"
-                                }}
-                              >
-                                Duyệt & Soạn HĐ
-                              </button>
-                            </>
-                          )}
-                          <span style={{ fontSize: 12, color: "rgba(0,0,0,0.45)" }}>
-                            Nộp: {proposal.appliedDate}
-                          </span>
-                        </div>
-                      </div>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 8 }}>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setSelectedApplicant(proposal)
+                        }}
+                        style={{
+                          background: "none",
+                          border: "none",
+                          cursor: "pointer",
+                          padding: 0,
+                          fontSize: 12.5,
+                          color: "#0A66C2",
+                          fontFamily: "inherit",
+                          fontWeight: 700,
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: 4,
+                        }}
+                        onMouseEnter={(e) =>
+                        ((e.currentTarget as HTMLElement).style.textDecoration =
+                          "underline")
+                        }
+                        onMouseLeave={(e) =>
+                        ((e.currentTarget as HTMLElement).style.textDecoration =
+                          "none")
+                        }
+                      >
+                        Xem đơn ứng tuyển & CV →
+                      </button>
+
+                      <span style={{ fontSize: 11.5, color: "rgba(0,0,0,0.45)" }}>
+                        Nộp: {proposal.appliedDate}
+                      </span>
                     </div>
                   </div>
-                ))}
-              </div>
-            )}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
-
 
       {/* ─── Modal Xem Đơn Ứng Tuyển Của Ứng Viên ────────────────────────────── */}
       {selectedApplicant && (
@@ -7298,7 +7037,22 @@ function MyProjectDetailPage({
                   </div>
                 </div>
 
-
+                <div
+                  style={{
+                    padding: "12px 14px",
+                    borderRadius: 8,
+                    border: "1px solid rgba(0,0,0,0.08)",
+                    background: "#FAFAFA",
+                    gridColumn: "span 2",
+                  }}
+                >
+                  <div style={{ fontSize: 11.5, fontWeight: 700, color: "rgba(0,0,0,0.45)", textTransform: "uppercase", letterSpacing: 0.5 }}>
+                    Thời hạn cam kết hợp tác
+                  </div>
+                  <div style={{ fontSize: 13.5, fontWeight: 600, color: "rgba(0,0,0,0.85)", marginTop: 4 }}>
+                    {selectedApplicant.commitment}
+                  </div>
+                </div>
               </div>
 
               {/* CV File Attachment Box */}
@@ -8052,26 +7806,25 @@ function ProjectInvitationModal({
   onAccept,
   onReject,
   onOpenChat,
-  onViewProfile,
 }: {
   project: PendingProject
   onClose: () => void
   onAccept: (project: PendingProject) => void
   onReject: (project: PendingProject) => void
   onOpenChat?: (ownerName: string) => void
-  onViewProfile?: (ownerName: string) => void
 }) {
   const [rejectReason, setRejectReason] = useState("")
   const [showRejectForm, setShowRejectForm] = useState(false)
-  const [viewingContract, setViewingContract] = useState(false)
+  const totalRoles = project.recruitingRoles?.length || 0
+  const filledRoles = project.recruitingRoles?.filter((r) => r.status === "filled").length || 0
 
   return (
     <div
       style={{
         position: "fixed",
         inset: 0,
-        background: "rgba(15, 23, 42, 0.65)",
-        backdropFilter: "blur(6px)",
+        background: "rgba(0,0,0,0.60)",
+        backdropFilter: "blur(4px)",
         zIndex: 9999,
         display: "flex",
         alignItems: "center",
@@ -8088,24 +7841,26 @@ function ProjectInvitationModal({
           background: "#fff",
           borderRadius: 16,
           width: "100%",
-          maxWidth: 680,
+          maxWidth: 840,
           maxHeight: "92vh",
           overflowY: "auto",
-          boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0,0,0,0.06)",
+          boxShadow: "0 24px 60px rgba(0,0,0,0.25)",
           display: "flex",
           flexDirection: "column",
           position: "relative",
         }}
       >
-        {/* Modal Header */}
+        {/* Modal Banner Header */}
         <div
           style={{
-            padding: "24px 28px 18px",
-            borderBottom: "1px solid #F1F5F9",
+            background: "linear-gradient(135deg, #0A66C2 0%, #084FA0 100%)",
+            padding: "24px 28px",
+            color: "#fff",
             position: "relative",
+            borderTopLeftRadius: 16,
+            borderTopRightRadius: 16,
           }}
         >
-          {/* Top badges (Category + Expiry timer) + Close Button */}
           <div
             style={{
               display: "flex",
@@ -8114,11 +7869,12 @@ function ProjectInvitationModal({
               marginBottom: 12,
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <span
                 style={{
-                  background: "#EAF1FA",
-                  color: "#0A66C2",
+                  background: "rgba(255,255,255,0.20)",
+                  backdropFilter: "blur(8px)",
+                  color: "#fff",
                   fontSize: 12,
                   fontWeight: 700,
                   padding: "4px 12px",
@@ -8134,27 +7890,21 @@ function ProjectInvitationModal({
               <span
                 style={{
                   background: "#FEF3C7",
-                  color: "#92400E",
+                  color: "#B45309",
                   fontSize: 12,
-                  fontWeight: 600,
+                  fontWeight: 700,
                   padding: "4px 10px",
                   borderRadius: 9999,
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 4,
                 }}
               >
-                <Clock size={13} weight="bold" />
-                Hết hạn sau 3 ngày
+                Đang chờ bạn xác nhận
               </span>
             </div>
-
             <button
               onClick={onClose}
-              type="button"
               style={{
-                background: "#F8FAFC",
-                border: "1px solid #E2E8F0",
+                background: "rgba(255,255,255,0.20)",
+                border: "none",
                 borderRadius: "50%",
                 width: 32,
                 height: 32,
@@ -8162,56 +7912,53 @@ function ProjectInvitationModal({
                 alignItems: "center",
                 justifyContent: "center",
                 cursor: "pointer",
-                color: "#64748B",
-                transition: "all 150ms ease",
+                color: "#fff",
+                transition: "background 150ms",
               }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "#F1F5F9"
-                e.currentTarget.style.color = "#0F172A"
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "#F8FAFC"
-                e.currentTarget.style.color = "#64748B"
-              }}
+              onMouseEnter={(e) =>
+                ((e.currentTarget as HTMLElement).style.background =
+                  "rgba(255,255,255,0.35)")
+              }
+              onMouseLeave={(e) =>
+                ((e.currentTarget as HTMLElement).style.background =
+                  "rgba(255,255,255,0.20)")
+              }
             >
-              <X size={16} weight="bold" />
+              <X size={18} weight="bold" />
             </button>
           </div>
 
-          {/* Project Title */}
           <h2
             style={{
               fontSize: 22,
               fontWeight: 800,
               lineHeight: 1.3,
-              color: "rgba(0,0,0,0.92)",
-              margin: "0 0 10px 0",
-              letterSpacing: "-0.015em",
+              margin: 0,
+              letterSpacing: "-0.01em",
             }}
           >
             {project.name}
           </h2>
 
-          {/* Project Tags */}
           {project.tags && project.tags.length > 0 && (
             <div
               style={{
                 display: "flex",
                 flexWrap: "wrap",
                 gap: 6,
+                marginTop: 10,
               }}
             >
               {project.tags.map((tag) => (
                 <span
                   key={tag}
                   style={{
-                    background: "#F8FAFC",
-                    color: "#64748B",
-                    fontSize: 11.5,
+                    background: "rgba(255,255,255,0.15)",
+                    color: "#fff",
+                    fontSize: 11,
                     fontWeight: 600,
-                    padding: "2px 9px",
-                    borderRadius: 6,
-                    border: "1px solid #E2E8F0",
+                    padding: "2px 8px",
+                    borderRadius: 4,
                   }}
                 >
                   #{tag}
@@ -8219,85 +7966,142 @@ function ProjectInvitationModal({
               ))}
             </div>
           )}
+
+          {/* Highlighted Invited Role Card */}
+          <div
+            style={{
+              marginTop: 18,
+              background: "rgba(255,255,255,0.98)",
+              borderRadius: 12,
+              padding: "16px 20px",
+              color: "rgba(0,0,0,0.90)",
+              boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+              display: "grid",
+              gridTemplateColumns: "1.4fr 1fr 1fr",
+              gap: 16,
+              alignItems: "center",
+            }}
+          >
+            <div>
+              <div
+                style={{
+                  fontSize: 11,
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  color: "#0A66C2",
+                  letterSpacing: 0.5,
+                  marginBottom: 3,
+                }}
+              >
+                🎯 Vai trò được đề xuất cho bạn
+              </div>
+              <div
+                style={{
+                  fontSize: 18,
+                  fontWeight: 800,
+                  color: "rgba(0,0,0,0.90)",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                }}
+              >
+                <span>{project.invitedRole}</span>
+              </div>
+            </div>
+
+            <div>
+              <div
+                style={{
+                  fontSize: 11,
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  color: "rgba(0,0,0,0.50)",
+                  letterSpacing: 0.5,
+                  marginBottom: 3,
+                }}
+              >
+                Thù lao hợp đồng
+              </div>
+              <div
+                style={{
+                  fontSize: 17,
+                  fontWeight: 800,
+                  color: "#057642",
+                }}
+              >
+                {project.price}
+                <span style={{ fontSize: 12, fontWeight: 500, color: "rgba(0,0,0,0.55)", marginLeft: 4 }}>
+                  / {project.period}
+                </span>
+              </div>
+            </div>
+
+            <div>
+              <div
+                style={{
+                  fontSize: 11,
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  color: "rgba(0,0,0,0.50)",
+                  letterSpacing: 0.5,
+                  marginBottom: 3,
+                }}
+              >
+                Thời hạn dự án
+              </div>
+              <div
+                style={{
+                  fontSize: 14,
+                  fontWeight: 700,
+                  color: "rgba(0,0,0,0.85)",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 6,
+                }}
+              >
+                <CalendarBlank size={14} color="#0A66C2" />
+                <span>{project.dueDate ?? "Theo thỏa thuận"}</span>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Modal Scrollable Body */}
-        <div style={{ padding: "20px 28px", display: "flex", flexDirection: "column", gap: 16 }}>
-          {/* Minimal Terms Summary Strip - Single cohesive bar, no rainbow colors */}
+        <div style={{ padding: "24px 28px", display: "flex", flexDirection: "column", gap: 24 }}>
+          {/* Section 1: Thông tin chủ dự án & Thư mời */}
           <div
             style={{
               background: "#F8FAFC",
-              border: "1px solid #E2E8F0",
-              borderRadius: 10,
-              padding: "12px 18px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              flexWrap: "wrap",
-              gap: 14,
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <Briefcase size={16} color="#0A66C2" />
-              <span style={{ fontSize: 13, color: "rgba(0,0,0,0.55)" }}>Vai trò:</span>
-              <span style={{ fontSize: 13.5, fontWeight: 700, color: "rgba(0,0,0,0.90)" }}>
-                {project.invitedRole}
-              </span>
-            </div>
-
-            <div style={{ width: 1, height: 16, background: "#CBD5E1" }} />
-
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <Wallet size={16} color="#0A66C2" />
-              <span style={{ fontSize: 13, color: "rgba(0,0,0,0.55)" }}>Thù lao:</span>
-              <span style={{ fontSize: 13.5, fontWeight: 700, color: "#0A66C2" }}>
-                {project.price} <span style={{ fontSize: 12, fontWeight: 500, color: "rgba(0,0,0,0.55)" }}>/ {project.period}</span>
-              </span>
-            </div>
-
-            <div style={{ width: 1, height: 16, background: "#CBD5E1" }} />
-
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <CalendarBlank size={16} color="#0A66C2" />
-              <span style={{ fontSize: 13, color: "rgba(0,0,0,0.55)" }}>Hạn dự kiến:</span>
-              <span style={{ fontSize: 13.5, fontWeight: 700, color: "rgba(0,0,0,0.90)" }}>
-                {project.dueDate ?? "Theo thỏa thuận"}
-              </span>
-            </div>
-          </div>
-
-          {/* Large Invitation Letter Section - Fixed Height component (400px) */}
-          <div
-            style={{
-              height: 600,
-              background: "#fff",
-              border: "1px solid #E2E8F0",
               borderRadius: 12,
-              padding: "16px 20px",
-              display: "flex",
-              flexDirection: "column",
-              boxSizing: "border-box",
-              boxShadow: "0 1px 3px rgba(0,0,0,0.03)",
+              padding: "20px 22px",
+              border: "1px solid #E2E8F0",
             }}
           >
-            {/* Sender / Inviter Header */}
             <div
               style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                paddingBottom: 12,
-                borderBottom: "1px solid #F1F5F9",
-                flexShrink: 0,
+                fontSize: 14,
+                fontWeight: 700,
+                color: "rgba(0,0,0,0.50)",
+                textTransform: "uppercase",
+                letterSpacing: 0.5,
+                marginBottom: 14,
               }}
             >
+              1. Thông tin Chủ dự án & Lời nhắn mời
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "240px 1fr", gap: 20 }}>
+              {/* Owner card */}
               <div
-                onClick={() => onViewProfile?.(project.owner)}
                 style={{
-                  display: "inline-flex",
+                  background: "#fff",
+                  borderRadius: 10,
+                  padding: 16,
+                  border: "1px solid rgba(0,0,0,0.08)",
+                  display: "flex",
+                  flexDirection: "column",
                   alignItems: "center",
-                  gap: 12,
-                  cursor: "pointer",
+                  textAlign: "center",
                 }}
               >
                 {project.ownerAvatar ? (
@@ -8305,244 +8109,391 @@ function ProjectInvitationModal({
                     src={project.ownerAvatar}
                     alt={project.owner}
                     style={{
-                      width: 40,
-                      height: 40,
+                      width: 64,
+                      height: 64,
                       borderRadius: "50%",
                       objectFit: "cover",
+                      marginBottom: 10,
                       border: "2px solid #0A66C2",
                     }}
                   />
                 ) : (
                   <div
                     style={{
-                      width: 40,
-                      height: 40,
+                      width: 64,
+                      height: 64,
                       borderRadius: "50%",
                       background: "#EAF1FA",
                       color: "#0A66C2",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      fontSize: 16,
+                      fontSize: 22,
                       fontWeight: 800,
+                      marginBottom: 10,
                     }}
                   >
                     {project.owner.charAt(0)}
                   </div>
                 )}
-                <div>
-                  <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                    <span style={{ fontWeight: 800, fontSize: 15, color: "rgba(0,0,0,0.90)" }}>
-                      {project.owner}
-                    </span>
-                    <SealCheck size={15} weight="fill" color="#0A66C2" />
-                  </div>
-                  <div style={{ fontSize: 12, color: "#0A66C2", fontWeight: 600 }}>
-                    Chủ dự án · Nhấn xem trang cá nhân →
-                  </div>
+                <div style={{ fontWeight: 800, fontSize: 15, color: "rgba(0,0,0,0.90)" }}>
+                  {project.owner}
                 </div>
-              </div>
+                <div style={{ fontSize: 12, color: "#0A66C2", fontWeight: 600, marginTop: 2 }}>
+                  {project.ownerRole ?? "Chủ dự án"}
+                </div>
+                <div style={{ fontSize: 12, color: "rgba(0,0,0,0.55)", marginTop: 2 }}>
+                  {project.ownerCompany ?? "Occupify Enterprise Partner"}
+                </div>
 
-              <span
-                style={{
-                  fontSize: 11.5,
-                  fontWeight: 600,
-                  color: "#64748B",
-                  background: "#F8FAFC",
-                  border: "1px solid #E2E8F0",
-                  padding: "4px 10px",
-                  borderRadius: 6,
-                }}
-              >
-                Thư mời hợp tác
-              </span>
-            </div>
-
-            {/* Letter Content - Scrollable if exceeds fixed height */}
-            <div
-              style={{
-                flex: 1,
-                overflowY: "auto",
-                paddingTop: 12,
-                paddingRight: 6,
-                fontSize: 13.5,
-                lineHeight: 1.7,
-                color: "rgba(0,0,0,0.80)",
-              }}
-            >
-              <div style={{ fontWeight: 600, color: "rgba(0,0,0,0.90)", marginBottom: 6 }}>
-                Nội dung lời mời:
-              </div>
-              <p style={{ margin: "0 0 10px 0" }}>
-                {project.inviteMessage ||
-                  `Chào bạn! Qua hồ sơ và kinh nghiệm làm việc của bạn trên Occupify, chúng tôi nhận thấy năng lực của bạn rất phù hợp với vị trí ${project.invitedRole} trong dự án "${project.name}". Chúng tôi rất mong có cơ hội được hợp tác cùng bạn trong dự án này.`}
-              </p>
-
-              {project.description && (
                 <div
                   style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 4,
                     marginTop: 10,
-                    paddingTop: 10,
-                    borderTop: "1px dashed #E2E8F0",
-                    fontSize: 13,
-                    color: "rgba(0,0,0,0.65)",
-                  }}
-                >
-                  <span style={{ fontWeight: 600, color: "rgba(0,0,0,0.85)" }}>Về dự án: </span>
-                  {project.description}
-                </div>
-              )}
-
-              {/* File hợp đồng đính kèm */}
-              <div
-                style={{
-                  marginTop: 14,
-                  paddingTop: 12,
-                  borderTop: "1px dashed #E2E8F0",
-                }}
-              >
-                <div
-                  style={{
+                    padding: "3px 10px",
+                    background: "#FEF3C7",
+                    borderRadius: 9999,
                     fontSize: 12,
                     fontWeight: 700,
-                    color: "rgba(0,0,0,0.60)",
-                    textTransform: "uppercase",
-                    letterSpacing: 0.5,
-                    marginBottom: 8,
+                    color: "#B45309",
                   }}
                 >
-                  Tài liệu & Hợp đồng đính kèm:
+                  <Star size={13} weight="fill" color="#D97706" />
+                  <span>{project.ownerRating ?? 4.9} / 5.0</span>
                 </div>
+
+                <div
+                  style={{
+                    fontSize: 11,
+                    color: "rgba(0,0,0,0.50)",
+                    marginTop: 8,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 3,
+                  }}
+                >
+                  <span>✓ {project.ownerCompletedProjects ?? 20}+ dự án hoàn thành</span>
+                  <span>✓ 100% thanh toán đúng cam kết</span>
+                </div>
+              </div>
+
+              {/* Invitation message */}
+              <div
+                style={{
+                  background: "#fff",
+                  borderRadius: 10,
+                  padding: 18,
+                  border: "1px solid rgba(0,0,0,0.08)",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                }}
+              >
+                <div>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 8,
+                      marginBottom: 10,
+                      color: "#0A66C2",
+                      fontWeight: 700,
+                      fontSize: 13,
+                    }}
+                  >
+                    <ChatCircle size={16} weight="fill" />
+                    <span>Lời nhắn trực tiếp gửi tới bạn:</span>
+                  </div>
+                  <p
+                    style={{
+                      fontSize: 13.5,
+                      lineHeight: 1.7,
+                      color: "rgba(0,0,0,0.80)",
+                      fontStyle: "italic",
+                      background: "#F8FAFC",
+                      padding: "12px 14px",
+                      borderRadius: 8,
+                      borderLeft: "3px solid #0A66C2",
+                      margin: 0,
+                    }}
+                  >
+                    "{project.inviteMessage ??
+                      "Chào bạn, chúng tôi rất ấn tượng với năng lực và kinh nghiệm của bạn trên nền tảng Occupify. Rất mong bạn sẽ gia nhập dự án với vai trò then chốt này!"}"
+                  </p>
+                </div>
+
                 <div
                   style={{
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "space-between",
-                    padding: "12px 16px",
-                    background: "#F8FAFC",
-                    border: "1px solid #E2E8F0",
-                    borderRadius: 10,
-                    gap: 12,
-                    flexWrap: "wrap",
+                    marginTop: 14,
+                    paddingTop: 12,
+                    borderTop: "1px solid rgba(0,0,0,0.06)",
                   }}
                 >
-                  <div style={{ display: "flex", alignItems: "center", gap: 12, minWidth: 0, flex: "1 1 240px" }}>
-                    <div
-                      style={{
-                        width: 38,
-                        height: 38,
-                        borderRadius: 8,
-                        background: "#FEF2F2",
-                        border: "1px solid #FECACA",
-                        color: "#DC2626",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexShrink: 0,
-                      }}
-                    >
-                      <FilePdf size={22} weight="fill" />
-                    </div>
-                    <div style={{ minWidth: 0 }}>
-                      <div
-                        style={{
-                          fontSize: 13.5,
-                          fontWeight: 700,
-                          color: "rgba(0,0,0,0.90)",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          whiteSpace: "nowrap",
-                        }}
-                      >
-                        HopDong_HopTac_{project.name.replace(/[^a-zA-Z0-9]/g, "_")}.pdf
-                      </div>
-                      <div style={{ fontSize: 12, color: "rgba(0,0,0,0.50)", marginTop: 2 }}>
-                        Bản thảo hợp đồng dự án · 1.8 MB · Định dạng PDF
-                      </div>
-                    </div>
-                  </div>
-
-                  <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
-                    <button
-                      type="button"
-                      onClick={() => setViewingContract(true)}
-                      style={{
-                        padding: "6px 14px",
-                        borderRadius: 8,
-                        border: "1px solid #0A66C2",
-                        background: "#fff",
-                        color: "#0A66C2",
-                        fontSize: 12.5,
-                        fontWeight: 700,
-                        cursor: "pointer",
-                        fontFamily: "inherit",
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: 5,
-                        transition: "all 150ms ease",
-                        boxShadow: "0 1px 2px rgba(10,102,194,0.08)",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.background = "#F0F7FF"
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.background = "#fff"
-                      }}
-                    >
-                      <Eye size={14} weight="bold" />
-                      <span>Xem trước</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        alert(`Đang tải xuống: HopDong_HopTac_${project.name.replace(/[^a-zA-Z0-9]/g, "_")}.pdf`)
-                      }}
-                      style={{
-                        padding: "6px 14px",
-                        borderRadius: 8,
-                        border: "1px solid #CBD5E1",
-                        background: "#fff",
-                        color: "#475569",
-                        fontSize: 12.5,
-                        fontWeight: 600,
-                        cursor: "pointer",
-                        fontFamily: "inherit",
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: 5,
-                        transition: "all 150ms ease",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.borderColor = "#94A3B8"
-                        e.currentTarget.style.background = "#F1F5F9"
-                        e.currentTarget.style.color = "#0F172A"
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.borderColor = "#CBD5E1"
-                        e.currentTarget.style.background = "#fff"
-                        e.currentTarget.style.color = "#475569"
-                      }}
-                    >
-                      <DownloadSimple size={14} weight="bold" />
-                      <span>Tải về</span>
-                    </button>
-                  </div>
+                  <span style={{ fontSize: 12, color: "rgba(0,0,0,0.50)" }}>
+                    Muốn tìm hiểu kỹ hơn trước khi ký hợp đồng?
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => onOpenChat?.(project.owner)}
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 6,
+                      background: "none",
+                      border: "1px solid #0A66C2",
+                      color: "#0A66C2",
+                      borderRadius: 9999,
+                      padding: "5px 14px",
+                      fontSize: 12,
+                      fontWeight: 700,
+                      cursor: "pointer",
+                      transition: "all 150ms",
+                    }}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLElement).style.background = "#EAF1FA"
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLElement).style.background = "none"
+                    }}
+                  >
+                    <ChatDots size={14} />
+                    <span>Nhắn tin với {project.owner}</span>
+                  </button>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Rejection Form (Revealed when user clicks 'Từ chối lời mời') */}
+          {/* Section 2: Mô tả & Thông tin dự án */}
+          <div>
+            <div
+              style={{
+                fontSize: 14,
+                fontWeight: 700,
+                color: "rgba(0,0,0,0.50)",
+                textTransform: "uppercase",
+                letterSpacing: 0.5,
+                marginBottom: 10,
+              }}
+            >
+              2. Mô tả & Mục tiêu dự án
+            </div>
+            <div
+              style={{
+                background: "#fff",
+                border: "1px solid rgba(0,0,0,0.08)",
+                borderRadius: 10,
+                padding: "16px 20px",
+                lineHeight: 1.7,
+                fontSize: 14,
+                color: "rgba(0,0,0,0.80)",
+              }}
+            >
+              {project.description ??
+                "Dự án được triển khai trên nền tảng Occupify với yêu cầu chất lượng cao, các mốc thanh toán và tiến độ được bảo vệ bởi Smart Contract & Ký quỹ an toàn."}
+            </div>
+          </div>
+
+          {/* Section 3: Các vai trò / Role đang được tuyển */}
+          <div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginBottom: 10,
+              }}
+            >
+              <div>
+                <div
+                  style={{
+                    fontSize: 14,
+                    fontWeight: 700,
+                    color: "rgba(0,0,0,0.50)",
+                    textTransform: "uppercase",
+                    letterSpacing: 0.5,
+                  }}
+                >
+                  3. Các vai trò trong dự án ({totalRoles} vị trí)
+                </div>
+                <div style={{ fontSize: 12, color: "rgba(0,0,0,0.55)", marginTop: 2 }}>
+                  Quy mô dự án: {totalRoles} vị trí ({filledRoles}/{totalRoles} vị trí đã có nhân sự)
+                </div>
+              </div>
+            </div>
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(360px, 1fr))",
+                gap: 12,
+              }}
+            >
+              {project.recruitingRoles?.map((role) => {
+                const isInvited = role.title === project.invitedRole
+                const isRecruiting = role.status === "recruiting"
+
+                return (
+                  <div
+                    key={role.id}
+                    style={{
+                      borderRadius: 10,
+                      border: isInvited
+                        ? "2px solid #0A66C2"
+                        : "1px solid rgba(0,0,0,0.08)",
+                      background: isInvited ? "#F4F8FE" : "#fff",
+                      padding: "16px 18px",
+                      position: "relative",
+                      boxShadow: isInvited
+                        ? "0 4px 16px rgba(10,102,194,0.12)"
+                        : "none",
+                    }}
+                  >
+                    {isInvited && (
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: -10,
+                          right: 14,
+                          background: "#0A66C2",
+                          color: "#fff",
+                          fontSize: 11,
+                          fontWeight: 700,
+                          padding: "2px 10px",
+                          borderRadius: 9999,
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 4,
+                          boxShadow: "0 2px 6px rgba(10,102,194,0.3)",
+                        }}
+                      >
+                        <SealCheck size={13} weight="fill" />
+                        <span>Vị trí bạn được mời</span>
+                      </div>
+                    )}
+
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "flex-start",
+                        justifyContent: "space-between",
+                        gap: 8,
+                        marginBottom: 8,
+                      }}
+                    >
+                      <div>
+                        <div
+                          style={{
+                            fontWeight: 800,
+                            fontSize: 15,
+                            color: isInvited ? "#0A66C2" : "rgba(0,0,0,0.90)",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 6,
+                          }}
+                        >
+                          <Briefcase size={16} />
+                          <span>{role.title}</span>
+                        </div>
+                        {role.salaryRange && (
+                          <div
+                            style={{
+                              fontSize: 13,
+                              fontWeight: 700,
+                              color: "#057642",
+                              marginTop: 3,
+                            }}
+                          >
+                            {role.salaryRange}
+                          </div>
+                        )}
+                      </div>
+
+                      <span
+                        style={{
+                          fontSize: 11,
+                          fontWeight: 700,
+                          padding: "2.5px 8px",
+                          borderRadius: 9999,
+                          background: isRecruiting ? "#E5F6E8" : "#F4F2EE",
+                          color: isRecruiting ? "#057642" : "rgba(0,0,0,0.60)",
+                          border: isRecruiting ? "1px solid #BBF7D0" : "1px solid #E2E8F0",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {isRecruiting ? "Đang tuyển" : "Đã có nhân sự"}
+                      </span>
+                    </div>
+
+                    {!isRecruiting && (
+                      <div
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: 5,
+                          fontSize: 11.5,
+                          color: "#057642",
+                          background: "#F0FDF4",
+                          border: "1px solid #DCFCE7",
+                          padding: "3px 8px",
+                          borderRadius: 6,
+                          marginTop: 6,
+                          fontWeight: 600,
+                        }}
+                      >
+                        <SealCheck size={13} weight="fill" color="#057642" />
+                        <span>{role.assignedMemberName ? `Đã giao: ${role.assignedMemberName}` : "Đã có nhân sự tiếp nhận"}</span>
+                      </div>
+                    )}
+
+                    {role.skills && role.skills.length > 0 && (
+                      <div
+                        style={{
+                          display: "flex",
+                          flexWrap: "wrap",
+                          gap: 5,
+                          marginTop: 10,
+                        }}
+                      >
+                        {role.skills.map((s) => (
+                          <span
+                            key={s}
+                            style={{
+                              fontSize: 11,
+                              fontWeight: 600,
+                              background: isInvited ? "#EAF1FA" : "#F4F2EE",
+                              color: isInvited ? "#0A66C2" : "rgba(0,0,0,0.70)",
+                              padding: "2px 7px",
+                              borderRadius: 4,
+                            }}
+                          >
+                            {s}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* Form từ chối nếu user click từ chối */}
           {showRejectForm && (
             <div
               style={{
                 background: "#FEF2F2",
                 border: "1px solid #FECACA",
-                borderRadius: 12,
+                borderRadius: 10,
                 padding: "16px 20px",
               }}
             >
-              <div style={{ fontWeight: 700, fontSize: 13.5, color: "#991B1B", marginBottom: 6 }}>
+              <div style={{ fontWeight: 700, fontSize: 14, color: "#991B1B", marginBottom: 6 }}>
                 Lý do từ chối lời mời (tuỳ chọn)
               </div>
               <textarea
@@ -8552,14 +8503,13 @@ function ProjectInvitationModal({
                 style={{
                   width: "100%",
                   minHeight: 70,
-                  padding: "10px 12px",
-                  borderRadius: 8,
+                  padding: "8px 12px",
+                  borderRadius: 6,
                   border: "1px solid #FCA5A5",
                   fontSize: 13,
                   fontFamily: "inherit",
                   boxSizing: "border-box",
                   outline: "none",
-                  background: "#fff",
                 }}
               />
               <div style={{ display: "flex", justifyContent: "flex-end", gap: 10, marginTop: 10 }}>
@@ -8587,11 +8537,10 @@ function ProjectInvitationModal({
                     color: "#fff",
                     border: "none",
                     borderRadius: 9999,
-                    padding: "7px 18px",
+                    padding: "6px 18px",
                     fontSize: 13,
                     fontWeight: 700,
                     cursor: "pointer",
-                    boxShadow: "0 1px 3px rgba(220,38,38,0.3)",
                   }}
                 >
                   Xác nhận từ chối
@@ -8601,184 +8550,99 @@ function ProjectInvitationModal({
           )}
         </div>
 
-        {/* Modal Footer Actions - Clean 2 buttons */}
+        {/* Modal Footer Actions */}
         <div
           style={{
-            padding: "16px 28px",
+            padding: "18px 28px",
             background: "#F8FAFC",
-            borderTop: "1px solid #F1F5F9",
+            borderTop: "1px solid rgba(0,0,0,0.08)",
             display: "flex",
             alignItems: "center",
-            justifyContent: "flex-end",
+            justifyContent: "space-between",
             borderBottomLeftRadius: 16,
             borderBottomRightRadius: 16,
+            flexWrap: "wrap",
             gap: 12,
           }}
         >
-          {!showRejectForm && (
-            <button
-              type="button"
-              onClick={() => setShowRejectForm(true)}
-              style={{
-                padding: "9px 20px",
-                borderRadius: 9999,
-                border: "1px solid #CBD5E1",
-                background: "#fff",
-                color: "#64748B",
-                fontSize: 13.5,
-                fontWeight: 600,
-                cursor: "pointer",
-                fontFamily: "inherit",
-                transition: "all 150ms ease",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "#FEF2F2"
-                e.currentTarget.style.borderColor = "#FECACA"
-                e.currentTarget.style.color = "#DC2626"
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "#fff"
-                e.currentTarget.style.borderColor = "#CBD5E1"
-                e.currentTarget.style.color = "#64748B"
-              }}
-            >
-              Từ chối lời mời
-            </button>
-          )}
-
           <button
             type="button"
-            onClick={() => onAccept(project)}
+            onClick={onClose}
             style={{
-              padding: "9px 24px",
+              padding: "9px 20px",
               borderRadius: 9999,
-              border: "none",
-              background: "#0A66C2",
-              color: "#fff",
-              fontSize: 13.5,
-              fontWeight: 700,
+              border: "1px solid rgba(0,0,0,0.20)",
+              background: "#fff",
+              color: "rgba(0,0,0,0.70)",
+              fontSize: 13,
+              fontWeight: 600,
               cursor: "pointer",
               fontFamily: "inherit",
-              display: "flex",
-              alignItems: "center",
-              gap: 8,
-              boxShadow: "0 2px 8px rgba(10,102,194,0.25)",
-              transition: "all 150ms ease",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = "#084FA0"
-              e.currentTarget.style.boxShadow = "0 4px 14px rgba(10,102,194,0.35)"
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = "#0A66C2"
-              e.currentTarget.style.boxShadow = "0 2px 8px rgba(10,102,194,0.25)"
             }}
           >
-            <CheckFat size={16} weight="fill" />
-            <span>Chấp nhận lời mời & Tham gia dự án</span>
+            Đóng
           </button>
-        </div>
-      </div>
 
-      {/* Modal Xem Trước Bản Thảo Hợp Đồng */}
-      {viewingContract && (
-        <div
-          style={{
-            position: "fixed",
-            inset: 0,
-            background: "rgba(15, 23, 42, 0.70)",
-            backdropFilter: "blur(4px)",
-            zIndex: 10000,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: 16,
-          }}
-          onClick={() => setViewingContract(false)}
-        >
-          <div
-            style={{
-              background: "#fff",
-              borderRadius: 16,
-              width: "100%",
-              maxWidth: 640,
-              maxHeight: "88vh",
-              overflowY: "auto",
-              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.35)",
-              padding: "24px 28px",
-              boxSizing: "border-box",
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16, borderBottom: "1px solid #E2E8F0", paddingBottom: 12 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <FilePdf size={24} weight="fill" color="#DC2626" />
-                <div>
-                  <div style={{ fontWeight: 800, fontSize: 16, color: "rgba(0,0,0,0.90)" }}>
-                    Bản thảo Hợp đồng Dịch vụ
-                  </div>
-                  <div style={{ fontSize: 12, color: "rgba(0,0,0,0.50)" }}>
-                    Dự án: {project.name} · Định dạng PDF
-                  </div>
-                </div>
-              </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            {!showRejectForm && (
               <button
                 type="button"
-                onClick={() => setViewingContract(false)}
+                onClick={() => setShowRejectForm(true)}
                 style={{
-                  background: "#F8FAFC",
-                  border: "1px solid #E2E8F0",
-                  borderRadius: "50%",
-                  width: 32,
-                  height: 32,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  cursor: "pointer",
-                  color: "#64748B",
-                }}
-              >
-                <X size={16} weight="bold" />
-              </button>
-            </div>
-
-            <div style={{ background: "#F8FAFC", borderRadius: 8, padding: 18, border: "1px solid #E2E8F0", fontSize: 13, lineHeight: 1.8, color: "rgba(0,0,0,0.80)" }}>
-              <div style={{ textAlign: "center", fontWeight: 800, fontSize: 15, marginBottom: 14, textTransform: "uppercase", color: "#0A66C2" }}>
-                CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM<br />
-                <span style={{ fontSize: 12, fontWeight: 600, color: "rgba(0,0,0,0.60)" }}>Độc lập - Tự do - Hạnh phúc</span>
-              </div>
-              <div style={{ textAlign: "center", fontWeight: 700, fontSize: 14, marginBottom: 14 }}>
-                HỢP ĐỒNG HỢP TÁC VÀ CUNG CẤP DỊCH VỤ DỰ ÁN
-              </div>
-              <p><b>Bên A (Bên giao việc / Chủ dự án):</b> {project.owner} {project.ownerCompany ? `(${project.ownerCompany})` : ""}</p>
-              <p><b>Bên B (Bên nhận việc):</b> Ứng viên được mời tham gia</p>
-              <p><b>1. Vị trí & Phạm vi công việc:</b> {project.invitedRole} trong khuôn khổ dự án "{project.name}".</p>
-              <p><b>2. Mức thù lao:</b> {project.price} ({project.period}). Các mốc thanh toán tự động qua Smart Contract.</p>
-              <p><b>3. Thời hạn thực hiện:</b> Hạn chót dự kiến đến {project.dueDate ?? "theo thỏa thuận đôi bên"}.</p>
-              <p><b>4. Quyền và nghĩa vụ:</b> Cam kết bảo mật thông tin (NDA), chuyển giao toàn bộ mã nguồn và tài sản sở hữu trí tuệ sau khi hoàn thành thanh toán.</p>
-            </div>
-
-            <div style={{ display: "flex", justifyContent: "flex-end", gap: 10, marginTop: 18 }}>
-              <button
-                type="button"
-                onClick={() => setViewingContract(false)}
-                style={{
-                  padding: "8px 20px",
+                  padding: "9px 20px",
                   borderRadius: 9999,
-                  border: "1px solid #CBD5E1",
-                  background: "#fff",
-                  color: "#64748B",
+                  border: "1px solid #C03A2B",
+                  background: "none",
+                  color: "#C03A2B",
                   fontSize: 13,
-                  fontWeight: 600,
+                  fontWeight: 700,
                   cursor: "pointer",
+                  fontFamily: "inherit",
+                  transition: "background 150ms",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.background = "#FBE2E2"
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.background = "none"
                 }}
               >
-                Đóng xem trước
+                Từ chối lời mời
               </button>
-            </div>
+            )}
+
+            <button
+              type="button"
+              onClick={() => onAccept(project)}
+              style={{
+                padding: "9px 28px",
+                borderRadius: 9999,
+                border: "none",
+                background: "#0A66C2",
+                color: "#fff",
+                fontSize: 13,
+                fontWeight: 700,
+                cursor: "pointer",
+                fontFamily: "inherit",
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                boxShadow: "0 2px 10px rgba(10,102,194,0.3)",
+                transition: "background 150ms",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.background = "#084FA0"
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.background = "#0A66C2"
+              }}
+            >
+              <CheckFat size={16} weight="fill" />
+              <span>Chấp nhận lời mời & Tham gia dự án</span>
+            </button>
           </div>
         </div>
-      )}
+      </div>
     </div>
   )
 }
@@ -8886,12 +8750,12 @@ function PendingProjectCard({
                     whiteSpace: "nowrap",
                   }}
                   onMouseEnter={(e) =>
-                  ((e.currentTarget as HTMLElement).style.textDecoration =
-                    "underline")
+                    ((e.currentTarget as HTMLElement).style.textDecoration =
+                      "underline")
                   }
                   onMouseLeave={(e) =>
-                  ((e.currentTarget as HTMLElement).style.textDecoration =
-                    "none")
+                    ((e.currentTarget as HTMLElement).style.textDecoration =
+                      "none")
                   }
                 >
                   {proj.name}
@@ -8928,6 +8792,20 @@ function PendingProjectCard({
                 }}
               >
                 <span>Chủ dự án: <b style={{ color: "rgba(0,0,0,0.85)" }}>{proj.owner}</b></span>
+                {proj.ownerCompany && <span>({proj.ownerCompany})</span>}
+                {proj.ownerRating && (
+                  <span
+                    style={{
+                      color: "#B45309",
+                      fontWeight: 700,
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 2,
+                    }}
+                  >
+                    ⭐ {proj.ownerRating}
+                  </span>
+                )}
               </div>
 
               <div
@@ -8963,10 +8841,10 @@ function PendingProjectCard({
                     transition: "all 120ms",
                   }}
                   onMouseEnter={(e) => {
-                    ; (e.currentTarget as HTMLElement).style.background = "#084fa0"
+                    ;(e.currentTarget as HTMLElement).style.background = "#084fa0"
                   }}
                   onMouseLeave={(e) => {
-                    ; (e.currentTarget as HTMLElement).style.background = "#0A66C2"
+                    ;(e.currentTarget as HTMLElement).style.background = "#0A66C2"
                   }}
                 >
                   <Eye size={14} weight="bold" />
@@ -8995,10 +8873,10 @@ function PendingProjectCard({
                     transition: "all 120ms",
                   }}
                   onMouseEnter={(e) => {
-                    ; (e.currentTarget as HTMLElement).style.background = "#F4F2EE"
+                    ;(e.currentTarget as HTMLElement).style.background = "#F4F2EE"
                   }}
                   onMouseLeave={(e) => {
-                    ; (e.currentTarget as HTMLElement).style.background = "none"
+                    ;(e.currentTarget as HTMLElement).style.background = "none"
                   }}
                 >
                   Từ chối
@@ -11653,7 +11531,7 @@ function ProjectsManagementPage({
   onViewProfile,
 }: {
   onSelectContract?: (c: Contract) => void
-  onViewProfile?: (name?: string) => void
+  onViewProfile?: () => void
 }) {
   const [toast, setToast] = useState<string | null>(null)
   const [subPage, setSubPage] = useState<string | null>(null)
@@ -12367,10 +12245,6 @@ function ProjectsManagementPage({
           onAccept={handleAcceptInvitation}
           onReject={handleRejectInvitation}
           onOpenChat={(owner) => setToast(`Đang mở cửa sổ trò chuyện với ${owner}...`)}
-          onViewProfile={(ownerName) => {
-            setSelectedInvitation(null)
-            onViewProfile?.(ownerName)
-          }}
         />
       )}
 
@@ -13016,33 +12890,33 @@ function ProjectDetailsPage({
     job.roles && job.roles.length > 0
       ? job.roles
       : [
-        {
-          id: `def-${job.id}`,
-          title: job.title,
-          minBudget: job.salaryValue ? Math.round(job.salaryValue * 0.85) : 20000000,
-          maxBudget: job.salaryValue ? Math.round(job.salaryValue * 1.15) : 35000000,
-          budgetDisplay: job.budget,
-          salaryType: job.salaryType || "fixed",
-          salaryTypeLabel:
-            job.salaryType === "hourly"
-              ? "/ giờ"
-              : job.salaryType === "weekly"
-                ? "/ tuần"
-                : job.salaryType === "monthly"
-                  ? "/ tháng"
-                  : "/ dự án",
-          jd: job.description,
-          requirements: [
-            "Tối thiểu 2 năm kinh nghiệm thực chiến trong các dự án tương đương",
-            "Khả năng làm việc độc lập và báo cáo tiến độ đúng hạn",
-            "Cam kết chất lượng đầu ra đạt tiêu chuẩn sản phẩm",
-          ],
-          skills: job.skills,
-          slotsTotal: 1,
-          slotsFilled: 0,
-          status: "recruiting",
-        },
-      ]
+          {
+            id: `def-${job.id}`,
+            title: job.title,
+            minBudget: job.salaryValue ? Math.round(job.salaryValue * 0.85) : 20000000,
+            maxBudget: job.salaryValue ? Math.round(job.salaryValue * 1.15) : 35000000,
+            budgetDisplay: job.budget,
+            salaryType: job.salaryType || "fixed",
+            salaryTypeLabel:
+              job.salaryType === "hourly"
+                ? "/ giờ"
+                : job.salaryType === "weekly"
+                  ? "/ tuần"
+                  : job.salaryType === "monthly"
+                    ? "/ tháng"
+                    : "/ dự án",
+            jd: job.description,
+            requirements: [
+              "Tối thiểu 2 năm kinh nghiệm thực chiến trong các dự án tương đương",
+              "Khả năng làm việc độc lập và báo cáo tiến độ đúng hạn",
+              "Cam kết chất lượng đầu ra đạt tiêu chuẩn sản phẩm",
+            ],
+            skills: job.skills,
+            slotsTotal: 1,
+            slotsFilled: 0,
+            status: "recruiting",
+          },
+        ]
 
   const handleOpenApplyModal = (role: JobRoleItem) => {
     setSelectedRoleForApply(role)
@@ -15466,15 +15340,15 @@ function MyProfilePage({
           />
         </div>
         <div style={{ padding: "0 28px 24px" }}>
-          {/* Avatar - fixed z-index so background never overlaps */}
-          <div style={{ position: "relative", zIndex: 10, marginTop: -56, marginBottom: 14 }}>
+          {/* Avatar */}
+          <div style={{ marginTop: -56, marginBottom: 12 }}>
             <div
               style={{
-                width: 108,
-                height: 108,
+                width: 104,
+                height: 104,
                 borderRadius: 9999,
                 border: "4px solid #fff",
-                background: "linear-gradient(135deg, #0A66C2 0%, #084FA0 100%)",
+                background: "#0A66C2",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -15482,8 +15356,7 @@ function MyProfilePage({
                 fontWeight: 800,
                 color: "#fff",
                 userSelect: "none",
-                boxShadow: "0 4px 16px rgba(0,0,0,0.20)",
-                position: "relative",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.18)",
               }}
             >
               {p.name
@@ -15491,179 +15364,170 @@ function MyProfilePage({
                 .slice(-2)
                 .map((w: string) => w[0])
                 .join("")}
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: 2,
-                  right: 2,
-                  background: "#fff",
-                  borderRadius: "50%",
-                  padding: 2,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
-                }}
-              >
-                <SealCheck size={20} weight="fill" color="#0A66C2" />
-              </div>
             </div>
           </div>
-
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
             <div>
-              {/* Name & verification badge */}
+              {/* Name + gmail */}
               <div
                 style={{
                   fontSize: 26,
                   fontWeight: 800,
                   color: "rgba(0,0,0,0.90)",
                   lineHeight: 1.2,
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 10,
                 }}
               >
-                <span>{p.name}</span>
-                <span
-                  style={{
-                    fontSize: 12,
-                    fontWeight: 700,
-                    background: "#EAF1FA",
-                    color: "#0A66C2",
-                    padding: "3px 10px",
-                    borderRadius: 9999,
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 4,
-                  }}
-                >
-                  <SealCheck size={14} weight="fill" />
-                  Đã xác minh
-                </span>
+                {p.name}
               </div>
-
-              {/* Professional headline */}
               <div
-                style={{ fontSize: 15, color: "rgba(0,0,0,0.70)", marginTop: 6, fontWeight: 500 }}
+                style={{ fontSize: 14, color: "rgba(0,0,0,0.55)", marginTop: 4 }}
               >
-                {p.headline}
+                {gmail}
               </div>
-
-              {/* Email badge (location and connection count removed) */}
               <div
                 style={{
                   fontSize: 13,
-                  color: "rgba(0,0,0,0.55)",
-                  marginTop: 8,
-                  display: "inline-flex",
+                  color: "rgba(0,0,0,0.50)",
+                  marginTop: 4,
+                  display: "flex",
                   alignItems: "center",
-                  gap: 6,
-                  background: "#F4F2EE",
-                  padding: "4px 10px",
-                  borderRadius: 6,
+                  gap: 4,
                 }}
               >
-                <Envelope size={14} color="#0A66C2" />
-                <span>{gmail}</span>
+                <MapPin size={13} color="rgba(0,0,0,0.35)" /> {p.location}
+              </div>
+              <div
+                style={{
+                  fontSize: 13,
+                  color: "#0A66C2",
+                  fontWeight: 600,
+                  marginTop: 4,
+                }}
+              >
+                {p.connections} kết nối
               </div>
             </div>
 
             {!isOwnProfile && (
               <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center", marginTop: 4 }}>
                 <button
+                  style={{
+                    background: connectedSet.has(p.name) ? "#E5F6E8" : "#0A66C2",
+                    border: connectedSet.has(p.name) ? "1px solid rgba(0,0,0,0.15)" : "none",
+                    borderRadius: 9999,
+                    color: connectedSet.has(p.name) ? "#057642" : "#fff",
+                    padding: "8px 18px",
+                    fontWeight: 600,
+                    fontSize: 14,
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                    transition: "all 150ms ease"
+                  }}
+                  onClick={() => setConnectedSet(prev => { const n = new Set(prev); if (n.has(p.name)) n.delete(p.name); else n.add(p.name); return n; })}
+                  onMouseEnter={(e) => {
+                    if (!connectedSet.has(p.name))
+                      (e.currentTarget as HTMLElement).style.background = "#084FA0"
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!connectedSet.has(p.name))
+                      (e.currentTarget as HTMLElement).style.background = "#0A66C2"
+                    else
+                      (e.currentTarget as HTMLElement).style.background = "#E5F6E8"
+                  }}
+                >
+                  {connectedSet.has(p.name) ? <CheckCircle size={16} weight="fill" /> : <UserPlus size={16} />}
+                  {connectedSet.has(p.name) ? "Đã kết nối" : "Kết nối"}
+                </button>
+                <button
                   onClick={() => setReportProfile(true)}
                   style={{
                     padding: "8px 18px",
                     borderRadius: 9999,
-                    border: "1px solid rgba(0,0,0,0.18)",
+                    border: "1px solid rgba(0,0,0,0.20)",
                     background: "#fff",
-                    color: "rgba(0,0,0,0.70)",
+                    color: "rgba(0,0,0,0.65)",
                     cursor: "pointer",
                     fontWeight: 600,
-                    fontSize: 13.5,
+                    fontSize: 14,
                     fontFamily: "inherit",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 6,
-                    transition: "all 150ms ease",
+                    transition: "background 150ms ease",
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.background = "#FEF2F2"
-                    e.currentTarget.style.borderColor = "#F87171"
-                    e.currentTarget.style.color = "#DC2626"
+                    ; (e.currentTarget as HTMLElement).style.background = "#F4F2EE"
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.background = "#fff"
-                    e.currentTarget.style.borderColor = "rgba(0,0,0,0.18)"
-                    e.currentTarget.style.color = "rgba(0,0,0,0.70)"
+                    ; (e.currentTarget as HTMLElement).style.background = "#fff"
                   }}
                 >
-                  <Warning size={15} />
-                  <span>Báo cáo</span>
+                  Báo cáo
                 </button>
               </div>
             )}
           </div>
-          {/* Minimal Stats Strip - Unified, clean, no rainbow colors */}
+
+          {/* Stats row */}
           <div
             style={{
-              marginTop: 20,
-              background: "#F8FAFC",
-              borderRadius: 10,
-              border: "1px solid #E2E8F0",
-              padding: "16px 20px",
               display: "grid",
-              gridTemplateColumns: "repeat(4, 1fr)",
-              alignItems: "center",
+              gridTemplateColumns: "repeat(4,1fr)",
+              gap: 10,
+              marginTop: 18,
             }}
           >
             {[
               {
-                label: "Đúng tiến độ",
+                label: "Tỷ lệ đúng tiến độ",
                 value: `${p.onTimeRate}%`,
+                color: "#057642",
+                bg: "#E5F6E8",
               },
               {
-                label: "Dự án thành công",
+                label: "Tỷ lệ dự án thành công",
                 value: `${p.successRate}%`,
+                color: "#0A66C2",
+                bg: "#EAF1FA",
               },
               {
                 label: "Đánh giá trung bình",
-                value: `${avgRating} / 5.0`,
+                value: `⭐ ${avgRating}/5`,
+                color: "#915907",
+                bg: "#FFF4D6",
               },
               {
-                label: "Điểm tín nhiệm",
-                value: `${p.creditScore} / 100`,
+                label: "Độ uy tín",
+                value: `${p.creditScore}/100`,
+                color: "#6B3FA0",
+                bg: "#F3EEFF",
               },
-            ].map((item, idx) => (
+            ].map(({ label, value, color, bg }) => (
               <div
-                key={item.label}
+                key={label}
                 style={{
-                  padding: "0 16px",
-                  borderRight: idx < 3 ? "1px solid #E2E8F0" : "none",
-                  textAlign: "center",
+                  background: bg,
+                  borderRadius: 8,
+                  padding: "12px 14px",
                 }}
               >
                 <div
                   style={{
-                    fontSize: 20,
+                    fontSize: 18,
                     fontWeight: 800,
-                    color: "rgba(0,0,0,0.88)",
-                    lineHeight: 1.15,
-                    fontVariantNumeric: "tabular-nums",
+                    color,
+                    lineHeight: 1.1,
                   }}
                 >
-                  {item.value}
+                  {value}
                 </div>
                 <div
                   style={{
-                    fontSize: 12,
-                    fontWeight: 600,
+                    fontSize: 11,
                     color: "rgba(0,0,0,0.55)",
-                    marginTop: 4,
+                    marginTop: 3,
                   }}
                 >
-                  {item.label}
+                  {label}
                 </div>
               </div>
             ))}
@@ -15671,7 +15535,6 @@ function MyProfilePage({
 
         </div>
       </div>
-
 
       {reportProfile && (
         <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.45)", zIndex: 50, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -16841,11 +16704,11 @@ function LandingPage({
             }}
             onMouseEnter={(e) => {
               (e.currentTarget as HTMLElement).style.background = "#F8FAFC"
-                ; (e.currentTarget as HTMLElement).style.borderColor = "#94A3B8"
+              ;(e.currentTarget as HTMLElement).style.borderColor = "#94A3B8"
             }}
             onMouseLeave={(e) => {
               (e.currentTarget as HTMLElement).style.background = "#fff"
-                ; (e.currentTarget as HTMLElement).style.borderColor = "#CBD5E1"
+              ;(e.currentTarget as HTMLElement).style.borderColor = "#CBD5E1"
             }}
           >
             Đăng ký tài khoản
@@ -16902,11 +16765,11 @@ function LandingPage({
               }}
               onMouseEnter={(e) => {
                 (e.currentTarget as HTMLElement).style.color = "#0A66C2"
-                  ; (e.currentTarget as HTMLElement).style.background = "#EFF6FF"
+                ;(e.currentTarget as HTMLElement).style.background = "#EFF6FF"
               }}
               onMouseLeave={(e) => {
                 (e.currentTarget as HTMLElement).style.color = "#64748B"
-                  ; (e.currentTarget as HTMLElement).style.background = "none"
+                ;(e.currentTarget as HTMLElement).style.background = "none"
               }}
             >
               Truy cập Admin Portal →
@@ -16976,13 +16839,13 @@ function LoginPage({
         }}
         onMouseEnter={(e) => {
           (e.currentTarget as HTMLElement).style.color = "#0F172A"
-            ; (e.currentTarget as HTMLElement).style.borderColor = "#94A3B8"
-            ; (e.currentTarget as HTMLElement).style.background = "#F1F5F9"
+          ;(e.currentTarget as HTMLElement).style.borderColor = "#94A3B8"
+          ;(e.currentTarget as HTMLElement).style.background = "#F1F5F9"
         }}
         onMouseLeave={(e) => {
           (e.currentTarget as HTMLElement).style.color = "#475569"
-            ; (e.currentTarget as HTMLElement).style.borderColor = "#CBD5E1"
-            ; (e.currentTarget as HTMLElement).style.background = "#fff"
+          ;(e.currentTarget as HTMLElement).style.borderColor = "#CBD5E1"
+          ;(e.currentTarget as HTMLElement).style.background = "#fff"
         }}
       >
         <ArrowLeft size={14} weight="bold" />
@@ -23669,8 +23532,8 @@ function AdminPortal({ onBack }: { onBack: () => void }) {
                               color: item.amount.startsWith("+")
                                 ? "#057642"
                                 : item.amount.startsWith("-")
-                                  ? "#C03A2B"
-                                  : "rgba(0,0,0,0.80)",
+                                ? "#C03A2B"
+                                : "rgba(0,0,0,0.80)",
                             }}
                           >
                             {item.amount}
