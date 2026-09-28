@@ -109,12 +109,12 @@ function HeaderBackButton({ onClick }: { onClick: () => void }) {
     <button
       onClick={onClick}
       style={{
-        background: "rgba(255,255,255,0.15)",
-        border: "1px solid rgba(255,255,255,0.30)",
-        borderRadius: 9999,
-        padding: "4px 14px",
+        background: "rgba(255,255,255,0.12)",
+        border: "1px solid rgba(255,255,255,0.24)",
+        borderRadius: 8,
+        padding: "6px 14px",
         color: "#fff",
-        fontSize: 12,
+        fontSize: 13,
         fontWeight: 600,
         cursor: "pointer",
         fontFamily: "inherit",
@@ -122,19 +122,17 @@ function HeaderBackButton({ onClick }: { onClick: () => void }) {
         alignItems: "center",
         gap: 6,
         marginBottom: 16,
-        transition: "background 150ms ease",
+        transition: "all 150ms ease",
       }}
       onMouseEnter={(e) =>
-      ((e.currentTarget as HTMLElement).style.background =
-        "rgba(255,255,255,0.25)")
+        ((e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.22)")
       }
       onMouseLeave={(e) =>
-      ((e.currentTarget as HTMLElement).style.background =
-        "rgba(255,255,255,0.15)")
+        ((e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.12)")
       }
     >
-      <ArrowRight size={13} style={{ transform: "rotate(180deg)" }} />
-      Quay lại
+      <ArrowRight size={14} style={{ transform: "rotate(180deg)" }} />
+      <span>Quay lại</span>
     </button>
   )
 }
@@ -174,16 +172,18 @@ function Avatar({
         height: size,
         minWidth: size,
         borderRadius: "9999px",
-        background: color,
+        background: `linear-gradient(135deg, ${color} 0%, ${color}E6 100%)`,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         color: "#fff",
         fontSize: Math.round(size * 0.36),
         fontWeight: 700,
-        border: border ? "3px solid #fff" : "none",
+        border: border ? "2.5px solid #fff" : "1px solid rgba(0,0,0,0.06)",
+        boxShadow: border ? "0 2px 8px rgba(0,0,0,0.12)" : "0 1px 3px rgba(0,0,0,0.08)",
         flexShrink: 0,
         userSelect: "none",
+        letterSpacing: "0.02em",
       }}
     >
       {initials}
@@ -200,26 +200,75 @@ function Toast({ message, onDone }: { message: string; onDone: () => void }) {
     <div
       style={{
         position: "fixed",
-        bottom: 24,
+        bottom: 28,
         left: "50%",
         transform: "translateX(-50%)",
-        background: "rgba(0,0,0,0.85)",
+        background: "rgba(15, 23, 42, 0.94)",
+        backdropFilter: "blur(12px)",
+        border: "1px solid rgba(255, 255, 255, 0.12)",
         color: "#fff",
-        padding: "12px 20px",
-        borderRadius: 9999,
-        fontSize: 14,
+        padding: "11px 20px",
+        borderRadius: 10,
+        fontSize: 13.5,
         fontWeight: 600,
         zIndex: 600,
         display: "flex",
         alignItems: "center",
-        gap: 8,
-        animation: "toastIn 250ms ease",
+        gap: 10,
+        boxShadow: "0 12px 32px rgba(0, 0, 0, 0.28)",
+        animation: "toastIn 220ms cubic-bezier(0.16, 1, 0.3, 1)",
         whiteSpace: "nowrap",
       }}
     >
-      <style>{`@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}`}</style>
-      <SealCheck size={18} color="#57C36D" weight="fill" />
-      {message}
+      <style>{`@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}`}</style>
+      <SealCheck size={18} color="#4ADE80" weight="fill" />
+      <span>{message}</span>
+    </div>
+  )
+}
+
+// ─── Occupify Logo ────────────────────────────────────────────────────────────
+
+function OccupifyLogo({
+  size = 32,
+  inverted = false,
+}: {
+  size?: number
+  inverted?: boolean
+}) {
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 10, userSelect: "none" }}>
+      <div
+        style={{
+          width: size,
+          height: size,
+          borderRadius: Math.round(size * 0.25),
+          background: inverted
+            ? "rgba(255,255,255,0.18)"
+            : "#0A66C2",
+          border: inverted ? "1px solid rgba(255,255,255,0.30)" : "none",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          boxShadow: inverted
+            ? "0 2px 10px rgba(0,0,0,0.12)"
+            : "0 2px 8px rgba(10,102,194,0.30)",
+          flexShrink: 0,
+        }}
+      >
+        <BriefcaseMetal size={Math.round(size * 0.58)} color="#fff" weight="fill" />
+      </div>
+      <span
+        style={{
+          fontSize: Math.round(size * 0.72),
+          fontWeight: 800,
+          color: inverted ? "#ffffff" : "#0A66C2",
+          letterSpacing: "-0.03em",
+          lineHeight: 1,
+        }}
+      >
+        Occupify
+      </span>
     </div>
   )
 }
@@ -267,9 +316,11 @@ function Navbar({
         position: "sticky",
         top: 0,
         zIndex: 200,
-        background: "#fff",
-        boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-        height: 52,
+        background: "rgba(255, 255, 255, 0.96)",
+        backdropFilter: "blur(12px)",
+        borderBottom: "1px solid #E2E8F0",
+        boxShadow: "0 1px 3px 0 rgba(15, 23, 42, 0.04)",
+        height: 56,
       }}
     >
       <div
@@ -280,102 +331,88 @@ function Navbar({
           height: "100%",
           display: "flex",
           alignItems: "center",
+          justifyContent: "space-between",
         }}
       >
         {/* Logo */}
-        <div style={{ flexShrink: 0 }}>
-          <div
-            style={{
-              width: 34,
-              height: 34,
-              background: "#0A66C2",
-              borderRadius: 4,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "#fff",
-              fontWeight: 900,
-              fontSize: 20,
-              letterSpacing: "-0.04em",
-            }}
-          >
-            O
-          </div>
+        <div
+          onClick={() => setActive("home")}
+          style={{ flexShrink: 0, cursor: "pointer" }}
+          title="Occupify"
+        >
+          <OccupifyLogo size={32} />
         </div>
 
         {/* Nav items */}
         <div
           style={{
-            flex: 1,
             display: "flex",
-            alignItems: "stretch",
-            justifyContent: "center",
+            alignItems: "center",
+            gap: 4,
             height: "100%",
-            gap: 2,
           }}
         >
           {NAV_ITEMS.map(({ id, label, Icon, badge }) => {
             const isActive = active === id
-            const activeColor = isActive
-              ? "rgba(0,0,0,0.90)"
-              : "rgba(0,0,0,0.60)"
             return (
               <button
                 key={id}
                 onClick={() => setActive(id)}
                 style={{
                   display: "flex",
-                  flexDirection: "column",
                   alignItems: "center",
-                  justifyContent: "center",
-                  gap: 2,
-                  padding: "0 14px",
-                  background: "none",
-                  borderTop: "none",
-                  borderLeft: "none",
-                  borderRight: "none",
-                  borderBottom: isActive
-                    ? "2px solid rgba(0,0,0,0.90)"
-                    : "2px solid transparent",
+                  gap: 8,
+                  padding: "8px 14px",
+                  background: isActive ? "#EFF6FF" : "transparent",
+                  border: "none",
+                  borderRadius: 8,
                   cursor: "pointer",
-                  color: activeColor,
+                  color: isActive ? "#0A66C2" : "#64748B",
                   position: "relative",
-                  transition: "color 150ms ease",
-                  minWidth: 60,
+                  transition: "all 150ms ease",
+                  fontFamily: "inherit",
                 }}
                 onMouseEnter={(e) => {
-                  if (!isActive)
-                    (e.currentTarget as HTMLElement).style.background =
-                      "#F4F2EE"
+                  if (!isActive) {
+                    (e.currentTarget as HTMLElement).style.background = "#F1F5F9"
+                    ;(e.currentTarget as HTMLElement).style.color = "#0F172A"
+                  }
                 }}
                 onMouseLeave={(e) => {
-                  ; (e.currentTarget as HTMLElement).style.background = "none"
+                  if (!isActive) {
+                    (e.currentTarget as HTMLElement).style.background = "transparent"
+                    ;(e.currentTarget as HTMLElement).style.color = "#64748B"
+                  }
                 }}
               >
+                <Icon size={19} weight={isActive ? "fill" : "regular"} />
+                <span
+                  style={{
+                    fontSize: 13,
+                    fontWeight: isActive ? 700 : 600,
+                    lineHeight: 1,
+                  }}
+                >
+                  {label}
+                </span>
                 {badge && (
                   <span
                     style={{
-                      position: "absolute",
-                      top: 6,
-                      right: 10,
-                      background: "#C03A2B",
+                      background: "#EF4444",
                       color: "#fff",
-                      fontSize: 9,
+                      fontSize: 10,
                       fontWeight: 700,
                       lineHeight: 1,
-                      padding: "2px 4px",
+                      padding: "2px 5px",
                       borderRadius: 9999,
-                      minWidth: 14,
+                      minWidth: 16,
                       textAlign: "center",
+                      border: "1.5px solid #fff",
                     }}
                   >
                     {badge}
                   </span>
                 )}
-                <Icon size={20} weight={isActive ? "fill" : "regular"} />
-                <span style={{ fontSize: 11, fontWeight: 600, lineHeight: 1 }}>
-                  {label}
-                </span>
               </button>
             )
           })}
@@ -387,65 +424,56 @@ function Navbar({
           style={{
             flexShrink: 0,
             display: "flex",
-            alignItems: "stretch",
-            height: "100%",
+            alignItems: "center",
             position: "relative",
           }}
         >
-          <div
-            style={{
-              width: 1,
-              background: "rgba(0,0,0,0.08)",
-              margin: "10px 0",
-              alignSelf: "center",
-              height: 28,
-            }}
-          />
           <button
             onClick={() => setMenuOpen((v) => !v)}
             style={{
               display: "flex",
-              flexDirection: "column",
               alignItems: "center",
-              justifyContent: "center",
-              gap: 2,
-              padding: "0 12px",
-              background: "none",
-              borderTop: "none",
-              borderLeft: "none",
-              borderRight: "none",
-              borderBottom: menuOpen
-                ? "2px solid rgba(0,0,0,0.90)"
-                : "2px solid transparent",
+              gap: 8,
+              padding: "5px 10px",
+              background: menuOpen ? "#F1F5F9" : "transparent",
+              border: "1px solid",
+              borderColor: menuOpen ? "#CBD5E1" : "transparent",
+              borderRadius: 8,
               cursor: "pointer",
-              color: "rgba(0,0,0,0.60)",
+              color: "#334155",
+              transition: "all 150ms ease",
+              fontFamily: "inherit",
             }}
             onMouseEnter={(e) => {
-              if (!menuOpen)
-                (e.currentTarget as HTMLElement).style.background = "#F4F2EE"
+              if (!menuOpen) {
+                (e.currentTarget as HTMLElement).style.background = "#F1F5F9"
+              }
             }}
             onMouseLeave={(e) => {
-              ; (e.currentTarget as HTMLElement).style.background = "none"
+              if (!menuOpen) {
+                (e.currentTarget as HTMLElement).style.background = "transparent"
+              }
             }}
           >
-            <Avatar name={ME.name} size={22} />
+            <Avatar name={ME.name} size={28} />
             <span
               style={{
-                fontSize: 11,
+                fontSize: 13,
                 fontWeight: 600,
                 lineHeight: 1,
                 display: "flex",
                 alignItems: "center",
-                gap: 1,
+                gap: 4,
               }}
             >
-              Tôi{" "}
+              Tôi
               <CaretDown
-                size={10}
+                size={11}
                 weight="bold"
                 style={{
                   transform: menuOpen ? "rotate(180deg)" : "none",
                   transition: "transform 150ms",
+                  color: "#64748B",
                 }}
               />
             </span>
@@ -456,32 +484,35 @@ function Navbar({
             <div
               style={{
                 position: "absolute",
-                top: "calc(100% + 4px)",
+                top: "calc(100% + 8px)",
                 right: 0,
                 background: "#fff",
-                borderRadius: 8,
+                borderRadius: 12,
+                border: "1px solid #E2E8F0",
                 boxShadow:
-                  "0 4px 20px rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08)",
-                minWidth: 220,
+                  "0 12px 28px -4px rgba(15, 23, 42, 0.12), 0 4px 10px -2px rgba(15, 23, 42, 0.04)",
+                minWidth: 240,
                 zIndex: 300,
                 overflow: "hidden",
+                padding: "4px",
               }}
             >
               {/* Profile header in dropdown */}
               <div
                 style={{
-                  padding: "16px 16px 12px",
-                  borderBottom: "1px solid rgba(0,0,0,0.08)",
+                  padding: "14px 16px",
+                  borderBottom: "1px solid #F1F5F9",
+                  marginBottom: 4,
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                  <Avatar name={ME.name} size={44} />
+                  <Avatar name={ME.name} size={42} />
                   <div style={{ minWidth: 0 }}>
                     <div
                       style={{
                         fontWeight: 700,
                         fontSize: 14,
-                        color: "rgba(0,0,0,0.90)",
+                        color: "#0F172A",
                         overflow: "hidden",
                         textOverflow: "ellipsis",
                         whiteSpace: "nowrap",
@@ -492,7 +523,7 @@ function Navbar({
                     <div
                       style={{
                         fontSize: 12,
-                        color: "rgba(0,0,0,0.55)",
+                        color: "#64748B",
                         overflow: "hidden",
                         textOverflow: "ellipsis",
                         whiteSpace: "nowrap",
@@ -534,28 +565,32 @@ function Navbar({
                     setMenuOpen(false)
                     onLogout?.()
                   },
+                  destructive: true,
                 },
-              ].map(({ label, action }) => (
+              ].map(({ label, action, destructive }) => (
                 <button
                   key={label}
                   onClick={action}
                   style={{
-                    display: "block",
+                    display: "flex",
+                    alignItems: "center",
                     width: "100%",
                     textAlign: "left",
-                    padding: "11px 16px",
+                    padding: "9px 14px",
                     background: "none",
                     border: "none",
-                    fontSize: 14,
-                    color: "rgba(0,0,0,0.80)",
+                    borderRadius: 8,
+                    fontSize: 13.5,
+                    color: destructive ? "#DC2626" : "#334155",
                     cursor: "pointer",
                     fontFamily: "inherit",
-                    fontWeight: 500,
-                    transition: "background 150ms",
+                    fontWeight: 600,
+                    transition: "all 150ms",
                   }}
                   onMouseEnter={(e) =>
-                  ((e.currentTarget as HTMLElement).style.background =
-                    "#F4F2EE")
+                    ((e.currentTarget as HTMLElement).style.background = destructive
+                      ? "#FEF2F2"
+                      : "#F1F5F9")
                   }
                   onMouseLeave={(e) =>
                     ((e.currentTarget as HTMLElement).style.background = "none")
@@ -650,46 +685,56 @@ const STATUS_CONFIG = {
   "in-progress": {
     label: "Đang thực hiện",
     color: "#0A66C2",
-    bg: "#EAF1FA",
+    bg: "#EFF6FF",
+    border: "#BFDBFE",
     Icon: Clock,
   },
   pending: {
     label: "Chờ xác nhận",
-    color: "#915907",
-    bg: "#FFF4D6",
+    color: "#B45309",
+    bg: "#FFFBEB",
+    border: "#FDE68A",
     Icon: Warning,
   },
   opening: {
     label: "Đang mở",
-    color: "#057642",
-    bg: "#E5F6E8",
+    color: "#15803D",
+    bg: "#F0FDF4",
+    border: "#BBF7D0",
     Icon: CheckCircle,
   },
-  overdue: { label: "Quá hạn", color: "#C03A2B", bg: "#FBE2E2", Icon: Warning },
+  overdue: {
+    label: "Quá hạn",
+    color: "#B91C1C",
+    bg: "#FEF2F2",
+    border: "#FECACA",
+    Icon: Warning,
+  },
 }
 
 // ─── Status Badge ─────────────────────────────────────────────────────────────
 
 function StatusBadge({ status }: { status: Contract["status"] }) {
-  const { label, color, bg, Icon } =
-    STATUS_CONFIG[status] ?? STATUS_CONFIG["pending"]
+  const cfg = STATUS_CONFIG[status] ?? STATUS_CONFIG["pending"]
+  const { label, color, bg, border, Icon } = cfg
   return (
     <span
       style={{
         display: "inline-flex",
         alignItems: "center",
-        gap: 4,
+        gap: 5,
         background: bg,
         color,
+        border: `1px solid ${border}`,
         borderRadius: 9999,
-        padding: "3px 10px",
-        fontSize: 11,
-        fontWeight: 700,
+        padding: "2px 9px",
+        fontSize: 11.5,
+        fontWeight: 600,
         whiteSpace: "nowrap",
         flexShrink: 0,
       }}
     >
-      <Icon size={11} weight="fill" />
+      <Icon size={12} weight="bold" />
       {label}
     </span>
   )
@@ -710,20 +755,20 @@ function ContractItem({
   return (
     <>
       {showDivider && (
-        <div style={{ borderTop: "1px solid rgba(0,0,0,0.06)", margin: "0" }} />
+        <div style={{ borderTop: "1px solid #F1F5F9", margin: "0" }} />
       )}
       <div
         onClick={onClick}
         style={{
           display: "flex",
           alignItems: "flex-start",
-          gap: 12,
-          padding: "14px 20px",
+          gap: 14,
+          padding: "16px 20px",
           cursor: "pointer",
           transition: "background 150ms ease",
         }}
         onMouseEnter={(e) =>
-          ((e.currentTarget as HTMLElement).style.background = "#EAF1FA")
+          ((e.currentTarget as HTMLElement).style.background = "#F8FAFC")
         }
         onMouseLeave={(e) =>
           ((e.currentTarget as HTMLElement).style.background = "none")
@@ -737,6 +782,7 @@ function ContractItem({
             borderRadius: 8,
             flexShrink: 0,
             background: statusCfg.bg,
+            border: `1px solid ${statusCfg.border}`,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -750,10 +796,10 @@ function ContractItem({
           <div
             style={{
               fontWeight: 700,
-              fontSize: 14,
-              color: "rgba(0,0,0,0.90)",
-              lineHeight: 1.3,
-              marginBottom: 3,
+              fontSize: 14.5,
+              color: "#0F172A",
+              lineHeight: 1.35,
+              marginBottom: 4,
               overflow: "hidden",
               textOverflow: "ellipsis",
               whiteSpace: "nowrap",
@@ -768,12 +814,13 @@ function ContractItem({
                   display: "inline-flex",
                   alignItems: "center",
                   gap: 4,
-                  fontSize: 11,
-                  fontWeight: 700,
+                  fontSize: 11.5,
+                  fontWeight: 600,
                   color: "#0A66C2",
-                  background: "#EAF1FA",
-                  padding: "1px 7px",
-                  borderRadius: 4,
+                  background: "#EFF6FF",
+                  border: "1px solid #BFDBFE",
+                  padding: "1px 8px",
+                  borderRadius: 6,
                 }}
               >
                 <Briefcase size={11} weight="bold" />
@@ -783,25 +830,25 @@ function ContractItem({
           )}
           <div
             style={{
-              fontSize: 12,
-              color: "rgba(0,0,0,0.60)",
+              fontSize: 12.5,
+              color: "#64748B",
               display: "flex",
               alignItems: "center",
               gap: 6,
             }}
           >
-            <User size={12} weight="regular" />
-            {contract.client}
-            <span style={{ color: "rgba(0,0,0,0.25)" }}>·</span>
-            <CalendarBlank size={12} weight="regular" />
-            {contract.deadline}
+            <User size={13} weight="regular" />
+            <span>{contract.client}</span>
+            <span style={{ color: "#CBD5E1" }}>·</span>
+            <CalendarBlank size={13} weight="regular" />
+            <span>{contract.deadline}</span>
           </div>
           <div
             style={{
-              fontSize: 12,
+              fontSize: 13,
               fontWeight: 700,
-              color: "rgba(0,0,0,0.60)",
-              marginTop: 4,
+              color: "#0F172A",
+              marginTop: 5,
             }}
           >
             {contract.value}
@@ -1125,8 +1172,8 @@ const JOB_LISTINGS: JobListing[] = [
         budgetDisplay: "30.000.000 – 42.000.000 ₫",
         salaryType: "monthly",
         salaryTypeLabel: "/ tháng",
-        slotsTotal: 2,
-        slotsFilled: 1,
+        slotsTotal: 1,
+        slotsFilled: 0,
         status: "recruiting",
         jd: "Thiết kế các micro-interactions, hiệu ứng chuyển cảnh mượt mà cho các tác vụ thanh toán, chuyển tiền nhanh và quét QR code trong app.",
         requirements: [
@@ -1268,8 +1315,8 @@ const JOB_LISTINGS: JobListing[] = [
         budgetDisplay: "32.000.000 – 45.000.000 ₫",
         salaryType: "monthly",
         salaryTypeLabel: "/ tháng",
-        slotsTotal: 2,
-        slotsFilled: 1,
+        slotsTotal: 1,
+        slotsFilled: 0,
         status: "recruiting",
         jd: "Sáng tạo giao diện landing page, banner động và các thành phần visual hấp dẫn cho các ngày hội mua sắm Mega Sale hàng tháng.",
         requirements: [
@@ -1450,8 +1497,8 @@ const JOB_LISTINGS: JobListing[] = [
         budgetDisplay: "3.000.000 – 4.500.000 ₫",
         salaryType: "weekly",
         salaryTypeLabel: "/ tuần",
-        slotsTotal: 2,
-        slotsFilled: 1,
+        slotsTotal: 1,
+        slotsFilled: 0,
         status: "recruiting",
         jd: "Thiết kế các bộ banner quảng cáo Google GDN, bài đăng Facebook/TikTok theo định dạng chuẩn và màu sắc thương hiệu FPT.",
         requirements: [
@@ -1946,6 +1993,7 @@ function JobCard({
   onViewProfile?: (name?: string) => void
 }) {
   const [localSaved, setLocalSaved] = useState(false)
+  const [hovered, setHovered] = useState(false)
   const saved = isSaved !== undefined ? isSaved : localSaved
 
   return (
@@ -1953,22 +2001,22 @@ function JobCard({
       onClick={onClick}
       style={{
         background: "#fff",
-        borderRadius: 8,
-        boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-        padding: "18px 20px",
-        marginBottom: 8,
+        borderRadius: 12,
+        border: `1px solid ${hovered ? "rgba(10, 102, 194, 0.35)" : "#E2E8F0"}`,
+        boxShadow: hovered
+          ? "0 8px 24px -4px rgba(15, 23, 42, 0.08), 0 2px 6px -1px rgba(15, 23, 42, 0.04)"
+          : "0 1px 3px 0 rgba(15, 23, 42, 0.04)",
+        transform: hovered ? "translateY(-1px)" : "none",
+        padding: "20px 22px",
+        marginBottom: 12,
         cursor: "pointer",
-        transition: "background 150ms ease",
+        transition: "all 200ms cubic-bezier(0.16, 1, 0.3, 1)",
         display: "flex",
         flexDirection: "column",
         gap: 12,
       }}
-      onMouseEnter={(e) =>
-        ((e.currentTarget as HTMLElement).style.background = "#FAFAF8")
-      }
-      onMouseLeave={(e) =>
-        ((e.currentTarget as HTMLElement).style.background = "#fff")
-      }
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
       {/* Header row */}
       <div style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
@@ -1978,10 +2026,10 @@ function JobCard({
             e.stopPropagation()
             onViewProfile?.(job.clientName)
           }}
-          title={`Xem hồ sơ & báo cáo người dùng ${job.clientName}`}
+          title={`Xem hồ sơ ${job.clientName}`}
           style={{ cursor: "pointer", flexShrink: 0 }}
         >
-          <Avatar name={job.clientName || job.company} size={46} />
+          <Avatar name={job.clientName || job.company} size={46} border />
         </div>
 
         {/* Main info */}
@@ -1992,15 +2040,17 @@ function JobCard({
               alignItems: "flex-start",
               gap: 8,
               flexWrap: "wrap",
-              marginBottom: 3,
+              marginBottom: 4,
             }}
           >
             <span
               style={{
                 fontWeight: 700,
                 fontSize: 16,
-                color: "#0A66C2",
-                lineHeight: 1.3,
+                color: hovered ? "#0A66C2" : "#0F172A",
+                lineHeight: 1.35,
+                letterSpacing: "-0.01em",
+                transition: "color 150ms ease",
               }}
             >
               {job.title}
@@ -2008,15 +2058,15 @@ function JobCard({
             {job.roles && job.roles.length > 0 && (
               <span
                 style={{
-                  background: "#F0FDF4",
-                  color: "#166534",
-                  borderRadius: 4,
+                  background: "#EFF6FF",
+                  color: "#0A66C2",
+                  borderRadius: 6,
                   padding: "2px 8px",
-                  fontSize: 11,
-                  fontWeight: 700,
-                  lineHeight: 1.5,
+                  fontSize: 11.5,
+                  fontWeight: 600,
+                  lineHeight: 1.4,
                   flexShrink: 0,
-                  border: "1px solid #BBF7D0",
+                  border: "1px solid #BFDBFE",
                 }}
               >
                 {job.roles.length} vị trí tuyển dụng
@@ -2028,10 +2078,10 @@ function JobCard({
               e.stopPropagation()
               onViewProfile?.(job.clientName)
             }}
-            title={`Xem hồ sơ & báo cáo người dùng ${job.clientName}`}
+            title={`Xem hồ sơ ${job.clientName}`}
             style={{
-              fontSize: 14,
-              color: "rgba(0,0,0,0.85)",
+              fontSize: 13.5,
+              color: "#334155",
               fontWeight: 600,
               display: "inline-flex",
               alignItems: "center",
@@ -2040,17 +2090,18 @@ function JobCard({
               transition: "color 150ms ease",
             }}
             onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#0A66C2")}
-            onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.85)")}
+            onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#334155")}
           >
             <span>{job.clientName || job.company}</span>
             <span
               style={{
                 fontSize: 11,
-                color: "#057642",
-                background: "#E5F6E8",
-                padding: "2px 7px",
+                color: "#15803D",
+                background: "#F0FDF4",
+                border: "1px solid #BBF7D0",
+                padding: "1px 7px",
                 borderRadius: 4,
-                fontWeight: 700,
+                fontWeight: 600,
               }}
             >
               Khách hàng
@@ -2058,15 +2109,15 @@ function JobCard({
           </div>
           <div
             style={{
-              fontSize: 13,
-              color: "rgba(0,0,0,0.60)",
+              fontSize: 12.5,
+              color: "#64748B",
               display: "flex",
               alignItems: "center",
               gap: 6,
-              marginTop: 3,
+              marginTop: 4,
             }}
           >
-            <Clock size={13} color="rgba(0,0,0,0.45)" />
+            <Clock size={13} color="#94A3B8" />
             <span>Đăng {job.postedAgo}</span>
           </div>
         </div>
@@ -2082,16 +2133,19 @@ function JobCard({
             gap: 8,
           }}
         >
-          <div>
-            <div
-              style={{
-                fontWeight: 700,
-                fontSize: 15,
-                color: "rgba(0,0,0,0.90)",
-              }}
-            >
-              {job.budget}
-            </div>
+          <div
+            style={{
+              background: "#F8FAFC",
+              border: "1px solid #E2E8F0",
+              padding: "6px 12px",
+              borderRadius: 8,
+              fontWeight: 800,
+              fontSize: 14.5,
+              color: "#0F172A",
+              letterSpacing: "-0.01em",
+            }}
+          >
+            {job.budget}
           </div>
           <button
             onClick={(e) => {
@@ -2103,22 +2157,29 @@ function JobCard({
               }
             }}
             style={{
-              background: "none",
-              border: "none",
+              width: 32,
+              height: 32,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              background: saved ? "#EFF6FF" : "#fff",
+              border: `1px solid ${saved ? "#BFDBFE" : "#E2E8F0"}`,
+              borderRadius: 8,
               cursor: "pointer",
-              padding: 4,
-              borderRadius: 9999,
-              color: saved ? "#0A66C2" : "rgba(0,0,0,0.45)",
-              transition: "color 150ms ease, background 150ms ease",
+              color: saved ? "#0A66C2" : "#94A3B8",
+              transition: "all 150ms ease",
             }}
-            onMouseEnter={(e) =>
-              ((e.currentTarget as HTMLElement).style.background = "#EAF1FA")
-            }
-            onMouseLeave={(e) =>
-              ((e.currentTarget as HTMLElement).style.background = "none")
-            }
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLElement).style.background = "#F1F5F9"
+              ;(e.currentTarget as HTMLElement).style.color = "#0A66C2"
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.background = saved ? "#EFF6FF" : "#fff"
+              ;(e.currentTarget as HTMLElement).style.color = saved ? "#0A66C2" : "#94A3B8"
+            }}
+            title={saved ? "Đã lưu" : "Lưu dự án"}
           >
-            <Bookmark size={18} weight={saved ? "fill" : "regular"} />
+            <Bookmark size={16} weight={saved ? "fill" : "regular"} />
           </button>
         </div>
       </div>
@@ -2127,8 +2188,8 @@ function JobCard({
       <p
         style={{
           fontSize: 14,
-          color: "rgba(0,0,0,0.90)",
-          lineHeight: 1.55,
+          color: "#475569",
+          lineHeight: 1.6,
           display: "-webkit-box",
           WebkitLineClamp: 2,
           WebkitBoxOrient: "vertical",
@@ -2143,44 +2204,26 @@ function JobCard({
         style={{
           display: "flex",
           alignItems: "center",
-          gap: 0,
+          gap: 6,
           flexWrap: "wrap",
+          paddingTop: 4,
         }}
       >
-        {job.skills.map((skill, i) => (
-          <span key={skill} style={{ display: "flex", alignItems: "center" }}>
-            <button
-              style={{
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-                fontSize: 13,
-                color: "#0A66C2",
-                fontFamily: "inherit",
-                padding: "2px 6px 2px 0",
-                fontWeight: 600,
-                transition: "color 150ms ease",
-              }}
-              onMouseEnter={(e) =>
-                ((e.currentTarget as HTMLElement).style.color = "#084FA0")
-              }
-              onMouseLeave={(e) =>
-                ((e.currentTarget as HTMLElement).style.color = "#0A66C2")
-              }
-            >
-              {skill}
-            </button>
-            {i < job.skills.length - 1 && (
-              <span
-                style={{
-                  color: "rgba(0,0,0,0.20)",
-                  fontSize: 12,
-                  marginRight: 6,
-                }}
-              >
-                ·
-              </span>
-            )}
+        {job.skills.map((skill) => (
+          <span
+            key={skill}
+            style={{
+              background: "#F1F5F9",
+              color: "#334155",
+              padding: "3px 9px",
+              borderRadius: 6,
+              fontSize: 12,
+              fontWeight: 500,
+              border: "1px solid #E2E8F0",
+              transition: "all 150ms ease",
+            }}
+          >
+            {skill}
           </span>
         ))}
       </div>
@@ -4833,9 +4876,10 @@ interface ProjectRole {
   title: string
   skills?: string[]
   salaryRange?: string
-  slotsTotal: number
-  slotsFilled: number
+  slotsTotal?: number
+  slotsFilled?: number
   status?: "recruiting" | "filled"
+  assignedMemberName?: string
 }
 
 interface ProjectMember {
@@ -4898,8 +4942,8 @@ const MY_PROJECTS_DATA: MyProject[] = [
         title: "Backend Developer",
         skills: ["Node.js", "NestJS", "PostgreSQL", "Redis"],
         salaryRange: "18.000.000 - 25.000.000 ₫",
-        slotsTotal: 2,
-        slotsFilled: 1,
+        slotsTotal: 1,
+        slotsFilled: 0,
         status: "recruiting",
       },
       {
@@ -4907,9 +4951,10 @@ const MY_PROJECTS_DATA: MyProject[] = [
         title: "Frontend Developer",
         skills: ["React Native", "TypeScript", "Tailwind"],
         salaryRange: "15.000.000 - 22.000.000 ₫",
-        slotsTotal: 2,
-        slotsFilled: 2,
+        slotsTotal: 1,
+        slotsFilled: 1,
         status: "filled",
+        assignedMemberName: "Nguyễn Thị Thu",
       },
       {
         id: "mr3",
@@ -4919,6 +4964,7 @@ const MY_PROJECTS_DATA: MyProject[] = [
         slotsTotal: 1,
         slotsFilled: 1,
         status: "filled",
+        assignedMemberName: "Lê Văn Hùng",
       },
       {
         id: "mr4",
@@ -4965,8 +5011,8 @@ const MY_PROJECTS_DATA: MyProject[] = [
         title: "Frontend Engineer",
         skills: ["React", "Storybook", "Tailwind CSS", "Accessibility"],
         salaryRange: "20.000.000 - 28.000.000 ₫",
-        slotsTotal: 2,
-        slotsFilled: 1,
+        slotsTotal: 1,
+        slotsFilled: 0,
         status: "recruiting",
       },
       {
@@ -4977,6 +5023,7 @@ const MY_PROJECTS_DATA: MyProject[] = [
         slotsTotal: 1,
         slotsFilled: 1,
         status: "filled",
+        assignedMemberName: "Phạm Đức Anh",
       },
       {
         id: "mr7",
@@ -5070,8 +5117,8 @@ const PENDING_PROJECTS_DATA: PendingProject[] = [
         title: "Backend Developer",
         skills: ["Golang / Node.js", "PostgreSQL", "Redis", "Kafka"],
         salaryRange: "22.000.000 - 30.000.000 ₫",
-        slotsTotal: 2,
-        slotsFilled: 1,
+        slotsTotal: 1,
+        slotsFilled: 0,
         status: "recruiting",
       },
       {
@@ -5079,9 +5126,10 @@ const PENDING_PROJECTS_DATA: PendingProject[] = [
         title: "Frontend Developer",
         skills: ["React Native", "TypeScript", "Redux Toolkit"],
         salaryRange: "18.000.000 - 25.000.000 ₫",
-        slotsTotal: 2,
-        slotsFilled: 2,
+        slotsTotal: 1,
+        slotsFilled: 1,
         status: "filled",
+        assignedMemberName: "Vũ Minh Tuấn",
       },
       {
         id: "pr1_3",
@@ -5091,6 +5139,7 @@ const PENDING_PROJECTS_DATA: PendingProject[] = [
         slotsTotal: 1,
         slotsFilled: 1,
         status: "filled",
+        assignedMemberName: "Lê Văn Hùng",
       },
       {
         id: "pr1_4",
@@ -5125,8 +5174,8 @@ const PENDING_PROJECTS_DATA: PendingProject[] = [
         title: "Backend Developer",
         skills: ["Node.js / Express", "PostgreSQL", "Swagger", "Docker"],
         salaryRange: "35.000.000 - 45.000.000 ₫",
-        slotsTotal: 3,
-        slotsFilled: 2,
+        slotsTotal: 1,
+        slotsFilled: 0,
         status: "recruiting",
       },
       {
@@ -5134,9 +5183,10 @@ const PENDING_PROJECTS_DATA: PendingProject[] = [
         title: "Frontend Developer",
         skills: ["Vue 3", "Vite", "Tailwind CSS"],
         salaryRange: "18.000.000 - 26.000.000 ₫",
-        slotsTotal: 2,
+        slotsTotal: 1,
         slotsFilled: 1,
-        status: "recruiting",
+        status: "filled",
+        assignedMemberName: "Trần Bảo Long",
       },
       {
         id: "pr2_3",
@@ -5183,6 +5233,7 @@ const PENDING_PROJECTS_DATA: PendingProject[] = [
         slotsTotal: 1,
         slotsFilled: 1,
         status: "filled",
+        assignedMemberName: "Đặng Hoàng Nam",
       },
     ],
   },
@@ -6072,17 +6123,44 @@ function MyProjectDetailPage({
                             style={{
                               fontSize: 11,
                               fontWeight: 700,
-                              padding: "2px 8px",
+                              padding: "2.5px 8px",
                               borderRadius: 9999,
                               background: isRecruiting ? "#E5F6E8" : "#F4F2EE",
-                              color: isRecruiting ? "#057642" : "rgba(0,0,0,0.55)",
+                              color: isRecruiting ? "#057642" : "rgba(0,0,0,0.60)",
+                              border: isRecruiting ? "1px solid #BBF7D0" : "1px solid #E2E8F0",
                             }}
                           >
-                            {isRecruiting
-                              ? `Đang tuyển (${r.slotsFilled}/${r.slotsTotal})`
-                              : `Đủ người (${r.slotsFilled}/${r.slotsTotal})`}
+                            {isRecruiting ? "Đang tuyển" : "Đã có nhân sự"}
                           </span>
                         </div>
+                        {!isRecruiting && (
+                          <div
+                            style={{
+                              display: "inline-flex",
+                              alignItems: "center",
+                              gap: 5,
+                              fontSize: 11.5,
+                              color: "#057642",
+                              background: "#F0FDF4",
+                              border: "1px solid #DCFCE7",
+                              padding: "3px 8px",
+                              borderRadius: 6,
+                              marginBottom: 8,
+                              fontWeight: 600,
+                            }}
+                          >
+                            <SealCheck size={13} weight="fill" color="#057642" />
+                            <span>
+                              {r.assignedMemberName ||
+                              project.members?.find((m) => m.role === r.title)?.name
+                                ? `Đã giao: ${
+                                    r.assignedMemberName ||
+                                    project.members?.find((m) => m.role === r.title)?.name
+                                  }`
+                                : "Đã có nhân sự tiếp nhận"}
+                            </span>
+                          </div>
+                        )}
                         {r.salaryRange && (
                           <div
                             style={{
@@ -7737,8 +7815,8 @@ function ProjectInvitationModal({
 }) {
   const [rejectReason, setRejectReason] = useState("")
   const [showRejectForm, setShowRejectForm] = useState(false)
-  const totalSlots = project.recruitingRoles?.reduce((acc, r) => acc + r.slotsTotal, 0) || 0
-  const filledSlots = project.recruitingRoles?.reduce((acc, r) => acc + r.slotsFilled, 0) || 0
+  const totalRoles = project.recruitingRoles?.length || 0
+  const filledRoles = project.recruitingRoles?.filter((r) => r.status === "filled").length || 0
 
   return (
     <div
@@ -8241,10 +8319,10 @@ function ProjectInvitationModal({
                     letterSpacing: 0.5,
                   }}
                 >
-                  3. Các vai trò đang được tuyển trong dự án ({project.recruitingRoles?.length ?? 0} vị trí)
+                  3. Các vai trò trong dự án ({totalRoles} vị trí)
                 </div>
                 <div style={{ fontSize: 12, color: "rgba(0,0,0,0.55)", marginTop: 2 }}>
-                  Tổng nhân sự dự kiến: {totalSlots} người ({filledSlots}/{totalSlots} vị trí đã được nhận)
+                  Quy mô dự án: {totalRoles} vị trí ({filledRoles}/{totalRoles} vị trí đã có nhân sự)
                 </div>
               </div>
             </div>
@@ -8340,18 +8418,38 @@ function ProjectInvitationModal({
                         style={{
                           fontSize: 11,
                           fontWeight: 700,
-                          padding: "3px 8px",
+                          padding: "2.5px 8px",
                           borderRadius: 9999,
                           background: isRecruiting ? "#E5F6E8" : "#F4F2EE",
-                          color: isRecruiting ? "#057642" : "rgba(0,0,0,0.55)",
+                          color: isRecruiting ? "#057642" : "rgba(0,0,0,0.60)",
+                          border: isRecruiting ? "1px solid #BBF7D0" : "1px solid #E2E8F0",
                           whiteSpace: "nowrap",
                         }}
                       >
-                        {isRecruiting
-                          ? `Đang tuyển (${role.slotsFilled}/${role.slotsTotal})`
-                          : `Đã đủ người (${role.slotsFilled}/${role.slotsTotal})`}
+                        {isRecruiting ? "Đang tuyển" : "Đã có nhân sự"}
                       </span>
                     </div>
+
+                    {!isRecruiting && (
+                      <div
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: 5,
+                          fontSize: 11.5,
+                          color: "#057642",
+                          background: "#F0FDF4",
+                          border: "1px solid #DCFCE7",
+                          padding: "3px 8px",
+                          borderRadius: 6,
+                          marginTop: 6,
+                          fontWeight: 600,
+                        }}
+                      >
+                        <SealCheck size={13} weight="fill" color="#057642" />
+                        <span>{role.assignedMemberName ? `Đã giao: ${role.assignedMemberName}` : "Đã có nhân sự tiếp nhận"}</span>
+                      </div>
+                    )}
 
                     {role.skills && role.skills.length > 0 && (
                       <div
@@ -10392,110 +10490,90 @@ function NewHomePage({
       {/* ─── Hero Banner ─── */}
       <div
         style={{
-          background: "linear-gradient(135deg, #0A66C2 0%, #004182 100%)",
-          borderRadius: 12,
-          padding: "32px 32px 28px",
+          background: "radial-gradient(circle at 85% 15%, rgba(255, 255, 255, 0.12) 0%, transparent 45%), radial-gradient(circle at 10% 90%, rgba(255, 255, 255, 0.08) 0%, transparent 40%), linear-gradient(135deg, #0A66C2 0%, #084E96 55%, #053366 100%)",
+          borderRadius: 14,
+          padding: "36px 36px 32px",
           color: "#fff",
           marginBottom: 24,
-          boxShadow: "0 4px 20px rgba(10,102,194,0.18)",
+          boxShadow: "0 8px 30px rgba(10, 102, 194, 0.20)",
           position: "relative",
           overflow: "hidden",
+          border: "1px solid rgba(255, 255, 255, 0.12)",
         }}
       >
-        {/* Subtle decorative circles */}
-        <div
-          style={{
-            position: "absolute",
-            right: -30,
-            top: -40,
-            width: 220,
-            height: 220,
-            borderRadius: "50%",
-            background: "rgba(255,255,255,0.06)",
-            pointerEvents: "none",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            right: 140,
-            bottom: -50,
-            width: 150,
-            height: 150,
-            borderRadius: "50%",
-            background: "rgba(255,255,255,0.04)",
-            pointerEvents: "none",
-          }}
-        />
-
         <div style={{ position: "relative", zIndex: 2 }}>
           <div
             style={{
               display: "inline-flex",
               alignItems: "center",
               gap: 6,
-              background: "rgba(255,255,255,0.16)",
-              backdropFilter: "blur(4px)",
-              borderRadius: 9999,
-              padding: "4px 14px",
+              background: "rgba(255, 255, 255, 0.12)",
+              backdropFilter: "blur(6px)",
+              border: "1px solid rgba(255, 255, 255, 0.20)",
+              borderRadius: 6,
+              padding: "4px 12px",
               fontSize: 12,
               fontWeight: 600,
-              marginBottom: 12,
-              letterSpacing: "0.01em",
+              marginBottom: 14,
+              letterSpacing: "0.02em",
+              color: "#E0F2FE",
             }}
           >
-            <Sparkle size={14} weight="fill" color="#FFD700" />
-            <span>Nền tảng Việc làm & Hợp đồng Freelance Occupify</span>
+            <Sparkle size={13} weight="fill" color="#93C5FD" />
+            <span>Nền tảng Việc làm & Hợp đồng Freelance Chuyên nghiệp</span>
           </div>
 
           <h1
             style={{
-              fontSize: 26,
+              fontFamily: "Plus Jakarta Sans, sans-serif",
+              fontSize: 27,
               fontWeight: 800,
-              lineHeight: 1.3,
+              lineHeight: 1.25,
               marginBottom: 8,
-              letterSpacing: "-0.02em",
+              letterSpacing: "-0.025em",
+              color: "#FFFFFF",
             }}
           >
-            Chào mừng trở lại, {ME.name}! 👋
+            Chào mừng trở lại, {ME.name}
           </h1>
           <p
             style={{
               fontSize: 15,
-              color: "rgba(255,255,255,0.85)",
-              marginBottom: 20,
-              maxWidth: 650,
-              lineHeight: 1.5,
+              color: "rgba(255, 255, 255, 0.88)",
+              marginBottom: 24,
+              maxWidth: 680,
+              lineHeight: 1.6,
             }}
           >
-            Khám phá hàng ngàn dự án freelance hấp dẫn, kết nối trực tiếp với đối tác uy tín và bảo đảm thanh toán minh bạch, an toàn.
+            Khám phá các dự án công nghệ và thiết kế chất lượng cao, ký hợp đồng điện tử bảo chứng an toàn và quản lý tiến độ bàn giao minh bạch.
           </p>
 
           {/* Quick Search Box inside Hero */}
           <div
             style={{
               background: "#fff",
-              borderRadius: 9999,
-              padding: "4px 6px 4px 18px",
+              borderRadius: 10,
+              padding: "6px 8px 6px 16px",
               display: "flex",
               alignItems: "center",
-              boxShadow: "0 6px 24px rgba(0,0,0,0.18)",
+              boxShadow: "0 10px 30px rgba(5, 51, 102, 0.25)",
               maxWidth: 720,
+              border: "1px solid rgba(255, 255, 255, 0.3)",
             }}
           >
-            <MagnifyingGlass size={20} color="#0A66C2" weight="bold" />
+            <MagnifyingGlass size={19} color="#0A66C2" weight="bold" />
             <input
               type="text"
               value={searchKeyword}
               onChange={(e) => setSearchKeyword(e.target.value)}
-              placeholder="Tìm kiếm dự án, công việc theo kỹ năng, chức danh hoặc công ty..."
+              placeholder="Tìm kiếm dự án, công việc theo kỹ năng, vị trí hoặc doanh nghiệp..."
               style={{
                 flex: 1,
                 border: "none",
                 outline: "none",
-                padding: "10px 12px",
+                padding: "9px 12px",
                 fontSize: 14,
-                color: "rgba(0,0,0,0.85)",
+                color: "#0F172A",
                 fontFamily: "inherit",
               }}
             />
@@ -10507,7 +10585,7 @@ function NewHomePage({
                   border: "none",
                   cursor: "pointer",
                   padding: 6,
-                  color: "rgba(0,0,0,0.40)",
+                  color: "#94A3B8",
                   display: "flex",
                   alignItems: "center",
                 }}
@@ -10520,15 +10598,15 @@ function NewHomePage({
                 background: "#0A66C2",
                 color: "#fff",
                 border: "none",
-                borderRadius: 9999,
-                padding: "9px 24px",
-                fontSize: 14,
-                fontWeight: 700,
+                borderRadius: 8,
+                padding: "9px 22px",
+                fontSize: 13.5,
+                fontWeight: 600,
                 cursor: "pointer",
                 display: "flex",
                 alignItems: "center",
                 gap: 6,
-                transition: "background 150ms",
+                transition: "background 150ms ease",
                 flexShrink: 0,
               }}
               onMouseEnter={(e) =>
@@ -10557,15 +10635,16 @@ function NewHomePage({
         <div>
           {/* ── Filter Toolbar ────────────────────────────────────────── */}
           <div
+            className="pro-card"
             style={{
-              background: "#fff",
-              borderRadius: 10,
-              boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-              padding: "12px 16px",
-              marginBottom: 16,
+              borderRadius: 12,
+              border: "1px solid var(--border-default)",
+              boxShadow: "var(--shadow-card)",
+              padding: "16px 20px",
+              marginBottom: 18,
               display: "flex",
               flexDirection: "column",
-              gap: 12,
+              gap: 14,
             }}
           >
             {/* Top row: Section Header & Reset */}
@@ -10576,23 +10655,24 @@ function NewHomePage({
                 justifyContent: "space-between",
                 flexWrap: "wrap",
                 gap: 10,
-                borderBottom: "1px solid rgba(0,0,0,0.06)",
-                paddingBottom: 10,
+                borderBottom: "1px solid var(--border-default)",
+                paddingBottom: 12,
               }}
             >
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <BriefcaseMetal size={18} weight="fill" color="#0A66C2" />
-                <span style={{ fontSize: 15, fontWeight: 800, color: "rgba(0,0,0,0.90)" }}>
-                  Việc làm & Dự án
+                <span style={{ fontSize: 15, fontWeight: 800, color: "#0F172A", letterSpacing: "-0.01em" }}>
+                  Việc làm & Dự án Tuyển dụng
                 </span>
                 <span
                   style={{
-                    background: "#EAF1FA",
+                    background: "#EFF6FF",
                     color: "#0A66C2",
                     fontSize: 12,
                     fontWeight: 700,
-                    padding: "2px 8px",
-                    borderRadius: 9999,
+                    padding: "2px 10px",
+                    borderRadius: 6,
+                    border: "1px solid #DBEAFE",
                   }}
                 >
                   {filteredJobs.length} dự án
@@ -10605,14 +10685,19 @@ function NewHomePage({
                   style={{
                     background: "none",
                     border: "none",
-                    color: "#C03A2B",
+                    color: "#DC2626",
                     fontSize: 12.5,
                     fontWeight: 600,
                     cursor: "pointer",
                     display: "flex",
                     alignItems: "center",
                     gap: 4,
+                    padding: "4px 8px",
+                    borderRadius: 6,
+                    transition: "background 120ms ease",
                   }}
+                  onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.background = "#FEF2F2")}
+                  onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = "none")}
                 >
                   <X size={14} />
                   <span>Đặt lại bộ lọc</span>
@@ -10632,19 +10717,20 @@ function NewHomePage({
               {/* 1. Sắp xếp: Mới nhất */}
               <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                 <Clock size={15} color="#0A66C2" />
-                <span style={{ fontSize: 13, fontWeight: 600, color: "rgba(0,0,0,0.60)" }}>Sắp xếp:</span>
+                <span style={{ fontSize: 13, fontWeight: 600, color: "#64748B" }}>Sắp xếp:</span>
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as any)}
+                  className="pro-select"
                   style={{
-                    padding: "6px 12px",
-                    borderRadius: 6,
-                    border: "1px solid rgba(0,0,0,0.15)",
+                    padding: "7px 12px",
+                    borderRadius: 8,
+                    border: "1px solid var(--border-default)",
                     fontSize: 13,
                     fontFamily: "inherit",
                     background: "#fff",
                     fontWeight: 600,
-                    color: "rgba(0,0,0,0.85)",
+                    color: "#0F172A",
                     cursor: "pointer",
                     outline: "none",
                   }}
@@ -10658,19 +10744,20 @@ function NewHomePage({
               {/* 2. Tháng / Thời gian */}
               <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                 <CalendarBlank size={15} color="#057642" />
-                <span style={{ fontSize: 13, fontWeight: 600, color: "rgba(0,0,0,0.60)" }}>Thời gian:</span>
+                <span style={{ fontSize: 13, fontWeight: 600, color: "#64748B" }}>Thời gian:</span>
                 <select
                   value={timeFilter}
                   onChange={(e) => setTimeFilter(e.target.value as any)}
+                  className="pro-select"
                   style={{
-                    padding: "6px 12px",
-                    borderRadius: 6,
-                    border: "1px solid rgba(0,0,0,0.15)",
+                    padding: "7px 12px",
+                    borderRadius: 8,
+                    border: "1px solid var(--border-default)",
                     fontSize: 13,
                     fontFamily: "inherit",
                     background: "#fff",
                     fontWeight: 600,
-                    color: "rgba(0,0,0,0.85)",
+                    color: "#0F172A",
                     cursor: "pointer",
                     outline: "none",
                   }}
@@ -10685,22 +10772,23 @@ function NewHomePage({
               {/* 3. Dropdown Chọn loại lương (salary_type) */}
               <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                 <Wallet size={15} color="#0A66C2" />
-                <span style={{ fontSize: 13, fontWeight: 600, color: "rgba(0,0,0,0.60)" }}>Hình thức:</span>
+                <span style={{ fontSize: 13, fontWeight: 600, color: "#64748B" }}>Hình thức:</span>
                 <select
                   value={salaryTypeFilter}
                   onChange={(e) => {
                     setSalaryTypeFilter(e.target.value as any)
                     setMinSalarySlider(0)
                   }}
+                  className="pro-select"
                   style={{
-                    padding: "6px 12px",
-                    borderRadius: 6,
-                    border: "1px solid rgba(0,0,0,0.15)",
+                    padding: "7px 12px",
+                    borderRadius: 8,
+                    border: "1px solid var(--border-default)",
                     fontSize: 13,
                     fontFamily: "inherit",
                     background: "#fff",
                     fontWeight: 600,
-                    color: "rgba(0,0,0,0.85)",
+                    color: "#0F172A",
                     cursor: "pointer",
                     outline: "none",
                   }}
@@ -10720,15 +10808,15 @@ function NewHomePage({
                   alignItems: "center",
                   gap: 10,
                   flexWrap: "wrap",
-                  padding: "4px 12px",
+                  padding: "6px 14px",
                   background: "#F8FAFC",
                   borderRadius: 8,
-                  border: "1px solid rgba(0,0,0,0.08)",
+                  border: "1px solid var(--border-default)",
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                   <SlidersHorizontal size={15} color="#0A66C2" weight="bold" />
-                  <span style={{ fontSize: 13, fontWeight: 700, color: "rgba(0,0,0,0.70)" }}>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: "#475569" }}>
                     {salaryTypeFilter === "hourly"
                       ? "Lương/giờ:"
                       : salaryTypeFilter === "weekly"
@@ -10767,7 +10855,7 @@ function NewHomePage({
                   style={{
                     fontSize: 13,
                     fontWeight: 700,
-                    color: minSalarySlider > 0 ? "#0A66C2" : "rgba(0,0,0,0.55)",
+                    color: minSalarySlider > 0 ? "#0A66C2" : "#64748B",
                     minWidth: 110,
                   }}
                 >
@@ -10787,7 +10875,7 @@ function NewHomePage({
                     style={{
                       background: "none",
                       border: "none",
-                      color: "#C03A2B",
+                      color: "#DC2626",
                       cursor: "pointer",
                       display: "flex",
                       alignItems: "center",
@@ -10808,27 +10896,29 @@ function NewHomePage({
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              marginBottom: 12,
+              marginBottom: 14,
               padding: "0 4px",
             }}
           >
-            <div style={{ fontSize: 13, color: "rgba(0,0,0,0.60)" }}>
+            <div style={{ fontSize: 13, color: "#64748B" }}>
               Tìm thấy{" "}
-              <strong style={{ color: "rgba(0,0,0,0.90)" }}>
+              <strong style={{ color: "#0F172A", fontWeight: 700 }}>
                 {displayJobs.length}
               </strong>{" "}
               dự án phù hợp
               {searchKeyword && (
                 <span
+                  className="pro-tag"
                   style={{
                     marginLeft: 8,
                     display: "inline-flex",
                     alignItems: "center",
-                    gap: 4,
-                    background: "#EAF1FA",
+                    gap: 5,
+                    background: "#EFF6FF",
                     color: "#0A66C2",
-                    padding: "2px 8px",
-                    borderRadius: 9999,
+                    padding: "3px 10px",
+                    borderRadius: 6,
+                    border: "1px solid #DBEAFE",
                     fontSize: 12,
                     fontWeight: 600,
                   }}
@@ -10843,15 +10933,17 @@ function NewHomePage({
               )}
               {salaryTypeFilter !== "all" && (
                 <span
+                  className="pro-tag"
                   style={{
                     marginLeft: 8,
                     display: "inline-flex",
                     alignItems: "center",
-                    gap: 4,
+                    gap: 5,
                     background: "#FEF3C7",
                     color: "#92400E",
-                    padding: "2px 8px",
-                    borderRadius: 9999,
+                    padding: "3px 10px",
+                    borderRadius: 6,
+                    border: "1px solid #FDE68A",
                     fontSize: 12,
                     fontWeight: 600,
                   }}
@@ -10875,15 +10967,17 @@ function NewHomePage({
               )}
               {minSalarySlider > 0 && (
                 <span
+                  className="pro-tag"
                   style={{
                     marginLeft: 8,
                     display: "inline-flex",
                     alignItems: "center",
-                    gap: 4,
-                    background: "#EAF1FA",
+                    gap: 5,
+                    background: "#EFF6FF",
                     color: "#0A66C2",
-                    padding: "2px 8px",
-                    borderRadius: 9999,
+                    padding: "3px 10px",
+                    borderRadius: 6,
+                    border: "1px solid #DBEAFE",
                     fontSize: 12,
                     fontWeight: 600,
                   }}
@@ -10904,15 +10998,17 @@ function NewHomePage({
               )}
               {timeFilter !== "all" && (
                 <span
+                  className="pro-tag"
                   style={{
                     marginLeft: 8,
                     display: "inline-flex",
                     alignItems: "center",
-                    gap: 4,
-                    background: "#E6F4EA",
-                    color: "#137333",
-                    padding: "2px 8px",
-                    borderRadius: 9999,
+                    gap: 5,
+                    background: "#ECFDF5",
+                    color: "#065F46",
+                    padding: "3px 10px",
+                    borderRadius: 6,
+                    border: "1px solid #A7F3D0",
                     fontSize: 12,
                     fontWeight: 600,
                   }}
@@ -10948,21 +11044,22 @@ function NewHomePage({
 
               {displayJobs.length === 0 && (
                 <div
+                  className="pro-card"
                   style={{
-                    background: "#fff",
-                    borderRadius: 8,
-                    boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-                    padding: "48px 24px",
+                    borderRadius: 12,
+                    border: "1px solid var(--border-default)",
+                    boxShadow: "var(--shadow-card)",
+                    padding: "54px 24px",
                     textAlign: "center",
                   }}
                 >
                   <div style={{ fontSize: 36, marginBottom: 12 }}>🔍</div>
                   <div
                     style={{
-                      fontSize: 16,
+                      fontSize: 17,
                       fontWeight: 700,
-                      color: "rgba(0,0,0,0.90)",
-                      marginBottom: 6,
+                      color: "#0F172A",
+                      marginBottom: 8,
                     }}
                   >
                     Không tìm thấy công việc phù hợp
@@ -10970,12 +11067,13 @@ function NewHomePage({
                   <p
                     style={{
                       fontSize: 14,
-                      color: "rgba(0,0,0,0.60)",
-                      maxWidth: 380,
-                      margin: "0 auto 16px",
+                      color: "#64748B",
+                      maxWidth: 400,
+                      margin: "0 auto 20px",
+                      lineHeight: 1.6,
                     }}
                   >
-                    Hãy thử từ khóa chung hơn hoặc điều chỉnh lại bộ lọc để khám phá thêm nhiều cơ hội hấp dẫn.
+                    Hãy thử từ khóa chung hơn hoặc điều chỉnh lại các tiêu chí bộ lọc để tiếp cận nhiều cơ hội việc làm hơn.
                   </p>
                   <button
                     onClick={handleResetFilters}
@@ -10983,12 +11081,15 @@ function NewHomePage({
                       background: "#0A66C2",
                       color: "#fff",
                       border: "none",
-                      borderRadius: 9999,
-                      padding: "8px 20px",
-                      fontSize: 13,
+                      borderRadius: 8,
+                      padding: "9px 24px",
+                      fontSize: 13.5,
                       fontWeight: 600,
                       cursor: "pointer",
+                      transition: "background 150ms ease",
                     }}
+                    onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.background = "#084fa0")}
+                    onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = "#0A66C2")}
                   >
                     Xóa tất cả bộ lọc
                   </button>
@@ -10998,26 +11099,27 @@ function NewHomePage({
           </div>
         </div>
         {/* Right Column: Widgets */}
-        <div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           {/* Quick Actions Card */}
           <div
+            className="pro-card"
             style={{
-              background: "#fff",
-              borderRadius: 8,
-              boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-              padding: "18px 20px",
-              marginBottom: 16,
+              borderRadius: 12,
+              border: "1px solid var(--border-default)",
+              boxShadow: "var(--shadow-card)",
+              padding: "20px",
             }}
           >
             <div
               style={{
                 fontSize: 15,
-                fontWeight: 700,
-                color: "rgba(0,0,0,0.90)",
-                marginBottom: 14,
+                fontWeight: 800,
+                color: "#0F172A",
+                marginBottom: 16,
                 display: "flex",
                 alignItems: "center",
                 gap: 8,
+                letterSpacing: "-0.01em",
               }}
             >
               <Sparkle size={16} color="#0A66C2" weight="fill" />
@@ -11030,52 +11132,58 @@ function NewHomePage({
                 style={{
                   display: "flex",
                   alignItems: "center",
+                  justifyContent: "space-between",
                   gap: 12,
                   width: "100%",
                   padding: "12px 14px",
-                  borderRadius: 8,
-                  border: "1px solid #0A66C2",
-                  background: "#0A66C2",
-                  color: "#fff",
-                  fontSize: 13,
-                  fontWeight: 700,
+                  borderRadius: 10,
+                  border: "1px solid var(--border-default)",
+                  background: "#fff",
+                  color: "#0F172A",
                   cursor: "pointer",
                   textAlign: "left",
-                  transition: "background 150ms",
+                  transition: "all 150ms ease",
+                  boxShadow: "0 1px 2px rgba(0,0,0,0.03)",
                 }}
-                onMouseEnter={(e) =>
-                  ((e.currentTarget as HTMLElement).style.background = "#084fa0")
-                }
-                onMouseLeave={(e) =>
-                  ((e.currentTarget as HTMLElement).style.background = "#0A66C2")
-                }
+                onMouseEnter={(e) => {
+                  const el = e.currentTarget as HTMLElement
+                  el.style.borderColor = "#0A66C2"
+                  el.style.background = "#F8FAFC"
+                  el.style.transform = "translateY(-1px)"
+                }}
+                onMouseLeave={(e) => {
+                  const el = e.currentTarget as HTMLElement
+                  el.style.borderColor = "var(--border-default)"
+                  el.style.background = "#fff"
+                  el.style.transform = "none"
+                }}
               >
-                <div
-                  style={{
-                    width: 32,
-                    height: 32,
-                    borderRadius: 6,
-                    background: "rgba(255,255,255,0.2)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexShrink: 0,
-                  }}
-                >
-                  <FolderPlus size={18} color="#fff" />
-                </div>
-                <div>
-                  <div>+ Đăng tin tuyển dụng / Dự án</div>
+                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                   <div
                     style={{
-                      fontSize: 11,
-                      fontWeight: 400,
-                      color: "rgba(255,255,255,0.85)",
+                      width: 36,
+                      height: 36,
+                      borderRadius: 8,
+                      background: "#EFF6FF",
+                      color: "#0A66C2",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexShrink: 0,
                     }}
                   >
-                    Tìm nhân sự hoặc quản trị team
+                    <FolderPlus size={19} weight="bold" />
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 13.5, fontWeight: 700, color: "#0F172A" }}>
+                      + Đăng tin tuyển dụng / Dự án
+                    </div>
+                    <div style={{ fontSize: 11.5, color: "#64748B", marginTop: 1 }}>
+                      Tìm nhân sự hoặc quản trị team
+                    </div>
                   </div>
                 </div>
+                <ArrowRight size={14} color="#94A3B8" />
               </button>
 
               <button
@@ -11083,111 +11191,120 @@ function NewHomePage({
                 style={{
                   display: "flex",
                   alignItems: "center",
+                  justifyContent: "space-between",
                   gap: 12,
                   width: "100%",
                   padding: "12px 14px",
-                  borderRadius: 8,
-                  border: "1px solid rgba(0,0,0,0.10)",
+                  borderRadius: 10,
+                  border: "1px solid var(--border-default)",
                   background: "#fff",
-                  color: "rgba(0,0,0,0.85)",
-                  fontSize: 13,
-                  fontWeight: 700,
+                  color: "#0F172A",
                   cursor: "pointer",
                   textAlign: "left",
-                  transition: "all 150ms",
+                  transition: "all 150ms ease",
+                  boxShadow: "0 1px 2px rgba(0,0,0,0.03)",
                 }}
                 onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.background = "#F4F2EE"
+                  const el = e.currentTarget as HTMLElement
+                  el.style.borderColor = "#059669"
+                  el.style.background = "#F8FAFC"
+                  el.style.transform = "translateY(-1px)"
                 }}
                 onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.background = "#fff"
+                  const el = e.currentTarget as HTMLElement
+                  el.style.borderColor = "var(--border-default)"
+                  el.style.background = "#fff"
+                  el.style.transform = "none"
                 }}
               >
-                <div
-                  style={{
-                    width: 32,
-                    height: 32,
-                    borderRadius: 6,
-                    background: "#E5F6E8",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexShrink: 0,
-                  }}
-                >
-                  <FileText size={18} color="#057642" />
-                </div>
-                <div>
-                  <div style={{ color: "#057642" }}>+ Soạn thảo hợp đồng</div>
+                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                   <div
                     style={{
-                      fontSize: 11,
-                      fontWeight: 400,
-                      color: "rgba(0,0,0,0.55)",
+                      width: 36,
+                      height: 36,
+                      borderRadius: 8,
+                      background: "#ECFDF5",
+                      color: "#059669",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexShrink: 0,
                     }}
                   >
-                    Mời ứng viên & thiết lập mốc thanh toán
+                    <FileText size={19} weight="bold" />
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 13.5, fontWeight: 700, color: "#0F172A" }}>
+                      + Soạn thảo hợp đồng
+                    </div>
+                    <div style={{ fontSize: 11.5, color: "#64748B", marginTop: 1 }}>
+                      Mời ứng viên & thiết lập mốc ký quỹ
+                    </div>
                   </div>
                 </div>
+                <ArrowRight size={14} color="#94A3B8" />
               </button>
             </div>
           </div>
 
           {/* Projects Management Status Widget */}
           <div
+            className="pro-card"
             style={{
-              background: "#fff",
-              borderRadius: 8,
-              boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-              padding: "18px 20px",
-              marginBottom: 16,
+              borderRadius: 12,
+              border: "1px solid var(--border-default)",
+              boxShadow: "var(--shadow-card)",
+              padding: "20px",
             }}
           >
             <div
               style={{
                 fontSize: 15,
-                fontWeight: 700,
-                color: "rgba(0,0,0,0.90)",
-                marginBottom: 12,
+                fontWeight: 800,
+                color: "#0F172A",
+                marginBottom: 14,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
+                letterSpacing: "-0.01em",
               }}
             >
               <span>Quản lý dự án</span>
               <span
                 style={{
-                  fontSize: 11,
-                  background: "#EAF1FA",
+                  fontSize: 11.5,
+                  background: "#EFF6FF",
                   color: "#0A66C2",
                   fontWeight: 700,
                   padding: "2px 8px",
-                  borderRadius: 9999,
+                  borderRadius: 6,
+                  border: "1px solid #DBEAFE",
                 }}
               >
                 Active
               </span>
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
               <div
                 style={{
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  padding: "8px 12px",
-                  background: "#FAFAF8",
-                  borderRadius: 6,
+                  padding: "9px 12px",
+                  background: "#F8FAFC",
+                  borderRadius: 8,
+                  border: "1px solid #F1F5F9",
                 }}
               >
-                <span style={{ fontSize: 13, color: "rgba(0,0,0,0.70)" }}>
+                <span style={{ fontSize: 13, color: "#475569" }}>
                   Dự án bạn quản lý
                 </span>
                 <span
                   style={{
                     fontSize: 13,
                     fontWeight: 700,
-                    color: "rgba(0,0,0,0.90)",
+                    color: "#0F172A",
                   }}
                 >
                   2 dự án
@@ -11198,12 +11315,13 @@ function NewHomePage({
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  padding: "8px 12px",
-                  background: "#FAFAF8",
-                  borderRadius: 6,
+                  padding: "9px 12px",
+                  background: "#F8FAFC",
+                  borderRadius: 8,
+                  border: "1px solid #F1F5F9",
                 }}
               >
-                <span style={{ fontSize: 13, color: "rgba(0,0,0,0.70)" }}>
+                <span style={{ fontSize: 13, color: "#475569" }}>
                   Dự án đang thực hiện
                 </span>
                 <span
@@ -11221,19 +11339,20 @@ function NewHomePage({
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  padding: "8px 12px",
-                  background: "#FAFAF8",
-                  borderRadius: 6,
+                  padding: "9px 12px",
+                  background: "#F8FAFC",
+                  borderRadius: 8,
+                  border: "1px solid #F1F5F9",
                 }}
               >
-                <span style={{ fontSize: 13, color: "rgba(0,0,0,0.70)" }}>
+                <span style={{ fontSize: 13, color: "#475569" }}>
                   Đề xuất / Lời mời chờ
                 </span>
                 <span
                   style={{
                     fontSize: 13,
                     fontWeight: 700,
-                    color: "#F59E0B",
+                    color: "#D97706",
                   }}
                 >
                   2 chờ duyệt
@@ -11246,10 +11365,10 @@ function NewHomePage({
               style={{
                 width: "100%",
                 marginTop: 14,
-                background: "none",
-                border: "1px solid rgba(0,0,0,0.15)",
-                borderRadius: 9999,
-                padding: "8px 16px",
+                background: "#fff",
+                border: "1px solid var(--border-default)",
+                borderRadius: 8,
+                padding: "9px 16px",
                 fontSize: 13,
                 fontWeight: 600,
                 color: "#0A66C2",
@@ -11258,16 +11377,17 @@ function NewHomePage({
                 alignItems: "center",
                 justifyContent: "center",
                 gap: 6,
-                transition: "all 150ms",
+                transition: "all 150ms ease",
               }}
               onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.background = "#EAF1FA"
-                  ; (e.currentTarget as HTMLElement).style.borderColor = "#0A66C2"
+                const el = e.currentTarget as HTMLElement
+                el.style.background = "#EFF6FF"
+                el.style.borderColor = "#93C5FD"
               }}
               onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.background = "none"
-                  ; (e.currentTarget as HTMLElement).style.borderColor =
-                    "rgba(0,0,0,0.15)"
+                const el = e.currentTarget as HTMLElement
+                el.style.background = "#fff"
+                el.style.borderColor = "var(--border-default)"
               }}
             >
               <span>Vào trang Quản lý dự án</span>
@@ -11277,20 +11397,21 @@ function NewHomePage({
 
           {/* Occupify Wallet Widget */}
           <div
+            className="pro-card"
             style={{
-              background: "#fff",
-              borderRadius: 8,
-              boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-              padding: "18px 20px",
-              marginBottom: 16,
+              borderRadius: 12,
+              border: "1px solid var(--border-default)",
+              boxShadow: "var(--shadow-card)",
+              padding: "20px",
             }}
           >
             <div
               style={{
                 fontSize: 15,
-                fontWeight: 700,
-                color: "rgba(0,0,0,0.90)",
-                marginBottom: 12,
+                fontWeight: 800,
+                color: "#0F172A",
+                marginBottom: 14,
+                letterSpacing: "-0.01em",
               }}
             >
               Ví tài khoản Occupify
@@ -11298,35 +11419,39 @@ function NewHomePage({
 
             <div
               style={{
-                background: "linear-gradient(135deg, #1B3A5C 0%, #0A66C2 100%)",
-                borderRadius: 8,
-                padding: "16px",
+                background: "linear-gradient(135deg, #0F172A 0%, #1E293B 100%)",
+                borderRadius: 10,
+                padding: "18px 20px",
                 color: "#fff",
-                marginBottom: 12,
+                marginBottom: 14,
+                border: "1px solid rgba(255, 255, 255, 0.08)",
+                boxShadow: "0 4px 12px rgba(15, 23, 42, 0.15)",
               }}
             >
               <div
                 style={{
                   fontSize: 12,
-                  color: "rgba(255,255,255,0.75)",
-                  marginBottom: 4,
+                  color: "#94A3B8",
+                  marginBottom: 6,
+                  fontWeight: 500,
                 }}
               >
                 Số dư khả dụng
               </div>
               <div
                 style={{
-                  fontSize: 22,
+                  fontFamily: "Plus Jakarta Sans, sans-serif",
+                  fontSize: 23,
                   fontWeight: 800,
-                  letterSpacing: "-0.02em",
-                  marginBottom: 10,
+                  letterSpacing: "-0.025em",
+                  color: "#FFFFFF",
                 }}
               >
                 12.500.000 ₫
               </div>
             </div>
 
-            <div style={{ display: "flex", gap: 8 }}>
+            <div style={{ display: "flex", gap: 10 }}>
               <button
                 onClick={onOpenWallet}
                 style={{
@@ -11334,16 +11459,16 @@ function NewHomePage({
                   background: "#0A66C2",
                   color: "#fff",
                   border: "none",
-                  borderRadius: 9999,
-                  padding: "8px 12px",
+                  borderRadius: 8,
+                  padding: "9px 12px",
                   fontSize: 13,
-                  fontWeight: 700,
+                  fontWeight: 600,
                   cursor: "pointer",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  gap: 5,
-                  transition: "background 150ms",
+                  gap: 6,
+                  transition: "background 150ms ease",
                 }}
                 onMouseEnter={(e) =>
                   ((e.currentTarget as HTMLElement).style.background = "#084fa0")
@@ -11352,36 +11477,40 @@ function NewHomePage({
                   ((e.currentTarget as HTMLElement).style.background = "#0A66C2")
                 }
               >
-                <Wallet size={14} weight="bold" />
+                <Wallet size={15} weight="bold" />
                 <span>Ví của tôi</span>
               </button>
               <button
                 onClick={onOpenFinancialHistory}
                 style={{
                   flex: 1,
-                  background: "#EAF1FA",
-                  color: "#0A66C2",
-                  border: "none",
-                  borderRadius: 9999,
-                  padding: "8px 12px",
+                  background: "#F8FAFC",
+                  color: "#0F172A",
+                  border: "1px solid var(--border-default)",
+                  borderRadius: 8,
+                  padding: "9px 12px",
                   fontSize: 13,
-                  fontWeight: 700,
+                  fontWeight: 600,
                   cursor: "pointer",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  gap: 4,
-                  transition: "background 150ms",
+                  gap: 5,
+                  transition: "all 150ms ease",
                 }}
-                onMouseEnter={(e) =>
-                  ((e.currentTarget as HTMLElement).style.background = "#d3e5f8")
-                }
-                onMouseLeave={(e) =>
-                  ((e.currentTarget as HTMLElement).style.background = "#EAF1FA")
-                }
+                onMouseEnter={(e) => {
+                  const el = e.currentTarget as HTMLElement
+                  el.style.background = "#F1F5F9"
+                  el.style.borderColor = "#CBD5E1"
+                }}
+                onMouseLeave={(e) => {
+                  const el = e.currentTarget as HTMLElement
+                  el.style.background = "#F8FAFC"
+                  el.style.borderColor = "var(--border-default)"
+                }}
               >
                 <span>Thu chi</span>
-                <ArrowRight size={12} weight="bold" />
+                <ArrowRight size={13} weight="bold" />
               </button>
             </div>
           </div>
@@ -11608,19 +11737,20 @@ function ProjectsManagementPage({
             style={{
               background: "#fff",
               color: "#057642",
-              border: "1px solid #057642",
-              borderRadius: 9999,
-              padding: "8px 18px",
+              border: "1px solid #10B981",
+              borderRadius: 8,
+              padding: "9px 18px",
               fontSize: 13,
               fontWeight: 700,
               cursor: "pointer",
               display: "flex",
               alignItems: "center",
               gap: 6,
-              transition: "all 150ms",
+              transition: "all 150ms ease",
+              boxShadow: "0 1px 2px rgba(0,0,0,0.03)",
             }}
             onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.background = "#E5F6E8"
+              (e.currentTarget as HTMLElement).style.background = "#ECFDF5"
             }}
             onMouseLeave={(e) => {
               (e.currentTarget as HTMLElement).style.background = "#fff"
@@ -11636,16 +11766,16 @@ function ProjectsManagementPage({
               background: "#0A66C2",
               color: "#fff",
               border: "none",
-              borderRadius: 9999,
-              padding: "8px 20px",
+              borderRadius: 8,
+              padding: "9px 20px",
               fontSize: 13,
               fontWeight: 700,
               cursor: "pointer",
               display: "flex",
               alignItems: "center",
               gap: 6,
-              boxShadow: "0 2px 8px rgba(10,102,194,0.25)",
-              transition: "background 150ms",
+              boxShadow: "0 2px 8px rgba(10, 102, 194, 0.25)",
+              transition: "background 150ms ease",
             }}
             onMouseEnter={(e) =>
               ((e.currentTarget as HTMLElement).style.background = "#084fa0")
@@ -11672,23 +11802,21 @@ function ProjectsManagementPage({
         {/* Metric 1 */}
         <div
           onClick={() => setActiveTab(activeTab === "owner" ? "all" : "owner")}
+          className="pro-card"
           style={{
-            background: "#fff",
-            borderRadius: 8,
-            boxShadow:
-              activeTab === "owner"
-                ? "0 0 0 2px #0A66C2"
-                : "0 0 0 1px rgba(0,0,0,0.08)",
-            padding: "18px 20px",
+            borderRadius: 12,
+            border: activeTab === "owner" ? "1.5px solid #0A66C2" : "1px solid var(--border-default)",
+            boxShadow: activeTab === "owner" ? "0 0 0 3px rgba(10, 102, 194, 0.12)" : "var(--shadow-card)",
+            padding: "20px 22px",
             cursor: "pointer",
-            transition: "all 150ms",
+            transition: "all 150ms ease",
             display: "flex",
             alignItems: "center",
             gap: 16,
           }}
           onMouseEnter={(e) => {
             if (activeTab !== "owner")
-              (e.currentTarget as HTMLElement).style.background = "#FAFAF8"
+              (e.currentTarget as HTMLElement).style.background = "#F8FAFC"
           }}
           onMouseLeave={(e) => {
             if (activeTab !== "owner")
@@ -11697,38 +11825,41 @@ function ProjectsManagementPage({
         >
           <div
             style={{
-              width: 48,
-              height: 48,
-              borderRadius: 8,
-              background: "#EAF1FA",
+              width: 50,
+              height: 50,
+              borderRadius: 10,
+              background: "#EFF6FF",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               flexShrink: 0,
             }}
           >
-            <FolderPlus size={24} color="#0A66C2" />
+            <FolderPlus size={24} color="#0A66C2" weight="bold" />
           </div>
           <div>
             <div
               style={{
-                fontSize: 24,
+                fontFamily: "Plus Jakarta Sans, sans-serif",
+                fontSize: 26,
                 fontWeight: 800,
-                color: "rgba(0,0,0,0.90)",
+                color: "#0F172A",
+                lineHeight: 1.1,
               }}
             >
               {myProjects.length}
             </div>
             <div
               style={{
-                fontSize: 13,
-                fontWeight: 600,
-                color: "rgba(0,0,0,0.85)",
+                fontSize: 13.5,
+                fontWeight: 700,
+                color: "#1E293B",
+                marginTop: 4,
               }}
             >
               Dự án tôi quản lý
             </div>
-            <div style={{ fontSize: 12, color: "rgba(0,0,0,0.50)" }}>
+            <div style={{ fontSize: 12, color: "#64748B", marginTop: 1 }}>
               Đang làm chủ & điều phối
             </div>
           </div>
@@ -11739,23 +11870,21 @@ function ProjectsManagementPage({
           onClick={() =>
             setActiveTab(activeTab === "participant" ? "all" : "participant")
           }
+          className="pro-card"
           style={{
-            background: "#fff",
-            borderRadius: 8,
-            boxShadow:
-              activeTab === "participant"
-                ? "0 0 0 2px #057642"
-                : "0 0 0 1px rgba(0,0,0,0.08)",
-            padding: "18px 20px",
+            borderRadius: 12,
+            border: activeTab === "participant" ? "1.5px solid #059669" : "1px solid var(--border-default)",
+            boxShadow: activeTab === "participant" ? "0 0 0 3px rgba(5, 150, 105, 0.12)" : "var(--shadow-card)",
+            padding: "20px 22px",
             cursor: "pointer",
-            transition: "all 150ms",
+            transition: "all 150ms ease",
             display: "flex",
             alignItems: "center",
             gap: 16,
           }}
           onMouseEnter={(e) => {
             if (activeTab !== "participant")
-              (e.currentTarget as HTMLElement).style.background = "#FAFAF8"
+              (e.currentTarget as HTMLElement).style.background = "#F8FAFC"
           }}
           onMouseLeave={(e) => {
             if (activeTab !== "participant")
@@ -11764,38 +11893,41 @@ function ProjectsManagementPage({
         >
           <div
             style={{
-              width: 48,
-              height: 48,
-              borderRadius: 8,
-              background: "#E5F6E8",
+              width: 50,
+              height: 50,
+              borderRadius: 10,
+              background: "#ECFDF5",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               flexShrink: 0,
             }}
           >
-            <BriefcaseMetal size={24} color="#057642" />
+            <BriefcaseMetal size={24} color="#059669" weight="bold" />
           </div>
           <div>
             <div
               style={{
-                fontSize: 24,
+                fontFamily: "Plus Jakarta Sans, sans-serif",
+                fontSize: 26,
                 fontWeight: 800,
-                color: "rgba(0,0,0,0.90)",
+                color: "#0F172A",
+                lineHeight: 1.1,
               }}
             >
               {employeeProjects.length}
             </div>
             <div
               style={{
-                fontSize: 13,
-                fontWeight: 600,
-                color: "rgba(0,0,0,0.85)",
+                fontSize: 13.5,
+                fontWeight: 700,
+                color: "#1E293B",
+                marginTop: 4,
               }}
             >
               Dự án tôi tham gia
             </div>
-            <div style={{ fontSize: 12, color: "rgba(0,0,0,0.50)" }}>
+            <div style={{ fontSize: 12, color: "#64748B", marginTop: 1 }}>
               Thực hiện theo hợp đồng
             </div>
           </div>
@@ -11806,23 +11938,21 @@ function ProjectsManagementPage({
           onClick={() =>
             setActiveTab(activeTab === "pending" ? "all" : "pending")
           }
+          className="pro-card"
           style={{
-            background: "#fff",
-            borderRadius: 8,
-            boxShadow:
-              activeTab === "pending"
-                ? "0 0 0 2px #F59E0B"
-                : "0 0 0 1px rgba(0,0,0,0.08)",
-            padding: "18px 20px",
+            borderRadius: 12,
+            border: activeTab === "pending" ? "1.5px solid #D97706" : "1px solid var(--border-default)",
+            boxShadow: activeTab === "pending" ? "0 0 0 3px rgba(217, 119, 6, 0.12)" : "var(--shadow-card)",
+            padding: "20px 22px",
             cursor: "pointer",
-            transition: "all 150ms",
+            transition: "all 150ms ease",
             display: "flex",
             alignItems: "center",
             gap: 16,
           }}
           onMouseEnter={(e) => {
             if (activeTab !== "pending")
-              (e.currentTarget as HTMLElement).style.background = "#FAFAF8"
+              (e.currentTarget as HTMLElement).style.background = "#F8FAFC"
           }}
           onMouseLeave={(e) => {
             if (activeTab !== "pending")
@@ -11831,38 +11961,41 @@ function ProjectsManagementPage({
         >
           <div
             style={{
-              width: 48,
-              height: 48,
-              borderRadius: 8,
-              background: "#FEF3C7",
+              width: 50,
+              height: 50,
+              borderRadius: 10,
+              background: "#FFFBEB",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               flexShrink: 0,
             }}
           >
-            <Clock size={24} color="#D97706" />
+            <Clock size={24} color="#D97706" weight="bold" />
           </div>
           <div>
             <div
               style={{
-                fontSize: 24,
+                fontFamily: "Plus Jakarta Sans, sans-serif",
+                fontSize: 26,
                 fontWeight: 800,
-                color: "rgba(0,0,0,0.90)",
+                color: "#0F172A",
+                lineHeight: 1.1,
               }}
             >
               {pending.length}
             </div>
             <div
               style={{
-                fontSize: 13,
-                fontWeight: 600,
-                color: "rgba(0,0,0,0.85)",
+                fontSize: 13.5,
+                fontWeight: 700,
+                color: "#1E293B",
+                marginTop: 4,
               }}
             >
               Chờ xác nhận
             </div>
-            <div style={{ fontSize: 12, color: "rgba(0,0,0,0.50)" }}>
+            <div style={{ fontSize: 12, color: "#64748B", marginTop: 1 }}>
               Đề xuất & lời mời cần duyệt
             </div>
           </div>
@@ -11871,18 +12004,19 @@ function ProjectsManagementPage({
 
       {/* Search Bar */}
       <div
+        className="pro-card"
         style={{
           marginBottom: 18,
-          background: "#fff",
-          borderRadius: 8,
-          boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+          borderRadius: 10,
+          border: "1px solid var(--border-default)",
+          boxShadow: "var(--shadow-card)",
           padding: "10px 16px",
           display: "flex",
           alignItems: "center",
           gap: 12,
         }}
       >
-        <MagnifyingGlass size={18} color="rgba(0,0,0,0.45)" />
+        <MagnifyingGlass size={18} color="#64748B" />
         <input
           type="text"
           value={searchKeyword}
@@ -11893,7 +12027,7 @@ function ProjectsManagementPage({
             outline: "none",
             fontSize: 14,
             fontFamily: "inherit",
-            color: "rgba(0,0,0,0.90)",
+            color: "#0F172A",
             width: "100%",
             background: "transparent",
           }}
@@ -11908,7 +12042,7 @@ function ProjectsManagementPage({
               padding: 4,
               display: "flex",
               alignItems: "center",
-              color: "rgba(0,0,0,0.40)",
+              color: "#94A3B8",
             }}
           >
             <X size={16} />
@@ -11916,15 +12050,17 @@ function ProjectsManagementPage({
         )}
       </div>
 
-      {/* Filter Tabs Bar */}
+      {/* Filter Tabs Bar (Modern Segmented Control) */}
       <div
         style={{
-          display: "flex",
+          display: "inline-flex",
           alignItems: "center",
-          gap: 8,
+          gap: 4,
           marginBottom: 20,
-          borderBottom: "1px solid rgba(0,0,0,0.08)",
-          paddingBottom: 10,
+          background: "#F1F5F9",
+          padding: 4,
+          borderRadius: 8,
+          border: "1px solid #E2E8F0",
         }}
       >
         {[
@@ -11942,24 +12078,24 @@ function ProjectsManagementPage({
               key={id}
               onClick={() => setActiveTab(id as any)}
               style={{
-                padding: "6px 16px",
-                borderRadius: 9999,
+                padding: "7px 16px",
+                borderRadius: 6,
                 border: "none",
-                background: isActive ? "#0A66C2" : "transparent",
-                color: isActive ? "#fff" : "rgba(0,0,0,0.65)",
+                background: isActive ? "#fff" : "transparent",
+                color: isActive ? "#0A66C2" : "#64748B",
                 fontSize: 13,
-                fontWeight: 600,
+                fontWeight: isActive ? 700 : 500,
                 cursor: "pointer",
-                transition: "all 150ms",
+                boxShadow: isActive ? "0 1px 3px rgba(0,0,0,0.08)" : "none",
+                transition: "all 150ms ease",
               }}
               onMouseEnter={(e) => {
                 if (!isActive)
-                  (e.currentTarget as HTMLElement).style.background = "#F4F2EE"
+                  (e.currentTarget as HTMLElement).style.color = "#0F172A"
               }}
               onMouseLeave={(e) => {
                 if (!isActive)
-                  (e.currentTarget as HTMLElement).style.background =
-                    "transparent"
+                  (e.currentTarget as HTMLElement).style.color = "#64748B"
               }}
             >
               {label}
@@ -12744,8 +12880,9 @@ function ProjectDetailsPage({
 
   const cardStyle: React.CSSProperties = {
     background: "#fff",
-    borderRadius: 10,
-    boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
+    borderRadius: 12,
+    border: "1px solid var(--border-default)",
+    boxShadow: "var(--shadow-card)",
   }
 
   // Ensure project has at least 1 role
@@ -12828,7 +12965,7 @@ function ProjectDetailsPage({
   }
 
   return (
-    <div style={{ background: "#F4F2EE", minHeight: "100%", paddingBottom: 60 }}>
+    <div style={{ background: "var(--bg-base)", minHeight: "100%", paddingBottom: 60 }}>
       {toastMessage && <Toast message={toastMessage} onDone={() => setToastMessage(null)} />}
 
       <div style={{ maxWidth: 1128, margin: "0 auto", padding: "24px 16px" }}>
@@ -12840,25 +12977,25 @@ function ProjectDetailsPage({
             alignItems: "center",
             gap: 8,
             background: "#fff",
-            border: "1px solid rgba(0,0,0,0.15)",
-            borderRadius: 9999,
-            padding: "8px 18px",
+            border: "1px solid var(--border-default)",
+            borderRadius: 8,
+            padding: "8px 16px",
             fontSize: 13.5,
-            fontWeight: 700,
+            fontWeight: 600,
             color: "#0A66C2",
             cursor: "pointer",
             fontFamily: "inherit",
             marginBottom: 20,
-            boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
+            boxShadow: "var(--shadow-card)",
             transition: "all 150ms ease",
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.background = "#EAF1FA"
-            e.currentTarget.style.borderColor = "#0A66C2"
+            e.currentTarget.style.background = "#EFF6FF"
+            e.currentTarget.style.borderColor = "#93C5FD"
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.background = "#fff"
-            e.currentTarget.style.borderColor = "rgba(0,0,0,0.15)"
+            e.currentTarget.style.borderColor = "var(--border-default)"
           }}
         >
           <ArrowLeft size={16} weight="bold" />
@@ -12877,17 +13014,18 @@ function ProjectDetailsPage({
           {/* Left Column: Project Details & Role Cards */}
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {/* Header Card */}
-            <div style={{ ...cardStyle, padding: "24px 28px" }}>
+            <div style={{ ...cardStyle, padding: "26px 28px" }}>
               <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 16 }}>
                 <div>
                   <h1
                     style={{
-                      fontSize: 23,
+                      fontFamily: "Plus Jakarta Sans, sans-serif",
+                      fontSize: 24,
                       fontWeight: 800,
-                      color: "rgba(0,0,0,0.90)",
-                      lineHeight: 1.35,
+                      color: "#0F172A",
+                      lineHeight: 1.3,
                       marginBottom: 10,
-                      letterSpacing: "-0.01em",
+                      letterSpacing: "-0.02em",
                     }}
                   >
                     {job.title}
@@ -12896,10 +13034,11 @@ function ProjectDetailsPage({
                   <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
                     <span
                       style={{
-                        background: "#EAF1FA",
+                        background: "#EFF6FF",
                         color: "#0A66C2",
-                        borderRadius: 9999,
-                        padding: "4px 12px",
+                        borderRadius: 6,
+                        border: "1px solid #DBEAFE",
+                        padding: "3px 10px",
                         fontSize: 12.5,
                         fontWeight: 700,
                         display: "inline-flex",
@@ -12907,11 +13046,11 @@ function ProjectDetailsPage({
                         gap: 5,
                       }}
                     >
-                      <BriefcaseMetal size={13} weight="fill" />
+                      <BriefcaseMetal size={14} weight="fill" />
                       Đang mở tuyển {roles.length} vai trò
                     </span>
-                    <span style={{ fontSize: 13, color: "rgba(0,0,0,0.50)", display: "flex", alignItems: "center", gap: 4 }}>
-                      <Clock size={13} />
+                    <span style={{ fontSize: 13, color: "#64748B", display: "flex", alignItems: "center", gap: 4 }}>
+                      <Clock size={14} />
                       Đăng {job.postedAgo}
                     </span>
                   </div>
@@ -12924,18 +13063,18 @@ function ProjectDetailsPage({
                     alignItems: "center",
                     gap: 6,
                     padding: "8px 16px",
-                    borderRadius: 9999,
-                    border: "1px solid rgba(0,0,0,0.20)",
+                    borderRadius: 8,
+                    border: "1px solid var(--border-default)",
                     background: "#fff",
-                    color: isSaved ? "#0A66C2" : "rgba(0,0,0,0.70)",
-                    fontWeight: 700,
+                    color: isSaved ? "#0A66C2" : "#475569",
+                    fontWeight: 600,
                     fontSize: 13,
                     cursor: "pointer",
                     fontFamily: "inherit",
                     transition: "all 150ms ease",
                     flexShrink: 0,
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = "#F4F2EE")}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = "#F8FAFC")}
                   onMouseLeave={(e) => (e.currentTarget.style.background = "#fff")}
                 >
                   <Bookmark size={16} weight={isSaved ? "fill" : "regular"} />
@@ -12946,25 +13085,27 @@ function ProjectDetailsPage({
 
             {/* Description Card */}
             <div style={{ ...cardStyle, padding: "24px 28px" }}>
-              <h2 style={{ fontSize: 17, fontWeight: 800, color: "rgba(0,0,0,0.90)", marginBottom: 12 }}>
+              <h2 style={{ fontSize: 17, fontWeight: 800, color: "#0F172A", marginBottom: 12, letterSpacing: "-0.01em" }}>
                 Tổng quan dự án & Bối cảnh
               </h2>
-              <p style={{ fontSize: 14.5, color: "rgba(0,0,0,0.80)", lineHeight: 1.75, marginBottom: 16 }}>
+              <p style={{ fontSize: 14.5, color: "#334155", lineHeight: 1.75, marginBottom: 16 }}>
                 {job.description}
               </p>
-              <div style={{ borderTop: "1px solid rgba(0,0,0,0.08)", paddingTop: 14 }}>
-                <div style={{ fontSize: 12, fontWeight: 700, color: "rgba(0,0,0,0.55)", marginBottom: 8, textTransform: "uppercase" }}>
+              <div style={{ borderTop: "1px solid var(--border-default)", paddingTop: 14 }}>
+                <div style={{ fontSize: 12, fontWeight: 700, color: "#64748B", marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.02em" }}>
                   Kỹ năng công nghệ tổng quan của dự án
                 </div>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                   {job.skills.map((skill) => (
                     <span
                       key={skill}
+                      className="pro-tag"
                       style={{
                         background: "#F1F5F9",
                         color: "#334155",
                         padding: "4px 12px",
                         borderRadius: 6,
+                        border: "1px solid #E2E8F0",
                         fontSize: 12.5,
                         fontWeight: 600,
                       }}
@@ -12981,23 +13122,24 @@ function ProjectDetailsPage({
               <div style={{ marginBottom: 18 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   <BriefcaseMetal size={20} color="#0A66C2" weight="fill" />
-                  <h2 style={{ fontSize: 18, fontWeight: 800, color: "rgba(0,0,0,0.90)", margin: 0 }}>
+                  <h2 style={{ fontSize: 18, fontWeight: 800, color: "#0F172A", margin: 0, letterSpacing: "-0.01em" }}>
                     Các vai trò tuyển dụng trong dự án
                   </h2>
                   <span
                     style={{
-                      background: "#EAF1FA",
+                      background: "#EFF6FF",
                       color: "#0A66C2",
                       fontSize: 12,
                       fontWeight: 700,
                       padding: "2px 10px",
-                      borderRadius: 9999,
+                      borderRadius: 6,
+                      border: "1px solid #DBEAFE",
                     }}
                   >
                     {roles.length} vai trò
                   </span>
                 </div>
-                <p style={{ fontSize: 13.5, color: "rgba(0,0,0,0.55)", marginTop: 6, lineHeight: 1.5, margin: 0 }}>
+                <p style={{ fontSize: 13.5, color: "#64748B", marginTop: 6, lineHeight: 1.5, margin: 0 }}>
                   Mỗi vai trò có bản mô tả công việc (JD), tiêu chí năng lực và khoảng ngân sách min – max riêng biệt.
                   Hãy lựa chọn vai trò phù hợp nhất với chuyên môn của bạn để nộp hồ sơ.
                 </p>
@@ -13012,12 +13154,12 @@ function ProjectDetailsPage({
                       key={role.id}
                       style={{
                         background: "#fff",
-                        borderRadius: 10,
-                        border: isApplied ? "1.5px solid #86EFAC" : "1px solid rgba(0,0,0,0.12)",
+                        borderRadius: 12,
+                        border: isApplied ? "1.5px solid #86EFAC" : "1px solid var(--border-default)",
                         boxShadow: isApplied
                           ? "0 2px 12px rgba(5,118,66,0.08)"
-                          : "0 1px 4px rgba(0,0,0,0.04)",
-                        padding: "20px 22px",
+                          : "var(--shadow-card)",
+                        padding: "22px 24px",
                         transition: "all 150ms ease",
                       }}
                     >
@@ -13030,7 +13172,7 @@ function ProjectDetailsPage({
                           flexWrap: "wrap",
                           gap: 12,
                           paddingBottom: 14,
-                          borderBottom: "1px solid rgba(0,0,0,0.06)",
+                          borderBottom: "1px solid var(--border-default)",
                         }}
                       >
                         <div>
@@ -13046,17 +13188,18 @@ function ProjectDetailsPage({
                             </span>
                             <span
                               style={{
-                                background: role.status === "recruiting" ? "#EAF1FA" : "#F4F2EE",
-                                color: role.status === "recruiting" ? "#0A66C2" : "rgba(0,0,0,0.55)",
+                                background: role.status === "recruiting" ? "#EFF6FF" : "#F1F5F9",
+                                color: role.status === "recruiting" ? "#0A66C2" : "#64748B",
                                 fontSize: 11.5,
                                 fontWeight: 700,
                                 padding: "2px 8px",
-                                borderRadius: 4,
+                                borderRadius: 6,
+                                border: role.status === "recruiting" ? "1px solid #DBEAFE" : "1px solid #E2E8F0",
                               }}
                             >
                               {role.status === "recruiting"
-                                ? `Đang tuyển (${role.slotsFilled}/${role.slotsTotal} chỉ tiêu)`
-                                : "Đã tuyển đủ"}
+                                ? "Đang tuyển"
+                                : "Đã có nhân sự"}
                             </span>
                           </div>
                         </div>
@@ -13088,23 +13231,25 @@ function ProjectDetailsPage({
 
                       {/* Role JD (Job Description) */}
                       <div style={{ marginTop: 14 }}>
-                        <div style={{ fontSize: 12, fontWeight: 700, color: "rgba(0,0,0,0.70)", marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.02em" }}>
-                          📋 Mô tả công việc (JD):
+                        <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, fontWeight: 700, color: "#475569", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.02em" }}>
+                          <FileText size={15} color="#0A66C2" weight="bold" />
+                          <span>Mô tả công việc (JD)</span>
                         </div>
-                        <p style={{ fontSize: 14, color: "rgba(0,0,0,0.80)", lineHeight: 1.65, margin: 0 }}>
+                        <p style={{ fontSize: 14, color: "#334155", lineHeight: 1.65, margin: 0 }}>
                           {role.jd}
                         </p>
                       </div>
 
                       {/* Requirements */}
                       {role.requirements && role.requirements.length > 0 && (
-                        <div style={{ marginTop: 12 }}>
-                          <div style={{ fontSize: 12, fontWeight: 700, color: "rgba(0,0,0,0.70)", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.02em" }}>
-                            🎯 Yêu cầu năng lực & kinh nghiệm:
+                        <div style={{ marginTop: 14 }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, fontWeight: 700, color: "#475569", marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.02em" }}>
+                            <SealCheck size={16} color="#057642" weight="fill" />
+                            <span>Yêu cầu năng lực & kinh nghiệm</span>
                           </div>
-                          <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+                          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                             {role.requirements.map((req, i) => (
-                              <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 6, fontSize: 13.5, color: "rgba(0,0,0,0.75)" }}>
+                              <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: 13.5, color: "#334155" }}>
                                 <CheckCircle size={15} color="#057642" weight="fill" style={{ flexShrink: 0, marginTop: 2 }} />
                                 <span>{req}</span>
                               </div>
@@ -13116,17 +13261,19 @@ function ProjectDetailsPage({
                       {/* Skills Tags */}
                       {role.skills && role.skills.length > 0 && (
                         <div style={{ marginTop: 14, display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-                          <span style={{ fontSize: 12, fontWeight: 700, color: "rgba(0,0,0,0.50)" }}>Kỹ năng:</span>
+                          <span style={{ fontSize: 12, fontWeight: 700, color: "#64748B" }}>Kỹ năng:</span>
                           {role.skills.map((skill) => (
                             <span
                               key={skill}
+                              className="pro-tag"
                               style={{
                                 background: "#F1F5F9",
                                 color: "#334155",
                                 fontSize: 12,
                                 fontWeight: 600,
-                                padding: "2px 8px",
-                                borderRadius: 4,
+                                padding: "3px 8px",
+                                borderRadius: 6,
+                                border: "1px solid #E2E8F0",
                               }}
                             >
                               {skill}
@@ -13140,7 +13287,7 @@ function ProjectDetailsPage({
                         style={{
                           marginTop: 16,
                           paddingTop: 14,
-                          borderTop: "1px solid rgba(0,0,0,0.06)",
+                          borderTop: "1px solid var(--border-default)",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "space-between",
@@ -13148,19 +13295,38 @@ function ProjectDetailsPage({
                           gap: 10,
                         }}
                       >
-                        <div style={{ fontSize: 12, color: "rgba(0,0,0,0.50)" }}>
+                        <div style={{ fontSize: 12, color: "#64748B" }}>
                           Thanh toán an toàn qua ký quỹ bảo chứng Occupify Escrow
                         </div>
 
-                        {isApplied ? (
+                        {role.status === "filled" ? (
                           <div
                             style={{
                               display: "inline-flex",
                               alignItems: "center",
                               gap: 6,
-                              padding: "7px 18px",
-                              borderRadius: 9999,
-                              background: "#E5F6E8",
+                              padding: "8px 16px",
+                              borderRadius: 8,
+                              background: "#F1F5F9",
+                              border: "1px solid #E2E8F0",
+                              color: "#64748B",
+                              fontSize: 13,
+                              fontWeight: 600,
+                            }}
+                          >
+                            <SealCheck size={16} weight="fill" color="#94A3B8" />
+                            <span>Vị trí này đã có nhân sự tiếp nhận</span>
+                          </div>
+                        ) : isApplied ? (
+                          <div
+                            style={{
+                              display: "inline-flex",
+                              alignItems: "center",
+                              gap: 6,
+                              padding: "7px 16px",
+                              borderRadius: 8,
+                              background: "#ECFDF5",
+                              border: "1px solid #A7F3D0",
                               color: "#057642",
                               fontSize: 13,
                               fontWeight: 700,
@@ -13177,8 +13343,8 @@ function ProjectDetailsPage({
                               display: "inline-flex",
                               alignItems: "center",
                               gap: 6,
-                              padding: "8px 20px",
-                              borderRadius: 9999,
+                              padding: "9px 20px",
+                              borderRadius: 8,
                               border: "none",
                               background: "#0A66C2",
                               color: "#fff",
@@ -13225,7 +13391,7 @@ function ProjectDetailsPage({
                 </div>
               </div>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 16, borderTop: "1px solid rgba(0,0,0,0.06)", paddingTop: 14 }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 16, borderTop: "1px solid var(--border-default)", paddingTop: 14 }}>
                 <button
                   onClick={() => onViewProfile?.(job.clientName)}
                   style={{
@@ -13234,19 +13400,19 @@ function ProjectDetailsPage({
                     alignItems: "center",
                     justifyContent: "center",
                     gap: 6,
-                    padding: "9px 14px",
-                    borderRadius: 9999,
-                    border: "1px solid #0A66C2",
-                    background: "#EAF1FA",
+                    padding: "10px 14px",
+                    borderRadius: 8,
+                    border: "1px solid #BFDBFE",
+                    background: "#EFF6FF",
                     color: "#0A66C2",
                     fontSize: 13.5,
-                    fontWeight: 700,
+                    fontWeight: 600,
                     cursor: "pointer",
                     fontFamily: "inherit",
-                    transition: "all 120ms",
+                    transition: "all 150ms ease",
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = "#d6e6f9")}
-                  onMouseLeave={(e) => (e.currentTarget.style.background = "#EAF1FA")}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = "#DBEAFE")}
+                  onMouseLeave={(e) => (e.currentTarget.style.background = "#EFF6FF")}
                 >
                   <User size={15} weight="bold" />
                   <span>Xem hồ sơ người dùng</span>
@@ -13260,18 +13426,18 @@ function ProjectDetailsPage({
                     alignItems: "center",
                     justifyContent: "center",
                     gap: 6,
-                    padding: "9px 14px",
-                    borderRadius: 9999,
-                    border: "1px solid #C03A2B",
+                    padding: "10px 14px",
+                    borderRadius: 8,
+                    border: "1px solid #FECACA",
                     background: "#fff",
-                    color: "#C03A2B",
+                    color: "#DC2626",
                     fontSize: 13,
-                    fontWeight: 700,
+                    fontWeight: 600,
                     cursor: "pointer",
                     fontFamily: "inherit",
-                    transition: "all 120ms",
+                    transition: "all 150ms ease",
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = "#FCE8E6")}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = "#FEF2F2")}
                   onMouseLeave={(e) => (e.currentTarget.style.background = "#fff")}
                 >
                   <Warning size={15} weight="bold" />
@@ -13611,13 +13777,40 @@ function ProjectDetailsPage({
                 <button
                   type="button"
                   onClick={() => setSelectedRoleForApply(null)}
-                  style={{ padding: "8px 18px", borderRadius: 9999, border: "1px solid rgba(0,0,0,0.15)", background: "#fff", cursor: "pointer", fontSize: 13.5, fontWeight: 600, fontFamily: "inherit" }}
+                  style={{
+                    padding: "9px 18px",
+                    borderRadius: 8,
+                    border: "1px solid var(--border-default)",
+                    background: "#fff",
+                    color: "#475569",
+                    cursor: "pointer",
+                    fontSize: 13.5,
+                    fontWeight: 600,
+                    fontFamily: "inherit",
+                    transition: "all 120ms ease",
+                  }}
+                  onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.background = "#F8FAFC")}
+                  onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = "#fff")}
                 >
                   Hủy
                 </button>
                 <button
                   type="submit"
-                  style={{ padding: "8px 24px", borderRadius: 9999, border: "none", background: "#0A66C2", color: "#fff", cursor: "pointer", fontSize: 13.5, fontWeight: 700, fontFamily: "inherit", boxShadow: "0 2px 8px rgba(10,102,194,0.3)" }}
+                  style={{
+                    padding: "9px 24px",
+                    borderRadius: 8,
+                    border: "none",
+                    background: "#0A66C2",
+                    color: "#fff",
+                    cursor: "pointer",
+                    fontSize: 13.5,
+                    fontWeight: 600,
+                    fontFamily: "inherit",
+                    boxShadow: "0 2px 8px rgba(10,102,194,0.3)",
+                    transition: "background 150ms ease",
+                  }}
+                  onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.background = "#084fa0")}
+                  onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = "#0A66C2")}
                 >
                   Gửi hồ sơ ứng tuyển
                 </button>
@@ -13695,7 +13888,20 @@ function ProjectDetailsPage({
                 <button
                   type="button"
                   onClick={() => setReportModalOpen(false)}
-                  style={{ padding: "8px 18px", borderRadius: 9999, border: "1px solid rgba(0,0,0,0.15)", background: "#fff", cursor: "pointer", fontSize: 13.5, fontWeight: 600, fontFamily: "inherit" }}
+                  style={{
+                    padding: "9px 18px",
+                    borderRadius: 8,
+                    border: "1px solid var(--border-default)",
+                    background: "#fff",
+                    color: "#475569",
+                    cursor: "pointer",
+                    fontSize: 13.5,
+                    fontWeight: 600,
+                    fontFamily: "inherit",
+                    transition: "all 120ms ease",
+                  }}
+                  onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.background = "#F8FAFC")}
+                  onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = "#fff")}
                 >
                   Hủy
                 </button>
@@ -13704,15 +13910,22 @@ function ProjectDetailsPage({
                   onClick={handleReport}
                   disabled={!reportDetail.trim()}
                   style={{
-                    padding: "8px 24px",
-                    borderRadius: 9999,
+                    padding: "9px 24px",
+                    borderRadius: 8,
                     border: "none",
-                    background: reportDetail.trim() ? "#C03A2B" : "#F87171",
+                    background: reportDetail.trim() ? "#DC2626" : "#F87171",
                     color: "#fff",
                     cursor: reportDetail.trim() ? "pointer" : "not-allowed",
                     fontSize: 13.5,
-                    fontWeight: 700,
+                    fontWeight: 600,
                     fontFamily: "inherit",
+                    transition: "background 150ms ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (reportDetail.trim()) (e.currentTarget as HTMLElement).style.background = "#B91C1C"
+                  }}
+                  onMouseLeave={(e) => {
+                    if (reportDetail.trim()) (e.currentTarget as HTMLElement).style.background = "#DC2626"
                   }}
                 >
                   Gửi báo cáo
@@ -16046,15 +16259,17 @@ function GoogleButton({
         justifyContent: "center",
         gap: 10,
         padding: "10px 20px",
-        borderRadius: 9999,
-        border: "1px solid rgba(0,0,0,0.20)",
-        background: hov ? "#F5F5F5" : "#fff",
+        borderRadius: 8,
+        border: "1px solid",
+        borderColor: hov ? "#94A3B8" : "#CBD5E1",
+        background: hov ? "#F8FAFC" : "#fff",
         cursor: "pointer",
         fontFamily: "inherit",
-        fontSize: 15,
+        fontSize: 14,
         fontWeight: 600,
-        color: "rgba(0,0,0,0.80)",
-        transition: "background 150ms",
+        color: "#0F172A",
+        transition: "all 150ms ease",
+        boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
       }}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
@@ -16079,7 +16294,7 @@ function GoogleButton({
         />
         <path fill="none" d="M0 0h48v48H0z" />
       </svg>
-      {label}
+      <span>{label}</span>
     </button>
   )
 }
@@ -16103,18 +16318,18 @@ function AuthInput({
   const [focused, setFocused] = useState(false)
   const isPassword = type === "password"
   return (
-    <div style={{ marginBottom: 14 }}>
+    <div style={{ marginBottom: 16 }}>
       <label
         style={{
           fontSize: 13,
-          fontWeight: 700,
-          color: "rgba(0,0,0,0.65)",
+          fontWeight: 600,
+          color: "#334155",
           display: "block",
-          marginBottom: 5,
+          marginBottom: 6,
         }}
       >
         {label}
-        {required && <span style={{ color: "#C03A2B", marginLeft: 2 }}>*</span>}
+        {required && <span style={{ color: "#EF4444", marginLeft: 3 }}>*</span>}
       </label>
       <div style={{ position: "relative" }}>
         <input
@@ -16124,16 +16339,17 @@ function AuthInput({
           placeholder={placeholder}
           style={{
             width: "100%",
-            padding: isPassword ? "9px 36px 9px 12px" : "9px 12px",
-            border: `1.5px solid ${focused ? "#0A66C2" : "rgba(0,0,0,0.18)"}`,
-            borderRadius: 6,
+            padding: isPassword ? "10px 40px 10px 14px" : "10px 14px",
+            border: `1px solid ${focused ? "#0A66C2" : "#CBD5E1"}`,
+            borderRadius: 8,
             fontSize: 14,
             fontFamily: "inherit",
             outline: "none",
-            color: "rgba(0,0,0,0.90)",
+            color: "#0F172A",
             background: "#fff",
             boxSizing: "border-box",
-            transition: "border-color 150ms",
+            transition: "all 150ms ease",
+            boxShadow: focused ? "0 0 0 3px rgba(10, 102, 194, 0.15)" : "none",
           }}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
@@ -16144,15 +16360,17 @@ function AuthInput({
             onClick={() => setShow((s) => !s)}
             style={{
               position: "absolute",
-              right: 10,
+              right: 12,
               top: "50%",
               transform: "translateY(-50%)",
               background: "none",
               border: "none",
               cursor: "pointer",
-              color: "rgba(0,0,0,0.40)",
-              padding: 2,
+              color: "#94A3B8",
+              padding: 4,
               display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
             {show ? <EyeSlash size={16} /> : <Eye size={16} />}
@@ -16174,8 +16392,9 @@ function AuthCard({
     <div
       style={{
         background: "#fff",
-        borderRadius: 12,
-        boxShadow: "0 2px 20px rgba(0,0,0,0.10)",
+        borderRadius: 14,
+        border: "1px solid #E2E8F0",
+        boxShadow: "0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 4px 6px -2px rgba(15, 23, 42, 0.03)",
         padding: "36px 40px",
         width: "100%",
         maxWidth: 440,
@@ -16187,42 +16406,12 @@ function AuthCard({
   )
 }
 
-function OccupifyLogo({ size = 32 }: { size?: number }) {
-  return (
-    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-      <div
-        style={{
-          width: size,
-          height: size,
-          borderRadius: 8,
-          background: "#0A66C2",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <BriefcaseMetal size={size * 0.6} color="#fff" weight="fill" />
-      </div>
-      <span
-        style={{
-          fontSize: size * 0.75,
-          fontWeight: 800,
-          color: "#0A66C2",
-          letterSpacing: "-0.5px",
-        }}
-      >
-        Occupify
-      </span>
-    </div>
-  )
-}
-
 function AuthShell({ children }: { children: React.ReactNode }) {
   return (
     <div
       style={{
         minHeight: "100vh",
-        background: "#F4F2EE",
+        background: "#F8FAFC",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -16238,17 +16427,18 @@ function AuthShell({ children }: { children: React.ReactNode }) {
         style={{
           marginTop: 24,
           fontSize: 12,
-          color: "rgba(0,0,0,0.40)",
+          color: "#94A3B8",
           textAlign: "center",
           maxWidth: 380,
+          lineHeight: 1.5,
         }}
       >
         Bằng cách tiếp tục, bạn đồng ý với{" "}
-        <span style={{ color: "#0A66C2", cursor: "pointer" }}>
+        <span style={{ color: "#0A66C2", cursor: "pointer", fontWeight: 600 }}>
           Điều khoản dịch vụ
         </span>{" "}
         và{" "}
-        <span style={{ color: "#0A66C2", cursor: "pointer" }}>
+        <span style={{ color: "#0A66C2", cursor: "pointer", fontWeight: 600 }}>
           Chính sách quyền riêng tư
         </span>{" "}
         của Occupify.
@@ -16270,149 +16460,227 @@ function LandingPage({
   onAdmin: () => void
 }) {
   return (
-    <div style={{ minHeight: "100vh", background: "#F4F2EE", display: "flex" }}>
+    <div
+      style={{
+        minHeight: "100vh",
+        background: "#F8FAFC",
+        display: "flex",
+        alignItems: "stretch",
+      }}
+    >
       {/* Left — brand panel */}
       <div
         style={{
-          flex: 1,
-          background: "linear-gradient(145deg, #0A66C2 0%, #084FA0 100%)",
+          flex: "1 1 54%",
+          background: "linear-gradient(145deg, #0A66C2 0%, #084FA0 50%, #042D5C 100%)",
           display: "flex",
           flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "flex-start",
-          padding: "60px 64px",
+          justifyContent: "space-between",
+          padding: "56px 64px",
           minHeight: "100vh",
+          position: "relative",
+          overflow: "hidden",
         }}
       >
-        <OccupifyLogo size={40} />
-        <div style={{ marginTop: "auto", paddingBottom: 8 }}>
-          <p
+        {/* Subtle background radial glow */}
+        <div
+          style={{
+            position: "absolute",
+            top: "-15%",
+            right: "-10%",
+            width: 480,
+            height: 480,
+            borderRadius: "50%",
+            background: "radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%)",
+            pointerEvents: "none",
+          }}
+        />
+
+        <div style={{ position: "relative", zIndex: 2 }}>
+          <OccupifyLogo size={38} inverted={true} />
+        </div>
+
+        <div style={{ position: "relative", zIndex: 2, margin: "auto 0" }}>
+          <h1
             style={{
-              fontSize: 36,
+              fontSize: 34,
               fontWeight: 800,
               color: "#fff",
               lineHeight: 1.25,
-              maxWidth: 420,
+              maxWidth: 480,
+              letterSpacing: "-0.025em",
+              marginBottom: 16,
             }}
           >
             Mạng lưới chuyên nghiệp dành cho người Việt
-          </p>
+          </h1>
           <p
             style={{
-              fontSize: 16,
-              color: "rgba(255,255,255,0.72)",
-              marginTop: 14,
-              maxWidth: 380,
-              lineHeight: 1.6,
+              fontSize: 15.5,
+              color: "rgba(255,255,255,0.80)",
+              maxWidth: 440,
+              lineHeight: 1.65,
+              marginBottom: 36,
             }}
           >
-            Kết nối, hợp tác và phát triển sự nghiệp cùng cộng đồng chuyên gia
-            hàng đầu Việt Nam.
+            Kết nối, hợp tác và phát triển sự nghiệp cùng cộng đồng chuyên gia,
+            doanh nghiệp và freelancer hàng đầu Việt Nam.
           </p>
-        </div>
-        {/* Feature highlights */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 16,
-            marginTop: 40,
-          }}
-        >
-          {[
-            { Icon: UsersThree, text: "Kết nối với hơn 500.000 chuyên gia" },
-            {
-              Icon: BriefcaseMetal,
-              text: "Tìm việc & hợp đồng freelance phù hợp",
-            },
-            { Icon: Lightbulb, text: "Chia sẻ ý tưởng và phát triển bản thân" },
-          ].map(({ Icon, text }) => (
-            <div
-              key={text}
-              style={{ display: "flex", alignItems: "center", gap: 12 }}
-            >
+
+          {/* Feature highlights */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 12,
+              maxWidth: 460,
+            }}
+          >
+            {[
+              { Icon: UsersThree, text: "Kết nối với hơn 500.000 chuyên gia tài năng" },
+              {
+                Icon: BriefcaseMetal,
+                text: "Tìm kiếm dự án & hợp đồng freelance minh bạch",
+              },
+              { Icon: Lightbulb, text: "Bảo đảm thanh toán an toàn qua cơ chế Escrow" },
+            ].map(({ Icon, text }) => (
               <div
+                key={text}
                 style={{
-                  width: 36,
-                  height: 36,
-                  borderRadius: 8,
-                  background: "rgba(255,255,255,0.15)",
                   display: "flex",
                   alignItems: "center",
-                  justifyContent: "center",
-                  flexShrink: 0,
+                  gap: 14,
+                  background: "rgba(255,255,255,0.08)",
+                  backdropFilter: "blur(8px)",
+                  border: "1px solid rgba(255,255,255,0.14)",
+                  borderRadius: 10,
+                  padding: "12px 16px",
                 }}
               >
-                <Icon size={18} color="#fff" weight="fill" />
+                <div
+                  style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: 8,
+                    background: "rgba(255,255,255,0.16)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                  }}
+                >
+                  <Icon size={17} color="#fff" weight="fill" />
+                </div>
+                <span
+                  style={{
+                    fontSize: 13.5,
+                    color: "rgba(255,255,255,0.92)",
+                    fontWeight: 600,
+                  }}
+                >
+                  {text}
+                </span>
               </div>
-              <span
-                style={{
-                  fontSize: 14,
-                  color: "rgba(255,255,255,0.85)",
-                  fontWeight: 500,
-                }}
-              >
-                {text}
-              </span>
-            </div>
-          ))}
+            ))}
+          </div>
+        </div>
+
+        {/* Bottom Trust Metrics Bar */}
+        <div
+          style={{
+            position: "relative",
+            zIndex: 2,
+            borderTop: "1px solid rgba(255,255,255,0.15)",
+            paddingTop: 20,
+            display: "flex",
+            alignItems: "center",
+            gap: 28,
+          }}
+        >
+          <div>
+            <div style={{ fontSize: 18, fontWeight: 800, color: "#fff" }}>500K+</div>
+            <div style={{ fontSize: 11.5, color: "rgba(255,255,255,0.65)", fontWeight: 500 }}>Chuyên gia</div>
+          </div>
+          <div style={{ width: 1, height: 24, background: "rgba(255,255,255,0.15)" }} />
+          <div>
+            <div style={{ fontSize: 18, fontWeight: 800, color: "#fff" }}>10.000+</div>
+            <div style={{ fontSize: 11.5, color: "rgba(255,255,255,0.65)", fontWeight: 500 }}>Dự án đã kết nối</div>
+          </div>
+          <div style={{ width: 1, height: 24, background: "rgba(255,255,255,0.15)" }} />
+          <div>
+            <div style={{ fontSize: 18, fontWeight: 800, color: "#fff" }}>100%</div>
+            <div style={{ fontSize: 11.5, color: "rgba(255,255,255,0.65)", fontWeight: 500 }}>Bảo đảm thanh toán</div>
+          </div>
         </div>
       </div>
 
-      {/* Right — auth options */}
+      {/* Right — auth panel */}
       <div
         style={{
-          width: 480,
+          flex: "1 1 46%",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          padding: "60px 48px",
-          background: "#fff",
+          padding: "48px 36px",
+          background: "#F8FAFC",
         }}
       >
-        <div style={{ width: "100%", maxWidth: 360 }}>
-          <h1
+        <div
+          style={{
+            width: "100%",
+            maxWidth: 420,
+            background: "#fff",
+            borderRadius: 16,
+            border: "1px solid #E2E8F0",
+            boxShadow: "0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 4px 6px -2px rgba(15, 23, 42, 0.03)",
+            padding: "40px 36px",
+          }}
+        >
+          <h2
             style={{
-              fontSize: 26,
+              fontSize: 24,
               fontWeight: 800,
-              color: "rgba(0,0,0,0.90)",
+              color: "#0F172A",
               marginBottom: 6,
+              letterSpacing: "-0.02em",
             }}
           >
             Chào mừng trở lại
-          </h1>
+          </h2>
           <p
             style={{
               fontSize: 14,
-              color: "rgba(0,0,0,0.55)",
-              marginBottom: 32,
+              color: "#64748B",
+              marginBottom: 28,
+              lineHeight: 1.5,
             }}
           >
-            Đăng nhập hoặc tạo tài khoản mới để bắt đầu.
+            Đăng nhập hoặc tạo tài khoản mới để bắt đầu khám phá cơ hội.
           </p>
 
           <button
             onClick={onLogin}
             style={{
               width: "100%",
-              padding: "12px 20px",
-              borderRadius: 9999,
+              padding: "11px 20px",
+              borderRadius: 8,
               border: "none",
               background: "#0A66C2",
               color: "#fff",
-              fontSize: 15,
+              fontSize: 14.5,
               fontWeight: 700,
               cursor: "pointer",
               fontFamily: "inherit",
-              marginBottom: 12,
-              transition: "background 150ms",
+              marginBottom: 10,
+              boxShadow: "0 1px 2px 0 rgba(10, 102, 194, 0.3)",
+              transition: "all 150ms ease",
             }}
             onMouseEnter={(e) => {
-              ; (e.currentTarget as HTMLElement).style.background = "#084FA0"
+              (e.currentTarget as HTMLElement).style.background = "#084FA0"
             }}
             onMouseLeave={(e) => {
-              ; (e.currentTarget as HTMLElement).style.background = "#0A66C2"
+              (e.currentTarget as HTMLElement).style.background = "#0A66C2"
             }}
           >
             Đăng nhập
@@ -16422,66 +16690,86 @@ function LandingPage({
             onClick={onSignUp}
             style={{
               width: "100%",
-              padding: "12px 20px",
-              borderRadius: 9999,
-              border: "1.5px solid #0A66C2",
-              background: "none",
-              color: "#0A66C2",
-              fontSize: 15,
-              fontWeight: 700,
+              padding: "10px 20px",
+              borderRadius: 8,
+              border: "1px solid #CBD5E1",
+              background: "#fff",
+              color: "#0F172A",
+              fontSize: 14.5,
+              fontWeight: 600,
               cursor: "pointer",
               fontFamily: "inherit",
-              marginBottom: 24,
-              transition: "background 150ms",
+              marginBottom: 20,
+              transition: "all 150ms ease",
             }}
             onMouseEnter={(e) => {
-              ; (e.currentTarget as HTMLElement).style.background = "#EAF1FA"
+              (e.currentTarget as HTMLElement).style.background = "#F8FAFC"
+              ;(e.currentTarget as HTMLElement).style.borderColor = "#94A3B8"
             }}
             onMouseLeave={(e) => {
-              ; (e.currentTarget as HTMLElement).style.background = "none"
+              (e.currentTarget as HTMLElement).style.background = "#fff"
+              ;(e.currentTarget as HTMLElement).style.borderColor = "#CBD5E1"
             }}
           >
-            Đăng ký
+            Đăng ký tài khoản
           </button>
 
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 12,
+              marginBottom: 20,
+            }}
+          >
+            <div style={{ flex: 1, height: 1, background: "#E2E8F0" }} />
+            <span style={{ fontSize: 12, color: "#94A3B8", fontWeight: 500 }}>hoặc</span>
+            <div style={{ flex: 1, height: 1, background: "#E2E8F0" }} />
+          </div>
+
+          <GoogleButton onClick={onGoogle} label="Tiếp tục với Google" />
 
           <p
             style={{
-              marginTop: 32,
+              marginTop: 28,
               fontSize: 12,
-              color: "rgba(0,0,0,0.40)",
+              color: "#94A3B8",
               textAlign: "center",
-              lineHeight: 1.6,
+              lineHeight: 1.5,
             }}
           >
             Bằng cách tiếp tục, bạn đồng ý với{" "}
-            <span style={{ color: "#0A66C2", cursor: "pointer" }}>
+            <span style={{ color: "#0A66C2", cursor: "pointer", fontWeight: 600 }}>
               Điều khoản dịch vụ
             </span>{" "}
             và{" "}
-            <span style={{ color: "#0A66C2", cursor: "pointer" }}>
+            <span style={{ color: "#0A66C2", cursor: "pointer", fontWeight: 600 }}>
               Chính sách quyền riêng tư
             </span>{" "}
             của Occupify.
           </p>
-          <div style={{ marginTop: 24, textAlign: "center" }}>
+          <div style={{ marginTop: 20, textAlign: "center" }}>
             <button
               onClick={onAdmin}
               style={{
                 background: "none",
                 border: "none",
                 cursor: "pointer",
-                fontSize: 12,
-                color: "rgba(0,0,0,0.35)",
+                fontSize: 12.5,
+                color: "#64748B",
                 fontFamily: "inherit",
-                padding: 0,
+                fontWeight: 600,
+                padding: "4px 8px",
+                borderRadius: 6,
+                transition: "all 150ms",
               }}
               onMouseEnter={(e) => {
-                ; (e.currentTarget as HTMLElement).style.color = "#0A66C2"
+                (e.currentTarget as HTMLElement).style.color = "#0A66C2"
+                ;(e.currentTarget as HTMLElement).style.background = "#EFF6FF"
               }}
               onMouseLeave={(e) => {
-                ; (e.currentTarget as HTMLElement).style.color =
-                  "rgba(0,0,0,0.35)"
+                (e.currentTarget as HTMLElement).style.color = "#64748B"
+                ;(e.currentTarget as HTMLElement).style.background = "none"
               }}
             >
               Truy cập Admin Portal →
@@ -16518,7 +16806,7 @@ function LoginPage({
     <div
       style={{
         minHeight: "100vh",
-        background: "#F4F2EE",
+        background: "#F8FAFC",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -16527,7 +16815,7 @@ function LoginPage({
         position: "relative",
       }}
     >
-      {/* Back button — absolute top-left, outside card */}
+      {/* Back button */}
       <button
         onClick={onBack}
         style={{
@@ -16537,27 +16825,35 @@ function LoginPage({
           display: "flex",
           alignItems: "center",
           gap: 6,
-          background: "none",
-          border: "none",
+          background: "#fff",
+          border: "1px solid #CBD5E1",
+          borderRadius: 8,
           cursor: "pointer",
-          fontSize: 14,
+          fontSize: 13,
           fontWeight: 600,
-          color: "rgba(0,0,0,0.60)",
+          color: "#475569",
           fontFamily: "inherit",
-          padding: "4px 0",
+          padding: "6px 12px",
+          boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+          transition: "all 150ms ease",
         }}
         onMouseEnter={(e) => {
-          ; (e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.90)"
+          (e.currentTarget as HTMLElement).style.color = "#0F172A"
+          ;(e.currentTarget as HTMLElement).style.borderColor = "#94A3B8"
+          ;(e.currentTarget as HTMLElement).style.background = "#F1F5F9"
         }}
         onMouseLeave={(e) => {
-          ; (e.currentTarget as HTMLElement).style.color = "rgba(0,0,0,0.60)"
+          (e.currentTarget as HTMLElement).style.color = "#475569"
+          ;(e.currentTarget as HTMLElement).style.borderColor = "#CBD5E1"
+          ;(e.currentTarget as HTMLElement).style.background = "#fff"
         }}
       >
-        <ArrowLeft size={14} weight="bold" /> Quay lại
+        <ArrowLeft size={14} weight="bold" />
+        <span>Quay lại</span>
       </button>
 
       {/* Logo centered above card */}
-      <div style={{ marginBottom: 28 }}>
+      <div style={{ marginBottom: 24 }}>
         <OccupifyLogo size={36} />
       </div>
 
@@ -16565,27 +16861,29 @@ function LoginPage({
       <div
         style={{
           background: "#fff",
-          borderRadius: 8,
-          boxShadow: "0 0 0 1px rgba(0,0,0,0.08)",
-          padding: "32px",
+          borderRadius: 14,
+          border: "1px solid #E2E8F0",
+          boxShadow: "0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 4px 6px -2px rgba(15, 23, 42, 0.03)",
+          padding: "36px 40px",
           width: "100%",
-          maxWidth: 448,
+          maxWidth: 440,
         }}
       >
         <h2
           style={{
             fontSize: 24,
-            fontWeight: 600,
-            color: "rgba(0,0,0,0.90)",
+            fontWeight: 800,
+            color: "#0F172A",
             marginBottom: 4,
+            letterSpacing: "-0.02em",
           }}
         >
           Đăng nhập
         </h2>
         <p
-          style={{ fontSize: 14, color: "rgba(0,0,0,0.60)", marginBottom: 24 }}
+          style={{ fontSize: 14, color: "#64748B", marginBottom: 24 }}
         >
-          Chào mừng bạn trở lại Occupify!
+          Chào mừng bạn trở lại với Occupify!
         </p>
 
         <form onSubmit={handleSubmit}>
@@ -16593,7 +16891,7 @@ function LoginPage({
             label="Tên đăng nhập"
             value={username}
             onChange={setUsername}
-            placeholder="Nhập tên đăng nhập"
+            placeholder="Nhập tên đăng nhập hoặc email"
             required
           />
           <AuthInput
@@ -16601,7 +16899,7 @@ function LoginPage({
             type="password"
             value={password}
             onChange={setPassword}
-            placeholder="Nhập mật khẩu"
+            placeholder="Nhập mật khẩu của bạn"
             required
           />
 
@@ -16611,18 +16909,19 @@ function LoginPage({
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              marginTop: 12,
-              marginBottom: 24,
+              marginTop: 10,
+              marginBottom: 22,
             }}
           >
             <label
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: 6,
+                gap: 7,
                 cursor: "pointer",
                 fontSize: 13,
-                color: "rgba(0,0,0,0.90)",
+                fontWeight: 500,
+                color: "#334155",
                 userSelect: "none",
               }}
             >
@@ -16632,12 +16931,12 @@ function LoginPage({
                 onChange={(e) => setRememberMe(e.target.checked)}
                 style={{
                   accentColor: "#0A66C2",
-                  width: 14,
-                  height: 14,
+                  width: 15,
+                  height: 15,
                   cursor: "pointer",
                 }}
               />
-              Ghi nhớ đăng nhập
+              <span>Ghi nhớ đăng nhập</span>
             </label>
             <button
               type="button"
@@ -16652,13 +16951,6 @@ function LoginPage({
                 fontFamily: "inherit",
                 padding: 0,
               }}
-              onMouseEnter={(e) => {
-                ; (e.currentTarget as HTMLElement).style.textDecoration =
-                  "underline"
-              }}
-              onMouseLeave={(e) => {
-                ; (e.currentTarget as HTMLElement).style.textDecoration = "none"
-              }}
             >
               Quên mật khẩu?
             </button>
@@ -16669,23 +16961,24 @@ function LoginPage({
             onClick={handleSubmit}
             style={{
               width: "100%",
-              padding: "10px 20px",
-              borderRadius: 9999,
+              padding: "11px 20px",
+              borderRadius: 8,
               border: "none",
               background: "#0A66C2",
               color: "#fff",
-              fontSize: 14,
-              fontWeight: 600,
+              fontSize: 14.5,
+              fontWeight: 700,
               cursor: "pointer",
               fontFamily: "inherit",
-              marginBottom: 24,
-              transition: "background 150ms",
+              marginBottom: 20,
+              boxShadow: "0 1px 2px 0 rgba(10, 102, 194, 0.3)",
+              transition: "all 150ms ease",
             }}
             onMouseEnter={(e) => {
-              ; (e.currentTarget as HTMLElement).style.background = "#084FA0"
+              (e.currentTarget as HTMLElement).style.background = "#084FA0"
             }}
             onMouseLeave={(e) => {
-              ; (e.currentTarget as HTMLElement).style.background = "#0A66C2"
+              (e.currentTarget as HTMLElement).style.background = "#0A66C2"
             }}
           >
             Đăng nhập
@@ -16697,12 +16990,12 @@ function LoginPage({
             display: "flex",
             alignItems: "center",
             gap: 12,
-            marginBottom: 24,
+            marginBottom: 20,
           }}
         >
-          <div style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.12)" }} />
-          <span style={{ fontSize: 12, color: "rgba(0,0,0,0.60)" }}>hoặc</span>
-          <div style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.12)" }} />
+          <div style={{ flex: 1, height: 1, background: "#E2E8F0" }} />
+          <span style={{ fontSize: 12, color: "#94A3B8", fontWeight: 500 }}>hoặc</span>
+          <div style={{ flex: 1, height: 1, background: "#E2E8F0" }} />
         </div>
 
         <GoogleButton onClick={onGoogle} label="Tiếp tục với Google" />
@@ -20662,7 +20955,7 @@ function MainApp({ onLogout }: { onLogout?: () => void }) {
   }
 
   return (
-    <div style={{ minHeight: "100%", background: "#F4F2EE" }}>
+    <div style={{ minHeight: "100%", background: "var(--bg-base)" }}>
       <style>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
         button, input, textarea, select { font-family: 'Source Sans 3', sans-serif; }
